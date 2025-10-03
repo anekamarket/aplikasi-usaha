@@ -248,6 +248,69 @@
         .social-icons a:hover { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); transform: translateY(-3px); }
         .footer-bottom { text-align: center; padding-top: 40px; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
         .footer-bottom p { opacity: 0.7; }
+
+        /* --- PENAMBAHAN BARU: Style untuk Formulir Newsletter --- */
+        .newsletter-input-group {
+            display: flex;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+        .newsletter-input-group:focus-within {
+             box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+        .newsletter-input-group input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: var(--white-color);
+            outline: none;
+            font-size: 0.95rem;
+        }
+        .newsletter-input-group input::placeholder {
+            color: #a0a8c4;
+            opacity: 0.8;
+        }
+        .newsletter-input-group button {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: var(--white-color);
+            padding: 0 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        .newsletter-input-group button:hover {
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            transform: scale(1.1);
+        }
+        .newsletter-input-group button:disabled {
+            background: var(--gray-color);
+            cursor: not-allowed;
+        }
+        #newsletter-result {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: none;
+            text-align: left;
+            transition: opacity 0.3s ease;
+        }
+        #newsletter-result.success {
+            background-color: rgba(46, 125, 50, 0.7);
+            color: #e8f5e9;
+        }
+        #newsletter-result.error {
+            background-color: rgba(198, 40, 40, 0.7);
+            color: #ffebee;
+        }
+        /* --- AKHIR PENAMBAHAN BARU --- */
         
         /* Modals from AplikasiUsaha.com */
         .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); animation: fadeIn 0.3s; }
@@ -317,7 +380,7 @@
             .app-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
             /* REVISI: Membuat teks footer rata tengah saat kolomnya menumpuk */
-            .footer-about, .footer-links, .footer-contact { text-align: center; }
+            .footer-about, .footer-links, .footer-contact, .footer-newsletter { text-align: center; } /* Penambahan .footer-newsletter */
             .footer h3::after { left: 50%; transform: translateX(-50%); }
             .footer-contact ul li { display: flex; justify-content: center; align-items: center; }
         }
@@ -428,7 +491,23 @@
                 <div class="footer-about"><a href="#" class="nav-logo">AplikasiUsaha</a><p>Platform terpadu untuk membantu para pelaku UMKM dan pebisnis bertransformasi secara digital dan mengoptimalkan operasional usaha.</p><div class="social-icons"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div></div>
                 <div class="footer-links"><h3>Tautan Cepat</h3><ul><li><a href="https://lks-88.github.io/produk-anekamarket/" target="_blank">Produk Kami</a></li><li><a href="https://lks-88.github.io/promo-anekamarket/" target="_blank">Aneka Aplikasi</a></li><li><a href="https://lenterakarya.github.io/perjanjian-anekamarket/" target="_blank">Perjanjian MoU</a></li><li><a href="https://lks-88.github.io/anekamarket/" target="_blank">Tentang Kami</a></li></ul></div>
                 <div class="footer-contact"><h3>Hubungi Kami</h3><ul><li><i class="fas fa-map-marker-alt"></i>Jl. Pb.Sudirman, Panarukan - Situbondo (Jawa Timur 68351)</li><li><i class="fas fa-envelope"></i><a href="mailto:info@aplikasiusaha.com">info@aplikasiusaha.com</a></li><li><i class="fas fa-envelope"></i><a href="mailto:admin@anekamarket.my.id">admin@anekamarket.my.id</a></li><li><i class="fab fa-whatsapp"></i><a href="https://wa.me/6287865614222" target="_blank">0878-6561-4222</a></li></ul></div>
-            </div>
+                
+                <div class="footer-newsletter">
+                    <h3>Berlangganan Info</h3>
+                    <p>Dapatkan promo dan update terbaru langsung di email Anda.</p>
+                    <form id="newsletterForm">
+                        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+                        <input type="hidden" name="subject" value="Pendaftar Newsletter Baru - AplikasiUsaha.com">
+                        <input type="hidden" name="from_name" value="Website AplikasiUsaha">
+                        
+                        <div class="newsletter-input-group">
+                            <input type="email" name="email" placeholder="Masukkan email Anda..." required>
+                            <button type="submit" aria-label="Kirim"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                    <div id="newsletter-result"></div>
+                </div>
+                 </div>
             <div class="footer-bottom"><p>&copy; 2025 AplikasiUsaha.com. Seluruh Hak Cipta Dilindungi.</p></div>
         </div>
     </footer>
@@ -556,7 +635,60 @@
                  setTimeout(() => { registrationModal.close(); }, 8000);
             });
         });
-        
+
+        // --- PENAMBAHAN BARU: Logika Formulir Newsletter ---
+        const newsletterForm = document.getElementById('newsletterForm');
+        newsletterForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const submitButton = newsletterForm.querySelector('button[type="submit"]');
+            const originalIconHTML = submitButton.innerHTML;
+            submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+            submitButton.disabled = true;
+
+            const formData = new FormData(newsletterForm);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+            
+            const newsletterResult = document.getElementById("newsletter-result");
+            newsletterResult.style.display = "none";
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+            .then(async (response) => {
+                let jsonResponse = await response.json();
+                newsletterResult.style.display = "block";
+                if (response.status == 200) {
+                    newsletterResult.className = "success";
+                    newsletterResult.innerHTML = "Terima kasih! Anda berhasil berlangganan.";
+                    newsletterForm.reset();
+                } else {
+                    newsletterResult.className = "error";
+                    newsletterResult.innerHTML = jsonResponse.message || "Terjadi kesalahan, silakan coba lagi.";
+                }
+            })
+            .catch(error => {
+                newsletterResult.style.display = "block";
+                newsletterResult.className = "error";
+                newsletterResult.innerHTML = "Gagal terhubung ke server. Periksa koneksi Anda.";
+            })
+            .finally(() => {
+                submitButton.innerHTML = originalIconHTML;
+                submitButton.disabled = false;
+                setTimeout(() => {
+                    if(newsletterResult.style.display === "block"){
+                       newsletterResult.style.display = "none";
+                    }
+                }, 6000);
+            });
+        });
+        // --- AKHIR PENAMBAHAN BARU ---
+
         var swiper = new Swiper(".testimonialSwiper", {
             slidesPerView: 1, spaceBetween: 30, loop: true,
             autoplay: { delay: 5000, disableOnInteraction: false },
