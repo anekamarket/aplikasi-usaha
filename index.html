@@ -344,6 +344,81 @@
         #fab-scroll-top { background-color: var(--dark-color); display: none; transition-delay: 0.05s;}
         .fab-toggle-btn { background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: var(--white-color); width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25); transition: transform 0.3s ease; }
         .fab-container.active .fab-toggle-btn { transform: rotate(135deg); }
+        
+        /* --- PENAMBAHAN BARU: Style untuk Pencarian Google Melayang --- */
+        #floating-google-search {
+            position: fixed;
+            bottom: 30px;
+            left: 30px; /* Diubah ke kiri agar tidak bentrok dengan FAB */
+            z-index: 998; /* Sedikit di bawah FAB jika tumpang tindih */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Diubah agar kotak muncul di atas tombol */
+        }
+        #google-search-form-container {
+            background-color: var(--white-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 15px;
+            width: 300px;
+            display: none; /* Awalnya disembunyikan */
+            border: 1px solid #eee;
+        }
+        #google-search-form-container h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+        #google-search-form-container .search-input-group {
+            display: flex;
+        }
+        #google-search-form-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 50px 0 0 50px;
+            font-size: 1rem;
+            padding-left: 15px;
+        }
+         #google-search-form-container input[type="text"]:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+         }
+        #google-search-form-container button {
+            padding: 10px 15px;
+            border: none;
+            background-color: var(--secondary-color);
+            color: var(--white-color);
+            cursor: pointer;
+            border-radius: 0 50px 50px 0;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        #google-search-form-container button:hover {
+            background-color: var(--primary-color);
+        }
+        #google-search-toggle-btn {
+            background-color: var(--secondary-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        #google-search-toggle-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        /* --- AKHIR PENAMBAHAN BARU --- */
 
         /* --- Responsive Design --- */
         
@@ -383,6 +458,9 @@
             .footer-about, .footer-links, .footer-contact, .footer-newsletter { text-align: center; } /* Penambahan .footer-newsletter */
             .footer h3::after { left: 50%; transform: translateX(-50%); }
             .footer-contact ul li { display: flex; justify-content: center; align-items: center; }
+
+            /* PENAMBAHAN BARU: Sembunyikan pencarian google di HP kecil agar tidak menutupi layar */
+            #floating-google-search { display: none; }
         }
 
         /* Small Phone */
@@ -539,7 +617,19 @@
     <div id="registrationModal" class="modal">
         <div class="modal-content"><span class="close-btn">&times;</span><div id="form-container"><h2>Formulir Konsultasi & Pendaftaran</h2><p style="text-align: center; margin-bottom: 25px; color: var(--gray-color);">Lengkapi data di bawah ini, dan tim ahli kami akan segera menghubungi Anda untuk demo atau konsultasi gratis.</p><form id="registrationForm"><input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE"><input type="hidden" name="subject" value="Pendaftaran Baru dari Website AplikasiUsaha.com"><input type="hidden" name="from_name" value="AplikasiUsaha Website"><div class="form-row"><div class="form-group"><label for="name">Nama Lengkap</label><input type="text" id="name" name="name" placeholder="Contoh: Budi Hartono" required></div><div class="form-group"><label for="phone">Nomor WhatsApp Aktif</label><input type="tel" id="phone" name="phone" placeholder="Contoh: 08123456789" required></div></div><div class="form-group"><label for="email">Alamat Email</label><input type="email" id="email" name="email" placeholder="Contoh: budi.hartono@email.com" required></div><div class="form-row"><div class="form-group"><label for="business_name">Nama Usaha</label><input type="text" id="business_name" name="business_name" placeholder="Contoh: Kedai Kopi Senja"></div><div class="form-group"><label for="business_type">Jenis Usaha</label><select id="business_type" name="business_type"><option value="">Pilih Jenis Usaha</option><option value="Toko/Retail">Toko/Retail</option><option value="Cafe/Restoran">Cafe/Restoran</option><option value="Hotel/Penginapan">Hotel/Penginapan</option><option value="Jasa (Laundry, Travel, dll)">Jasa (Laundry, Travel, dll)</option><option value="Pendidikan">Pendidikan</option><option value="Pemerintahan/Desa">Pemerintahan/Desa</option><option value="Lainnya">Lainnya</option></select></div></div><div class="form-group"><label for="message">Kebutuhan atau Pesan Anda</label><textarea id="message" name="message" placeholder="Jelaskan kebutuhan Anda secara singkat. Contoh: Saya butuh aplikasi kasir untuk toko saya."></textarea></div><button type="submit" class="btn btn-primary" style="width: 100%;">Kirim Pendaftaran</button></form></div><div id="form-result"></div></div>
     </div>
-    
+
+    <div id="floating-google-search">
+        <div id="google-search-form-container">
+            <h4>Cari Cepat di Google</h4>
+            <form action="https://www.google.com/search" method="get" target="_blank" class="search-input-group">
+                <input type="text" name="q" placeholder="Ketik apa saja..." required autocomplete="off">
+                <button type="submit" aria-label="Cari"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <button id="google-search-toggle-btn" aria-label="Buka Pencarian">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
     <div class="fab-container"><a id="fab-scroll-top" href="#hero" class="fab-action-btn"><i class="fas fa-arrow-up"></i></a><a id="fab-whatsapp" href="https://wa.me/6287865614222" target="_blank" class="fab-action-btn"><i class="fab fa-whatsapp"></i></a><button class="fab-toggle-btn"><i class="fas fa-plus"></i></button></div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
@@ -702,6 +792,26 @@
         const fabScrollTopBtn = document.getElementById('fab-scroll-top');
         fabToggleBtn.addEventListener('click', () => { fabContainer.classList.toggle('active'); });
         window.addEventListener('scroll', () => { fabScrollTopBtn.style.display = (window.scrollY > 300) ? 'flex' : 'none'; });
+
+        // --- PENAMBAHAN BARU: Logika untuk Pencarian Google Melayang ---
+        const googleSearchToggleBtn = document.getElementById('google-search-toggle-btn');
+        const googleSearchFormContainer = document.getElementById('google-search-form-container');
+        const googleSearchIcon = googleSearchToggleBtn.querySelector('i');
+
+        googleSearchToggleBtn.addEventListener('click', () => {
+            const isVisible = googleSearchFormContainer.style.display === 'block';
+            if (isVisible) {
+                googleSearchFormContainer.style.display = 'none';
+                googleSearchIcon.classList.remove('fa-times');
+                googleSearchIcon.classList.add('fa-search');
+            } else {
+                googleSearchFormContainer.style.display = 'block';
+                googleSearchIcon.classList.remove('fa-search');
+                googleSearchIcon.classList.add('fa-times');
+            }
+        });
+        // --- AKHIR PENAMBAHAN BARU ---
+
     </script>
 </body>
 </html>
