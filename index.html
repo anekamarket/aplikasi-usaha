@@ -166,6 +166,21 @@
             overflow: hidden; opacity: 0; animation: buttonSlideIn 0.5s ease-out forwards;
         }
 
+        /* --- PENYEMPURNAAN: Animasi "denyut" untuk tombol di hero section --- */
+        .button.animated-pulse {
+            animation-name: pulse-glow;
+            animation-duration: 3s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+            50% { transform: scale(1.03); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+        }
+        /* --- AKHIR PENYEMPURNAAN --- */
+
         .button-container .button:nth-child(1) { animation-delay: 0.3s; }
         .button-container .button:nth-child(2) { animation-delay: 0.4s; }
         .button-container .button:nth-child(3) { animation-delay: 0.5s; }
@@ -185,7 +200,7 @@
             transition: left 0.6s ease; transform: skewX(-25deg);
         }
         .button:hover::after { left: 150%; }
-        .button:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); }
+        .button:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); animation-play-state: paused; } /* Pause animasi pulse saat hover */
         .button:active { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
         .button i { margin-right: 12px; font-size: 1.2rem; transition: transform 0.3s ease; }
         .button:hover i { transform: rotate(-5deg) scale(1.1); }
@@ -327,6 +342,15 @@
         .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Poppins', sans-serif; transition: border-color 0.3s; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary-color); outline: none; }
+        /* --- PENAMBAHAN BARU: Style untuk input readonly --- */
+        .form-group input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-align: center;
+            letter-spacing: 1px;
+        }
         textarea { resize: vertical; min-height: 100px; }
         #form-result { margin-top: 20px; text-align: center; font-weight: 500; padding: 15px; border-radius: 8px; display: none; }
         #form-result.success { background-color: #e8f5e9; color: #2e7d32; }
@@ -336,14 +360,41 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* FAB from AplikasiUsaha.com */
+        /* --- PENYEMPURNAAN: Floating Action Button (FAB) --- */
         .fab-container { position: fixed; bottom: 30px; right: 30px; z-index: 999; display: flex; flex-direction: column-reverse; align-items: center; }
-        .fab-action-btn { background-color: var(--secondary-color); color: var(--white-color); width: 50px; height: 50px; border-radius: 50%; margin-bottom: 10px; text-decoration: none; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); transform: scale(0); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
-        .fab-container.active .fab-action-btn { transform: scale(1); opacity: 1; }
-        #fab-whatsapp { background-color: #25D366; transition-delay: 0.1s; }
-        #fab-scroll-top { background-color: var(--dark-color); display: none; transition-delay: 0.05s;}
-        .fab-toggle-btn { background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: var(--white-color); width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25); transition: transform 0.3s ease; }
-        .fab-container.active .fab-toggle-btn { transform: rotate(135deg); }
+        .fab-action-btn { 
+            background-color: var(--secondary-color); color: var(--white-color); width: 50px; height: 50px; 
+            border-radius: 50%; margin-bottom: 10px; text-decoration: none; display: flex; 
+            justify-content: center; align-items: center; font-size: 1.2rem; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transisi lebih dinamis */
+        }
+        .fab-container.active .fab-action-btn { 
+            transform: translateY(0) scale(1); 
+            opacity: 1; 
+        }
+        #fab-whatsapp { 
+            background-color: #25D366; 
+            transition-delay: 0.2s; /* Delay lebih lama agar muncul setelah tombol atas */
+        }
+        #fab-scroll-top { 
+            background-color: var(--dark-color); 
+            display: none; 
+            transition-delay: 0.1s; /* Delay agar muncul pertama */
+        }
+        .fab-toggle-btn { 
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); 
+            color: var(--white-color); width: 60px; height: 60px; border-radius: 50%; 
+            border: none; cursor: pointer; display: flex; justify-content: center; 
+            align-items: center; font-size: 1.8rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25); 
+            transition: transform 0.3s ease-in-out; 
+        }
+        .fab-container.active .fab-toggle-btn { 
+            transform: rotate(135deg); 
+        }
+        /* --- AKHIR PENYEMPURNAAN --- */
         
         /* --- PENAMBAHAN BARU: Style untuk Pencarian Google Melayang --- */
         #floating-google-search {
@@ -510,12 +561,12 @@
                 </div>
                 
                 <div class="button-container">
-                    <a href="https://lks-88.github.io/produk-anekamarket/" class="button products"><i class="fas fa-store"></i> Produk Kami</a>
-                    <a href="https://lks-88.github.io/promo-anekamarket/" class="button promo"><i class="fas fa-tag"></i> Promo Spesial</a>
-                    <a href="https://lks-88.github.io/anekamarket/" class="button about"><i class="fas fa-info-circle"></i> Tentang Kami</a>
-                    <a href="https://lenterakarya.github.io/perjanjian-anekamarket/" class="button mou"><i class="fas fa-file-contract"></i> Perjanjian MoU</a>
-                    <a href="https://api.whatsapp.com/send?phone=6285647709114" class="button whatsapp"><i class="fab fa-whatsapp"></i> Chat WhatsApp</a>
-                    <button id="openTrialModalBtn" class="button trial"><i class="fas fa-rocket"></i> Mulai Uji Coba Aplikasi Gratis</button>
+                    <a href="https://lks-88.github.io/produk-anekamarket/" class="button products animated-pulse"><i class="fas fa-store"></i> Produk Kami</a>
+                    <a href="https://lks-88.github.io/promo-anekamarket/" class="button promo animated-pulse" style="animation-delay: 0.5s;"><i class="fas fa-tag"></i> Promo Spesial</a>
+                    <a href="https://lks-88.github.io/anekamarket/" class="button about animated-pulse" style="animation-delay: 1s;"><i class="fas fa-info-circle"></i> Tentang Kami</a>
+                    <a href="https://lenterakarya.github.io/perjanjian-anekamarket/" class="button mou animated-pulse" style="animation-delay: 1.5s;"><i class="fas fa-file-contract"></i> Perjanjian MoU</a>
+                    <a href="https://api.whatsapp.com/send?phone=6285647709114" class="button whatsapp animated-pulse" style="animation-delay: 2s;"><i class="fab fa-whatsapp"></i> Chat WhatsApp</a>
+                    <button id="openTrialModalBtn" class="button trial animated-pulse" style="animation-delay: 2.5s;"><i class="fas fa-rocket"></i> Mulai Uji Coba Aplikasi Gratis</button>
                 </div>
             </div>
         </section>
@@ -615,7 +666,17 @@
     </div>
     
     <div id="registrationModal" class="modal">
-        <div class="modal-content"><span class="close-btn">&times;</span><div id="form-container"><h2>Formulir Konsultasi & Pendaftaran</h2><p style="text-align: center; margin-bottom: 25px; color: var(--gray-color);">Lengkapi data di bawah ini, dan tim ahli kami akan segera menghubungi Anda untuk demo atau konsultasi gratis.</p><form id="registrationForm"><input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE"><input type="hidden" name="subject" value="Pendaftaran Baru dari Website AplikasiUsaha.com"><input type="hidden" name="from_name" value="AplikasiUsaha Website"><div class="form-row"><div class="form-group"><label for="name">Nama Lengkap</label><input type="text" id="name" name="name" placeholder="Contoh: Budi Hartono" required></div><div class="form-group"><label for="phone">Nomor WhatsApp Aktif</label><input type="tel" id="phone" name="phone" placeholder="Contoh: 08123456789" required></div></div><div class="form-group"><label for="email">Alamat Email</label><input type="email" id="email" name="email" placeholder="Contoh: budi.hartono@email.com" required></div><div class="form-row"><div class="form-group"><label for="business_name">Nama Usaha</label><input type="text" id="business_name" name="business_name" placeholder="Contoh: Kedai Kopi Senja"></div><div class="form-group"><label for="business_type">Jenis Usaha</label><select id="business_type" name="business_type"><option value="">Pilih Jenis Usaha</option><option value="Toko/Retail">Toko/Retail</option><option value="Cafe/Restoran">Cafe/Restoran</option><option value="Hotel/Penginapan">Hotel/Penginapan</option><option value="Jasa (Laundry, Travel, dll)">Jasa (Laundry, Travel, dll)</option><option value="Pendidikan">Pendidikan</option><option value="Pemerintahan/Desa">Pemerintahan/Desa</option><option value="Lainnya">Lainnya</option></select></div></div><div class="form-group"><label for="message">Kebutuhan atau Pesan Anda</label><textarea id="message" name="message" placeholder="Jelaskan kebutuhan Anda secara singkat. Contoh: Saya butuh aplikasi kasir untuk toko saya."></textarea></div><button type="submit" class="btn btn-primary" style="width: 100%;">Kirim Pendaftaran</button></form></div><div id="form-result"></div></div>
+        <div class="modal-content"><span class="close-btn">&times;</span><div id="form-container"><h2>Formulir Konsultasi & Pendaftaran</h2><p style="text-align: center; margin-bottom: 25px; color: var(--gray-color);">Lengkapi data di bawah ini, dan tim ahli kami akan segera menghubungi Anda untuk demo atau konsultasi gratis.</p>
+        <form id="registrationForm">
+            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+            <input type="hidden" name="subject" value="Pendaftaran Baru dari Website AplikasiUsaha.com">
+            <input type="hidden" name="from_name" value="AplikasiUsaha Website">
+            <input type="hidden" id="kode_legalitas_hidden" name="kode_legalitas">
+            <div class="form-group">
+                <label for="kode_legalitas">Kode Legalitas Unik Anda</label>
+                <input type="text" id="kode_legalitas" name="kode_legalitas_display" readonly>
+            </div>
+            <div class="form-row"><div class="form-group"><label for="name">Nama Lengkap</label><input type="text" id="name" name="name" placeholder="Contoh: Budi Hartono" required></div><div class="form-group"><label for="phone">Nomor WhatsApp Aktif</label><input type="tel" id="phone" name="phone" placeholder="Contoh: 08123456789" required></div></div><div class="form-group"><label for="email">Alamat Email</label><input type="email" id="email" name="email" placeholder="Contoh: budi.hartono@email.com" required></div><div class="form-row"><div class="form-group"><label for="business_name">Nama Usaha</label><input type="text" id="business_name" name="business_name" placeholder="Contoh: Kedai Kopi Senja"></div><div class="form-group"><label for="business_type">Jenis Usaha</label><select id="business_type" name="business_type"><option value="">Pilih Jenis Usaha</option><option value="Toko/Retail">Toko/Retail</option><option value="Cafe/Restoran">Cafe/Restoran</option><option value="Hotel/Penginapan">Hotel/Penginapan</option><option value="Jasa (Laundry, Travel, dll)">Jasa (Laundry, Travel, dll)</option><option value="Pendidikan">Pendidikan</option><option value="Pemerintahan/Desa">Pemerintahan/Desa</option><option value="Lainnya">Lainnya</option></select></div></div><div class="form-group"><label for="message">Kebutuhan atau Pesan Anda</label><textarea id="message" name="message" placeholder="Jelaskan kebutuhan Anda secara singkat. Contoh: Saya butuh aplikasi kasir untuk toko saya."></textarea></div><button type="submit" class="btn btn-primary" style="width: 100%;">Kirim Pendaftaran</button></form></div><div id="form-result"></div></div>
     </div>
 
     <div id="floating-google-search">
@@ -661,11 +722,29 @@
         hamburger.addEventListener("click", () => { hamburger.classList.toggle("active"); navLinks.classList.toggle("active"); });
         document.querySelectorAll(".nav-links a").forEach(n => n.addEventListener("click", () => { if (!n.getAttribute('target')) { hamburger.classList.remove("active"); navLinks.classList.remove("active"); } }));
 
+        // --- PENAMBAHAN BARU: Fungsi untuk generate kode unik ---
+        function generateUniqueCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = 'LKS-';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
         function setupModal(modalId, openBtnId) {
             const modal = document.getElementById(modalId);
             const openBtn = document.getElementById(openBtnId);
             const closeBtn = modal.querySelector(".close-btn");
-            const open = () => modal.style.display = "block";
+            const open = () => {
+                modal.style.display = "block";
+                // --- PENAMBAHAN BARU: Generate kode saat modal registrasi dibuka ---
+                if (modalId === 'registrationModal') {
+                    const uniqueCode = generateUniqueCode();
+                    document.getElementById('kode_legalitas').value = uniqueCode;
+                    document.getElementById('kode_legalitas_hidden').value = uniqueCode;
+                }
+            };
             const close = () => modal.style.display = "none";
             if(openBtn) openBtn.onclick = open;
             if(closeBtn) closeBtn.onclick = close;
@@ -680,6 +759,10 @@
             document.getElementById("form-container").style.display = "block";
             document.getElementById("form-result").style.display = "none";
             document.getElementById('registrationForm').reset();
+            // Panggil lagi untuk memastikan kode baru di-generate jika user menutup dan membuka lagi tanpa refresh
+            const uniqueCode = generateUniqueCode();
+            document.getElementById('kode_legalitas').value = uniqueCode;
+            document.getElementById('kode_legalitas_hidden').value = uniqueCode;
         });
 
         const form = document.getElementById('registrationForm');
@@ -705,10 +788,10 @@
                 formResult.style.display = "block";
                 if (response.status == 200) {
                     const waNumber = "6287865614222";
-                    const waMessage = `Halo, saya ${object.name} sudah mendaftar melalui website AplikasiUsaha.com. Nama usaha saya ${object.business_name || '-'}. Saya tertarik dengan aplikasi untuk ${object.business_type || 'jenis usaha saya'}. Mohon informasinya.`;
+                    const waMessage = `Halo, saya ${object.name} sudah mendaftar melalui website AplikasiUsaha.com dengan kode legalitas ${object.kode_legalitas}. Nama usaha saya ${object.business_name || '-'}. Saya tertarik dengan aplikasi untuk ${object.business_type || 'jenis usaha saya'}. Mohon informasinya.`;
                     const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
                     formResult.className = "success";
-                    formResult.innerHTML = `<h4>Terima Kasih!</h4><p>Pendaftaran Anda telah berhasil kami terima. Tim kami akan segera menghubungi Anda.</p><a href="${waURL}" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Klik untuk Konfirmasi via WhatsApp</a>`;
+                    formResult.innerHTML = `<h4>Terima Kasih!</h4><p>Pendaftaran Anda dengan kode <strong>${object.kode_legalitas}</strong> telah berhasil kami terima. Tim kami akan segera menghubungi Anda.</p><a href="${waURL}" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Klik untuk Konfirmasi via WhatsApp</a>`;
                 } else {
                     formResult.className = "error";
                     formResult.innerHTML = `<p>${jsonResponse.message}</p>`;
