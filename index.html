@@ -163,7 +163,9 @@
             width: 100%; padding: 16px 24px; color: var(--text-light); border: none; border-radius: 12px; font-size: 1rem;
             font-weight: 600; cursor: pointer; text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
             display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); position: relative;
-            overflow: hidden; opacity: 0; animation: buttonSlideIn 0.5s ease-out forwards;
+            overflow: hidden; 
+            /* PERBAIKAN: Menghapus "opacity: 0" agar tombol selalu terlihat, animasi tetap berjalan */
+            animation: buttonSlideIn 0.5s ease-out forwards;
         }
 
         .button-container .button:nth-child(1) { animation-delay: 0.3s; }
@@ -171,7 +173,7 @@
         .button-container .button:nth-child(3) { animation-delay: 0.5s; }
         .button-container .button:nth-child(4) { animation-delay: 0.6s; }
         .button-container .button:nth-child(5) { animation-delay: 0.7s; }
-        .button-container .button:nth-child(6) { animation-delay: 0.8s; } /* For new button */
+        .button-container .button:nth-child(6) { animation-delay: 0.8s; }
 
 
         @keyframes buttonSlideIn {
@@ -569,7 +571,7 @@
     <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-about"><a href="#" class="nav-logo">AplikasiUsaha</a><p>Platform terpadu untuk membantu para pelaku UMKM dan pebisnis bertransformasi secara digital dan mengoptimalkan operasional usaha.</p><div class="social-icons"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div></div>
+                <div class="footer-about"><a href="#" class="nav-logo">AplikasiUsaha</a><p>Platform terpadu untuk membantu para pelaku UMKM dan pebisnis bertransformasi secara digital dan mengoptimalkan operasional usaha.</p><div class="social-icons"><a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a><a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a></div></div>
                 <div class="footer-links"><h3>Tautan Cepat</h3><ul><li><a href="https://lks-88.github.io/produk-anekamarket/" target="_blank">Produk Kami</a></li><li><a href="https://lks-88.github.io/promo-anekamarket/" target="_blank">Aneka Aplikasi</a></li><li><a href="https://lenterakarya.github.io/perjanjian-anekamarket/" target="_blank">Perjanjian MoU</a></li><li><a href="https://lks-88.github.io/anekamarket/" target="_blank">Tentang Kami</a></li></ul></div>
                 <div class="footer-contact"><h3>Hubungi Kami</h3><ul><li><i class="fas fa-map-marker-alt"></i>Jl. Pb.Sudirman, Panarukan - Situbondo (Jawa Timur 68351)</li><li><i class="fas fa-envelope"></i><a href="mailto:info@aplikasiusaha.com">info@aplikasiusaha.com</a></li><li><i class="fas fa-envelope"></i><a href="mailto:admin@anekamarket.my.id">admin@anekamarket.my.id</a></li><li><i class="fab fa-whatsapp"></i><a href="https://wa.me/6287865614222" target="_blank">0878-6561-4222</a></li></ul></div>
                 
@@ -583,7 +585,7 @@
                         
                         <div class="newsletter-input-group">
                             <input type="email" name="email" placeholder="Masukkan email Anda..." required>
-                            <button type="submit" aria-label="Kirim"><i class="fas fa-paper-plane"></i></button>
+                            <button type="submit" aria-label="Kirim Langganan Newsletter"><i class="fas fa-paper-plane"></i></button>
                         </div>
                     </form>
                     <div id="newsletter-result"></div>
@@ -618,7 +620,9 @@
     </div>
     
     <div id="registrationModal" class="modal">
-        <div class="modal-content"><span class="close-btn">&times;</span><div id="form-container"><h2>Formulir Konsultasi & Pendaftaran</h2><p style="text-align: center; margin-bottom: 25px; color: var(--gray-color);">Lengkapi data di bawah ini, dan tim ahli kami akan segera menghubungi Anda untuk demo atau konsultasi gratis.</p><form id="registrationForm"><input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE"><input type="hidden" name="subject" value="Pendaftaran Baru dari Website AplikasiUsaha.com"><input type="hidden" name="from_name" value="AplikasiUsaha Website">
+        <div class="modal-content"><span class="close-btn">&times;</span><div id="form-container"><h2>Formulir Konsultasi & Pendaftaran</h2><p style="text-align: center; margin-bottom: 25px; color: var(--gray-color);">Lengkapi data di bawah ini, dan tim ahli kami akan segera menghubungi Anda untuk demo atau konsultasi gratis.</p><form id="registrationForm">
+            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+            <input type="hidden" name="subject" value="Pendaftaran Baru dari Website AplikasiUsaha.com"><input type="hidden" name="from_name" value="AplikasiUsaha Website">
             <input type="hidden" id="legality_code_hidden" name="kode_legalitas">
             <div class="form-group">
                 <label for="legality_code">Kode Legalitas Anda (Otomatis)</label>
