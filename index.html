@@ -164,7 +164,6 @@
             font-weight: 600; cursor: pointer; text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
             display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); position: relative;
             overflow: hidden; 
-            /* PERBAIKAN: Menghapus "opacity: 0" agar tombol selalu terlihat, animasi tetap berjalan */
             animation: buttonSlideIn 0.5s ease-out forwards;
         }
 
@@ -192,7 +191,6 @@
         .button i { margin-right: 12px; font-size: 1.2rem; transition: transform 0.3s ease; }
         .button:hover i { transform: rotate(-5deg) scale(1.1); }
 
-        /* PERBAIKAN: Efek Denyut untuk Tombol Tertentu */
         .btn-pulse {
             animation: pulse-animation 2s infinite;
         }
@@ -210,7 +208,6 @@
         .button.mou { background-color: #9b59b6; } .button.mou:hover { background-color: #8949a3; }
         .button.whatsapp { background-color: #25D366; } .button.whatsapp:hover { background-color: #1ebe58; }
         
-        /* ADDED: Button for Modal Trigger, using Corporate colors */
         .button.trial { background-color: var(--secondary-color); }
         .button.trial:hover { background-color: var(--primary-color); }
 
@@ -348,7 +345,6 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* PERBAIKAN: Style untuk Kode Legalitas */
         .form-group input[readonly] {
             background-color: #e9ecef;
             cursor: not-allowed;
@@ -358,8 +354,6 @@
             letter-spacing: 1px;
         }
         
-        /* DIHAPUS: Kode CSS untuk FAB (Floating Action Button) */
-
         /* Style untuk Pencarian Google Melayang */
         #floating-google-search {
             position: fixed;
@@ -650,45 +644,59 @@
         // --- Particle generation script from ANEKAMARKET ---
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('particle-container');
-            const particleCount = 50;
-            for (let i = 0; i < particleCount; i++) {
-                let particle = document.createElement('div');
-                particle.classList.add('particle');
-                const size = Math.random() * 8 + 2;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-                const duration = Math.random() * 15 + 10;
-                particle.style.animationDuration = `${duration}s`;
-                const delay = Math.random() * 10;
-                particle.style.animationDelay = `${delay}s`;
-                container.appendChild(particle);
+            if (container) {
+                const particleCount = 50;
+                for (let i = 0; i < particleCount; i++) {
+                    let particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    const size = Math.random() * 8 + 2;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    const duration = Math.random() * 15 + 10;
+                    particle.style.animationDuration = `${duration}s`;
+                    const delay = Math.random() * 10;
+                    particle.style.animationDelay = `${delay}s`;
+                    container.appendChild(particle);
+                }
             }
         });
-
+    
         // --- All functional scripts from AplikasiUsaha.com ---
         const hamburger = document.querySelector(".hamburger");
         const navLinks = document.querySelector(".nav-links");
-        hamburger.addEventListener("click", () => { hamburger.classList.toggle("active"); navLinks.classList.toggle("active"); });
-        document.querySelectorAll(".nav-links a").forEach(n => n.addEventListener("click", () => { if (!n.getAttribute('target')) { hamburger.classList.remove("active"); navLinks.classList.remove("active"); } }));
-
+        if (hamburger && navLinks) {
+            hamburger.addEventListener("click", () => {
+                hamburger.classList.toggle("active");
+                navLinks.classList.toggle("active");
+            });
+        }
+        document.querySelectorAll(".nav-links a").forEach(n => n.addEventListener("click", () => {
+            if (!n.getAttribute('target') && hamburger && navLinks) {
+                hamburger.classList.remove("active");
+                navLinks.classList.remove("active");
+            }
+        }));
+    
         function setupModal(modalId, openBtnId) {
             const modal = document.getElementById(modalId);
             const openBtn = document.getElementById(openBtnId);
+            if (!modal) return { open: () => {}, close: () => {} };
             const closeBtn = modal.querySelector(".close-btn");
             const open = () => modal.style.display = "block";
             const close = () => modal.style.display = "none";
-            if(openBtn) openBtn.onclick = open;
-            if(closeBtn) closeBtn.onclick = close;
-            window.addEventListener('click', (event) => { if (event.target == modal) close(); });
+            if (openBtn) openBtn.onclick = open;
+            if (closeBtn) closeBtn.onclick = close;
+            window.addEventListener('click', (event) => {
+                if (event.target == modal) close();
+            });
             return { open, close };
         }
-
+    
         const trialModal = setupModal('trialModal', 'openTrialModalBtn');
         const registrationModal = setupModal('registrationModal', 'openRegistrationModalBtn');
-        
-        // --- PERBAIKAN: Fungsi untuk generate kode unik dan menampilkannya ---
+    
         function generateUniqueCode() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let result = 'AU-';
@@ -697,145 +705,208 @@
             }
             return result;
         }
-        
-        document.getElementById('openRegistrationModalBtn').addEventListener('click', () => {
-            const newCode = generateUniqueCode();
-            document.getElementById("legality_code").value = newCode; // Untuk ditampilkan
-            document.getElementById("legality_code_hidden").value = newCode; // Untuk dikirim
-            
-            document.getElementById("form-container").style.display = "block";
-            document.getElementById("form-result").style.display = "none";
-            document.getElementById('registrationForm').reset();
-
-            // Mengisi ulang kode setelah form di-reset
-            document.getElementById("legality_code").value = newCode;
-            document.getElementById("legality_code_hidden").value = newCode;
-        });
-
-        const form = document.getElementById('registrationForm');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const submitButton = form.querySelector('button[type="submit"]');
-            submitButton.innerHTML = "Mengirim...";
-            submitButton.disabled = true;
-            const formData = new FormData(form);
-            const object = Object.fromEntries(formData);
-            const json = JSON.stringify(object);
-            const formContainer = document.getElementById("form-container");
-            const formResult = document.getElementById("form-result");
-
-            fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: json
-            })
-            .then(async (response) => {
-                let jsonResponse = await response.json();
-                formContainer.style.display = "none";
-                formResult.style.display = "block";
-                if (response.status == 200) {
-                    const waNumber = "6287865614222";
-                    const waMessage = `Halo, saya ${object.name} sudah mendaftar melalui website AplikasiUsaha.com. Kode legalitas saya: ${object.kode_legalitas}. Nama usaha: ${object.business_name || '-'}. Saya tertarik dengan aplikasi untuk ${object.business_type || 'jenis usaha saya'}. Mohon informasinya.`;
-                    const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
-                    formResult.className = "success";
-                    formResult.innerHTML = `<h4>Terima Kasih!</h4><p>Pendaftaran Anda telah berhasil kami terima. Tim kami akan segera menghubungi Anda.</p><a href="${waURL}" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Klik untuk Konfirmasi via WhatsApp</a>`;
-                } else {
-                    formResult.className = "error";
-                    formResult.innerHTML = `<p>${jsonResponse.message}</p>`;
-                }
-            })
-            .catch(error => {
-                formResult.style.display = "block";
-                formResult.className = "error";
-                formResult.innerHTML = "<p>Terjadi kesalahan. Silakan coba lagi nanti.</p>";
-            })
-            .then(() => {
-                submitButton.innerHTML = "Kirim Pendaftaran";
-                submitButton.disabled = false;
-                 setTimeout(() => { registrationModal.close(); }, 8000);
+    
+        const openRegModalBtn = document.getElementById('openRegistrationModalBtn');
+        if (openRegModalBtn) {
+            openRegModalBtn.addEventListener('click', () => {
+                const newCode = generateUniqueCode();
+                const legalityCodeInput = document.getElementById("legality_code");
+                const legalityCodeHiddenInput = document.getElementById("legality_code_hidden");
+                const formContainer = document.getElementById("form-container");
+                const formResult = document.getElementById("form-result");
+                const regForm = document.getElementById('registrationForm');
+    
+                if (legalityCodeInput) legalityCodeInput.value = newCode;
+                if (legalityCodeHiddenInput) legalityCodeHiddenInput.value = newCode;
+                if (formContainer) formContainer.style.display = "block";
+                if (formResult) formResult.style.display = "none";
+                if (regForm) regForm.reset();
+    
+                // Re-apply the code after reset
+                if (legalityCodeInput) legalityCodeInput.value = newCode;
+                if (legalityCodeHiddenInput) legalityCodeHiddenInput.value = newCode;
             });
-        });
-
+        }
+    
+        const form = document.getElementById('registrationForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const submitButton = form.querySelector('button[type="submit"]');
+                submitButton.innerHTML = "Mengirim...";
+                submitButton.disabled = true;
+                const formData = new FormData(form);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+                const formContainer = document.getElementById("form-container");
+                const formResult = document.getElementById("form-result");
+    
+                fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    })
+                    .then(async (response) => {
+                        let jsonResponse = await response.json();
+                        if (formContainer) formContainer.style.display = "none";
+                        if (formResult) formResult.style.display = "block";
+                        if (response.status == 200) {
+                            const waNumber = "6287865614222";
+    
+                            // --- BAGIAN YANG DISEMPURNAKAN ---
+                            // Mengambil semua data dari formulir dengan fallback jika kosong
+                            const kodeLegalitas = object.kode_legalitas || "-";
+                            const namaLengkap = object.name || "-";
+                            const noWhatsApp = object.phone || "-";
+                            const alamatEmail = object.email || "-";
+                            const namaUsaha = object.business_name || "Tidak diisi";
+                            const jenisUsaha = object.business_type || "Belum dipilih";
+                            const pesanPengguna = object.message || "Tidak ada pesan tambahan.";
+    
+                            // Membuat pesan WhatsApp yang terstruktur dan lengkap
+                            const waMessage = `Halo, saya telah mengisi formulir pendaftaran di AplikasiUsaha.com.\n\nBerikut adalah detail data saya:\n----------------------------------\n*Kode Legalitas:* ${kodeLegalitas}\n*Nama Lengkap:* ${namaLengkap}\n*Nomor WhatsApp:* ${noWhatsApp}\n*Email:* ${alamatEmail}\n*Nama Usaha:* ${namaUsaha}\n*Jenis Usaha:* ${jenisUsaha}\n*Kebutuhan/Pesan:* ${pesanPengguna}\n----------------------------------\n\nMohon konfirmasi dan informasi selanjutnya. Terima kasih.`;
+                            // --- AKHIR BAGIAN YANG DISEMPURNAKAN ---
+    
+                            const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
+                            if (formResult) {
+                                formResult.className = "success";
+                                formResult.innerHTML = `<h4>Terima Kasih!</h4><p>Pendaftaran Anda telah berhasil kami terima. Tim kami akan segera menghubungi Anda.</p><a href="${waURL}" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Klik untuk Konfirmasi via WhatsApp</a>`;
+                            }
+                        } else {
+                            if (formResult) {
+                                formResult.className = "error";
+                                formResult.innerHTML = `<p>${jsonResponse.message}</p>`;
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        if (formResult) {
+                            formResult.style.display = "block";
+                            formResult.className = "error";
+                            formResult.innerHTML = "<p>Terjadi kesalahan. Silakan coba lagi nanti.</p>";
+                        }
+                    })
+                    .finally(() => {
+                        submitButton.innerHTML = "Kirim Pendaftaran";
+                        submitButton.disabled = false;
+                        setTimeout(() => {
+                            registrationModal.close();
+                        }, 8000);
+                    });
+            });
+        }
+    
         // --- Logika Formulir Newsletter ---
         const newsletterForm = document.getElementById('newsletterForm');
-        newsletterForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const submitButton = newsletterForm.querySelector('button[type="submit"]');
-            const originalIconHTML = submitButton.innerHTML;
-            submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
-            submitButton.disabled = true;
-
-            const formData = new FormData(newsletterForm);
-            const object = Object.fromEntries(formData);
-            const json = JSON.stringify(object);
-            
-            const newsletterResult = document.getElementById("newsletter-result");
-            newsletterResult.style.display = "none";
-
-            fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: json
-            })
-            .then(async (response) => {
-                let jsonResponse = await response.json();
-                newsletterResult.style.display = "block";
-                if (response.status == 200) {
-                    newsletterResult.className = "success";
-                    newsletterResult.innerHTML = "Terima kasih! Anda berhasil berlangganan.";
-                    newsletterForm.reset();
-                } else {
-                    newsletterResult.className = "error";
-                    newsletterResult.innerHTML = jsonResponse.message || "Terjadi kesalahan, silakan coba lagi.";
-                }
-            })
-            .catch(error => {
-                newsletterResult.style.display = "block";
-                newsletterResult.className = "error";
-                newsletterResult.innerHTML = "Gagal terhubung ke server. Periksa koneksi Anda.";
-            })
-            .finally(() => {
-                submitButton.innerHTML = originalIconHTML;
-                submitButton.disabled = false;
-                setTimeout(() => {
-                    if(newsletterResult.style.display === "block"){
-                       newsletterResult.style.display = "none";
-                    }
-                }, 6000);
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const submitButton = newsletterForm.querySelector('button[type="submit"]');
+                const originalIconHTML = submitButton.innerHTML;
+                submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+                submitButton.disabled = true;
+    
+                const formData = new FormData(newsletterForm);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+    
+                const newsletterResult = document.getElementById("newsletter-result");
+                if (newsletterResult) newsletterResult.style.display = "none";
+    
+                fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    })
+                    .then(async (response) => {
+                        let jsonResponse = await response.json();
+                        if (newsletterResult) newsletterResult.style.display = "block";
+                        if (response.status == 200) {
+                            if (newsletterResult) {
+                                newsletterResult.className = "success";
+                                newsletterResult.innerHTML = "Terima kasih! Anda berhasil berlangganan.";
+                            }
+                            newsletterForm.reset();
+                        } else {
+                            if (newsletterResult) {
+                                newsletterResult.className = "error";
+                                newsletterResult.innerHTML = jsonResponse.message || "Terjadi kesalahan, silakan coba lagi.";
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        if (newsletterResult) {
+                            newsletterResult.style.display = "block";
+                            newsletterResult.className = "error";
+                            newsletterResult.innerHTML = "Gagal terhubung ke server. Periksa koneksi Anda.";
+                        }
+                    })
+                    .finally(() => {
+                        submitButton.innerHTML = originalIconHTML;
+                        submitButton.disabled = false;
+                        setTimeout(() => {
+                            if (newsletterResult && newsletterResult.style.display === "block") {
+                                newsletterResult.style.display = "none";
+                            }
+                        }, 6000);
+                    });
             });
-        });
-
+        }
+    
         var swiper = new Swiper(".testimonialSwiper", {
-            slidesPerView: 1, spaceBetween: 30, loop: true,
-            autoplay: { delay: 5000, disableOnInteraction: false },
-            pagination: { el: ".swiper-pagination", clickable: true },
-            navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-            breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } },
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev"
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2
+                },
+                1024: {
+                    slidesPerView: 3
+                }
+            },
         });
-        
-        // DIHAPUS: JavaScript untuk FAB (Floating Action Button)
-        
+    
         // --- Logika untuk Pencarian Google Melayang ---
         const googleSearchToggleBtn = document.getElementById('google-search-toggle-btn');
         const googleSearchFormContainer = document.getElementById('google-search-form-container');
-        const googleSearchIcon = googleSearchToggleBtn.querySelector('i');
-
-        googleSearchToggleBtn.addEventListener('click', () => {
-            const isVisible = googleSearchFormContainer.style.display === 'block';
-            if (isVisible) {
-                googleSearchFormContainer.style.display = 'none';
-                googleSearchIcon.classList.remove('fa-times');
-                googleSearchIcon.classList.add('fa-search');
-            } else {
-                googleSearchFormContainer.style.display = 'block';
-                googleSearchIcon.classList.remove('fa-search');
-                googleSearchIcon.classList.add('fa-times');
-            }
-        });
-
+        if (googleSearchToggleBtn && googleSearchFormContainer) {
+            const googleSearchIcon = googleSearchToggleBtn.querySelector('i');
+            googleSearchToggleBtn.addEventListener('click', () => {
+                const isVisible = googleSearchFormContainer.style.display === 'block';
+                if (isVisible) {
+                    googleSearchFormContainer.style.display = 'none';
+                    if (googleSearchIcon) {
+                        googleSearchIcon.classList.remove('fa-times');
+                        googleSearchIcon.classList.add('fa-search');
+                    }
+                } else {
+                    googleSearchFormContainer.style.display = 'block';
+                    if (googleSearchIcon) {
+                        googleSearchIcon.classList.remove('fa-search');
+                        googleSearchIcon.classList.add('fa-times');
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
