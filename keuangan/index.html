@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Keuangan Koperasi Digital</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#198754">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #198754; /* Warna hijau untuk koperasi/keuangan */
+            --primary-light: #d1e7dd;
+            --secondary: #0a5837;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #0dcaf0;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --shadow-sm: 0 0.15rem 0.35rem rgba(0,0,0,0.1);
+            --shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            --rounded-sm: 0.35rem;
+            --rounded: 0.75rem;
+            --rounded-lg: 1rem;
+            --loan-color: #6f42c1;
+            --pawn-color: #fd7e14;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #212529;
+            line-height: 1.5;
+            touch-action: manipulation;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 12px;
+        }
+
+        /* Header Styles */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 12px 16px;
+            border-radius: var(--rounded);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--white);
+            padding: 5px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .app-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .header-info {
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .header-info p {
+            margin: 2px 0;
+        }
+        
+        /* Main Content Layout */
+        .app-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Panel Styles */
+        .panel {
+            background: var(--white);
+            border-radius: var(--rounded);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .summary-card {
+            background-color: var(--light);
+            border-radius: var(--rounded);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-left: 5px solid;
+        }
+
+        .summary-card.savings { border-color: var(--primary); }
+        .summary-card.loans { border-color: var(--loan-color); }
+        .summary-card.assets { border-color: var(--warning); }
+        .summary-card.members { border-color: var(--info); }
+
+        .summary-card-icon {
+            font-size: 2.5rem;
+            padding: 15px;
+            border-radius: 50%;
+            color: var(--white);
+            background-color: var(--primary);
+        }
+        
+        .summary-card.savings .summary-card-icon { background-color: var(--primary); }
+        .summary-card.loans .summary-card-icon { background-color: var(--loan-color); }
+        .summary-card.assets .summary-card-icon { background-color: var(--warning); }
+        .summary-card.members .summary-card-icon { background-color: var(--info); }
+        
+        .summary-card-info .title {
+            font-weight: 500;
+            color: var(--gray);
+            margin-bottom: 4px;
+        }
+        
+        .summary-card-info .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .main-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .action-card {
+            background: var(--white);
+            border-radius: var(--rounded);
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 4px solid transparent;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .action-card i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+        .action-card .savings-icon { color: var(--primary); }
+        .action-card .loans-icon { color: var(--loan-color); }
+        .action-card .pawn-icon { color: var(--pawn-color); }
+        .action-card .members-icon { color: var(--info); }
+
+        .action-card h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Member Search */
+        .member-search-container {
+            position: relative;
+        }
+        .member-search-results {
+            position: absolute;
+            top: 100%; left: 0; width: 100%; max-height: 200px;
+            overflow-y: auto; background: white;
+            border: 1px solid #ddd; border-radius: 0 0 var(--rounded-sm) var(--rounded-sm);
+            z-index: 100; display: none;
+        }
+        .member-search-item { padding: 8px 12px; cursor: pointer; }
+        .member-search-item:hover { background-color: var(--light); }
+        
+        .member-financial-summary {
+            background-color: var(--primary-light);
+            border-left: 5px solid var(--primary);
+            border-radius: var(--rounded);
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block; padding: 12px 20px; background-color: var(--primary);
+            color: var(--white); border: none; border-radius: var(--rounded-sm); cursor: pointer;
+            font-size: 1rem; font-weight: 500; text-align: center; transition: all 0.2s; width: 100%;
+        }
+        .btn:disabled { background-color: var(--gray); cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn:hover:not(:disabled) { background-color: var(--secondary); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+        .btn:active:not(:disabled) { transform: translateY(0); }
+        .btn .fa-spinner { margin-right: 8px; }
+        .btn-sm { padding: 8px 12px; font-size: 0.9rem; }
+        .btn-success { background-color: var(--success); }
+        .btn-success:hover { background-color: #218838; }
+        .btn-danger { background-color: var(--danger); }
+        .btn-danger:hover { background-color: #c82333; }
+        .btn-warning { background-color: var(--warning); color: #000; }
+        .btn-warning:hover { background-color: #e0a800; }
+        .btn-info { background-color: var(--info); }
+        .btn-info:hover { background-color: #0aa3bf; }
+        .btn-loan { background-color: var(--loan-color); }
+        .btn-loan:hover { background-color: #5a32a3; }
+        .btn-pawn { background-color: var(--pawn-color); }
+        .btn-pawn:hover { background-color: #d96d10; }
+        
+        /* Tab Styles */
+        .tabs { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 16px; overflow-x: auto; }
+        .tab { padding: 12px 16px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; text-align: center; flex: 1; }
+        .tab.active { border-bottom: 3px solid var(--primary); color: var(--primary); font-weight: 600; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Modal Styles */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center;
+            align-items: center; padding: 20px;
+        }
+        .modal-content {
+            background-color: var(--white); border-radius: var(--rounded-lg); width: 100%;
+            max-width: 500px; max-height: 90vh; overflow-y: auto;
+            box-shadow: var(--shadow); animation: fadeIn 0.3s;
+        }
+        .modal-header { padding: 16px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1.2rem; font-weight: 600; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray); }
+        .modal-body { padding: 16px; }
+        .modal-footer { padding: 16px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 8px; }
+
+        /* Form Styles */
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; }
+        .form-check { display: flex; align-items: center; gap: 8px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: var(--rounded-sm); font-size: 1rem; }
+        textarea.form-control { min-height: 100px; resize: vertical; }
+
+        /* === DESAIN LOGIN === */
+        #loginModal {
+            background: linear-gradient(45deg, #f0f2f5, #e6e9ed); display: flex;
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .login-container {
+            width: 100%; max-width: 400px; margin: 0; background: var(--white);
+            border-radius: var(--rounded-lg); padding: 32px; box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary); animation: fadeIn 0.4s;
+        }
+        .login-header { text-align: center; margin-bottom: 24px; }
+        .login-logo { font-size: 3.5rem; color: var(--primary); margin-bottom: 12px; line-height: 1; }
+        .login-title { font-size: 1.8rem; color: var(--dark); font-weight: 700; }
+        .login-header p { color: var(--gray); }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed; top: 20px; right: 20px; padding: 12px 16px;
+            background-color: var(--dark); color: var(--white);
+            border-radius: var(--rounded-sm); box-shadow: var(--shadow); z-index: 1100;
+            display: flex; align-items: center; transform: translateX(200%); transition: transform 0.3s;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background-color: var(--success); }
+        .toast.error { background-color: var(--danger); }
+        .toast.warning { background-color: var(--warning); color: #000; }
+        .toast i { margin-right: 8px; }
+
+        /* Empty State */
+        .empty-state { text-align: center; padding: 24px; color: var(--gray); }
+        .empty-state i { font-size: 3rem; color: #ddd; margin-bottom: 12px; }
+
+        /* Admin Panel */
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+        
+        /* Table Styles */
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+        .data-table th, .data-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        .data-table th { background-color: var(--light); font-weight: 600; }
+        .data-table tr:hover { background-color: #f9f9f9; }
+        .data-table-container { max-height: 45vh; overflow-y: auto; }
+        .data-table .text-danger { color: var(--danger) !important; font-weight: 500; }
+        .data-table .text-success { color: var(--success) !important; font-weight: 500; }
+        .data-table .text-warning { color: var(--warning) !important; font-weight: 500; }
+        
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .total-row { font-weight: 600; font-size: 1.1rem; color: var(--primary); margin-top: 12px; padding-top: 12px; border-top: 1px solid #ddd; }
+        
+        /* Backup Restore Styles */
+        .backup-actions { display: flex; gap: 8px; margin-top: 16px; }
+        .backup-btn { flex: 1; }
+        .file-input { display: none; }
+        .file-label {
+            display: block; padding: 12px; background-color: var(--info); color: white;
+            border-radius: var(--rounded-sm); text-align: center; cursor: pointer; transition: all 0.2s;
+        }
+        .file-label:hover { background-color: #0aa3bf; }
+        
+        /* KTA Card Design */
+        #ktaCard {
+            width: 320px; height: 500px; margin: 0 auto; border-radius: 20px;
+            background: radial-gradient(circle at top left, #1f6443, #198754, #28a745);
+            color: white; padding: 20px; display: flex; flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .kta-header {
+            text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 15px; margin-bottom: 25px; z-index: 1;
+        }
+        .kta-koperasi-info h3 { font-size: 18px; margin: 0; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .kta-koperasi-info p { font-size: 11px; margin: 0; opacity: 0.9; }
+        .kta-body { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 1; }
+        #ktaMemberName { font-size: 26px; font-weight: 600; margin-bottom: 8px; text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        #ktaMemberId { font-family: 'Courier New', monospace; font-size: 14px; background-color: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 20px; letter-spacing: 1px; }
+        .kta-qrcode { background: white; padding: 10px; border-radius: 8px; min-height: 160px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .kta-footer { text-align: center; font-size: 11px; opacity: 0.8; padding-top: 15px; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.3); z-index: 1; }
+
+        /* Role Management Styles */
+        .permission-group { margin-bottom: 16px; }
+        .permission-group-title { font-weight: 600; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+        .permission-item { display: flex; align-items: center; margin-bottom: 8px; }
+        .permission-item input { margin-right: 10px; }
+        
+        /* Recap Report Styles */
+        .recap-filter-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; align-items: flex-end; padding: 16px; background-color: var(--light); border-radius: var(--rounded-sm); margin-bottom: 16px; }
+        .recap-summary-card { background: var(--primary-light); border-left: 5px solid var(--primary); padding: 12px; border-radius: var(--rounded-sm); margin-bottom: 12px; }
+        .recap-summary-card .title { font-weight: 600; color: var(--secondary); margin-bottom: 4px; }
+        .recap-summary-card .value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        
+        /* Amortization Schedule Table */
+        .amortization-table { font-size: 0.9rem; }
+        .amortization-table th, .amortization-table td { padding: 8px; }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Footer */
+        .app-footer { text-align: center; margin-top: 20px; padding: 10px; color: var(--gray); font-size: 0.8rem; }
+        
+        /* Print Styles */
+        @media print {
+            html, body {
+                width: 100%; height: auto; margin: 0 !important; padding: 0 !important; 
+                overflow: visible !important; box-shadow: none !important;
+                background: #fff !important;
+            }
+            body * { visibility: hidden; }
+            #print-container, #print-container * {
+                visibility: visible;
+                box-sizing: border-box !important;
+            }
+            #print-container {
+                position: absolute; left: 0; top: 0; width: 100%; height: auto;
+                margin: 0 !important; padding: 5px !important; display: block !important;
+            }
+            .printable-area {
+                margin: 0 auto !important; padding: 10px !important; box-shadow: none !important;
+                border: 1px solid #ccc !important; display: block !important; color: #000 !important;
+                background: #fff !important; width: 100% !important; font-size: 10pt !important;
+                page-break-inside: avoid;
+            }
+            .no-print, .modal-footer, .modal-header, .app-header, .app-footer, .login-container, .main-actions, #adminPanel {
+                display: none !important;
+            }
+            .data-table th, .data-table td { color: #000 !important; }
+            .text-danger { color: #dc3545 !important; }
+            .text-success { color: #28a745 !important; }
+            a { text-decoration: none; color: #000 !important; }
+            @page {
+                size: auto;
+                margin: 10mm;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 8px; }
+        .mt-3 { margin-top: 16px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-3 { margin-bottom: 16px; }
+        .d-flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .align-center { align-items: center; }
+        .gap-2 { gap: 8px; }
+    </style>
+</head>
+<body>
+    <div id="toast" class="toast">
+        <i class="fas fa-info-circle"></i>
+        <span id="toast-message">Notification message</span>
+    </div>
+
+    <div id="loginModal" class="modal" style="display: flex;">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo"><i class="fas fa-university"></i></div>
+                <h1 class="login-title">Koperasi Digital</h1>
+                <p>Sistem Keuangan Terpadu</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" value="Admin" readonly style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;" oncopy="return false;" onpaste="return false;" oncut="return false;" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" value="Gratis12345" readonly style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;" oncopy="return false;" onpaste="return false;" oncut="return false;" required>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="captcha" class="form-label">Verifikasi Keamanan</label>
+                    <div class="d-flex align-center gap-2">
+                        <canvas id="captchaCanvas" width="150" height="40" style="border: 1px solid #ddd; border-radius: var(--rounded-sm);"></canvas>
+                        <button type="button" id="reloadCaptchaBtn" class="btn btn-sm" style="width: auto; background-color: var(--gray);"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                    <input type="text" id="captchaInput" class="form-control mt-2" placeholder="Masukkan kode di atas" required autocomplete="off">
+                </div>
+                <button type="submit" class="btn mt-3">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" id="mainApp" style="display: none;">
+        <header class="app-header">
+            <div class="header-title-container">
+                <div class="header-logo"><i class="fas fa-university"></i></div>
+                <div>
+                    <h1 class="app-title" id="koperasiNameHeader">KOPERASI DIGITAL</h1>
+                    <p id="currentDate">Rabu, 24 September 2025</p>
+                </div>
+            </div>
+            <div class="header-info">
+                <p>Pengguna: <span id="loggedInUser">Admin</span></p>
+                <p><a href="#" id="logoutBtn" style="color: white; margin-top: 5px; display: inline-block;">Logout</a></p>
+            </div>
+        </header>
+
+        <main class="app-content">
+            <section class="panel">
+                <h2 class="panel-title">Dashboard Keuangan</h2>
+                <div class="dashboard-grid" id="dashboardGrid">
+                    </div>
+                
+                <div class="main-actions">
+                    <div class="action-card" id="savingsMenuBtn">
+                        <i class="fas fa-piggy-bank savings-icon"></i>
+                        <h4>Simpanan Anggota</h4>
+                    </div>
+                    <div class="action-card" id="loansMenuBtn">
+                        <i class="fas fa-hand-holding-usd loans-icon"></i>
+                        <h4>Pinjaman (Kredit)</h4>
+                    </div>
+                    <div class="action-card" id="pawnMenuBtn">
+                        <i class="fas fa-gem pawn-icon"></i>
+                        <h4>Agunan (Gadai)</h4>
+                    </div>
+                    <div class="action-card" id="manageMembersBtn">
+                        <i class="fas fa-users members-icon"></i>
+                        <h4>Kelola Anggota</h4>
+                    </div>
+                </div>
+
+                <div class="admin-panel mt-3" id="adminPanel">
+                    <h3 class="panel-title">Panel Administrasi</h3>
+                    <div class="admin-grid">
+                        <button id="recapReportBtn" class="btn btn-sm btn-success"><i class="fas fa-file-invoice-dollar"></i> Laporan Keuangan</button>
+                        <button id="historyBtn" class="btn btn-sm"><i class="fas fa-history"></i> Histori Transaksi</button>
+                        <button id="manageKoperasiInfoBtn" class="btn btn-sm"><i class="fas fa-info-circle"></i> Info Koperasi</button>
+                        <button id="controlPanelBtn" class="btn btn-sm btn-warning"><i class="fas fa-cogs"></i> Kontrol Panel</button>
+                    </div>
+                    <div class="mt-3">
+                        <h4 class="panel-title">Backup & Restore Data</h4>
+                        <div class="backup-actions">
+                            <button id="backupDataBtn" class="btn btn-sm backup-btn">Backup Data</button>
+                            <label for="restoreFile" class="file-label"><i class="fas fa-upload"></i> Restore Data</label>
+                            <input type="file" id="restoreFile" class="file-input" accept=".json,.lkscoop">
+                        </div>
+                        <button id="resetDataBtn" class="btn btn-sm btn-danger mt-2" style="width: 100%;">Reset Seluruh Data</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; <span id="currentYear"></span> KOPERASI DIGITAL - Hak Cipta oleh Lentera Karya Situbondo</p>
+        </footer>
+    </div>
+    
+    <div id="savingsModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header"><h3 class="modal-title">Manajemen Simpanan Anggota</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Pilih Anggota</label>
+                    <div class="member-search-container">
+                        <input type="text" id="savingsMemberSearch" class="form-control" placeholder="Cari nama atau ID anggota...">
+                        <div id="savingsMemberResults" class="member-search-results"></div>
+                    </div>
+                </div>
+                <div id="savingsMemberDetails" style="display:none;">
+                    <h4 id="savingsMemberName"></h4>
+                    <div class="member-financial-summary">
+                        <div class="summary-row"><span>Simpanan Pokok:</span> <span id="summaryPokok">Rp 0</span></div>
+                        <div class="summary-row"><span>Simpanan Wajib:</span> <span id="summaryWajib">Rp 0</span></div>
+                        <div class="summary-row"><span>Simpanan Sukarela:</span> <span id="summarySukarela">Rp 0</span></div>
+                        <div class="summary-row total-row"><span>Total Simpanan:</span> <span id="summaryTotalSimpanan">Rp 0</span></div>
+                    </div>
+                    <form id="savingsTransactionForm" class="mt-3">
+                        <div class="d-flex gap-2">
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Jenis Transaksi</label><select id="savingsType" class="form-control"><option value="deposit">Setor</option><option value="withdrawal">Tarik</option></select></div>
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Jenis Simpanan</label><select id="savingsCategory" class="form-control"><option value="wajib">Wajib</option><option value="sukarela">Sukarela</option><option value="pokok">Pokok</option></select></div>
+                        </div>
+                        <div class="form-group"><label class="form-label">Jumlah</label><input type="number" id="savingsAmount" class="form-control" required min="1"></div>
+                        <button type="submit" class="btn btn-success">Proses Transaksi</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button></div>
+        </div>
+    </div>
+
+    <div id="loansModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header"><h3 class="modal-title">Manajemen Pinjaman</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                 <div class="d-flex gap-2 mb-3">
+                    <button id="showAddLoanFormBtn" class="btn btn-sm btn-loan">Buat Pinjaman Baru</button>
+                    <button id="exportLoansExcelBtn" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> Ekspor Excel</button>
+                </div>
+                <div id="loansListContainer" class="data-table-container"></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button></div>
+        </div>
+    </div>
+    
+    <div id="addLoanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Formulir Pinjaman Baru</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <form id="addLoanForm">
+                    <div class="form-group"><label class="form-label">Pilih Anggota</label>
+                        <div class="member-search-container">
+                            <input type="text" id="loanMemberSearch" class="form-control" placeholder="Cari nama atau ID anggota..." required>
+                            <div id="loanMemberResults" class="member-search-results"></div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Jumlah Pinjaman</label><input type="number" id="loanAmount" class="form-control" min="1000" required></div>
+                    <div class="d-flex gap-2">
+                        <div class="form-group" style="flex:1"><label class="form-label">Tenor (Bulan)</label><input type="number" id="loanTenor" class="form-control" min="1" max="60" value="12" required></div>
+                        <div class="form-group" style="flex:1"><label class="form-label">Bunga (% / Bulan)</label><input type="number" id="loanInterest" class="form-control" min="0" step="0.1" value="1.5" required></div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Agunan / Jaminan (opsional)</label><textarea id="loanCollateral" class="form-control" placeholder="Contoh: BPKB Motor, Sertifikat Rumah"></textarea></div>
+                    <div id="loanCalculationPreview" class="member-financial-summary" style="display:none;"></div>
+                </form>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Batal</button><button class="btn btn-success" id="saveLoanBtn">Simpan Pinjaman</button></div>
+        </div>
+    </div>
+
+    <div id="loanDetailsModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header"><h3 class="modal-title">Detail Pinjaman</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" id="loanDetailsBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-success" id="payInstallmentBtn">Bayar Angsuran</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pawnModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header"><h3 class="modal-title">Manajemen Agunan (Gadai)</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                 <div class="d-flex gap-2 mb-3">
+                    <button id="showAddPawnFormBtn" class="btn btn-sm btn-pawn">Tambah Agunan Baru</button>
+                    <button id="exportPawnsExcelBtn" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> Ekspor Excel</button>
+                </div>
+                 <div id="pawnListContainer" class="data-table-container"></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button></div>
+        </div>
+    </div>
+    
+    <div id="addPawnModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Formulir Agunan Baru</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <form id="addPawnForm">
+                    <div class="form-group"><label class="form-label">Pilih Anggota</label>
+                        <div class="member-search-container">
+                            <input type="text" id="pawnMemberSearch" class="form-control" placeholder="Cari nama atau ID anggota..." required>
+                            <div id="pawnMemberResults" class="member-search-results"></div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Nama Barang Agunan</label><input type="text" id="pawnItemName" class="form-control" placeholder="Contoh: Laptop, Cincin Emas 24k" required></div>
+                    <div class="form-group"><label class="form-label">Taksiran Nilai Barang</label><input type="number" id="pawnItemValue" class="form-control" min="0" required></div>
+                    <div class="form-group"><label class="form-label">Jumlah Pinjaman Diberikan</label><input type="number" id="pawnLoanAmount" class="form-control" min="0" required></div>
+                    <div class="form-group"><label class="form-label">Tanggal Jatuh Tempo</label><input type="date" id="pawnDueDate" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">Deskripsi / Catatan</label><textarea id="pawnNotes" class="form-control"></textarea></div>
+                </form>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Batal</button><button class="btn btn-success" id="savePawnBtn">Simpan Agunan</button></div>
+        </div>
+    </div>
+    
+    <div id="manageMembersModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header"><h3 class="modal-title">Kelola Anggota</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <div class="d-flex gap-2 mb-3">
+                    <button id="showAddMemberFormBtn" class="btn btn-sm">Tambah Anggota Baru</button>
+                    <button id="exportMembersExcelBtn" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> Ekspor Excel</button>
+                </div>
+                <div class="search-container mb-3"><input type="text" id="manageMemberSearchInput" class="form-control" placeholder="Cari anggota (nama, ID, No. HP)..."></div>
+                <div class="member-form" id="memberFormContainer" style="display:none;">
+                    <h4 id="memberFormTitle">Tambah Anggota Baru</h4>
+                    <form id="memberForm">
+                        <input type="hidden" id="memberIdInput">
+                        <div class="form-group"><label class="form-label">Nama Anggota</label><input type="text" id="memberName" class="form-control" placeholder="Masukkan nama anggota" required></div>
+                        <div class="form-group"><label class="form-label">Nomor Telepon (WhatsApp)</label><input type="tel" id="memberPhone" class="form-control" placeholder="e.g. 08123456789" required></div>
+                        <div class="form-group"><label class="form-label">Alamat</label><textarea id="memberAddress" class="form-control" placeholder="Masukkan alamat"></textarea></div>
+                        <div class="d-flex gap-2">
+                             <button type="button" class="btn btn-warning" id="cancelMemberFormBtn">Batal</button>
+                             <button type="submit" class="btn btn-success" id="saveMemberBtn">Simpan Anggota</button>
+                        </div>
+                    </form>
+                    <hr class="mt-3 mb-3">
+                </div>
+                <div id="membersList" class="data-table-container"></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button></div>
+        </div>
+    </div>
+    
+    <div id="memberProfileModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header"><h3 class="modal-title">Profil Keuangan Anggota</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" id="memberProfileBody"></div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button></div>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header"><h3 class="modal-title">Histori Transaksi</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <div class="d-flex gap-2 mb-3">
+                    <input type="text" id="historySearchInput" class="form-control" placeholder="Cari berdasarkan ID, nama anggota, atau tipe...">
+                    <button id="exportHistoryExcelBtn" class="btn btn-sm btn-success" style="width: auto;"><i class="fas fa-file-excel"></i> Ekspor</button>
+                </div>
+                <div id="historyResultsContainer" class="data-table-container"></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button></div>
+        </div>
+    </div>
+    
+    <div id="recapReportModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header no-print"><h3 class="modal-title">Laporan Keuangan</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <div class="recap-filter-container no-print">
+                    <div class="form-group mb-0"><label class="form-label">Periode Laporan</label><select id="recapReportPeriod" class="form-control"><option value="this_month">Bulan Ini</option><option value="last_month">Bulan Lalu</option><option value="this_year">Tahun Ini</option><option value="custom">Pilih Tanggal</option></select></div>
+                    <div class="form-group mb-0" id="recapCustomDateContainer" style="display: none;"><label class="form-label">Dari Tanggal</label><input type="date" id="recapStartDate" class="form-control"></div>
+                    <div class="form-group mb-0" id="recapCustomDateContainer2" style="display: none;"><label class="form-label">Sampai Tanggal</label><input type="date" id="recapEndDate" class="form-control"></div>
+                    <button id="generateRecapReportBtn" class="btn btn-primary">Generate</button>
+                </div>
+                <div class="tabs no-print" style="margin-top: 16px;">
+                    <div class="tab active" data-tab="profitLossRecap"><i class="fas fa-chart-pie"></i> Laba Rugi</div>
+                    <div class="tab" data-tab="cashFlowRecap"><i class="fas fa-exchange-alt"></i> Arus Kas</div>
+                    <div class="tab" data-tab="portfolioRecap"><i class="fas fa-chart-line"></i> Portofolio Pinjaman</div>
+                </div>
+                <div id="recapReportResults" class="mt-3"><div class="printable-area"><div class="empty-state"><i class="fas fa-file-alt"></i><p>Pilih periode dan generate laporan untuk melihat data.</p></div></div></div>
+            </div>
+            <div class="modal-footer no-print">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-info" id="downloadRecapPdfBtn" style="display: none;"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                <button class="btn btn-primary" id="printRecapBtn" style="display: none;"><i class="fas fa-print"></i> Cetak</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="manageKoperasiInfoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Kelola Info Koperasi</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <form id="koperasiInfoForm">
+                    <div class="form-group"><label class="form-label">Nama Koperasi</label><input type="text" id="koperasiName" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">Alamat</label><textarea id="koperasiAddress" class="form-control" required></textarea></div>
+                    <div class="form-group"><label class="form-label">Nomor Telepon/WA</label><input type="text" id="koperasiPhone" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">Email</label><input type="email" id="koperasiEmail" class="form-control" placeholder="Contoh: info@koperasi.com"></div>
+                </form>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Batal</button><button class="btn btn-success" id="saveKoperasiInfoBtn">Simpan</button></div>
+        </div>
+    </div>
+    
+    <div id="controlPanelModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Kontrol Panel</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" style="padding: 0 16px 16px 16px;">
+                <div class="tabs">
+                    <div class="tab active" data-tab="users"><i class="fas fa-users-cog"></i> Pengguna</div>
+                    <div class="tab" data-tab="security"><i class="fas fa-shield-alt"></i> Keamanan</div>
+                </div>
+                <div class="tab-content active" id="usersTab">
+                    <h4 class="mt-3">Manajemen Pengguna</h4>
+                    <button id="manageRolesBtn" class="btn btn-sm btn-info mt-2 mb-3">Kelola Hak Akses</button>
+                    <button id="showAddUserFormBtn" class="btn btn-sm mt-2 mb-3">Tambah Pengguna Baru</button>
+                    <div id="userFormContainer" style="display:none; background: #f9f9f9; padding: 12px; border-radius: var(--rounded-sm); margin-bottom: 16px;">
+                        <h5 id="userFormTitle">Tambah Pengguna</h5>
+                        <form id="userForm">
+                            <input type="hidden" id="userIdInput">
+                            <div class="form-group"><label class="form-label">Nama Lengkap</label><input type="text" id="userName" class="form-control" required></div>
+                            <div class="form-group"><label class="form-label">Username</label><input type="text" id="userUsername" class="form-control" required></div>
+                            <div class="form-group"><label class="form-label">Password</label><input type="password" id="userPassword" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah"></div>
+                            <div class="form-group"><label class="form-label">Hak Akses (Role)</label><select id="userRole" class="form-control"></select></div>
+                            <div class="d-flex gap-2"><button type="button" class="btn btn-warning" id="cancelUserFormBtn">Batal</button><button type="submit" class="btn btn-success" id="saveUserBtn">Simpan</button></div>
+                        </form>
+                    </div>
+                    <div id="usersList" class="data-table-container"></div>
+                </div>
+                <div class="tab-content" id="securityTab">
+                    <h4 class="mt-3">Pengaturan Password Keamanan</h4>
+                    <form id="panelSecurityForm" class="mt-2"><div class="form-group"><label class="form-label">Password Keamanan Kontrol Panel</label><input type="password" id="panelSecurityCode" class="form-control" required></div><button type="submit" class="btn btn-sm btn-info">Ubah Password</button></form>
+                    <hr class="mt-3 mb-3">
+                    <h4 class="mt-3">Ubah Password Login Anda</h4>
+                    <form id="changeOwnPasswordForm" class="mt-2">
+                        <div class="form-group"><label class="form-label">Password Saat Ini</label><input type="password" id="currentPassword" class="form-control" required></div>
+                        <div class="form-group"><label class="form-label">Password Baru</label><input type="password" id="newPassword" class="form-control" required></div>
+                        <button type="submit" class="btn btn-sm btn-success">Simpan Password Baru</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button></div>
+        </div>
+    </div>
+    
+    <div id="roleManagementModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header"><h3 class="modal-title">Manajemen Hak Akses</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" style="padding: 0 16px 16px 16px;">
+                <div class="tabs" id="roleTabsContainer"></div>
+                <div id="rolePermissionsContainer" class="mt-3"></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button><button class="btn btn-success" id="saveRolePermissionsBtn">Simpan Hak Akses</button></div>
+        </div>
+    </div>
+    
+    <div id="ktaModal" class="modal">
+        <div class="modal-content" style="max-width: 380px;">
+             <div class="modal-header"><h3 class="modal-title">Kartu Tanda Anggota</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" id="ktaModalBody">
+                <div id="ktaCard">
+                    <div class="kta-header"><div class="kta-koperasi-info"><h3 id="ktaKoperasiName">NAMA KOPERASI</h3><p id="ktaKoperasiContact">Alamat, No. WA, Email</p></div></div>
+                    <div class="kta-body"><h2 id="ktaMemberName">Nama Anggota</h2><p id="ktaMemberId">ID: M250924103000</p><div class="kta-qrcode" id="ktaQrcodeImg"></div></div>
+                    <div class="kta-footer">Kartu ini adalah bukti keanggotaan resmi.</div>
+                </div>
+            </div>
+            <div class="modal-footer no-print"><button class="btn btn-warning modal-close-btn">Tutup</button><button class="btn btn-info" id="downloadKtaPdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button></div>
+        </div>
+    </div>
+
+    <div id="passwordPromptModal" class="modal"><div class="modal-content" style="max-width: 400px;"><div class="modal-header"><h3 class="modal-title" id="passwordPromptTitle">Masukkan Password Keamanan</h3><button class="modal-close">&times;</button></div><div class="modal-body"><form id="passwordPromptForm"><div class="form-group"><label class="form-label" id="passwordPromptMessage">Untuk melanjutkan, masukkan password.</label><input type="password" id="passwordPromptInput" class="form-control" required></div></form></div><div class="modal-footer"><button class="btn btn-warning modal-close-btn">Batal</button><button class="btn btn-success" id="passwordPromptSubmit">Lanjutkan</button></div></div></div>
+    <div id="confirmationModal" class="modal"><div class="modal-content" style="max-width: 400px;"><div class="modal-header"><h3 class="modal-title" id="confirmTitle">Konfirmasi</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p id="confirmMessage">Apakah Anda yakin?</p></div><div class="modal-footer"><button class="btn btn-warning modal-close-btn" id="confirmCancel">Batal</button><button class="btn" id="confirmAction">Lanjutkan</button></div></div></div>
+
+    <div id="print-container" style="display:none;"></div>
+    
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => console.log('ServiceWorker registration successful'))
+                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+            });
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/id.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        moment.locale('id');
+        const { jsPDF } = window.jspdf;
+        
+        const STORAGE_KEYS = {
+            USERS: 'coop_users',
+            MEMBERS: 'coop_members',
+            SETTINGS: 'coop_settings',
+            SAVINGS: 'coop_savings_transactions',
+            LOANS: 'coop_loans',
+            PAWNS: 'coop_pawns',
+            TRANSACTIONS: 'coop_transactions_history'
+        };
+
+        const ENCRYPTION_KEY = 'LenteraKaryaSitubondo-Koperasi-2025';
+
+        const DEFAULT_ADMIN = { id: 'U001', username: 'Admin', password: CryptoJS.SHA256('Gratis12345').toString(), name: 'Administrator', role: 'admin' };
+        const DEFAULT_TELLER = { id: 'U002', username: 'teller', password: CryptoJS.SHA256('teller123').toString(), name: 'Teller', role: 'teller' };
+        
+        let users, members, settings, savings, loans, pawns, transactions, currentUser;
+        
+        let passwordPromptCallback = null;
+        let captchaText = '';
+        
+        function initializeData() {
+            let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
+            if (!users_init.find(u => u.username === 'Admin')) users_init.push(DEFAULT_ADMIN);
+            if (!users_init.find(u => u.username === 'teller')) users_init.push(DEFAULT_TELLER);
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users_init));
+            
+            if (!localStorage.getItem(STORAGE_KEYS.MEMBERS)) localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify([]));
+            if (!localStorage.getItem(STORAGE_KEYS.SAVINGS)) localStorage.setItem(STORAGE_KEYS.SAVINGS, JSON.stringify([]));
+            if (!localStorage.getItem(STORAGE_KEYS.LOANS)) localStorage.setItem(STORAGE_KEYS.LOANS, JSON.stringify([]));
+            if (!localStorage.getItem(STORAGE_KEYS.PAWNS)) localStorage.setItem(STORAGE_KEYS.PAWNS, JSON.stringify([]));
+            if (!localStorage.getItem(STORAGE_KEYS.TRANSACTIONS)) localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify([]));
+
+            if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
+                const initialSettings = {
+                    koperasiName: 'KOPERASI DIGITAL', koperasiAddress: 'Jl. Digital No. 1, Kota Maya',
+                    koperasiPhone: '081234567890', koperasiEmail: 'info@koperasi.com',
+                    panelSecurityCode: CryptoJS.SHA256('LKS.1945').toString(), // Default password
+                    roles: {
+                        admin: { label: "Admin", isEditable: false, permissions: getPermissionKeys(true) },
+                        manager: { label: "Manajer", isEditable: true, permissions: {...getPermissionKeys(false), canManageLoans: true, canManagePawns: true, canViewReports: true, canAccessControlPanel: true } },
+                        teller: { label: "Teller", isEditable: true, permissions: {...getPermissionKeys(false), canManageSavings: true, canManageMembers: true, canReceiveInstallments: true } }
+                    }
+                };
+                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(initialSettings));
+            }
+        }
+        
+        $(document).ready(function() {
+            initializeData();
+            
+            // Load data from localStorage
+            users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
+            members = JSON.parse(localStorage.getItem(STORAGE_KEYS.MEMBERS)) || [];
+            settings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS)) || {};
+            savings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SAVINGS)) || [];
+            loans = JSON.parse(localStorage.getItem(STORAGE_KEYS.LOANS)) || [];
+            pawns = JSON.parse(localStorage.getItem(STORAGE_KEYS.PAWNS)) || [];
+            transactions = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS)) || [];
+
+            currentUser = JSON.parse(sessionStorage.getItem('coop_current_user')) || null;
+
+            $('#currentYear').text(new Date().getFullYear());
+            
+            if (currentUser) {
+                $('#loggedInUser').text(currentUser.name);
+                $('#loginModal').hide();
+                $('#mainApp').show();
+                initializeApp();
+            } else {
+                generateCaptcha();
+            }
+            
+            setInterval(updateCurrentDate, 60000);
+            
+            // --- EVENT LISTENERS ---
+            $('#loginForm').submit(handleLogin);
+            $('#reloadCaptchaBtn').click(generateCaptcha);
+            $('#logoutBtn').click(handleLogout);
+            
+            // Main Menu Buttons
+            $('#savingsMenuBtn').click(() => { if (checkPermission('canManageSavings')) openSavingsModal(); });
+            $('#loansMenuBtn').click(() => { if (checkPermission('canManageLoans')) openLoansModal(); });
+            $('#pawnMenuBtn').click(() => { if (checkPermission('canManagePawns')) openPawnModal(); });
+            $('#manageMembersBtn').click(() => { if (checkPermission('canManageMembers')) openManageMembersModal(); });
+            
+            // Admin Panel Buttons
+            $('#recapReportBtn').click(() => { if (checkPermission('canViewReports')) openRecapReportModal(); });
+            $('#historyBtn').click(openHistoryModal);
+            $('#manageKoperasiInfoBtn').click(() => { if (checkPermission('canManageKoperasiInfo')) openManageKoperasiInfoModal(); });
+            // [FIXED] Implement password protection for Control Panel
+            $('#controlPanelBtn').click(() => { if (checkPermission('canAccessControlPanel')) promptForPassword('panel', openControlPanel); });
+
+            // Modals & Forms
+            $('.modal-close, .modal-close-btn').click(function() { $(this).closest('.modal').hide(); });
+            $(document).on('click', '.modal-body .tabs .tab', function() {
+                switchModalTab($(this).closest('.modal'), $(this).data('tab'));
+            });
+
+            // Savings
+            $('#savingsMemberSearch').on('input', function() { handleMemberSearch(this, '#savingsMemberResults', selectMemberForSavings); });
+            $('#savingsTransactionForm').submit(processSavingsTransaction);
+
+            // Loans
+            $('#showAddLoanFormBtn').click(() => { resetLoanForm(); $('#addLoanModal').css('display', 'flex'); });
+            $('#loanMemberSearch').on('input', function() { handleMemberSearch(this, '#loanMemberResults', selectMemberForLoan); });
+            $('#loanAmount, #loanTenor, #loanInterest').on('input', calculateLoanPreview);
+            $('#saveLoanBtn').click(saveLoan);
+            $(document).on('click', '.view-loan-details', function() { openLoanDetailsModal($(this).data('id')); });
+            $('#payInstallmentBtn').click(payInstallment);
+            $('#exportLoansExcelBtn').click(exportLoansToExcel);
+
+            // Pawns
+            $('#showAddPawnFormBtn').click(() => { resetPawnForm(); $('#addPawnModal').css('display', 'flex'); });
+            $('#pawnMemberSearch').on('input', function() { handleMemberSearch(this, '#pawnMemberResults', selectMemberForPawn); });
+            $('#savePawnBtn').click(savePawn);
+            $(document).on('click', '.redeem-pawn-btn', function(e) { e.stopPropagation(); redeemPawn($(this).data('id')); });
+            $('#exportPawnsExcelBtn').click(exportPawnsToExcel);
+
+            // Members
+            $('#showAddMemberFormBtn, #cancelMemberFormBtn').click(() => {$('#memberFormContainer').slideToggle(); resetMemberForm();});
+            $('#memberForm').submit(saveMember);
+            $('#manageMemberSearchInput').on('input', function() { loadMembersList($(this).val()); });
+            $(document).on('click', '.edit-member', function() { editMember($(this).data('id')); });
+            $(document).on('click', '.kta-member', function() { openKtaModal($(this).data('id')); });
+            $(document).on('click', '.profile-member', function() { openMemberProfileModal($(this).data('id')); });
+            $('#downloadKtaPdfBtn').click(downloadKtaAsPdf);
+            $('#exportMembersExcelBtn').click(exportMembersToExcel);
+
+            // Control Panel
+            $('#saveKoperasiInfoBtn').click(saveKoperasiInfo);
+            $('#userForm').submit(saveUser);
+            $('#panelSecurityForm').submit(changeSecurityCode);
+            $('#changeOwnPasswordForm').submit(changeOwnPassword);
+            $('#showAddUserFormBtn, #cancelUserFormBtn').click(() => {$('#userFormContainer').slideToggle(); resetUserForm();});
+            $(document).on('click', '.edit-user', function() { editUser($(this).data('id')); });
+            $(document).on('click', '.delete-user', function() { deleteUser($(this).data('id')); });
+            $('#manageRolesBtn').click(openRoleManagementModal);
+            $('#saveRolePermissionsBtn').click(saveRolePermissions);
+
+            // Reports & History
+            $('#historySearchInput').on('input', function() { loadTransactionHistory($(this).val()); });
+            $('#exportHistoryExcelBtn').click(exportHistoryToExcel);
+            $('#recapReportPeriod').change(function() {
+                const isCustom = $(this).val() === 'custom';
+                $('#recapCustomDateContainer, #recapCustomDateContainer2').toggle(isCustom);
+            });
+            $('#generateRecapReportBtn').click(generateRecapReport);
+            $('#printRecapBtn').click(() => printElement('#recapReportResults .printable-area'));
+            $('#downloadRecapPdfBtn').click(downloadRecapAsPdf);
+
+            // Data Management
+            $('#backupDataBtn').click(() => showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lkscoop). Lanjutkan?', 'success', backupData));
+            $('#restoreFile').change(function() { promptForPassword('panel', () => { restoreFromFile(this.files[0]); $(this).val(''); }); });
+            $('#resetDataBtn').click(() => promptForPassword('panel', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', 'danger', resetAllData)));
+            
+            // Password Prompt
+            $('#passwordPromptForm').submit(e => {e.preventDefault(); submitPasswordPrompt();});
+            $('#passwordPromptSubmit').click(submitPasswordPrompt);
+        });
+
+        // --- CORE APP FLOW ---
+        function initializeApp() {
+            updateKoperasiInfo();
+            configureUIAccess();
+            updateLoanStatuses(); // Check for overdue loans on app start
+            loadDashboard();
+            updateCurrentDate();
+        }
+        
+        function configureUIAccess() {
+            const hasAdminFeatures = Object.values(settings.roles[currentUser.role]?.permissions || {}).some(p => p === true);
+            $('#adminPanel').toggle(hasAdminFeatures || currentUser.role === 'admin');
+            
+            // Main Actions
+            $('#savingsMenuBtn').toggle(checkPermission('canManageSavings'));
+            $('#loansMenuBtn').toggle(checkPermission('canManageLoans'));
+            $('#pawnMenuBtn').toggle(checkPermission('canManagePawns'));
+            $('#manageMembersBtn').toggle(checkPermission('canManageMembers'));
+            
+            // Admin Panel
+            $('#recapReportBtn').toggle(checkPermission('canViewReports'));
+            $('#manageKoperasiInfoBtn').toggle(checkPermission('canManageKoperasiInfo'));
+            $('#controlPanelBtn').toggle(checkPermission('canAccessControlPanel'));
+            const canManageData = checkPermission('canBackupRestore') || checkPermission('canResetData');
+            $('#adminPanel .backup-actions').parent().toggle(canManageData);
+            $('#backupDataBtn').toggle(checkPermission('canBackupRestore'));
+            $('.file-label').toggle(checkPermission('canBackupRestore'));
+            $('#resetDataBtn').toggle(checkPermission('canResetData'));
+        }
+        
+        function loadDashboard() {
+            const totalSavings = savings.reduce((sum, s) => sum + s.amount, 0);
+            const totalActiveLoans = loans.filter(l => l.status === 'active' || l.status === 'overdue').reduce((sum, l) => sum + l.outstandingPrincipal, 0);
+            const totalAssets = totalSavings; // Simplified for now
+            const totalMembers = members.length;
+            
+            $('#dashboardGrid').html(`
+                <div class="summary-card savings">
+                    <div class="summary-card-icon"><i class="fas fa-wallet"></i></div>
+                    <div class="summary-card-info"><div class="title">Total Simpanan</div><div class="value">${formatCurrency(totalSavings)}</div></div>
+                </div>
+                <div class="summary-card loans">
+                    <div class="summary-card-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <div class="summary-card-info"><div class="title">Pinjaman Aktif</div><div class="value">${formatCurrency(totalActiveLoans)}</div></div>
+                </div>
+                <div class="summary-card assets">
+                    <div class="summary-card-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="summary-card-info"><div class="title">Total Aset</div><div class="value">${formatCurrency(totalAssets)}</div></div>
+                </div>
+                <div class="summary-card members">
+                    <div class="summary-card-icon"><i class="fas fa-users"></i></div>
+                    <div class="summary-card-info"><div class="title">Jumlah Anggota</div><div class="value">${totalMembers}</div></div>
+                </div>
+            `);
+        }
+
+        // --- LOGIN, LOGOUT & AUTHENTICATION ---
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            if ($('#captchaInput').val().trim().toLowerCase() !== captchaText.toLowerCase()) {
+                showToast('Kode verifikasi (CAPTCHA) salah.', 'error');
+                generateCaptcha();
+                $('#captchaInput').val('');
+                return;
+            }
+            const username = $('#username').val().trim();
+            const password = $('#password').val().trim();
+            const user = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+
+            if (user && CryptoJS.SHA256(password).toString() === user.password) {
+                currentUser = user;
+                sessionStorage.setItem('coop_current_user', JSON.stringify(currentUser));
+                $('#loggedInUser').text(currentUser.name);
+                $('#loginModal').hide();
+                $('#mainApp').fadeIn();
+                initializeApp();
+                showToast(`Selamat datang, ${currentUser.name}!`, 'success');
+            } else {
+                showToast('Username atau password salah', 'error');
+                generateCaptcha();
+                $('#captchaInput').val('');
+            }
+        }
+
+        function handleLogout(e) {
+            e.preventDefault();
+            showConfirmation('Logout', 'Anda yakin ingin keluar dari aplikasi?', 'warning', () => {
+                currentUser = null;
+                sessionStorage.removeItem('coop_current_user');
+                $('#mainApp').fadeOut(() => {
+                    $('#loginModal').css('display', 'flex');
+                    $('#username, #password, #captchaInput').val('');
+                    $('#username').val('Admin');
+                    $('#password').val('Gratis12345');
+                    generateCaptcha();
+                });
+                showToast('Anda telah logout', 'info');
+            });
+        }
+        
+        function generateCaptcha() {
+            const canvas = document.getElementById('captchaCanvas');
+            const ctx = canvas.getContext('2d');
+            captchaText = Math.random().toString(36).substring(2, 8).toUpperCase();
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#f0f2f5';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < 5; i++) {
+                ctx.strokeStyle = `rgba(0,0,0,${Math.random() * 0.2})`;
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.stroke();
+            }
+
+            ctx.font = 'bold 24px Poppins';
+            ctx.fillStyle = '#333';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(captchaText, canvas.width / 2, canvas.height / 2);
+        }
+
+        // --- MEMBER MANAGEMENT & SEARCH ---
+        function handleMemberSearch(inputElement, resultsElement, callback) {
+            const searchTerm = $(inputElement).val().trim().toLowerCase();
+            const $results = $(resultsElement);
+            if (searchTerm.length === 0) { return $results.hide(); }
+            
+            const filteredMembers = members.filter(m => m.name.toLowerCase().includes(searchTerm) || m.id.toLowerCase().includes(searchTerm));
+            $results.empty().show();
+            if (filteredMembers.length > 0) {
+                filteredMembers.forEach(m => $results.append(`<div class="member-search-item" data-id="${m.id}">${m.name} (${m.id})</div>`));
+                $results.off('click').on('click', '.member-search-item', function() {
+                    const memberId = $(this).data('id');
+                    const memberName = $(this).text();
+                    $(inputElement).val(memberName);
+                    $(inputElement).data('selected-id', memberId);
+                    $results.hide();
+                    if(callback) callback(memberId);
+                });
+            } else {
+                $results.append('<div class="member-search-item disabled">Anggota tidak ditemukan</div>');
+            }
+        }
+
+        function openManageMembersModal() {
+            loadMembersList();
+            $('#memberFormContainer').hide();
+            $('#manageMembersModal').css('display', 'flex');
+        }
+
+        function loadMembersList(searchTerm = '') {
+            const $list = $('#membersList').empty();
+            searchTerm = searchTerm.toLowerCase();
+            const filteredMembers = members.filter(m => m.name.toLowerCase().includes(searchTerm) || m.id.toLowerCase().includes(searchTerm) || m.phone.includes(searchTerm));
+
+            if (filteredMembers.length > 0) {
+                const table = $('<table class="data-table"><thead><tr><th>ID</th><th>Nama</th><th>Telepon</th><th>Aksi</th></tr></thead><tbody></tbody></table>');
+                const tbody = table.find('tbody');
+                filteredMembers.forEach(m => {
+                    tbody.append(`
+                        <tr>
+                            <td>${m.id}</td>
+                            <td>${m.name}</td>
+                            <td>${m.phone}</td>
+                            <td class="d-flex gap-2">
+                                <button class="btn btn-sm btn-info edit-member" data-id="${m.id}"><i class="fas fa-pencil-alt"></i></button>
+                                <button class="btn btn-sm profile-member" style="background-color: #6c757d;" data-id="${m.id}"><i class="fas fa-address-book"></i></button>
+                                <button class="btn btn-sm kta-member" style="background-color: var(--loan-color);" data-id="${m.id}"><i class="fas fa-id-card"></i></button>
+                            </td>
+                        </tr>
+                    `);
+                });
+                $list.append(table);
+            } else {
+                $list.html('<div class="empty-state"><p>Anggota tidak ditemukan.</p></div>');
+            }
+        }
+        
+        function resetMemberForm() { $('#memberForm')[0].reset(); $('#memberIdInput').val(''); $('#memberFormTitle').text('Tambah Anggota Baru'); }
+
+        function editMember(id) {
+            const member = members.find(m => m.id === id); if (!member) return;
+            resetMemberForm();
+            $('#memberFormTitle').text('Edit Anggota');
+            $('#memberIdInput').val(member.id);
+            $('#memberName').val(member.name);
+            $('#memberPhone').val(member.phone);
+            $('#memberAddress').val(member.address);
+            $('#memberFormContainer').slideDown();
+        }
+        
+        function saveMember(e) {
+            e.preventDefault();
+            const id = $('#memberIdInput').val() || 'M' + moment().format('YYMMDDHHmmss');
+            const newMemberData = { id, name: $('#memberName').val(), phone: $('#memberPhone').val(), address: $('#memberAddress').val() };
+            
+            const existingMemberIndex = members.findIndex(m => m.id === id);
+            if(existingMemberIndex > -1) { 
+                members[existingMemberIndex] = { ...members[existingMemberIndex], ...newMemberData };
+                showToast('Data anggota berhasil diperbarui', 'success'); 
+            } else { 
+                newMemberData.joinDate = new Date().toISOString(); 
+                members.push(newMemberData); 
+                showToast('Anggota baru berhasil ditambahkan', 'success'); 
+            }
+            
+            saveData('members');
+            loadMembersList();
+            loadDashboard();
+            resetMemberForm();
+            $('#memberFormContainer').slideUp();
+        }
+
+        // --- SAVINGS MANAGEMENT ---
+        function openSavingsModal() {
+            $('#savingsMemberSearch').val('').removeData('selected-id');
+            $('#savingsMemberDetails').hide();
+            $('#savingsModal').css('display', 'flex');
+        }
+
+        function selectMemberForSavings(memberId) {
+            loadMemberSavingsSummary(memberId);
+            $('#savingsMemberDetails').data('member-id', memberId).slideDown();
+        }
+        
+        function loadMemberSavingsSummary(memberId) {
+            const member = members.find(m => m.id === memberId); if (!member) return;
+            $('#savingsMemberName').text(`Ringkasan untuk: ${member.name} (${member.id})`);
+            const memberSavings = savings.filter(s => s.memberId === memberId);
+            const totalPokok = memberSavings.filter(s => s.category === 'pokok').reduce((sum, s) => sum + s.amount, 0);
+            const totalWajib = memberSavings.filter(s => s.category === 'wajib').reduce((sum, s) => sum + s.amount, 0);
+            const totalSukarela = memberSavings.filter(s => s.category === 'sukarela').reduce((sum, s) => sum + s.amount, 0);
+            $('#summaryPokok').text(formatCurrency(totalPokok));
+            $('#summaryWajib').text(formatCurrency(totalWajib));
+            $('#summarySukarela').text(formatCurrency(totalSukarela));
+            $('#summaryTotalSimpanan').text(formatCurrency(totalPokok + totalWajib + totalSukarela));
+        }
+        
+        function processSavingsTransaction(e) {
+            e.preventDefault();
+            const memberId = $('#savingsMemberDetails').data('member-id');
+            const type = $('#savingsType').val();
+            const category = $('#savingsCategory').val();
+            let amount = parseFloat($('#savingsAmount').val());
+
+            if(!memberId || !amount || amount <= 0) return showToast('Data tidak valid', 'error');
+            
+            const memberSavings = savings.filter(s => s.memberId === memberId && s.category === category);
+            const currentBalance = memberSavings.reduce((sum, s) => sum + s.amount, 0);
+            
+            if(type === 'withdrawal' && amount > currentBalance) return showToast(`Saldo ${category} tidak mencukupi untuk penarikan.`, 'error');
+            
+            if(type === 'withdrawal') amount = -amount;
+
+            const newTransaction = { id: 'SAV' + moment().format('x'), memberId, type, category, amount, date: new Date().toISOString(), processedBy: currentUser.name };
+            savings.unshift(newTransaction);
+            logTransaction(memberId, type === 'deposit' ? 'Setor Simpanan' : 'Tarik Simpanan', amount, newTransaction.id);
+            saveData('savings');
+            showToast('Transaksi simpanan berhasil diproses.', 'success');
+            loadMemberSavingsSummary(memberId);
+            loadDashboard();
+            $('#savingsTransactionForm')[0].reset();
+        }
+
+        // --- LOAN MANAGEMENT ---
+        /**
+         * [IMPROVED] Checks loan statuses with more accurate logic.
+         * A loan is overdue if the due date for the *next expected payment* has passed.
+         */
+        function updateLoanStatuses() {
+            let changed = false;
+            const today = moment();
+            loans.forEach(loan => {
+                if (loan.status !== 'active') return;
+
+                const expectedPaymentsCount = loan.payments.length + 1;
+                if (expectedPaymentsCount > loan.tenor) return; // Already fully paid in terms of count
+
+                const nextDueDate = moment(loan.applicationDate).add(expectedPaymentsCount, 'months');
+                
+                if (today.isAfter(nextDueDate)) {
+                    loan.status = 'overdue';
+                    changed = true;
+                }
+            });
+            if (changed) saveData('loans');
+        }
+
+        function openLoansModal() {
+            updateLoanStatuses();
+            loadLoansList();
+            $('#loansModal').css('display', 'flex');
+        }
+
+        function loadLoansList() {
+            const $list = $('#loansListContainer').empty();
+            if (loans.length === 0) return $list.html('<div class="empty-state"><p>Belum ada data pinjaman.</p></div>');
+            
+            const table = $('<table class="data-table"><thead><tr><th>ID Pinjaman</th><th>Anggota</th><th>Jumlah</th><th>Sisa Pokok</th><th>Status</th><th>Aksi</th></tr></thead><tbody></tbody></table>');
+            const tbody = table.find('tbody');
+            const sortedLoans = [...loans].sort((a, b) => {
+                const statusOrder = { 'overdue': 1, 'active': 2, 'paid_off': 3 };
+                return (statusOrder[a.status] || 99) - (statusOrder[b.status] || 99);
+            });
+
+            sortedLoans.forEach(loan => {
+                const member = members.find(m => m.id === loan.memberId);
+                let statusClass = '';
+                if(loan.status === 'paid_off') statusClass = 'text-success';
+                else if(loan.status === 'overdue') statusClass = 'text-danger';
+
+                tbody.append(`
+                    <tr class="view-loan-details" data-id="${loan.id}" style="cursor:pointer;">
+                        <td>${loan.id}</td>
+                        <td>${member ? member.name : 'N/A'}</td>
+                        <td>${formatCurrency(loan.amount)}</td>
+                        <td>${formatCurrency(loan.outstandingPrincipal)}</td>
+                        <td><strong class="${statusClass}">${loan.status.replace('_', ' ').toUpperCase()}</strong></td>
+                        <td><button class="btn btn-sm btn-info view-loan-details" data-id="${loan.id}">Detail</button></td>
+                    </tr>
+                `);
+            });
+            $list.append(table);
+        }
+        
+        function resetLoanForm() {
+            $('#addLoanForm')[0].reset();
+            $('#loanMemberSearch').val('').removeData('selected-id');
+            $('#loanCalculationPreview').hide();
+        }
+        
+        function selectMemberForLoan(memberId) { }
+
+        function calculateLoanPreview() {
+            const amount = parseFloat($('#loanAmount').val()) || 0;
+            const tenor = parseInt($('#loanTenor').val()) || 0;
+            const interestRate = parseFloat($('#loanInterest').val()) || 0;
+            if (amount <= 0 || tenor <= 0 || interestRate < 0) return $('#loanCalculationPreview').hide();
+
+            const monthlyInterest = amount * (interestRate / 100);
+            const monthlyPrincipal = amount / tenor;
+            const monthlyInstallment = monthlyPrincipal + monthlyInterest;
+            const totalPayment = monthlyInstallment * tenor;
+            const totalInterest = totalPayment - amount;
+
+            $('#loanCalculationPreview').html(`
+                <div class="summary-row"><span>Angsuran / Bulan:</span> <strong>${formatCurrency(monthlyInstallment)}</strong></div>
+                <div class="summary-row"><span>Total Bunga:</span> <span>${formatCurrency(totalInterest)}</span></div>
+                <div class="summary-row total-row"><span>Total Pengembalian:</span> <span>${formatCurrency(totalPayment)}</span></div>
+            `).show();
+        }
+
+        function saveLoan() {
+            const memberId = $('#loanMemberSearch').data('selected-id');
+            const amount = parseFloat($('#loanAmount').val());
+            const tenor = parseInt($('#loanTenor').val());
+            const interestRate = parseFloat($('#loanInterest').val());
+            const collateral = $('#loanCollateral').val();
+            if (!memberId || !(amount > 0) || !(tenor > 0) || isNaN(interestRate)) return showToast('Harap lengkapi semua data pinjaman dengan benar.', 'error');
+            
+            const monthlyInterest = amount * (interestRate / 100);
+            const monthlyPrincipal = amount / tenor;
+            const monthlyInstallment = monthlyPrincipal + monthlyInterest;
+
+            const newLoan = {
+                id: 'LOAN' + moment().format('x'),
+                memberId, amount, tenor, interestRate, collateral,
+                monthlyInstallment,
+                outstandingPrincipal: amount,
+                payments: [],
+                status: 'active',
+                applicationDate: new Date().toISOString()
+            };
+            loans.unshift(newLoan);
+            logTransaction(memberId, 'Pencairan Pinjaman', -amount, newLoan.id);
+            saveData('loans');
+            showToast('Pinjaman baru berhasil dibuat.', 'success');
+            loadLoansList();
+            loadDashboard();
+            $('#addLoanModal').hide();
+        }
+
+        function openLoanDetailsModal(loanId) {
+            const loan = loans.find(l => l.id === loanId);
+            if (!loan) return;
+            const member = members.find(m => m.id === loan.memberId);
+            
+            let paymentsHtml = '<tr><td colspan="4" class="text-center">Belum ada pembayaran.</td></tr>';
+            if (loan.payments.length > 0) {
+                paymentsHtml = loan.payments.map((p, i) => `
+                    <tr><td>Angsuran ke-${i+1}</td><td>${moment(p.date).format('DD MMM YYYY')}</td><td>${formatCurrency(p.amount)}</td><td>${p.paidBy}</td></tr>
+                `).join('');
+            }
+            
+            const isPaidOff = loan.status === 'paid_off';
+            $('#payInstallmentBtn').data('id', loanId).toggle(!isPaidOff).prop('disabled', !checkPermission('canReceiveInstallments'));
+
+            $('#loanDetailsBody').html(`
+                <h4>Pinjaman: ${loan.id}</h4>
+                <p><strong>Anggota:</strong> ${member.name} (${member.id})</p>
+                <div class="member-financial-summary">
+                    <div class="summary-row"><span>Jumlah Pinjaman:</span><span>${formatCurrency(loan.amount)}</span></div>
+                    <div class="summary-row"><span>Angsuran per Bulan:</span><span>${formatCurrency(loan.monthlyInstallment)}</span></div>
+                    <div class="summary-row"><span>Sisa Pokok:</span><strong>${formatCurrency(loan.outstandingPrincipal)}</strong></div>
+                    <div class="summary-row"><span>Angsuran Terbayar:</span><span>${loan.payments.length} / ${loan.tenor}</span></div>
+                </div>
+                <h5 class="mt-3">Riwayat Pembayaran</h5>
+                <div class="data-table-container" style="max-height: 25vh;">
+                    <table class="data-table amortization-table">
+                        <thead><tr><th>Deskripsi</th><th>Tanggal Bayar</th><th>Jumlah</th><th>Petugas</th></tr></thead>
+                        <tbody>${paymentsHtml}</tbody>
+                    </table>
+                </div>
+            `);
+            $('#loanDetailsModal').css('display', 'flex');
+        }
+
+        function payInstallment() {
+            if (!checkPermission('canReceiveInstallments')) {
+                return showToast('Anda tidak memiliki hak akses untuk menerima angsuran.', 'error');
+            }
+            const loanId = $(this).data('id');
+            const loanIndex = loans.findIndex(l => l.id === loanId);
+            if (loanIndex === -1) return;
+            
+            const loan = loans[loanIndex];
+            if (loan.status === 'paid_off') return showToast('Pinjaman ini sudah lunas.', 'info');
+
+            const paymentAmount = loan.monthlyInstallment;
+
+            showConfirmation('Konfirmasi Pembayaran', `Bayar angsuran sebesar ${formatCurrency(paymentAmount)} untuk pinjaman ${loan.id}?`, 'success', () => {
+                loan.payments.push({
+                    date: new Date().toISOString(),
+                    amount: paymentAmount,
+                    paidBy: currentUser.name
+                });
+                
+                const principalPayment = loan.amount / loan.tenor;
+                loan.outstandingPrincipal -= principalPayment;
+                if (loan.outstandingPrincipal < 1) loan.outstandingPrincipal = 0;
+
+                if (loan.payments.length >= loan.tenor) {
+                    loan.status = 'paid_off';
+                    loan.outstandingPrincipal = 0;
+                } else {
+                    loan.status = 'active'; // Set back to active, updateLoanStatuses will re-check if needed
+                }
+
+                loans[loanIndex] = loan;
+                logTransaction(loan.memberId, 'Bayar Angsuran', paymentAmount, loan.id);
+                saveData('loans');
+                showToast('Pembayaran angsuran berhasil.', 'success');
+                openLoanDetailsModal(loanId);
+                loadLoansList();
+                loadDashboard();
+            });
+        }
+        
+        // --- PAWN MANAGEMENT ---
+        function openPawnModal() {
+            loadPawnList();
+            $('#pawnModal').css('display', 'flex');
+        }
+
+        function loadPawnList() {
+             const $list = $('#pawnListContainer').empty();
+            if (pawns.length === 0) return $list.html('<div class="empty-state"><p>Belum ada data agunan/gadai.</p></div>');
+            
+            const table = $('<table class="data-table"><thead><tr><th>Anggota</th><th>Barang</th><th>Pinjaman</th><th>Jatuh Tempo</th><th>Status</th><th>Aksi</th></tr></thead><tbody></tbody></table>');
+            const tbody = table.find('tbody');
+            pawns.forEach(pawn => {
+                const member = members.find(m => m.id === pawn.memberId);
+                const isOverdue = moment(pawn.dueDate).isBefore(moment(), 'day') && pawn.status === 'active';
+                let statusClass = pawn.status === 'redeemed' ? 'text-success' : (isOverdue ? 'text-danger' : '');
+                let statusText = isOverdue ? 'JATUH TEMPO' : pawn.status.toUpperCase();
+                
+                tbody.append(`
+                    <tr>
+                        <td>${member ? member.name : 'N/A'}</td>
+                        <td>${pawn.itemName}</td>
+                        <td>${formatCurrency(pawn.loanAmount)}</td>
+                        <td>${moment(pawn.dueDate).format('DD MMM YYYY')}</td>
+                        <td><strong class="${statusClass}">${statusText}</strong></td>
+                        <td>
+                            ${pawn.status === 'active' ? `<button class="btn btn-sm btn-success redeem-pawn-btn" data-id="${pawn.id}">Tebus</button>` : '-'}
+                        </td>
+                    </tr>
+                `);
+            });
+            $list.append(table);
+        }
+
+        function resetPawnForm() {
+            $('#addPawnForm')[0].reset();
+            $('#pawnMemberSearch').val('').removeData('selected-id');
+        }
+
+        function selectMemberForPawn() {}
+
+        function savePawn() {
+            const memberId = $('#pawnMemberSearch').data('selected-id');
+            const itemName = $('#pawnItemName').val();
+            const itemValue = parseFloat($('#pawnItemValue').val());
+            const loanAmount = parseFloat($('#pawnLoanAmount').val());
+            const dueDate = $('#pawnDueDate').val();
+            if (!memberId || !itemName || !(itemValue > 0) || !(loanAmount > 0) || !dueDate) return showToast('Harap lengkapi semua data agunan.', 'error');
+
+            const newPawn = {
+                id: 'PAWN' + moment().format('x'), memberId, itemName, itemValue, loanAmount, dueDate,
+                notes: $('#pawnNotes').val(), status: 'active', pawnDate: new Date().toISOString()
+            };
+            pawns.unshift(newPawn);
+            logTransaction(memberId, 'Gadai Barang', -loanAmount, newPawn.id);
+            saveData('pawns');
+            showToast('Data agunan berhasil disimpan.', 'success');
+            loadPawnList();
+            $('#addPawnModal').hide();
+        }
+
+        function redeemPawn(pawnId) {
+            const pawnIndex = pawns.findIndex(p => p.id === pawnId);
+            if(pawnIndex === -1) return;
+            const pawn = pawns[pawnIndex];
+            
+            showConfirmation('Konfirmasi Penebusan', `Tebus barang "${pawn.itemName}" dengan membayar ${formatCurrency(pawn.loanAmount)}?`, 'success', () => {
+                pawn.status = 'redeemed';
+                pawn.redeemDate = new Date().toISOString();
+                pawns[pawnIndex] = pawn;
+                logTransaction(pawn.memberId, 'Tebus Gadai', pawn.loanAmount, pawn.id);
+                saveData('pawns');
+                showToast('Barang berhasil ditebus.', 'success');
+                loadPawnList();
+            });
+        }
+        
+        // --- REPORTS & HISTORY ---
+        function openHistoryModal() {
+            loadTransactionHistory();
+            $('#historySearchInput').val('');
+            $('#historyModal').css('display', 'flex');
+        }
+
+        function loadTransactionHistory(searchTerm = '') {
+            const $results = $('#historyResultsContainer').empty();
+            searchTerm = searchTerm.toLowerCase();
+            let filteredTransactions = transactions;
+            if(searchTerm) {
+                filteredTransactions = transactions.filter(t => {
+                    const member = members.find(m => m.id === t.memberId);
+                    return t.id.toLowerCase().includes(searchTerm) ||
+                           t.description.toLowerCase().includes(searchTerm) ||
+                           (member && member.name.toLowerCase().includes(searchTerm));
+                });
+            }
+
+            if (filteredTransactions.length === 0) return $results.html('<div class="empty-state"><p>Tidak ada transaksi ditemukan.</p></div>');
+            
+            const table = $('<table class="data-table"><thead><tr><th>Tanggal</th><th>Anggota</th><th>Deskripsi</th><th>Jumlah</th><th>Ref ID</th></tr></thead><tbody></tbody></table>');
+            const tbody = table.find('tbody');
+            filteredTransactions.slice(0, 200).forEach(t => {
+                const member = members.find(m => m.id === t.memberId);
+                const amountClass = t.amount > 0 ? 'text-success' : 'text-danger';
+                tbody.append(`
+                    <tr>
+                        <td>${moment(t.date).format('DD MMM YY, HH:mm')}</td>
+                        <td>${member ? member.name : 'N/A'}</td>
+                        <td>${t.description}</td>
+                        <td><strong class="${amountClass}">${formatCurrency(t.amount)}</strong></td>
+                        <td>${t.refId}</td>
+                    </tr>
+                `);
+            });
+            $results.append(table);
+        }
+        
+        function openRecapReportModal() {
+            $('#recapReportModal').css('display', 'flex');
+            $('#recapReportResults').html('<div class="printable-area"><div class="empty-state"><i class="fas fa-file-alt"></i><p>Pilih periode dan generate laporan untuk melihat data.</p></div></div>');
+            $('#downloadRecapPdfBtn, #printRecapBtn').hide();
+        }
+
+        function generateRecapReport() {
+            let startDate, endDate;
+            const period = $('#recapReportPeriod').val();
+            if (period === 'this_month') { startDate = moment().startOf('month'); endDate = moment().endOf('month'); }
+            else if (period === 'last_month') { startDate = moment().subtract(1, 'months').startOf('month'); endDate = moment().subtract(1, 'months').endOf('month'); }
+            else if (period === 'this_year') { startDate = moment().startOf('year'); endDate = moment().endOf('month'); }
+            else { startDate = moment($('#recapStartDate').val()); endDate = moment($('#recapEndDate').val()).endOf('day'); }
+
+            if (!startDate.isValid() || !endDate.isValid() || endDate.isBefore(startDate)) return showToast('Rentang tanggal tidak valid', 'error');
+            
+            updateLoanStatuses();
+
+            const activeTab = $('#recapReportModal .tabs .tab.active').data('tab');
+            const filteredTransactions = transactions.filter(t => moment(t.date).isBetween(startDate, endDate, null, '[]'));
+            const loansInPeriod = loans.filter(l => moment(l.applicationDate).isBetween(startDate, endDate, null, '[]'));
+            
+            let html = `<div class="printable-area"><div class="text-center mb-3"><h3>${settings.koperasiName}</h3><h4>Laporan ${activeTab === 'profitLossRecap' ? 'Laba Rugi' : (activeTab === 'cashFlowRecap' ? 'Arus Kas' : 'Portofolio Pinjaman')}</h4><p>Periode: ${startDate.format('D MMM YYYY')} - ${endDate.format('D MMM YYYY')}</p></div>`;
+            
+            if (activeTab === 'profitLossRecap') {
+                let interestIncome = 0;
+                loans.forEach(loan => {
+                    const paymentsInPeriod = loan.payments.filter(p => moment(p.date).isBetween(startDate, endDate, null, '[]'));
+                    if (paymentsInPeriod.length > 0) {
+                        const monthlyInterest = loan.amount * (loan.interestRate / 100);
+                        interestIncome += monthlyInterest * paymentsInPeriod.length;
+                    }
+                });
+
+                const operationalCost = 0;
+                const netProfit = interestIncome - operationalCost;
+
+                html += `
+                    <div class="recap-summary-card"><div class="title">Total Pendapatan Bunga (Realisasi)</div><div class="value">${formatCurrency(interestIncome)}</div></div>
+                    <div class="recap-summary-card" style="border-color: var(--danger);"><div class="title">Biaya Operasional</div><div class="value">${formatCurrency(operationalCost)}</div></div>
+                    <div class="recap-summary-card" style="border-color: var(--success);"><div class="title">Laba Bersih</div><div class="value">${formatCurrency(netProfit)}</div></div>
+                `;
+            } else if (activeTab === 'cashFlowRecap') {
+                const cashIn = filteredTransactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
+                const cashOut = filteredTransactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0);
+                const netCashFlow = cashIn + cashOut;
+                html += `
+                    <div class="recap-summary-card" style="border-color: var(--success);"><div class="title">Total Kas Masuk</div><div class="value">${formatCurrency(cashIn)}</div></div>
+                    <div class="recap-summary-card" style="border-color: var(--danger);"><div class="title">Total Kas Keluar</div><div class="value">${formatCurrency(Math.abs(cashOut))}</div></div>
+                    <div class="recap-summary-card"><div class="title">Arus Kas Bersih</div><div class="value ${netCashFlow < 0 ? 'text-danger' : 'text-success'}">${formatCurrency(netCashFlow)}</div></div>
+                `;
+            } else { // portfolioRecap
+                const totalDisbursedInPeriod = loansInPeriod.reduce((sum, l) => sum + l.amount, 0);
+                const activeLoans = loans.filter(l => l.status === 'active' || l.status === 'overdue');
+                const nplLoans = loans.filter(l => l.status === 'overdue');
+                const totalOutstanding = activeLoans.reduce((sum, l) => sum + l.outstandingPrincipal, 0);
+                const nplAmount = nplLoans.reduce((sum, l) => sum + l.outstandingPrincipal, 0);
+                const nplRatio = totalOutstanding > 0 ? (nplAmount / totalOutstanding) * 100 : 0;
+                html += `
+                    <div class="recap-summary-card"><div class="title">Pinjaman Disalurkan (Periode Ini)</div><div class="value">${formatCurrency(totalDisbursedInPeriod)}</div></div>
+                    <div class="recap-summary-card"><div class="title">Total Pinjaman Aktif (Outstanding)</div><div class="value">${formatCurrency(totalOutstanding)}</div></div>
+                    <div class="recap-summary-card" style="border-color: var(--danger);"><div class="title">NPL (Non-Performing Loan)</div><div class="value">${nplRatio.toFixed(2)} % (${formatCurrency(nplAmount)})</div></div>
+                `;
+            }
+            html += '</div>'; // close printable-area
+            $('#recapReportResults').html(html);
+            $('#downloadRecapPdfBtn, #printRecapBtn').show();
+        }
+
+        // --- ALL OTHER MODALS & PROFILES ---
+        function openManageKoperasiInfoModal() {
+            $('#koperasiName').val(settings.koperasiName);
+            $('#koperasiAddress').val(settings.koperasiAddress);
+            $('#koperasiPhone').val(settings.koperasiPhone);
+            $('#koperasiEmail').val(settings.koperasiEmail);
+            $('#manageKoperasiInfoModal').css('display', 'flex');
+        }
+
+        function openControlPanel() {
+            loadUsersList();
+            $('#userFormContainer').hide();
+            $('#panelSecurityCode, #currentPassword, #newPassword').val('');
+            populateRolesDropdown('#userRole');
+            switchModalTab($('#controlPanelModal'), 'users');
+            $('#controlPanelModal').css('display', 'flex');
+        }
+        
+        function openMemberProfileModal(memberId) {
+            const member = members.find(m => m.id === memberId); if (!member) return;
+            
+            const memberLoans = loans.filter(l => l.memberId === memberId);
+            const loansHtml = memberLoans.length > 0 ? memberLoans.map(l => `<div class="summary-row"><span>${l.id} (<strong class="${l.status === 'overdue' ? 'text-danger' : (l.status === 'paid_off' ? 'text-success' : '')}">${l.status.toUpperCase()}</strong>)</span><span>Sisa: ${formatCurrency(l.outstandingPrincipal)}</span></div>`).join('') : '<p>Tidak ada pinjaman aktif.</p>';
+            
+            $('#memberProfileBody').html(`
+                <h3>${member.name}</h3>
+                <p>${member.phone || 'No phone'} | ${member.address || 'No address'}</p>
+                <hr>
+                <h4 class="mt-3">Ringkasan Simpanan</h4>
+                <div class="member-financial-summary">
+                    <div class="summary-row"><span>Simpanan Pokok:</span> <span id="profilePokok">Rp 0</span></div>
+                    <div class="summary-row"><span>Simpanan Wajib:</span> <span id="profileWajib">Rp 0</span></div>
+                    <div class="summary-row"><span>Simpanan Sukarela:</span> <span id="profileSukarela">Rp 0</span></div>
+                    <div class="summary-row total-row"><span>Total Simpanan:</span> <span id="profileTotalSimpanan">Rp 0</span></div>
+                </div>
+                <h4 class="mt-3">Ringkasan Pinjaman</h4>
+                <div class="member-financial-summary" style="border-color:var(--loan-color);">
+                    ${loansHtml}
+                </div>
+            `);
+            const memberSavings = savings.filter(s => s.memberId === memberId);
+            $('#profilePokok').text(formatCurrency(memberSavings.filter(s => s.category === 'pokok').reduce((sum, s) => sum + s.amount, 0)));
+            $('#profileWajib').text(formatCurrency(memberSavings.filter(s => s.category === 'wajib').reduce((sum, s) => sum + s.amount, 0)));
+            $('#profileSukarela').text(formatCurrency(memberSavings.filter(s => s.category === 'sukarela').reduce((sum, s) => sum + s.amount, 0)));
+            $('#profileTotalSimpanan').text(formatCurrency(memberSavings.reduce((sum, s) => sum + s.amount, 0)));
+            $('#memberProfileModal').css('display', 'flex');
+        }
+
+        // --- UTILITY FUNCTIONS ---
+        function updateKoperasiInfo() { $('#koperasiNameHeader').text(settings.koperasiName); document.title = `${settings.koperasiName} - Sistem Keuangan Digital`; }
+        function saveKoperasiInfo() { settings.koperasiName = $('#koperasiName').val(); settings.koperasiAddress = $('#koperasiAddress').val(); settings.koperasiPhone = $('#koperasiPhone').val(); settings.koperasiEmail = $('#koperasiEmail').val(); saveData('settings'); updateKoperasiInfo(); showToast('Informasi koperasi berhasil disimpan', 'success'); $('#manageKoperasiInfoModal').hide(); }
+        function updateCurrentDate() { $('#currentDate').text(moment().format('dddd, D MMMM YYYY')); }
+        function formatCurrency(amount) { return 'Rp ' + (amount != null ? amount : 0).toLocaleString('id-ID'); }
+        function showToast(message, type = 'info', duration = 3000) { const $toast = $('#toast'); $toast.removeClass('success error warning info').addClass(type); $('#toast-message').text(message); $toast.addClass('show'); setTimeout(() => $toast.removeClass('show'), duration); }
+        function showConfirmation(title, message, type = 'success', onConfirm) { $('#confirmTitle').text(title); $('#confirmMessage').text(message); const $confirmBtn = $('#confirmAction'); $confirmBtn.off('click').on('click', () => { onConfirm(); $('#confirmationModal').hide(); }); $confirmBtn.removeClass('btn-success btn-danger btn-warning').addClass(`btn-${type}`); $('#confirmationModal').css('display', 'flex'); }
+        function switchModalTab($modal, tabId) { $modal.find('.tabs .tab').removeClass('active'); $modal.find(`.tabs .tab[data-tab="${tabId}"]`).addClass('active'); $modal.find('.tab-content').removeClass('active').hide(); $modal.find(`#${tabId}Tab, #${tabId}`).addClass('active').show(); }
+        function logTransaction(memberId, description, amount, refId = '') {
+            transactions.unshift({
+                id: 'TRX' + moment().format('x'),
+                date: new Date().toISOString(),
+                memberId, description, amount, refId
+            });
+            saveData('transactions');
+        }
+        
+        // --- SAVE DATA TO LOCALSTORAGE ---
+        function saveData(key) {
+            const dataMap = { users, members, settings, savings, loans, pawns, transactions };
+            localStorage.setItem(STORAGE_KEYS[key.toUpperCase()], JSON.stringify(dataMap[key]));
+        }
+
+        // --- PERMISSIONS & SECURITY ---
+        function getPermissionStructure() { return { "Manajemen Keuangan": { canManageSavings: "Kelola Simpanan (Setor/Tarik)", canManageLoans: "Kelola Pinjaman (Buat/Lihat)", canReceiveInstallments: "Menerima Angsuran", canManagePawns: "Kelola Agunan (Gadai)" }, "Manajemen Data": { canManageMembers: "Kelola Anggota", canManageKoperasiInfo: "Kelola Info Koperasi", canViewReports: "Lihat Laporan Keuangan" }, "Administrasi Sistem": { canAccessControlPanel: "Akses Kontrol Panel (Pengguna, Keamanan)", canBackupRestore: "Backup & Restore Data", canResetData: "Reset Semua Data" } }; }
+        function getPermissionKeys(isFullAccess = false) { const permissions = {}; Object.values(getPermissionStructure()).forEach(group => Object.keys(group).forEach(key => permissions[key] = isFullAccess)); return permissions; }
+        function checkPermission(permissionName) { if (!currentUser) return false; if (currentUser.role === 'admin') return true; return settings.roles[currentUser.role]?.permissions?.[permissionName] || false; }
+        
+        function loadUsersList() {const $list = $('#usersList').empty();const table = $('<table class="data-table"><thead><tr><th>Nama</th><th>Username</th><th>Role</th><th>Aksi</th></tr></thead><tbody></tbody></table>');const tbody = table.find('tbody');users.forEach(user => {tbody.append(`<tr><td>${user.name}</td><td>${user.username}</td><td>${settings.roles[user.role]?.label || user.role}</td><td>${user.id !== DEFAULT_ADMIN.id ? `<button class="btn btn-sm btn-info edit-user" data-id="${user.id}">Edit</button> <button class="btn btn-sm btn-danger delete-user" data-id="${user.id}">Hapus</button>` : 'Default Admin'}</td></tr>`);});$list.append(table);}
+        function resetUserForm() {$('#userForm')[0].reset();$('#userIdInput').val('');$('#userFormTitle').text('Tambah Pengguna');}
+        function editUser(id) {const user = users.find(u => u.id === id);if (!user) return;resetUserForm();$('#userFormTitle').text('Edit Pengguna');$('#userIdInput').val(user.id);$('#userName').val(user.name);$('#userUsername').val(user.username).prop('disabled', true);$('#userRole').val(user.role);$('#userFormContainer').slideDown();}
+        function saveUser(e) {e.preventDefault();const id = $('#userIdInput').val() || 'U' + Date.now();const password = $('#userPassword').val();const existingUser = users.find(u => u.id === id);if (existingUser) { if (password) existingUser.password = CryptoJS.SHA256(password).toString(); existingUser.name = $('#userName').val(); existingUser.role = $('#userRole').val(); showToast('Data pengguna diperbarui', 'success');} else { if(!password) return showToast('Password wajib diisi untuk pengguna baru.', 'error'); const newUserData = {id,name: $('#userName').val(),username: $('#userUsername').val(),role: $('#userRole').val(), password: CryptoJS.SHA256(password).toString()}; users.push(newUserData); showToast('Pengguna baru ditambahkan', 'success');}saveData('users');loadUsersList();resetUserForm();$('#userUsername').prop('disabled', false);$('#userFormContainer').slideUp();}
+        function deleteUser(id) {if(users.length <= 1) return showToast('Tidak dapat menghapus satu-satunya pengguna.', 'error'); if(id === currentUser.id) return showToast('Tidak dapat menghapus akun Anda sendiri.', 'error');promptForPassword('panel', () => {showConfirmation('Hapus Pengguna', 'Yakin ingin menghapus pengguna ini?', 'danger', () => {users = users.filter(u => u.id !== id);saveData('users');loadUsersList();showToast('Pengguna dihapus', 'success');});});}
+        function changeSecurityCode(e) {e.preventDefault();const newCode = $('#panelSecurityCode').val();if(newCode.length < 6) return showToast('Password keamanan minimal 6 karakter.', 'error');settings.panelSecurityCode = CryptoJS.SHA256(newCode).toString();saveData('settings');showToast('Password keamanan berhasil diubah.', 'success');$(e.target).find('input').val('');}
+        function changeOwnPassword(e) {e.preventDefault();const currentPwd = $('#currentPassword').val();const newPwd = $('#newPassword').val();if(newPwd.length < 6) return showToast('Password baru minimal 6 karakter.', 'error');if (CryptoJS.SHA256(currentPwd).toString() !== currentUser.password) return showToast('Password saat ini salah.', 'error');const userIndex = users.findIndex(u => u.id === currentUser.id);users[userIndex].password = CryptoJS.SHA256(newPwd).toString();currentUser.password = users[userIndex].password;sessionStorage.setItem('coop_current_user', JSON.stringify(currentUser));saveData('users');showToast('Password Anda berhasil diubah.', 'success');$('#changeOwnPasswordForm')[0].reset();}
+        function openRoleManagementModal() {const $tabs = $('#roleTabsContainer').empty();const $permissions = $('#rolePermissionsContainer').empty();Object.entries(settings.roles).forEach(([role, data], index) => {$tabs.append(`<div class="tab ${index === 0 ? 'active' : ''}" data-tab="${role}">${data.label}</div>`);});loadRolePermissions(Object.keys(settings.roles)[0]);$('#roleTabsContainer').off('click').on('click', '.tab', function() {$('#roleTabsContainer .tab').removeClass('active');$(this).addClass('active');loadRolePermissions($(this).data('tab'));});$('#roleManagementModal').css('display', 'flex');}
+        function loadRolePermissions(role) {const $container = $('#rolePermissionsContainer').empty().data('current-role', role);const roleData = settings.roles[role];if (!roleData) return;const structure = getPermissionStructure();Object.entries(structure).forEach(([groupName, permissions]) => {let groupHtml = `<div class="permission-group"><div class="permission-group-title">${groupName}</div>`;Object.entries(permissions).forEach(([key, label]) => {const isChecked = roleData.permissions[key] ? 'checked' : '';const isDisabled = !roleData.isEditable ? 'disabled' : '';groupHtml += `<div class="permission-item"><label><input type="checkbox" class="permission-checkbox" data-key="${key}" ${isChecked} ${isDisabled}> ${label}</label></div>`;});groupHtml += '</div>';$container.append(groupHtml);});}
+        function saveRolePermissions() {const role = $('#rolePermissionsContainer').data('current-role');if (!settings.roles[role] || !settings.roles[role].isEditable) return showToast('Role ini tidak dapat diubah.', 'error');$('.permission-checkbox').each(function() {const key = $(this).data('key');settings.roles[role].permissions[key] = $(this).is(':checked');});saveData('settings');showToast(`Hak akses untuk ${settings.roles[role].label} berhasil disimpan.`, 'success');}
+        function populateRolesDropdown(selector) { const $select = $(selector).empty(); Object.entries(settings.roles).forEach(([key, val]) => $select.append(`<option value="${key}">${val.label}</option>`));}
+        function promptForPassword(type, callback) { passwordPromptCallback = callback; const title = type === 'panel' ? 'Akses Terbatas' : ''; $('#passwordPromptTitle').text(title); $('#passwordPromptMessage').text('Masukkan password keamanan untuk melanjutkan.'); $('#passwordPromptInput').val('').focus(); $('#passwordPromptModal').css('display', 'flex'); }
+        function submitPasswordPrompt() { const password = $('#passwordPromptInput').val(); const correctHash = settings.panelSecurityCode; if (CryptoJS.SHA256(password).toString() === correctHash) { if (passwordPromptCallback) passwordPromptCallback(); passwordPromptCallback=null; $('#passwordPromptModal').hide(); } else { showToast('Password keamanan salah.', 'error'); } }
+        
+        // Data Backup, Restore, Reset
+        function backupData() {
+            try {
+                const dataToBackup = {};
+                Object.keys(STORAGE_KEYS).forEach(key => { dataToBackup[STORAGE_KEYS[key]] = JSON.parse(localStorage.getItem(STORAGE_KEYS[key])); });
+                const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(dataToBackup), ENCRYPTION_KEY).toString();
+                const blob = new Blob([encryptedData], {type: "text/plain;charset=utf-8"});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `backup-koperasi-${moment().format('YYYYMMDD')}.lkscoop`;
+                link.click();
+                showToast('Backup berhasil dibuat.', 'success');
+            } catch (e) {
+                showToast('Gagal membuat backup. ' + e.message, 'error');
+            }
+        }
+        function restoreFromFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                showConfirmation('Restore Data', 'Ini akan menimpa semua data saat ini. Lanjutkan?', 'danger', () => {
+                    try {
+                        const decrypted = CryptoJS.AES.decrypt(e.target.result, ENCRYPTION_KEY).toString(CryptoJS.enc.Utf8);
+                        if(!decrypted) throw new Error("Decryption failed. Invalid key or corrupt file.");
+                        const restoredData = JSON.parse(decrypted);
+                        Object.keys(restoredData).forEach(key => { localStorage.setItem(key, JSON.stringify(restoredData[key])); });
+                        showToast('Data berhasil dipulihkan. Aplikasi akan dimulai ulang.', 'success');
+                        setTimeout(() => location.reload(), 2000);
+                    } catch (err) {
+                        showToast('File backup tidak valid atau rusak.', 'error');
+                    }
+                });
+            };
+            reader.readAsText(file);
+        }
+        function resetAllData() { showConfirmation('RESET SEMUA DATA', 'ANDA YAKIN? Tindakan ini tidak dapat diurungkan dan akan menghapus semua data anggota, transaksi, dan pengaturan.', 'danger', () => { Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key)); sessionStorage.clear(); showToast('Semua data telah direset. Aplikasi akan dimulai ulang.', 'success'); setTimeout(() => location.reload(), 2000); }); }
+        
+        // --- PDF, Print & [NEW] Excel Export ---
+        async function downloadPdf(elementId, fileName) {
+            const element = document.querySelector(elementId);
+            if (!element) return;
+            showToast('Mempersiapkan PDF...', 'info');
+            try {
+                const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: null });
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({ orientation: 'p', unit: 'px', format: [canvas.width, canvas.height] });
+                pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                pdf.save(fileName);
+            } catch (e) { showToast('Gagal membuat PDF: ' + e.message, 'error'); }
+        }
+        function printElement(elementId) { const content = $(elementId).clone(); $('#print-container').html(content).show(); setTimeout(() => { window.print(); $('#print-container').empty().hide(); }, 250); }
+        function openKtaModal(memberId) { const member = members.find(m => m.id === memberId); if(!member) return; $('#ktaKoperasiName').text(settings.koperasiName); $('#ktaKoperasiContact').text(`${settings.koperasiAddress}, ${settings.koperasiPhone}`); $('#ktaMemberName').text(member.name); $('#ktaMemberId').text(`ID: ${member.id}`); const qrContainer = document.getElementById('ktaQrcodeImg'); qrContainer.innerHTML = ''; new QRCode(qrContainer, { text: JSON.stringify({id: member.id, name: member.name}), width: 150, height: 150, colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H }); $('#ktaModal').css('display', 'flex'); }
+        function downloadKtaAsPdf() { downloadPdf('#ktaCard', `KTA-${$('#ktaMemberName').text().replace(/ /g,"_")}.pdf`); }
+        function downloadRecapAsPdf() { downloadPdf('#recapReportResults .printable-area', `Laporan-Keuangan-${moment().format('YYYY-MM-DD')}.pdf`); }
+        
+        // [NEW] Excel Export Functions
+        function exportToExcel(data, fileName) {
+            try {
+                const worksheet = XLSX.utils.json_to_sheet(data);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
+                XLSX.writeFile(workbook, `${fileName}_${moment().format('YYYYMMDD')}.xlsx`);
+                showToast('Ekspor Excel berhasil.', 'success');
+            } catch (e) {
+                showToast('Gagal mengekspor Excel: ' + e.message, 'error');
+            }
+        }
+        function exportMembersToExcel() {
+            const dataToExport = members.map(m => ({
+                'ID Anggota': m.id, 'Nama': m.name, 'Telepon': m.phone, 'Alamat': m.address,
+                'Tanggal Bergabung': moment(m.joinDate).format('YYYY-MM-DD')
+            }));
+            exportToExcel(dataToExport, 'Daftar_Anggota');
+        }
+        function exportLoansToExcel() {
+            const dataToExport = loans.map(l => {
+                const member = members.find(m => m.id === l.memberId);
+                return {
+                    'ID Pinjaman': l.id, 'Nama Anggota': member ? member.name : 'N/A', 'Jumlah Pinjaman': l.amount,
+                    'Sisa Pokok': l.outstandingPrincipal, 'Tenor (Bulan)': l.tenor, 'Bunga (%)': l.interestRate,
+                    'Angsuran / Bulan': l.monthlyInstallment, 'Status': l.status.toUpperCase(),
+                    'Tanggal Pengajuan': moment(l.applicationDate).format('YYYY-MM-DD')
+                };
+            });
+            exportToExcel(dataToExport, 'Daftar_Pinjaman');
+        }
+        function exportPawnsToExcel() {
+            const dataToExport = pawns.map(p => {
+                const member = members.find(m => m.id === p.memberId);
+                return {
+                    'ID Gadai': p.id, 'Nama Anggota': member ? member.name : 'N/A', 'Nama Barang': p.itemName,
+                    'Nilai Taksiran': p.itemValue, 'Jumlah Pinjaman': p.loanAmount, 'Status': p.status.toUpperCase(),
+                    'Tanggal Gadai': moment(p.pawnDate).format('YYYY-MM-DD'),
+                    'Jatuh Tempo': moment(p.dueDate).format('YYYY-MM-DD'),
+                    'Tanggal Tebus': p.redeemDate ? moment(p.redeemDate).format('YYYY-MM-DD') : ''
+                };
+            });
+            exportToExcel(dataToExport, 'Daftar_Agunan_Gadai');
+        }
+        function exportHistoryToExcel() {
+            const dataToExport = transactions.map(t => {
+                const member = members.find(m => m.id === t.memberId);
+                return {
+                    'ID Transaksi': t.id, 'Tanggal': moment(t.date).format('YYYY-MM-DD HH:mm:ss'),
+                    'Nama Anggota': member ? member.name : 'N/A', 'ID Anggota': t.memberId,
+                    'Deskripsi': t.description, 'Jumlah': t.amount, 'ID Referensi': t.refId
+                };
+            });
+            exportToExcel(dataToExport, 'Histori_Transaksi');
+        }
+    </script>
+</body>
+</html>
