@@ -1,0 +1,3612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventra App - Sistem Penjualan Tiket Wisata</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            /* == START: Perubahan Skema Warna == */
+            --primary-color: #4c6ef5;   /* Modern Blue */
+            --secondary-color: #7950f2; /* Violet */
+            --tertiary-color: #be4bdb;  /* Magenta */
+            --accent-color: #f06595;   /* Soft Pink */
+            /* == END: Perubahan Skema Warna == */
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #28a745;
+            --warning-color: #fd7e14;
+            --danger-color: #dc3545;
+            --info-color: #0dcaf0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .navbar, .app-footer, .card-header, .toast-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--tertiary-color) 100%) !important;
+        }
+
+        .navbar {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--tertiary-color) 100%);
+            color: white;
+            min-height: calc(100vh - 56px);
+            padding: 0;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .sidebar .nav-link.active {
+            color: white;
+            font-weight: 600;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 24px;
+            background-color: white;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            padding: 15px 20px;
+            border-bottom: 0;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #364fc7;
+            border-color: #364fc7;
+        }
+        
+        /* --- START: Desain Struk Pembayaran Baru --- */
+        .receipt-container {
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            background-color: #fff;
+            color: #000;
+        }
+        .receipt-header { text-align: center; margin-bottom: 15px; }
+        .receipt-logo { max-width: 100px; height: auto; margin-bottom: 10px; }
+        .receipt-title { font-weight: bold; font-size: 1.1rem; margin: 0; }
+        .receipt-subtitle { font-size: 0.8rem; margin: 0; }
+        .receipt-divider { border-top: 1px dashed #000; margin: 10px 0; }
+        .receipt-details p { margin: 2px 0; font-size: 0.8rem; }
+        .receipt-items { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.8rem; }
+        .receipt-items th, .receipt-items td { padding: 4px 0; }
+        .receipt-items th { text-align: left; border-bottom: 1px dashed #000; }
+        .receipt-items .col-item { width: 45%; }
+        .receipt-items .col-qty { width: 15%; text-align: center; }
+        .receipt-items .col-price { width: 40%; text-align: right; }
+        .receipt-totals { width: 100%; font-size: 0.8rem; }
+        .receipt-totals td { padding: 2px 0; }
+        .receipt-totals .label { text-align: left; }
+        .receipt-totals .value { text-align: right; }
+        .receipt-totals .total-row td { font-weight: bold; padding-top: 8px; border-top: 1px dashed #000; }
+        .receipt-footer { text-align: center; margin-top: 15px; font-size: 0.75rem; }
+        /* --- END: Desain Struk Pembayaran Baru --- */
+
+        /* --- START: Desain Tiket Cetak Baru (REVISI TOTAL) --- */
+        .printable-ticket-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            gap: 5mm;
+        }
+        .ticket-small-print {
+            width: 95mm;
+            height: 54mm;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            position: relative;
+            background-color: #fff;
+            color: #212529;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow: hidden;
+            page-break-inside: avoid;
+        }
+        .ticket-small-print .ticket-main {
+            flex-grow: 1;
+            padding: 4mm;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(45deg, #f9f9f9 25%, transparent 25%), linear-gradient(-45deg, #f9f9f9 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f9f9f9 75%), linear-gradient(-45deg, transparent 75%, #f9f9f9 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+        .ticket-small-print .ticket-stub {
+            width: 28mm;
+            background-color: #f8f9fa;
+            border-left: 2px dashed #cccccc;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4mm 2mm;
+            text-align: center;
+        }
+        .ticket-small-print .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2mm;
+        }
+        .ticket-small-print .logo {
+            width: 12mm;
+            height: 12mm;
+            margin-right: 3mm;
+            object-fit: contain;
+        }
+        .ticket-small-print .venue-info {
+            line-height: 1.2;
+        }
+        .ticket-small-print .venue-name {
+            font-size: 9pt;
+            font-weight: 700;
+        }
+        .ticket-small-print .venue-location {
+            font-size: 6.5pt;
+            color: #555;
+        }
+        .ticket-small-print .ticket-body {
+            flex-grow: 1;
+            display: flex;
+            margin-top: 2mm;
+            border-top: 1px solid #eee;
+            padding-top: 2mm;
+        }
+        .ticket-small-print .ticket-details {
+            flex-grow: 1;
+            line-height: 1.4; /* Mengatur jarak antar baris agar lebih rapat */
+        }
+        .ticket-small-print .ticket-type {
+            font-size: 11pt;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0; /* Menghapus margin bawaan */
+        }
+        .ticket-small-print .ticket-code {
+            font-family: 'Courier New', monospace;
+            font-size: 14pt;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin: 0; /* Menghapus margin bawaan */
+        }
+        .ticket-small-print .ticket-expiry {
+            font-size: 7.5pt;
+            color: red; /* PERBAIKAN: Warna diubah menjadi merah */
+            margin: 0; /* Menghapus margin bawaan */
+        }
+        .ticket-small-print .ticket-qr {
+            width: 18mm;
+            height: 18mm;
+            margin-left: 3mm;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* START: Penambahan style untuk QR Code */
+        .ticket-small-print .ticket-qr img,
+        .ticket-small-print .ticket-qr canvas {
+            max-width: 100%;
+            height: auto;
+        }
+        /* END: Penambahan style untuk QR Code */
+        .ticket-small-print .ticket-footer {
+            margin-top: auto;
+            font-size: 6.5pt;
+            color: #777;
+        }
+        .ticket-stub .stub-venue {
+            font-weight: 700;
+            font-size: 8pt;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            opacity: 0.5;
+        }
+        .ticket-stub .stub-details {
+            font-size: 8pt;
+        }
+        .ticket-stub .stub-type { font-weight: 600; }
+        .ticket-stub .stub-code { 
+            font-family: 'Courier New', monospace;
+            font-weight: bold; 
+            font-size: 9pt;
+            margin: 4px 0;
+        }
+        .ticket-stub .stub-price { 
+            font-weight: bold; 
+            font-size: 9pt;
+            color: red; /* PERBAIKAN: Warna diubah menjadi merah */
+        }
+        /* --- END: Desain Tiket Cetak Baru (REVISI TOTAL) --- */
+
+
+        /* == START: PERBAIKAN & PENYEMPURNAAN KODE CETAK == */
+        #printable-content { 
+            display: none; 
+        }
+
+        @media print {
+            body, .container-fluid {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+            }
+
+            /* Sembunyikan semua elemen kecuali area cetak */
+            body > *:not(#printable-content) {
+                display: none !important;
+            }
+
+            /* Pastikan area cetak dan semua isinya terlihat */
+            #printable-content {
+                display: block !important;
+                visibility: visible !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 10mm; /* Margin halaman cetak */
+            }
+
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+            }
+
+            /* Pengaturan halaman cetak */
+            @page {
+                size: A4; /* Ukuran kertas dapat disesuaikan di dialog print */
+                margin: 0;
+            }
+        }
+        /* == END: PERBAIKAN & PENYEMPURNAAN KODE CETAK == */
+        
+        @media (max-width: 768px) {
+            .sidebar { min-height: auto; }
+        }
+        
+        .restricted {
+            opacity: 0.6;
+            pointer-events: none;
+            position: relative;
+        }
+        
+        .restricted::after {
+            content: "⛔";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: var(--danger-color);
+            z-index: 100;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 5px 5px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .search-result-item {
+            padding: 8px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .search-result-item:hover { background-color: #f5f5f5; }
+        .search-result-item .badge { margin-left: 5px; }
+        
+        .batch-actions { margin-bottom: 15px; }
+        .select-all-checkbox { margin-right: 10px; }
+        .ticket-checkbox { margin-right: 5px; }
+        
+        .app-footer {
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        /* == START: Perbaikan Warna Font Footer == */
+        .app-footer a { color: var(--light-color); text-decoration: none; font-weight: 600; }
+        .app-footer a:hover { text-decoration: underline; color: #fff; }
+        /* == END: Perbaikan Warna Font Footer == */
+        
+        .badge.bg-primary { background-color: var(--primary-color) !important; }
+        .border-bottom { border-bottom: 1px solid rgba(0,0,0,0.1) !important; }
+        .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(0,0,0,0.03); }
+        
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--secondary-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
+        
+        .spinner-container { display: flex; justify-content: center; align-items: center; height: 100px; }
+        .spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 0.25em solid var(--primary-color);
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner 0.75s linear infinite;
+        }
+        
+        @keyframes spinner {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255, 255, 255, 0.7); display: flex;
+            justify-content: center; align-items: center; z-index: 9999;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+        }
+        .loading-overlay.show { opacity: 1; visibility: visible; }
+        .loading-content {
+            background-color: white; padding: 30px; border-radius: 10px;
+            text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .report-summary-card { border-left: 5px solid var(--primary-color); background-color: #f1f3f5; }
+        
+        /* == START: Fitur Hak Akses == */
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        /* == END: Fitur Hak Akses == */
+
+        /* == START: Gaya Notifikasi Premium == */
+        #premiumNotificationModal .modal-content {
+            background: linear-gradient(135deg, var(--dark-color) 0%, #434343 100%);
+            color: white;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        #premiumNotificationModal .modal-body {
+            padding: 40px;
+            text-align: center;
+        }
+        #premiumNotificationModal .icon {
+            font-size: 50px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--accent-color);
+        }
+        #premiumNotificationModal h3 {
+            font-weight: 700;
+            color: #fff;
+        }
+        #premiumNotificationModal p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+        #premiumNotificationModal .btn {
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        #premiumNotificationModal .btn-premium {
+            background: linear-gradient(45deg, var(--accent-color), var(--tertiary-color));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(240, 101, 149, 0.4);
+        }
+        #premiumNotificationModal .btn-premium:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(240, 101, 149, 0.6);
+        }
+        #premiumNotificationModal .btn-outline-light {
+             border-width: 2px;
+        }
+        #premiumNotificationModal .btn-outline-light:hover {
+            background-color: white;
+            color: var(--dark-color);
+        }
+        /* == END: Gaya Notifikasi Premium == */
+
+        /* == START: Gaya Captcha == */
+        #captcha-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        #captcha-display {
+            padding: 10px 20px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-decoration: line-through;
+            text-decoration-color: var(--secondary-color);
+            user-select: none;
+            color: var(--dark-color);
+            border: 2px dashed #ccc;
+        }
+        #refreshCaptchaBtn {
+            font-size: 1.5rem;
+        }
+        /* == END: Gaya Captcha == */
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p class="mt-3 mb-0">Memproses data...</p>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4 no-print">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-gem me-2"></i>Ventra App
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span id="currentUsername">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="https://wa.me/6287865614222" target="_blank"><i class="fab fa-whatsapp me-2"></i>Bantuan via WhatsApp</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal"><i class="fas fa-key me-2"></i>Ganti Password</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2 col-md-3 d-md-block sidebar collapse no-print" id="sidebarMenu">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-section="dashboardSection" id="dashboardLink">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="generateTicketSection" id="generateTicketLink">
+                                <i class="fas fa-gem"></i> Generate Tiket
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="stockTicketSection" id="stockTicketLink">
+                                <i class="fas fa-boxes"></i> Stok Tiket
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="salesSection" id="salesLink">
+                                <i class="fas fa-cash-register"></i> Penjualan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="transactionsSection" id="transactionsLink">
+                                <i class="fas fa-history"></i> Transaksi
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="reportsSection" id="reportsLink">
+                                <i class="fas fa-chart-bar"></i> Laporan
+                            </a>
+                        </li>
+                        <li class="nav-item restricted-link" id="usersLinkContainer">
+                            <a class="nav-link" href="#" data-section="usersSection" id="usersLink">
+                                <i class="fas fa-users-cog"></i> Pengguna
+                            </a>
+                        </li>
+                        <li class="nav-item restricted-link" id="settingsLinkContainer">
+                            <a class="nav-link" href="#" data-section="settingsSection" id="settingsLink">
+                                <i class="fas fa-cog"></i> Pengaturan
+                            </a>
+                        </li>
+                        <li class="nav-item restricted-link" id="backupLinkContainer">
+                            <a class="nav-link" href="#" data-section="backupSection" id="backupLink">
+                                <i class="fas fa-database"></i> Backup & Restore
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4">
+                <div class="section" id="dashboardSection">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Dashboard</h1>
+                        <button class="btn btn-sm btn-outline-primary" id="refreshDashboardBtn">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i class="fas fa-box-open me-2"></i>Stok Tiket</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-text text-center" id="stockCount">0</h3>
+                                    <p class="text-muted text-center">Tiket Tersedia</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i class="fas fa-money-bill-wave me-2"></i>Penjualan Hari Ini</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-text text-center" id="todaySalesCount">0</h3>
+                                    <p class="text-muted text-center">Tiket Terjual</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i class="fas fa-wallet me-2"></i>Pendapatan Hari Ini</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-text text-center" id="todayRevenue">Rp 0</h3>
+                                    <p class="text-muted text-center">Total Pendapatan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i class="fas fa-chart-line me-2"></i>Penjualan 7 Hari Terakhir</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="salesChart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i class="fas fa-bell me-2"></i>Aktivitas Terakhir</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group" id="recentActivities">
+                                        <div class="list-group-item">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <small class="text-muted">Tidak ada aktivitas terakhir</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section d-none" id="generateTicketSection">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Generate Tiket</h1>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-cogs me-2"></i>Pengaturan Tiket</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="generateTicketForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="ticketType" class="form-label">Jenis Tiket</label>
+                                        <select class="form-select" id="ticketType" required>
+                                            <option value="regular">Regular</option>
+                                            <option value="vip">VIP</option>
+                                            <option value="family">Family Package</option>
+                                            <option value="group">Group</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="ticketPrice" class="form-label">Harga Tiket (Rp)</label>
+                                        <input type="number" class="form-control" id="ticketPrice" min="1000" value="50000" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="ticketQuantity" class="form-label">Jumlah Tiket</label>
+                                        <input type="number" class="form-control" id="ticketQuantity" min="1" max="1000" value="10" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="ticketPrefix" class="form-label">Prefix Kode Tiket (Opsional)</label>
+                                        <input type="text" class="form-control" id="ticketPrefix" maxlength="4" placeholder="VT">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ticketExpiry" class="form-label">Tanggal Kedaluwarsa</label>
+                                    <input type="date" class="form-control" id="ticketExpiry">
+                                    <div class="form-text">Biarkan kosong jika tidak ada kedaluwarsa</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-gem me-2"></i>Generate Tiket
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="card" id="generatedTicketsCard" style="display: none;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-gem me-2"></i>Tiket yang Digenerate</h5>
+                            <button class="btn btn-sm btn-success" id="printAllGeneratedTicketsBtn">
+                                <i class="fas fa-print me-1"></i>Cetak Semua
+                            </button>
+                        </div>
+                        <div class="card-body" id="generatedTicketsContainer">
+                            </div>
+                    </div>
+                </div>
+                
+                <div class="section d-none" id="stockTicketSection">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Stok Tiket</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="exportStockBtn">
+                                    <i class="fas fa-file-export me-1"></i>Export
+                                </button>
+                            </div>
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-warning restricted" id="deleteExpiredBtn" title="Hapus semua tiket yang sudah kedaluwarsa">
+                                    <i class="fas fa-calendar-times me-1"></i>Hapus Kedaluwarsa
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-info restricted" id="deleteSoldBtn" title="Hapus semua tiket yang sudah terjual">
+                                    <i class="fas fa-check-circle me-1"></i>Hapus Terjual
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger restricted" id="clearStockBtn" title="Hapus semua tiket dari sistem">
+                                    <i class="fas fa-trash me-1"></i>Hapus Semua
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-filter me-2"></i>Filter</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="filterStatus" class="form-label">Status</label>
+                                    <select class="form-select" id="filterStatus">
+                                        <option value="all">Semua</option>
+                                        <option value="available">Tersedia</option>
+                                        <option value="sold">Terjual</option>
+                                        <option value="expired">Kedaluwarsa</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="filterType" class="form-label">Jenis Tiket</label>
+                                    <select class="form-select" id="filterType">
+                                        <option value="all">Semua</option>
+                                        <option value="regular">Regular</option>
+                                        <option value="vip">VIP</option>
+                                        <option value="family">Family Package</option>
+                                        <option value="group">Group</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="filterDate" class="form-label">Tanggal Generate</label>
+                                    <input type="date" class="form-control" id="filterDate">
+                                </div>
+                                <div class="col-md-3 d-flex align-items-end">
+                                     <button class="btn btn-outline-secondary w-100" id="clearStockFilterBtn">
+                                        <i class="fas fa-eraser me-1"></i>Reset Filter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="batch-actions mb-3">
+                        <button class="btn btn-sm btn-primary" id="addSelectedToCartBtn">
+                            <i class="fas fa-cart-plus me-1"></i>Tambahkan ke Keranjang
+                        </button>
+                        <div class="form-check form-check-inline ms-3">
+                            <input class="form-check-input select-all-checkbox" type="checkbox" id="selectAllTickets">
+                            <label class="form-check-label" for="selectAllTickets">Pilih Semua</label>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-boxes me-2"></i>Daftar Tiket</h5>
+                            <div class="d-flex">
+                                <input type="text" class="form-control form-control-sm me-2" id="searchTicketInput" placeholder="Cari kode tiket..." style="width: 200px;">
+                                <button class="btn btn-sm btn-outline-primary" id="refreshStockBtn">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="stockTable">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="selectAllHeader"></th>
+                                            <th>Kode Tiket</th>
+                                            <th>Jenis</th>
+                                            <th>Harga</th>
+                                            <th>Status</th>
+                                            <th>Generate Pada</th>
+                                            <th>Kedaluwarsa</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="stockTableBody">
+                                        </tbody>
+                                </table>
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center" id="stockPagination">
+                                    </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section d-none" id="salesSection">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Penjualan Tiket</h1>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i class="fas fa-shopping-cart me-2"></i>Kasir</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="search-container">
+                                        <label for="ticketSearchInput" class="form-label">Cari & Tambah Tiket</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="salesTicketSearchInput" placeholder="Masukkan kode tiket atau scan barcode">
+                                            <button class="btn btn-outline-secondary" type="button" id="searchTicketBtn">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                        <div class="search-results" id="ticketSearchResults"></div>
+                                    </div>
+                                    
+                                    <div class="table-responsive mt-4">
+                                        <h6 class="mb-3">Keranjang Belanja</h6>
+                                        <table class="table table-striped" id="cartTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Kode Tiket</th>
+                                                    <th>Jenis</th>
+                                                    <th>Harga</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="cartTableBody">
+                                                </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="2" class="text-end fw-bold">Total:</td>
+                                                    <td class="fw-bold" id="cartTotal">Rp 0</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i class="fas fa-money-bill-wave me-2"></i>Pembayaran</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="paymentForm">
+                                        <div class="mb-3">
+                                            <label for="paymentMethod" class="form-label">Metode Pembayaran</label>
+                                            <select class="form-select" id="paymentMethod" required>
+                                                <option value="cash">Tunai</option>
+                                                <option value="debit">Kartu Debit</option>
+                                                <option value="credit">Kartu Kredit</option>
+                                                <option value="transfer">Transfer Bank</option>
+                                                <option value="ewallet">E-Wallet</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="customerName" class="form-label">Nama Pelanggan (Opsional)</label>
+                                            <input type="text" class="form-control" id="customerName" placeholder="Nama pelanggan">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="totalAmount" class="form-label">Total Pembayaran</label>
+                                            <input type="text" class="form-control" id="totalAmount" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="amountPaid" class="form-label">Jumlah Dibayar</label>
+                                            <input type="number" class="form-control" id="amountPaid" min="0" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="changeAmount" class="form-label">Kembalian</label>
+                                            <input type="text" class="form-control" id="changeAmount" readonly>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button type="submit" class="btn btn-success" id="completePaymentBtn">
+                                                <i class="fas fa-check-circle me-2"></i>Selesaikan Pembayaran
+                                            </button>
+                                            <button type="button" class="btn btn-danger" id="cancelTransactionBtn">
+                                                <i class="fas fa-times-circle me-2"></i>Batalkan Transaksi
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section d-none" id="transactionsSection">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Riwayat Transaksi</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="exportTransactionsBtn">
+                                    <i class="fas fa-file-export me-1"></i>Export
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger restricted" id="clearTransactionsBtn">
+                                    <i class="fas fa-trash me-1"></i>Hapus Riwayat
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-filter me-2"></i>Filter</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="transactionFilterDateFrom" class="form-label">Dari Tanggal</label>
+                                    <input type="date" class="form-control" id="transactionFilterDateFrom">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="transactionFilterDateTo" class="form-label">Sampai Tanggal</label>
+                                    <input type="date" class="form-control" id="transactionFilterDateTo">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="transactionFilterMethod" class="form-label">Metode Pembayaran</label>
+                                    <select class="form-select" id="transactionFilterMethod">
+                                        <option value="all">Semua</option>
+                                        <option value="cash">Tunai</option>
+                                        <option value="debit">Kartu Debit</option>
+                                        <option value="credit">Kartu Kredit</option>
+                                        <option value="transfer">Transfer Bank</option>
+                                        <option value="ewallet">E-Wallet</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="transactionFilterUser" class="form-label">Kasir</label>
+                                    <select class="form-select" id="transactionFilterUser">
+                                        <option value="all">Semua</option>
+                                        </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-list me-2"></i>Daftar Transaksi</h5>
+                            <div class="d-flex">
+                                <input type="text" class="form-control form-control-sm me-2" id="searchTransactionInput" placeholder="Cari ID transaksi..." style="width: 200px;">
+                                <button class="btn btn-sm btn-outline-primary" id="refreshTransactionsBtn">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="transactionsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Transaksi</th>
+                                            <th>Tanggal</th>
+                                            <th>Kasir</th>
+                                            <th>Jumlah Tiket</th>
+                                            <th>Total</th>
+                                            <th>Metode</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="transactionsTableBody">
+                                        </tbody>
+                                </table>
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center" id="transactionsPagination">
+                                    </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section d-none" id="reportsSection">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Laporan</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0 no-print">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="printReportBtn">
+                                    <i class="fas fa-print me-1"></i>Cetak
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-success" id="exportReportBtn">
+                                    <i class="fas fa-file-export me-1"></i>Export PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4 no-print">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-filter me-2"></i>Filter Laporan</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="reportType" class="form-label">Jenis Laporan</label>
+                                    <select class="form-select" id="reportType">
+                                        <option value="daily">Harian</option>
+                                        <option value="weekly">Mingguan</option>
+                                        <option value="monthly">Bulanan</option>
+                                        <option value="yearly">Tahunan</option>
+                                        <option value="custom">Custom</option>
+                                        <option value="deleted">Laporan Tiket Dihapus</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" id="reportDateContainer">
+                                    <label for="reportDate" class="form-label">Tanggal</label>
+                                    <input type="date" class="form-control" id="reportDate">
+                                </div>
+                                <div class="col-md-4 d-none" id="reportDateRangeContainer">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="reportDateFrom" class="form-label">Dari</label>
+                                            <input type="date" class="form-control" id="reportDateFrom">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="reportDateTo" class="form-label">Sampai</label>
+                                            <input type="date" class="form-control" id="reportDateTo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3" id="standardReportFilters">
+                                <div class="col-md-4">
+                                    <label for="reportTicketType" class="form-label">Jenis Tiket</label>
+                                    <select class="form-select" id="reportTicketType">
+                                        <option value="all">Semua</option>
+                                        <option value="regular">Regular</option>
+                                        <option value="vip">VIP</option>
+                                        <option value="family">Family Package</option>
+                                        <option value="group">Group</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="reportUser" class="form-label">Kasir</label>
+                                    <select class="form-select" id="reportUser">
+                                        <option value="all">Semua</option>
+                                        </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="reportPaymentMethod" class="form-label">Metode Pembayaran</label>
+                                    <select class="form-select" id="reportPaymentMethod">
+                                        <option value="all">Semua</option>
+                                        <option value="cash">Tunai</option>
+                                        <option value="debit">Kartu Debit</option>
+                                        <option value="credit">Kartu Kredit</option>
+                                        <option value="transfer">Transfer Bank</option>
+                                        <option value="ewallet">E-Wallet</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-primary" id="generateReportBtn">
+                                    <i class="fas fa-chart-bar me-2"></i>Generate Laporan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-chart-pie me-2"></i>Hasil Laporan</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="reportResults">
+                                <div class="text-center text-muted py-5">
+                                    <i class="fas fa-chart-bar fa-3x mb-3"></i>
+                                    <p>Pilih filter dan klik "Generate Laporan" untuk menampilkan data</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section d-none restricted-section" id="usersSection">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Manajemen Pengguna</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <button type="button" class="btn btn-sm btn-primary" id="addUserBtn">
+                                <i class="fas fa-user-plus me-1"></i>Tambah Pengguna
+                            </button>
+                            </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-users me-2"></i>Daftar Pengguna</h5>
+                            <div class="d-flex">
+                                <input type="text" class="form-control form-control-sm me-2" id="searchUserInput" placeholder="Cari pengguna..." style="width: 200px;">
+                                <button class="btn btn-sm btn-outline-primary" id="refreshUsersBtn">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="usersTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Pengguna</th>
+                                            <th>Nama Lengkap</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
+                                            <th>Terakhir Login</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTableBody">
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section d-none restricted-section" id="settingsSection">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Pengaturan Sistem</h1>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-info-circle me-2"></i>Informasi Tempat Wisata</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="venueInfoForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="venueName" class="form-label">Nama Tempat Wisata</label>
+                                        <input type="text" class="form-control" id="venueName" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="venueLocation" class="form-label">Lokasi</label>
+                                        <input type="text" class="form-control" id="venueLocation" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="venueDescription" class="form-label">Deskripsi</label>
+                                    <textarea class="form-control" id="venueDescription" rows="2"></textarea>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="venueWhatsapp" class="form-label">Whatsapp</label>
+                                        <input type="text" class="form-control" id="venueWhatsapp" placeholder="08xx-xxxx-xxxx">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="venueWebsite" class="form-label">Website</label>
+                                        <input type="text" class="form-control" id="venueWebsite" placeholder="www.website.com">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="venueEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="venueEmail" placeholder="email@contoh.com">
+                                    </div>
+                                </div>
+                                <div class="mb-3 d-none">
+                                    <label class="form-label">Logo</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="venueLogo" placeholder="URL Logo" value="https://raw.githubusercontent.com/LKS-88/wisata/refs/heads/main/logo-wisata.png">
+                                        <button class="btn btn-outline-secondary" type="button" id="updateLogoBtn">
+                                            <i class="fas fa-sync-alt"></i> Update
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Simpan Perubahan
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-cog me-2"></i>Pengaturan Sistem</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="systemSettingsForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="currency" class="form-label">Mata Uang</label>
+                                        <select class="form-select" id="currency" required>
+                                            <option value="IDR">Rupiah (IDR)</option>
+                                            <option value="USD">Dollar AS (USD)</option>
+                                            <option value="EUR">Euro (EUR)</option>
+                                            <option value="SGD">Dollar Singapura (SGD)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="dateFormat" class="form-label">Format Tanggal</label>
+                                        <select class="form-select" id="dateFormat" required>
+                                            <option value="DD-MM-YYYY">DD-MM-YYYY</option>
+                                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                                            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="timeFormat" class="form-label">Format Waktu</label>
+                                        <select class="form-select" id="timeFormat" required>
+                                            <option value="24">24 Jam</option>
+                                            <option value="12">12 Jam (AM/PM)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="enableTax">
+                                            <label class="form-check-label" for="enableTax">Aktifkan Pajak</label>
+                                        </div>
+                                        <div id="taxSettings" style="display: none;">
+                                            <div class="row mt-2">
+                                                <div class="col-md-6">
+                                                    <label for="taxRate" class="form-label">Persentase Pajak (%)</label>
+                                                    <input type="number" class="form-control" id="taxRate" min="0" max="100" step="0.1" value="10">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="taxName" class="form-label">Nama Pajak</label>
+                                                    <input type="text" class="form-control" id="taxName" value="PPN">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="enableReceiptFooter">
+                                            <label class="form-check-label" for="enableReceiptFooter">Aktifkan Footer Struk</label>
+                                        </div>
+                                        <div id="receiptFooterSettings" style="display: none;">
+                                            <div class="mt-2">
+                                                <label for="receiptFooterText" class="form-label">Teks Footer Struk</label>
+                                                <textarea class="form-control" id="receiptFooterText" rows="2">Terima kasih telah berkunjung!</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Simpan Pengaturan
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section d-none restricted-section" id="backupSection">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Backup & Restore Data</h1>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i class="fas fa-database me-2"></i>Backup Data</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Backup semua data sistem termasuk tiket, transaksi, pengguna, dan pengaturan.</p>
+                                    <div class="mb-3">
+                                        <label for="backupFileName" class="form-label">Nama File Backup</label>
+                                        <input type="text" class="form-control" id="backupFileName" value="VentraApp_Backup">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="backupPassword" class="form-label">Password (Opsional)</label>
+                                        <input type="password" class="form-control" id="backupPassword" placeholder="Masukkan password untuk enkripsi">
+                                    </div>
+                                    <button type="button" class="btn btn-primary" id="createBackupBtn">
+                                        <i class="fas fa-download me-2"></i>Buat Backup
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i class="fas fa-upload me-2"></i>Restore Data</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Restore data dari file backup. Semua data saat ini akan diganti dengan data dari backup.</p>
+                                    <div class="mb-3">
+                                        <label for="restoreFile" class="form-label">File Backup</label>
+                                        <input type="file" class="form-control" id="restoreFile" accept=".json,.txt">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="restorePassword" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="restorePassword" placeholder="Masukkan password jika file dienkripsi">
+                                    </div>
+                                    <button type="button" class="btn btn-warning" id="restoreDataBtn">
+                                        <i class="fas fa-upload me-2"></i>Restore Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Reset Sistem</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                <strong>Peringatan!</strong> Tindakan ini akan menghapus semua data dan mengembalikan sistem ke pengaturan awal. Pastikan Anda telah membuat backup sebelum melakukan reset.
+                            </div>
+                            <div class="mb-3">
+                                <label for="resetPassword" class="form-label">Password Admin</label>
+                                <input type="password" class="form-control" id="resetPassword" placeholder="Masukkan password admin untuk konfirmasi">
+                            </div>
+                            <button type="button" class="btn btn-danger" id="resetSystemBtn">
+                                <i class="fas fa-trash-alt me-2"></i>Reset Sistem
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <footer class="app-footer no-print">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-1">Ventra App &copy; 2025 dikembangkan oleh <strong>Lentera Karya Situbondo</strong>.</p>
+                    <p class="mb-0">
+                        <a href="https://www.anekamarket.my.id" target="_blank"><i class="fas fa-globe me-1"></i>www.anekamarket.my.id</a> | 
+                        <a href="https://wa.me/6287865614222" target="_blank"><i class="fab fa-whatsapp me-1"></i>0878-6561-4222</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Pengguna Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="mb-3">
+                            <label for="newUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="newUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newFullName" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="newFullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newUserRole" class="form-label">Role</label>
+                            <select class="form-select" id="newUserRole" required>
+                                <option value="cashier">Kasir</option>
+                                <option value="manager">Manager</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newUserPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="newUserPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmUserPassword" class="form-label">Konfirmasi Password</label>
+                            <input type="password" class="form-control" id="confirmUserPassword" required>
+                        </div>
+                        <div id="newUserPermissionsContainer">
+                            <hr>
+                            <label class="form-label fw-bold">Hak Akses Menu</label>
+                            <div class="permissions-grid">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="dashboardSection" id="newPerm-dashboardSection">
+                                    <label class="form-check-label" for="newPerm-dashboardSection">Dashboard</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="generateTicketSection" id="newPerm-generateTicketSection">
+                                    <label class="form-check-label" for="newPerm-generateTicketSection">Generate Tiket</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="stockTicketSection" id="newPerm-stockTicketSection">
+                                    <label class="form-check-label" for="newPerm-stockTicketSection">Stok Tiket</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="salesSection" id="newPerm-salesSection">
+                                    <label class="form-check-label" for="newPerm-salesSection">Penjualan</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="transactionsSection" id="newPerm-transactionsSection">
+                                    <label class="form-check-label" for="newPerm-transactionsSection">Transaksi</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="reportsSection" id="newPerm-reportsSection">
+                                    <label class="form-check-label" for="newPerm-reportsSection">Laporan</label>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveNewUserBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Pengguna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+                        <input type="hidden" id="editUserId">
+                        <div class="mb-3">
+                            <label for="editUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="editUsername" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFullName" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="editFullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserRole" class="form-label">Role</label>
+                            <select class="form-select" id="editUserRole" required>
+                                <option value="cashier">Kasir</option>
+                                <option value="manager">Manager</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserStatus" class="form-label">Status</label>
+                            <select class="form-select" id="editUserStatus" required>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Nonaktif</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserPassword" class="form-label">Password Baru (Opsional)</label>
+                            <input type="password" class="form-control" id="editUserPassword">
+                            <div class="form-text">Biarkan kosong jika tidak ingin mengubah password</div>
+                        </div>
+                        <div id="editUserPermissionsContainer">
+                             <hr>
+                            <label class="form-label fw-bold">Hak Akses Menu</label>
+                            <div class="permissions-grid">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="dashboardSection" id="editPerm-dashboardSection">
+                                    <label class="form-check-label" for="editPerm-dashboardSection">Dashboard</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="generateTicketSection" id="editPerm-generateTicketSection">
+                                    <label class="form-check-label" for="editPerm-generateTicketSection">Generate Tiket</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="stockTicketSection" id="editPerm-stockTicketSection">
+                                    <label class="form-check-label" for="editPerm-stockTicketSection">Stok Tiket</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="salesSection" id="editPerm-salesSection">
+                                    <label class="form-check-label" for="editPerm-salesSection">Penjualan</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="transactionsSection" id="editPerm-transactionsSection">
+                                    <label class="form-check-label" for="editPerm-transactionsSection">Transaksi</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="reportsSection" id="editPerm-reportsSection">
+                                    <label class="form-check-label" for="editPerm-reportsSection">Laporan</label>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveEditUserBtn">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ganti Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Password Saat Ini</label>
+                            <input type="password" class="form-control" id="currentPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Password Baru</label>
+                            <input type="password" class="form-control" id="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmNewPassword" class="form-label">Konfirmasi Password Baru</label>
+                            <input type="password" class="form-control" id="confirmNewPassword" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="savePasswordBtn">Simpan Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="viewTicketModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header no-print">
+                    <h5 class="modal-title">Detail Tiket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="ticketModalContent">
+                    </div>
+                <div class="modal-footer no-print">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary" id="printTicketBtn">
+                        <i class="fas fa-print me-1"></i>Cetak
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="viewTransactionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header no-print">
+                    <h5 class="modal-title">Detail Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="transactionModalContent">
+                    </div>
+                <div class="modal-footer no-print">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary" id="printTransactionBtn">
+                        <i class="fas fa-print me-1"></i>Cetak Struk
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="false" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-gem me-2"></i>Ventra App - Login
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="loginUsername" required value="admin">
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required value="Admin.13579">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Ingat saya</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </button>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center text-center">
+                    <small class="text-muted d-block w-100">
+                        Dikembangkan oleh <strong>Lentera Karya Situbondo</strong><br>
+                        <a href="https://www.anekamarket.my.id" target="_blank">www.anekamarket.my.id</a> | <a href="https://wa.me/6287865614222" target="_blank">0878-6561-4222</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- START: MODAL NOTIFIKASI PREMIUM BARU -->
+    <div class="modal fade" id="premiumNotificationModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="icon"><i class="fas fa-crown"></i></div>
+                    <h3>Tingkatkan ke Versi Premium!</h3>
+                    <p>Buka semua fitur canggih dan dapatkan dukungan penuh dari developer untuk pengalaman terbaik menggunakan Ventra App.</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-premium" id="getPremiumBtn">
+                            <i class="fab fa-whatsapp me-2"></i>Hubungi Developer Sekarang
+                        </button>
+                        <button class="btn btn-outline-light" id="otherAppsBtn">
+                            <i class="fas fa-shopping-bag me-2"></i>Cek Aplikasi Lainnya
+                        </button>
+                    </div>
+                    <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+                    <button class="btn btn-link text-white-50" id="tryFreeBtn">
+                        Lanjutkan dengan Versi Gratis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: MODAL NOTIFIKASI PREMIUM BARU -->
+
+    <!-- START: MODAL CAPTCHA BARU -->
+    <div class="modal fade" id="captchaModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Verifikasi Keamanan</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-muted">Untuk melanjutkan, masukkan kode captcha di bawah ini dengan benar.</p>
+                    <form id="captchaForm">
+                        <div id="captcha-container">
+                            <div id="captcha-display"></div>
+                            <button type="button" class="btn btn-link text-secondary" id="refreshCaptchaBtn" title="Ganti Kode">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-lg text-center" id="captchaInput" placeholder="Masukkan kode di sini" required autocomplete="off" maxlength="6">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                           Verifikasi & Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: MODAL CAPTCHA BARU -->
+    
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalTitle">Konfirmasi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="confirmationModalBody">
+                    Apakah Anda yakin ingin melanjutkan?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="confirmActionBtn">Ya, Lanjutkan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1150">
+        <div id="alertToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto" id="toastTitle">Notifikasi</strong>
+                <small id="toastTime">Baru saja</small>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastMessage">
+                Ini adalah pesan toast.
+            </div>
+        </div>
+    </div>
+    
+    <div id="printable-content"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show login modal immediately
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+            loginModal.show();
+            
+            // Initialize the app
+            window.app = new TicketSalesApp();
+            window.app.init();
+        });
+        
+        // Main Application Class
+        class TicketSalesApp {
+            constructor() {
+                // Initialize properties
+                this.currentUser = null;
+                this.cart = [];
+                this.salesChart = null; // To keep track of the sales chart instance
+                this.reportData = {}; // To store generated report data
+                this.pendingLogin = null; // To hold user data during captcha verification
+                this.currentCaptcha = ''; // To hold the current captcha string
+
+                // Initialize data if not exists
+                this.initData();
+                
+                // Load data from localStorage
+                this.loadData();
+            }
+            
+            init() {
+                // Initialize UI components
+                this.initUI();
+                
+                // Check if user is logged in from session
+                this.checkAuth();
+                
+                // Setup event listeners
+                this.setupEventListeners();
+                
+                // Load dashboard data if logged in
+                if(this.currentUser) {
+                    this.loadDashboardData();
+                }
+            }
+            
+            initData() {
+                // Initialize data structure if not exists in localStorage
+                if (!localStorage.getItem('ticketSalesData')) {
+                    const initialData = {
+                        settings: {
+                            venueName: 'KAMPUNGKERAPU',
+                            venueLocation: 'Jl.Raya Gundil Desa klatakan Kecamatan Kendit, Situbondo - Jawa Timur',
+                            venueDescription: 'Tempat wisata keluarga dengan berbagai wahana menarik',
+                            venueLogo: 'https://raw.githubusercontent.com/LKS-88/wisata/refs/heads/main/logo-wisata.png',
+                            venueWhatsapp: '0878-6561-4222',
+                            venueWebsite: 'www.anekamarket.my.id',
+                            venueEmail: 'admin@anekamarket.my.id',
+                            currency: 'IDR',
+                            dateFormat: 'DD-MM-YYYY',
+                            timeFormat: '24',
+                            enableTax: false,
+                            taxRate: 10,
+                            taxName: 'PPN',
+                            enableReceiptFooter: true,
+                            receiptFooterText: 'Terima Kasih Telah Berkunjung Di Wisata Kampung Kerapu Situbondo'
+                        },
+                        users: [
+                            {
+                                id: this.generateId(),
+                                username: 'admin',
+                                password: this.hashPassword('Admin.13579'),
+                                fullName: 'Administrator',
+                                role: 'admin',
+                                status: 'active',
+                                lastLogin: null,
+                                createdAt: new Date().toISOString(),
+                                permissions: {} // Permissions for admin are always true
+                            }
+                        ],
+                        tickets: [],
+                        transactions: [],
+                        activities: [],
+                        deletedTicketsLog: []
+                    };
+                    
+                    localStorage.setItem('ticketSalesData', JSON.stringify(initialData));
+                }
+            }
+            
+            loadData() {
+                // Load all data from localStorage
+                const data = JSON.parse(localStorage.getItem('ticketSalesData'));
+                
+                this.settings = data.settings || {};
+                this.users = data.users || [];
+                this.tickets = data.tickets || [];
+                this.transactions = data.transactions || [];
+                this.activities = data.activities || [];
+                this.deletedTicketsLog = data.deletedTicketsLog || [];
+            }
+            
+            saveData() {
+                // Save all data to localStorage
+                const data = {
+                    settings: this.settings,
+                    users: this.users,
+                    tickets: this.tickets,
+                    transactions: this.transactions,
+                    activities: this.activities,
+                    deletedTicketsLog: this.deletedTicketsLog
+                };
+                
+                localStorage.setItem('ticketSalesData', JSON.stringify(data));
+            }
+            
+            initUI() {
+                // Initialize date pickers with current date
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('ticketExpiry').min = today;
+                document.getElementById('reportDate').value = today;
+                document.getElementById('reportDateFrom').value = today;
+                document.getElementById('reportDateTo').value = today;
+                
+                // Load settings into form
+                this.loadSettingsIntoForm();
+            }
+
+            loadSettingsIntoForm() {
+                // Load venue info
+                document.getElementById('venueName').value = this.settings.venueName || '';
+                document.getElementById('venueLocation').value = this.settings.venueLocation || '';
+                document.getElementById('venueDescription').value = this.settings.venueDescription || '';
+                document.getElementById('venueLogo').value = this.settings.venueLogo || '';
+                document.getElementById('venueWhatsapp').value = this.settings.venueWhatsapp || '';
+                document.getElementById('venueWebsite').value = this.settings.venueWebsite || '';
+                document.getElementById('venueEmail').value = this.settings.venueEmail || '';
+
+                // Load system settings
+                document.getElementById('currency').value = this.settings.currency || 'IDR';
+                document.getElementById('dateFormat').value = this.settings.dateFormat || 'DD-MM-YYYY';
+                document.getElementById('timeFormat').value = this.settings.timeFormat || '24';
+                document.getElementById('enableTax').checked = this.settings.enableTax || false;
+                document.getElementById('taxRate').value = this.settings.taxRate || 10;
+                document.getElementById('taxName').value = this.settings.taxName || 'PPN';
+                document.getElementById('enableReceiptFooter').checked = this.settings.enableReceiptFooter !== false;
+                document.getElementById('receiptFooterText').value = this.settings.receiptFooterText || 'Terima kasih telah berkunjung!';
+
+                // Show/hide tax and footer settings based on current value
+                document.getElementById('taxSettings').style.display = this.settings.enableTax ? 'block' : 'none';
+                document.getElementById('receiptFooterSettings').style.display = this.settings.enableReceiptFooter !== false ? 'block' : 'none';
+            }
+
+            showSection(sectionId) {
+                // == START: Cek Hak Akses ==
+                if (this.currentUser.role !== 'admin' && this.currentUser.permissions && !this.currentUser.permissions[sectionId]) {
+                    this.showToast('Akses Ditolak', 'Anda tidak memiliki izin untuk mengakses menu ini.', 'danger');
+                    return;
+                }
+                // == END: Cek Hak Akses ==
+
+                // Hide all sections
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.add('d-none');
+                });
+
+                // Show the selected section
+                const sectionToShow = document.getElementById(sectionId);
+                if(sectionToShow) {
+                    sectionToShow.classList.remove('d-none');
+                }
+
+                // Update active nav link
+                document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                const navLink = document.querySelector(`.sidebar .nav-link[data-section="${sectionId}"]`);
+                if (navLink) {
+                    navLink.classList.add('active');
+                }
+
+                // Load section-specific data
+                switch(sectionId) {
+                    case 'dashboardSection':
+                        this.loadDashboardData();
+                        break;
+                    case 'stockTicketSection':
+                        this.loadTicketStock();
+                        break;
+                    case 'transactionsSection':
+                        this.loadTransactions();
+                        break;
+                    case 'usersSection':
+                        this.loadUsers();
+                        break;
+                    case 'salesSection':
+                        this.updateCart();
+                        break;
+                }
+            }
+
+            checkAuth() {
+                // Check if user is logged in
+                const loggedInUser = sessionStorage.getItem('loggedInUser') || localStorage.getItem('loggedInUser');
+                if (loggedInUser) {
+                    this.currentUser = JSON.parse(loggedInUser);
+                    this.updateUIAfterLogin();
+                }
+            }
+
+            updateUIAfterLogin() {
+                // Update UI based on logged in user
+                document.getElementById('currentUsername').textContent = this.currentUser.fullName || this.currentUser.username;
+
+                // Show/hide restricted sections based on role
+                const is_admin = this.currentUser.role === 'admin';
+                document.querySelectorAll('.restricted-link, .restricted, .restricted-section').forEach(el => {
+                    if (is_admin) {
+                        el.classList.remove('restricted');
+                    } else {
+                        el.classList.add('restricted');
+                    }
+                });
+                
+                // == START: Terapkan Hak Akses Menu ==
+                const userPermissions = this.currentUser.permissions;
+                document.querySelectorAll('.sidebar .nav-item').forEach(navItem => {
+                    const link = navItem.querySelector('.nav-link');
+                    if(link && link.dataset.section) {
+                        const sectionId = link.dataset.section;
+                        const isRestrictedForAdmin = navItem.classList.contains('restricted-link');
+
+                        if (is_admin) {
+                             navItem.style.display = 'block';
+                        } else {
+                            if (isRestrictedForAdmin) {
+                                navItem.style.display = 'none';
+                            } else {
+                                if (userPermissions && userPermissions[sectionId]) {
+                                     navItem.style.display = 'block';
+                                } else {
+                                     navItem.style.display = 'none';
+                                }
+                            }
+                        }
+                    }
+                });
+                // == END: Terapkan Hak Akses Menu ==
+
+                // Hide login modal
+                const loginModalEl = document.getElementById('loginModal');
+                const loginModal = bootstrap.Modal.getInstance(loginModalEl);
+                if (loginModal) {
+                    loginModal.hide();
+                }
+
+                // Populate user filters in dropdowns
+                this.populateUserFilters();
+            }
+
+            hashPassword(password) {
+                let hash = 0;
+                for (let i = 0; i < password.length; i++) {
+                    const char = password.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // Convert to 32bit integer
+                }
+                return hash.toString();
+            }
+
+            setupEventListeners() {
+                // --- Event Delegation for main containers ---
+                document.body.addEventListener('click', (e) => {
+                    const navLink = e.target.closest('.sidebar .nav-link');
+                    if (navLink && navLink.dataset.section) {
+                        e.preventDefault();
+                        this.showSection(navLink.dataset.section);
+                    }
+                    if (e.target.closest('#logoutBtn')) {
+                        e.preventDefault();
+                        this.handleLogout();
+                    }
+                    if (e.target.closest('#saveNewUserBtn')) this.addUser();
+                    if (e.target.closest('#saveEditUserBtn')) this.editUser();
+                    if (e.target.closest('#savePasswordBtn')) this.changePassword();
+                });
+
+                document.getElementById('loginForm').addEventListener('submit', (e) => { e.preventDefault(); this.handleLogin(); });
+                document.getElementById('generateTicketForm').addEventListener('submit', (e) => { e.preventDefault(); this.generateTickets(); });
+                document.getElementById('paymentForm').addEventListener('submit', (e) => { e.preventDefault(); this.completePayment(); });
+                document.getElementById('venueInfoForm').addEventListener('submit', (e) => { e.preventDefault(); this.saveVenueInfo(); });
+                document.getElementById('systemSettingsForm').addEventListener('submit', (e) => { e.preventDefault(); this.saveSystemSettings(); });
+
+                document.getElementById('refreshDashboardBtn').addEventListener('click', (e) => this.handleDashboardRefresh(e.currentTarget));
+                document.getElementById('refreshStockBtn').addEventListener('click', () => this.loadTicketStock());
+                document.getElementById('refreshTransactionsBtn').addEventListener('click', () => this.loadTransactions());
+                document.getElementById('refreshUsersBtn').addEventListener('click', () => this.loadUsers());
+                document.getElementById('printAllGeneratedTicketsBtn').addEventListener('click', () => this.printAllGeneratedTickets());
+                document.getElementById('addSelectedToCartBtn').addEventListener('click', () => this.addSelectedToCart());
+                document.getElementById('cancelTransactionBtn').addEventListener('click', () => this.cancelTransaction());
+                document.getElementById('createBackupBtn').addEventListener('click', () => this.createBackup());
+                document.getElementById('restoreDataBtn').addEventListener('click', () => this.restoreData());
+                document.getElementById('resetSystemBtn').addEventListener('click', () => this.resetSystem());
+                document.getElementById('generateReportBtn').addEventListener('click', () => this.generateReport());
+                document.getElementById('clearStockFilterBtn').addEventListener('click', () => this.clearStockFilters());
+                document.getElementById('exportReportBtn').addEventListener('click', () => this.exportReportPDF());
+                document.getElementById('printReportBtn').addEventListener('click', () => this.printReport());
+                
+                // == START: Event Listener untuk Proteksi Password Tambah Pengguna ==
+                document.getElementById('addUserBtn').addEventListener('click', () => {
+                    this.promptForAdminPassword(() => {
+                        const addUserModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('addUserModal'));
+                        addUserModal.show();
+                    });
+                });
+                // == END: Event Listener untuk Proteksi Password Tambah Pengguna ==
+
+                // == START: Event Listener untuk Hak Akses ==
+                document.getElementById('newUserRole').addEventListener('change', (e) => {
+                    const permissionsContainer = document.getElementById('newUserPermissionsContainer');
+                    permissionsContainer.style.display = e.target.value === 'admin' ? 'none' : 'block';
+                });
+                
+                document.getElementById('editUserRole').addEventListener('change', (e) => {
+                    const permissionsContainer = document.getElementById('editUserPermissionsContainer');
+                    permissionsContainer.style.display = e.target.value === 'admin' ? 'none' : 'block';
+                });
+                // == END: Event Listener untuk Hak Akses ==
+
+                document.getElementById('stockTableBody').addEventListener('click', (e) => {
+                    const viewBtn = e.target.closest('.view-ticket-btn');
+                    const addBtn = e.target.closest('.add-to-cart-btn');
+                    if(viewBtn) this.viewTicket(viewBtn.dataset.id);
+                    if(addBtn) this.addToCart(addBtn.dataset.id);
+                });
+                
+                document.getElementById('cartTableBody').addEventListener('click', (e) => {
+                    const removeBtn = e.target.closest('.remove-from-cart-btn');
+                    if(removeBtn) this.removeFromCart(removeBtn.dataset.id);
+                });
+                
+                document.getElementById('transactionsTableBody').addEventListener('click', (e) => {
+                    const viewBtn = e.target.closest('.view-transaction-btn');
+                    if(viewBtn) this.viewTransaction(viewBtn.dataset.id);
+                });
+                
+                document.getElementById('usersTableBody').addEventListener('click', (e) => {
+                    const editBtn = e.target.closest('.edit-user-btn');
+                    const deleteBtn = e.target.closest('.delete-user-btn');
+                    // == START: Perbaikan Proteksi Password Edit Pengguna ==
+                    if(editBtn) {
+                        this.promptForAdminPassword(() => {
+                            this.openEditUserModal(editBtn.dataset.id);
+                        });
+                    }
+                    // == END: Perbaikan Proteksi Password Edit Pengguna ==
+                    if(deleteBtn) this.deleteUser(deleteBtn.dataset.id);
+                });
+
+                document.getElementById('amountPaid').addEventListener('input', () => this.calculateChange());
+                document.getElementById('salesTicketSearchInput').addEventListener('input', (e) => this.searchAvailableTickets(e.target.value));
+                document.getElementById('searchTicketInput').addEventListener('input', (e) => this.loadTicketStock({ query: e.target.value }));
+                document.getElementById('searchTransactionInput').addEventListener('input', (e) => this.loadTransactions({ query: e.target.value }));
+                document.getElementById('searchUserInput').addEventListener('input', (e) => this.loadUsers({ query: e.target.value }));
+
+                ['filterStatus', 'filterType', 'filterDate'].forEach(id => {
+                    document.getElementById(id).addEventListener('change', () => this.loadTicketStock());
+                });
+
+                ['selectAllTickets', 'selectAllHeader'].forEach(id => {
+                     document.getElementById(id).addEventListener('change', (e) => this.toggleSelectAllTickets(e.target.checked));
+                });
+
+                document.getElementById('reportType').addEventListener('change', (e) => {
+                    const reportDateContainer = document.getElementById('reportDateContainer');
+                    const reportDateRangeContainer = document.getElementById('reportDateRangeContainer');
+                    const standardReportFilters = document.getElementById('standardReportFilters');
+
+                    // Reset visibility
+                    reportDateContainer.classList.remove('d-none');
+                    reportDateRangeContainer.classList.add('d-none');
+                    standardReportFilters.classList.remove('d-none');
+
+                    if (e.target.value === 'custom' || e.target.value === 'deleted') {
+                        reportDateContainer.classList.add('d-none');
+                        reportDateRangeContainer.classList.remove('d-none');
+                    }
+                    
+                    if (e.target.value === 'deleted') {
+                        standardReportFilters.classList.add('d-none');
+                    }
+                });
+                document.getElementById('enableTax').addEventListener('change', (e) => {
+                    document.getElementById('taxSettings').style.display = e.target.checked ? 'block' : 'none';
+                    this.updateCart(); // Recalculate cart total when tax is toggled
+                });
+                document.getElementById('enableReceiptFooter').addEventListener('change', (e) => {
+                    document.getElementById('receiptFooterSettings').style.display = e.target.checked ? 'block' : 'none';
+                });
+
+                document.getElementById('clearStockBtn').addEventListener('click', () => this.clearAllStock());
+                document.getElementById('clearTransactionsBtn').addEventListener('click', () => this.clearTransactions());
+                document.getElementById('deleteExpiredBtn').addEventListener('click', () => this.deleteExpiredTickets());
+                document.getElementById('deleteSoldBtn').addEventListener('click', () => this.deleteSoldTickets());
+
+                // == START: Event Listener untuk Notifikasi & Captcha ==
+                document.getElementById('getPremiumBtn').addEventListener('click', this.handleGetPremium);
+                document.getElementById('otherAppsBtn').addEventListener('click', () => window.open('https://www.anekamarket.my.id', '_blank'));
+                document.getElementById('tryFreeBtn').addEventListener('click', () => this.showCaptchaModal());
+                document.getElementById('captchaForm').addEventListener('submit', (e) => { e.preventDefault(); this.verifyCaptcha(); });
+                document.getElementById('refreshCaptchaBtn').addEventListener('click', () => this.generateCaptcha());
+                // == END: Event Listener untuk Notifikasi & Captcha ==
+            }
+
+            // --- FUNGSI BARU UNTUK ALUR LOGIN ---
+
+            proceedToApp(user, rememberMe) {
+                user.lastLogin = new Date().toISOString();
+                this.saveData();
+                this.currentUser = user;
+
+                if (rememberMe) {
+                    localStorage.setItem('loggedInUser', JSON.stringify(user));
+                } else {
+                    sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+                }
+
+                this.updateUIAfterLogin();
+                this.addActivity(`User ${user.username} logged in`);
+                this.showToast('Login Berhasil', `Selamat datang, ${user.fullName || user.username}!`, 'success');
+                this.showSection('dashboardSection');
+            }
+
+            handleLogin() {
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                const rememberMe = document.getElementById('rememberMe').checked;
+
+                const user = this.users.find(u => u.username.toLowerCase() === username.toLowerCase());
+
+                if (user && this.hashPassword(password) === user.password) {
+                    if (user.status !== 'active') {
+                        this.showToast('Error', 'Akun ini telah dinonaktifkan.', 'danger');
+                        return;
+                    }
+
+                    // Simpan data login sementara untuk digunakan setelah verifikasi captcha
+                    this.pendingLogin = { user, rememberMe }; 
+
+                    const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    if (loginModal) loginModal.hide();
+
+                    // Cek apakah notifikasi sudah pernah ditampilkan
+                    if (!localStorage.getItem('hasSeenVentraAppNotice')) {
+                        const premiumModal = new bootstrap.Modal(document.getElementById('premiumNotificationModal'));
+                        premiumModal.show();
+                    } else {
+                        // Jika sudah, langsung masuk ke aplikasi
+                        this.proceedToApp(user, rememberMe);
+                    }
+                } else {
+                    this.showToast('Login Gagal', 'Username atau password salah.', 'danger');
+                }
+            }
+
+            handleGetPremium() {
+                const phoneNumber = '6287865614222';
+                const message = `Halo Admin, saya tertarik dengan Ventra App. Mohon informasinya mengenai cara untuk mendapatkan dan menikmati fitur versi premiumnya. Terima kasih.`;
+                const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+            }
+
+            showCaptchaModal() {
+                const premiumModal = bootstrap.Modal.getInstance(document.getElementById('premiumNotificationModal'));
+                if (premiumModal) premiumModal.hide();
+
+                const captchaModal = new bootstrap.Modal(document.getElementById('captchaModal'));
+                captchaModal.show();
+                this.generateCaptcha();
+                // Fokus pada input setelah modal muncul
+                document.getElementById('captchaModal').addEventListener('shown.bs.modal', () => {
+                     document.getElementById('captchaInput').focus();
+                });
+            }
+
+            generateCaptcha() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let captcha = '';
+                for (let i = 0; i < 6; i++) {
+                    captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                this.currentCaptcha = captcha;
+                document.getElementById('captcha-display').textContent = this.currentCaptcha;
+            }
+
+            verifyCaptcha() {
+                const userInput = document.getElementById('captchaInput').value;
+                if (userInput && userInput.toLowerCase() === this.currentCaptcha.toLowerCase()) {
+                    // Tandai bahwa pengguna telah melihat notifikasi dan menyelesaikan captcha
+                    localStorage.setItem('hasSeenVentraAppNotice', 'true');
+                    
+                    const captchaModal = bootstrap.Modal.getInstance(document.getElementById('captchaModal'));
+                    if(captchaModal) captchaModal.hide();
+
+                    // Lanjutkan ke aplikasi dengan data login yang tersimpan
+                    if (this.pendingLogin) {
+                        this.proceedToApp(this.pendingLogin.user, this.pendingLogin.rememberMe);
+                        this.pendingLogin = null; // Hapus data sementara
+                    }
+                } else {
+                    this.showToast('Error', 'Kode Captcha salah. Coba lagi.', 'danger');
+                    document.getElementById('captchaInput').value = '';
+                    this.generateCaptcha();
+                }
+            }
+            
+            // --- AKHIR FUNGSI BARU UNTUK ALUR LOGIN ---
+
+            handleLogout() {
+                const user = this.currentUser;
+                this.addActivity(`User ${user.username} logged out`);
+
+                this.currentUser = null;
+                this.pendingLogin = null;
+                sessionStorage.removeItem('loggedInUser');
+                localStorage.removeItem('loggedInUser');
+
+                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+                
+                document.getElementById('loginForm').reset();
+                this.showToast('Logout Berhasil', 'Anda telah berhasil keluar.', 'info');
+            }
+
+            async generateTickets() {
+                const type = document.getElementById('ticketType').value;
+                const price = parseInt(document.getElementById('ticketPrice').value);
+                const quantity = parseInt(document.getElementById('ticketQuantity').value);
+                const prefix = document.getElementById('ticketPrefix').value.trim().toUpperCase() || 'VT';
+                const expiry = document.getElementById('ticketExpiry').value;
+
+                if (quantity < 1 || quantity > 1000) {
+                    this.showToast('Error', 'Jumlah tiket harus antara 1 dan 1000.', 'danger');
+                    return;
+                }
+                if (price < 1000) {
+                    this.showToast('Error', 'Harga tiket minimal Rp 1.000.', 'danger');
+                    return;
+                }
+                
+                this.showLoading();
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                const generatedTickets = [];
+                const now = new Date().toISOString();
+                const existingCodes = new Set(this.tickets.map(t => t.code));
+
+                for (let i = 0; i < quantity; i++) {
+                    let code;
+                    do {
+                       code = prefix + this.generateRandomString(6);
+                    } while (existingCodes.has(code));
+                    existingCodes.add(code);
+                    
+                    const ticket = {
+                        id: this.generateId(),
+                        code: code,
+                        type: type,
+                        price: price,
+                        status: 'available',
+                        generatedAt: now,
+                        generatedBy: this.currentUser.username,
+                        expiryDate: expiry || null,
+                        soldAt: null,
+                        transactionId: null
+                    };
+                    generatedTickets.push(ticket);
+                    this.tickets.push(ticket);
+                }
+
+                this.saveData();
+                this.hideLoading();
+                this.showGeneratedTickets(generatedTickets);
+                this.addActivity(`Generated ${quantity} ${type} tickets`);
+                this.showToast('Sukses', `${quantity} tiket berhasil digenerate.`, 'success');
+                document.getElementById('generateTicketForm').reset();
+            }
+
+            showGeneratedTickets(tickets) {
+                const container = document.getElementById('generatedTicketsContainer');
+                container.innerHTML = ''; // Clear previous content
+
+                // Create a wrapper for flex layout
+                const wrapper = document.createElement('div');
+                wrapper.className = 'printable-ticket-wrapper';
+
+                tickets.forEach(ticket => {
+                    wrapper.innerHTML += this.generateTicketHTML(ticket);
+                });
+
+                container.appendChild(wrapper);
+                
+                // START: Generate QR Codes after HTML is in DOM
+                tickets.forEach(ticket => {
+                    this.generateQRCodeForTicket(ticket);
+                });
+                // END: Generate QR Codes
+                
+                document.getElementById('generatedTicketsCard').style.display = 'block';
+            }
+            
+            printAllGeneratedTickets() {
+                const container = document.getElementById('generatedTicketsContainer');
+                const ticketsHTML = container.querySelector('.printable-ticket-wrapper')?.innerHTML;
+                
+                if (!ticketsHTML || ticketsHTML.trim() === '') {
+                    this.showToast('Info', 'Tidak ada tiket untuk dicetak.', 'info');
+                    return;
+                }
+
+                const printableContent = `<div class="printable-ticket-wrapper">${ticketsHTML}</div>`;
+                this.printContent(printableContent, 'Tiket Masuk');
+            }
+
+            loadTicketStock(options = {}) {
+                const statusFilter = document.getElementById('filterStatus').value;
+                const typeFilter = document.getElementById('filterType').value;
+                const dateFilter = document.getElementById('filterDate').value;
+                const query = options.query || '';
+
+                let filteredTickets = [...this.tickets];
+                if (statusFilter !== 'all') filteredTickets = filteredTickets.filter(t => t.status === statusFilter);
+                if (typeFilter !== 'all') filteredTickets = filteredTickets.filter(t => t.type === typeFilter);
+                if (dateFilter) filteredTickets = filteredTickets.filter(t => t.generatedAt.startsWith(dateFilter));
+                if (query) filteredTickets = filteredTickets.filter(t => t.code.toLowerCase().includes(query.toLowerCase()));
+                
+                filteredTickets.sort((a, b) => new Date(b.generatedAt) - new Date(a.generatedAt));
+
+                const tableBody = document.getElementById('stockTableBody');
+                tableBody.innerHTML = '';
+                if (filteredTickets.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="8" class="text-center">Tidak ada data tiket ditemukan.</td></tr>`;
+                    return;
+                }
+
+                filteredTickets.forEach(ticket => {
+                    const statusConfig = {
+                        available: { badge: 'bg-success', text: 'Tersedia' },
+                        sold: { badge: 'bg-danger', text: 'Terjual' },
+                        expired: { badge: 'bg-warning', text: 'Kedaluwarsa' }
+                    };
+                    const {badge, text} = statusConfig[ticket.status] || {badge: 'bg-secondary', text: ticket.status};
+
+                    tableBody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td><input type="checkbox" class="ticket-checkbox form-check-input" data-id="${ticket.id}" ${ticket.status !== 'available' ? 'disabled' : ''}></td>
+                            <td>${ticket.code}</td>
+                            <td>${this.formatTicketType(ticket.type)}</td>
+                            <td>${this.formatCurrency(ticket.price)}</td>
+                            <td><span class="badge ${badge}">${text}</span></td>
+                            <td>${this.formatDateTime(ticket.generatedAt)}</td>
+                            <td>${ticket.expiryDate ? this.formatDate(ticket.expiryDate) : '-'}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-info view-ticket-btn" data-id="${ticket.id}" title="Lihat Detail"><i class="fas fa-eye"></i></button>
+                                ${ticket.status === 'available' ? `<button class="btn btn-sm btn-outline-success add-to-cart-btn" data-id="${ticket.id}" title="Tambah ke Keranjang"><i class="fas fa-cart-plus"></i></button>` : ''}
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+
+            toggleSelectAllTickets(checked) {
+                document.querySelectorAll('#stockTableBody .ticket-checkbox:not(:disabled)').forEach(checkbox => checkbox.checked = checked);
+                document.getElementById('selectAllTickets').checked = checked;
+                document.getElementById('selectAllHeader').checked = checked;
+            }
+
+            addSelectedToCart() {
+                const selectedCheckboxes = document.querySelectorAll('#stockTableBody .ticket-checkbox:checked');
+                if (selectedCheckboxes.length === 0) {
+                    this.showToast('Peringatan', 'Pilih setidaknya satu tiket untuk ditambahkan.', 'warning');
+                    return;
+                }
+                let addedCount = 0;
+                let alreadyInCartCount = 0;
+                
+                selectedCheckboxes.forEach(checkbox => {
+                    const result = this.addToCart(checkbox.dataset.id, false);
+                    if (result === 'added') addedCount++;
+                    else if (result === 'in_cart') alreadyInCartCount++;
+                });
+
+                if (addedCount > 0) this.showToast('Sukses', `${addedCount} tiket berhasil ditambahkan.`, 'success');
+                if (alreadyInCartCount > 0) this.showToast('Info', `${alreadyInCartCount} tiket sudah ada di keranjang.`, 'info');
+                
+                this.toggleSelectAllTickets(false);
+
+                this.showSection('salesSection');
+                setTimeout(() => document.getElementById('amountPaid').focus(), 100);
+            }
+
+            addToCart(ticketId, showToast = true) {
+                const ticket = this.tickets.find(t => t.id === ticketId);
+                if (!ticket) {
+                    if (showToast) this.showToast('Error', 'Tiket tidak ditemukan.', 'danger');
+                    return 'not_found';
+                }
+                if (ticket.status !== 'available') {
+                    if (showToast) this.showToast('Error', `Tiket ${ticket.code} tidak tersedia.`, 'danger');
+                    return 'unavailable';
+                }
+                if (this.cart.some(item => item.id === ticket.id)) {
+                    if (showToast) this.showToast('Info', `Tiket ${ticket.code} sudah ada di keranjang.`, 'info');
+                    return 'in_cart';
+                }
+
+                this.cart.push({ id: ticket.id, code: ticket.code, type: ticket.type, price: ticket.price });
+                this.updateCart();
+                if (showToast) {
+                    this.showToast('Sukses', `Tiket ${ticket.code} ditambahkan.`, 'success');
+                    document.getElementById('salesTicketSearchInput').focus();
+                }
+                return 'added';
+            }
+
+            updateCart() {
+                const tableBody = document.getElementById('cartTableBody');
+                tableBody.innerHTML = '';
+                
+                if(this.cart.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Keranjang kosong</td></tr>`;
+                } else {
+                    this.cart.forEach(item => {
+                        tableBody.insertAdjacentHTML('beforeend', `
+                            <tr>
+                                <td>${item.code}</td>
+                                <td>${this.formatTicketType(item.type)}</td>
+                                <td>${this.formatCurrency(item.price)}</td>
+                                <td><button class="btn btn-sm btn-outline-danger remove-from-cart-btn" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button></td>
+                            </tr>
+                        `);
+                    });
+                }
+                
+                const subtotal = this.cart.reduce((sum, item) => sum + item.price, 0);
+                let finalTotal = subtotal;
+
+                if (this.settings.enableTax && this.settings.taxRate > 0) {
+                    const taxAmount = subtotal * (this.settings.taxRate / 100);
+                    finalTotal = subtotal + taxAmount;
+                }
+
+                const formattedTotal = this.formatCurrency(finalTotal);
+                document.getElementById('totalAmount').value = formattedTotal;
+                document.getElementById('cartTotal').textContent = formattedTotal;
+                this.calculateChange();
+            }
+
+            removeFromCart(ticketId) {
+                this.cart = this.cart.filter(item => item.id !== ticketId);
+                this.updateCart();
+                this.showToast('Info', 'Tiket dihapus dari keranjang.', 'info');
+            }
+
+            calculateChange() {
+                const subtotal = this.cart.reduce((sum, item) => sum + item.price, 0);
+                let finalTotal = subtotal;
+
+                if (this.settings.enableTax && this.settings.taxRate > 0) {
+                    const taxAmount = subtotal * (this.settings.taxRate / 100);
+                    finalTotal = subtotal + taxAmount;
+                }
+
+                const paid = parseFloat(document.getElementById('amountPaid').value) || 0;
+                const change = paid - finalTotal;
+                document.getElementById('changeAmount').value = this.formatCurrency(change >= 0 ? change : 0);
+            }
+
+            completePayment() {
+                if (this.cart.length === 0) {
+                    this.showToast('Error', 'Keranjang kosong.', 'danger');
+                    return;
+                }
+
+                const subtotal = this.cart.reduce((sum, item) => sum + item.price, 0);
+                let taxAmount = 0;
+                let finalTotal = subtotal;
+
+                if (this.settings.enableTax && this.settings.taxRate > 0) {
+                    taxAmount = subtotal * (this.settings.taxRate / 100);
+                    finalTotal = subtotal + taxAmount;
+                }
+
+                const amountPaid = parseFloat(document.getElementById('amountPaid').value);
+                if (isNaN(amountPaid) || amountPaid < finalTotal) {
+                    this.showToast('Error', 'Jumlah pembayaran tidak mencukupi.', 'danger');
+                    return;
+                }
+
+                const now = new Date().toISOString();
+                const transaction = {
+                    id: this.generateId(),
+                    transactionId: 'TRX-' + Date.now(),
+                    date: now,
+                    cashier: this.currentUser.username,
+                    customerName: document.getElementById('customerName').value || 'Pelanggan',
+                    items: [...this.cart],
+                    subtotal: subtotal,
+                    tax: taxAmount,
+                    taxInfo: { name: this.settings.taxName, rate: this.settings.taxRate },
+                    total: finalTotal,
+                    paymentMethod: document.getElementById('paymentMethod').value,
+                    amountPaid: amountPaid,
+                    change: amountPaid - finalTotal
+                };
+                
+                this.cart.forEach(item => {
+                    const ticket = this.tickets.find(t => t.id === item.id);
+                    if (ticket) {
+                        ticket.status = 'sold';
+                        ticket.soldAt = now;
+                        ticket.transactionId = transaction.id;
+                    }
+                });
+
+                this.transactions.push(transaction);
+                this.saveData();
+                this.cart = [];
+                this.updateCart();
+                document.getElementById('paymentForm').reset();
+                this.addActivity(`Completed transaction ${transaction.transactionId}`);
+                this.showToast('Sukses', 'Pembayaran berhasil.', 'success');
+                this.viewTransaction(transaction.id);
+            }
+
+            cancelTransaction() {
+                if (this.cart.length === 0) {
+                    this.showToast('Info', 'Keranjang sudah kosong.', 'info');
+                    return;
+                }
+                this.showConfirmation(
+                    'Batalkan Transaksi',
+                    'Apakah Anda yakin? Semua item di keranjang akan dihapus.',
+                    () => {
+                        this.cart = [];
+                        this.updateCart();
+                        document.getElementById('paymentForm').reset();
+                        this.showToast('Info', 'Transaksi dibatalkan.', 'info');
+                    }
+                );
+            }
+
+            loadTransactions(options = {}) {
+                const query = options.query || '';
+                let filtered = [...this.transactions];
+                if (query) {
+                    filtered = filtered.filter(t => t.transactionId.toLowerCase().includes(query.toLowerCase()));
+                }
+                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                const tableBody = document.getElementById('transactionsTableBody');
+                tableBody.innerHTML = '';
+                if(filtered.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="7" class="text-center">Tidak ada data transaksi.</td></tr>`;
+                    return;
+                }
+                filtered.forEach(t => {
+                    tableBody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td>${t.transactionId}</td>
+                            <td>${this.formatDateTime(t.date)}</td>
+                            <td>${t.cashier}</td>
+                            <td>${t.items.length}</td>
+                            <td>${this.formatCurrency(t.total)}</td>
+                            <td>${this.formatPaymentMethod(t.paymentMethod)}</td>
+                            <td><button class="btn btn-sm btn-outline-primary view-transaction-btn" data-id="${t.id}"><i class="fas fa-eye"></i> Lihat</button></td>
+                        </tr>
+                    `);
+                });
+            }
+
+            viewTransaction(transactionId) {
+                const transaction = this.transactions.find(t => t.id === transactionId);
+                if (!transaction) return;
+                
+                const receiptHTML = this.generateReceiptHTML(transaction);
+                document.getElementById('transactionModalContent').innerHTML = receiptHTML;
+                
+                const modalEl = document.getElementById('viewTransactionModal');
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                
+                const printBtn = document.getElementById('printTransactionBtn');
+                const newPrintBtn = printBtn.cloneNode(true);
+                printBtn.parentNode.replaceChild(newPrintBtn, printBtn);
+                newPrintBtn.addEventListener('click', () => {
+                    modal.hide();
+                    this.printContent(receiptHTML, `Struk Transaksi ${transaction.transactionId}`);
+                });
+                
+                modal.show();
+            }
+            
+            generateReceiptHTML(transaction) {
+                 // == START: PENYEMPURNAAN NAMA KASIR DI STRUK ==
+                 const cashierUser = this.users.find(u => u.username === transaction.cashier);
+                 const cashierName = cashierUser ? cashierUser.fullName : transaction.cashier;
+                 // == END: PENYEMPURNAAN NAMA KASIR DI STRUK ==
+
+                 const contactInfo = [
+                    this.settings.venueWhatsapp ? `WA: ${this.settings.venueWhatsapp}` : '',
+                    this.settings.venueWebsite ? `Web: ${this.settings.venueWebsite}` : '',
+                    this.settings.venueEmail ? `Email: ${this.settings.venueEmail}` : ''
+                ].filter(Boolean).join(' | ');
+
+                 return `
+                    <div class="receipt-container">
+                        <div class="receipt-header">
+                            <img src="${this.settings.venueLogo || ''}" class="receipt-logo" alt="Logo">
+                            <p class="receipt-title">${this.settings.venueName || 'Ventra App'}</p>
+                            <p class="receipt-subtitle">${this.settings.venueLocation || ''}</p>
+                        </div>
+                        <div class="receipt-divider"></div>
+                        <div class="receipt-details">
+                            <p>No: ${transaction.transactionId}</p>
+                            <p>Kasir: ${cashierName} (${transaction.cashier})</p>
+                            <p>Tanggal: ${this.formatDateTime(transaction.date)}</p>
+                            <p>Pelanggan: ${transaction.customerName}</p>
+                        </div>
+                        <div class="receipt-divider"></div>
+                        <table class="receipt-items">
+                            <thead>
+                                <tr>
+                                    <th class="col-item">Item</th>
+                                    <th class="col-qty">Jml</th>
+                                    <th class="col-price">Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${transaction.items.map(item => `
+                                    <tr>
+                                        <td class="col-item">${this.formatTicketType(item.type)} (${item.code})</td>
+                                        <td class="col-qty">1</td>
+                                        <td class="col-price">${this.formatCurrency(item.price)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        <div class="receipt-divider"></div>
+                        <table class="receipt-totals">
+                            <tr>
+                                <td class="label">Subtotal</td>
+                                <td class="value">${this.formatCurrency(transaction.subtotal)}</td>
+                            </tr>
+                            ${(transaction.tax > 0 && transaction.taxInfo) ? `
+                                <tr>
+                                    <td class="label">${transaction.taxInfo.name} (${transaction.taxInfo.rate}%)</td>
+                                    <td class="value">${this.formatCurrency(transaction.tax)}</td>
+                                </tr>
+                            ` : ''}
+                            <tr class="total-row">
+                                <td class="label">Total</td>
+                                <td class="value">${this.formatCurrency(transaction.total)}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Bayar (${this.formatPaymentMethod(transaction.paymentMethod)})</td>
+                                <td class="value">${this.formatCurrency(transaction.amountPaid)}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Kembali</td>
+                                <td class="value">${this.formatCurrency(transaction.change)}</td>
+                            </tr>
+                        </table>
+                        ${this.settings.enableReceiptFooter ? `
+                            <div class="receipt-divider"></div>
+                            <div class="receipt-footer">
+                                <p>${this.settings.receiptFooterText || ''}</p>
+                                <p style="font-size: 0.7rem; margin-top: 5px;">${contactInfo}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            loadDashboardData() {
+                const today = new Date().toISOString().split('T')[0];
+                const todaySales = this.transactions.filter(t => t.date.startsWith(today));
+                
+                document.getElementById('stockCount').textContent = this.tickets.filter(t => t.status === 'available').length;
+                document.getElementById('todaySalesCount').textContent = todaySales.reduce((sum, t) => sum + t.items.length, 0);
+                document.getElementById('todayRevenue').textContent = this.formatCurrency(todaySales.reduce((sum, t) => sum + t.total, 0));
+
+                this.loadRecentActivities();
+                this.loadSalesChart();
+            }
+            
+            handleDashboardRefresh(btn) {
+                const originalContent = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin me-1"></i>Memuat...`;
+                
+                setTimeout(() => {
+                    this.loadDashboardData();
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                    this.showToast('Info', 'Dashboard telah diperbarui.', 'info');
+                }, 500);
+            }
+
+            loadRecentActivities() {
+                const container = document.getElementById('recentActivities');
+                container.innerHTML = '';
+                const recent = [...this.activities].reverse().slice(0, 5);
+                if (recent.length === 0) {
+                    container.innerHTML = `<div class="list-group-item text-muted">Tidak ada aktivitas terakhir.</div>`;
+                    return;
+                }
+                recent.forEach(act => {
+                    container.insertAdjacentHTML('beforeend', `
+                        <div class="list-group-item">
+                            <p class="mb-1">${act.message}</p>
+                            <small class="text-muted">${this.timeSince(act.timestamp)}</small>
+                        </div>
+                    `);
+                });
+            }
+
+            loadSalesChart() {
+                if (this.salesChart) this.salesChart.destroy();
+                
+                const labels = [];
+                const data = [];
+                for (let i = 6; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const dateString = d.toISOString().split('T')[0];
+                    labels.push(this.formatDate(dateString));
+                    const dayRevenue = this.transactions
+                        .filter(t => t.date.startsWith(dateString))
+                        .reduce((sum, t) => sum + t.total, 0);
+                    data.push(dayRevenue);
+                }
+
+                this.salesChart = new Chart(document.getElementById('salesChart'), {
+                    type: 'line',
+                    data: { labels, datasets: [{
+                        label: 'Pendapatan Harian',
+                        data,
+                        backgroundColor: 'rgba(76, 110, 245, 0.1)',
+                        borderColor: 'rgba(76, 110, 245, 1)',
+                        borderWidth: 2, tension: 0.3, fill: true
+                    }]},
+                    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            loadUsers(options = {}) {
+                if (this.currentUser.role !== 'admin') return;
+
+                const query = options.query || '';
+                let filtered = [...this.users];
+                if (query) {
+                    const qLower = query.toLowerCase();
+                    filtered = filtered.filter(u => u.username.toLowerCase().includes(qLower) || u.fullName.toLowerCase().includes(qLower));
+                }
+
+                const tableBody = document.getElementById('usersTableBody');
+                tableBody.innerHTML = '';
+                filtered.forEach(user => {
+                    const statusBadge = user.status === 'active' ? 'bg-success' : 'bg-secondary';
+                    const isDefaultAdmin = user.username === 'admin';
+
+                    tableBody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td>${user.username}</td>
+                            <td>${user.fullName}</td>
+                            <td>${this.formatUserRole(user.role)}</td>
+                            <td><span class="badge ${statusBadge}">${user.status === 'active' ? 'Aktif' : 'Nonaktif'}</span></td>
+                            <td>${user.lastLogin ? this.formatDateTime(user.lastLogin) : 'N/A'}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary edit-user-btn" data-id="${user.id}"><i class="fas fa-edit"></i></button>
+                                ${!isDefaultAdmin ? `<button class="btn btn-sm btn-outline-danger delete-user-btn" data-id="${user.id}"><i class="fas fa-trash-alt"></i></button>` : ''}
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+
+            populateUserFilters() {
+                const userFilters = ['transactionFilterUser', 'reportUser'];
+                userFilters.forEach(filterId => {
+                    const select = document.getElementById(filterId);
+                    select.innerHTML = '<option value="all">Semua</option>';
+                    this.users.forEach(user => {
+                        select.insertAdjacentHTML('beforeend', `<option value="${user.username}">${user.username}</option>`);
+                    });
+                });
+            }
+
+            addUser() {
+                if (this.currentUser.role !== 'admin') {
+                    this.showToast('Akses Ditolak', 'Hanya admin yang dapat menambahkan pengguna.', 'danger');
+                    return;
+                }
+                const username = document.getElementById('newUsername').value;
+                const fullName = document.getElementById('newFullName').value;
+                const role = document.getElementById('newUserRole').value;
+                const password = document.getElementById('newUserPassword').value;
+                const confirmPassword = document.getElementById('confirmUserPassword').value;
+
+                if (!username || !fullName || !password) {
+                    this.showToast('Error', 'Semua field wajib diisi.', 'danger'); return;
+                }
+                if (password !== confirmPassword) {
+                    this.showToast('Error', 'Password dan konfirmasi tidak cocok.', 'danger'); return;
+                }
+                if (this.users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+                    this.showToast('Error', 'Username sudah digunakan.', 'danger'); return;
+                }
+
+                // == START: Simpan Hak Akses ==
+                const permissions = {};
+                if (role !== 'admin') {
+                    document.querySelectorAll('#newUserPermissionsContainer .form-check-input').forEach(checkbox => {
+                        permissions[checkbox.value] = checkbox.checked;
+                    });
+                }
+                // == END: Simpan Hak Akses ==
+
+                const newUser = {
+                    id: this.generateId(),
+                    username, password: this.hashPassword(password), fullName, role,
+                    status: 'active', lastLogin: null, createdAt: new Date().toISOString(),
+                    permissions // Add permissions object
+                };
+                this.users.push(newUser);
+                this.saveData();
+                bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+                document.getElementById('addUserForm').reset();
+                this.loadUsers();
+                this.addActivity(`Added new user: ${username}`);
+                this.showToast('Sukses', 'Pengguna baru berhasil ditambahkan.', 'success');
+            }
+
+            openEditUserModal(userId) {
+                if (this.currentUser.role !== 'admin') return;
+                
+                const user = this.users.find(u => u.id === userId);
+                if (!user) return;
+
+                document.getElementById('editUserId').value = user.id;
+                document.getElementById('editUsername').value = user.username;
+                document.getElementById('editFullName').value = user.fullName;
+                document.getElementById('editUserRole').value = user.role;
+                document.getElementById('editUserStatus').value = user.status;
+                document.getElementById('editUserPassword').value = '';
+
+                // == START: Muat dan Tampilkan Hak Akses ==
+                const permissionsContainer = document.getElementById('editUserPermissionsContainer');
+                permissionsContainer.style.display = user.role === 'admin' ? 'none' : 'block';
+                
+                document.querySelectorAll('#editUserPermissionsContainer .form-check-input').forEach(checkbox => {
+                    checkbox.checked = user.permissions && user.permissions[checkbox.value];
+                });
+                // == END: Muat dan Tampilkan Hak Akses ==
+
+                document.getElementById('editUserRole').disabled = (user.username === 'admin');
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('editUserModal')).show();
+            }
+
+            editUser() {
+                if (this.currentUser.role !== 'admin') {
+                    this.showToast('Akses Ditolak', 'Hanya admin yang dapat mengubah data pengguna.', 'danger');
+                    return;
+                }
+                const userId = document.getElementById('editUserId').value;
+                const userIndex = this.users.findIndex(u => u.id === userId);
+                if (userIndex === -1) return;
+                
+                const newRole = document.getElementById('editUserRole').value;
+                this.users[userIndex].fullName = document.getElementById('editFullName').value;
+                this.users[userIndex].role = newRole;
+                this.users[userIndex].status = document.getElementById('editUserStatus').value;
+                
+                // == START: Update Hak Akses ==
+                const permissions = {};
+                if (newRole !== 'admin') {
+                    document.querySelectorAll('#editUserPermissionsContainer .form-check-input').forEach(checkbox => {
+                        permissions[checkbox.value] = checkbox.checked;
+                    });
+                }
+                this.users[userIndex].permissions = permissions;
+                // == END: Update Hak Akses ==
+
+                const newPassword = document.getElementById('editUserPassword').value;
+                if (newPassword) {
+                    this.users[userIndex].password = this.hashPassword(newPassword);
+                }
+
+                this.saveData();
+                bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
+                this.loadUsers();
+                this.addActivity(`Updated user: ${this.users[userIndex].username}`);
+                this.showToast('Sukses', 'Data pengguna berhasil diperbarui.', 'success');
+            }
+
+            deleteUser(userId) {
+                if (this.currentUser.role !== 'admin') {
+                    this.showToast('Akses Ditolak', 'Hanya admin yang dapat menghapus pengguna.', 'danger');
+                    return;
+                }
+                const user = this.users.find(u => u.id === userId);
+                if (!user || user.username === 'admin') {
+                    this.showToast('Error', 'Admin utama tidak dapat dihapus.', 'danger');
+                    return;
+                }
+                this.showConfirmation('Hapus Pengguna', `Anda yakin ingin menghapus pengguna "${user.username}"?`, () => {
+                    this.users = this.users.filter(u => u.id !== userId);
+                    this.saveData();
+                    this.loadUsers();
+                    this.addActivity(`Deleted user: ${user.username}`);
+                    this.showToast('Sukses', 'Pengguna berhasil dihapus.', 'success');
+                });
+            }
+
+            changePassword() {
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+                if (this.hashPassword(currentPassword) !== this.currentUser.password) {
+                    this.showToast('Error', 'Password saat ini salah.', 'danger'); return;
+                }
+                if (!newPassword || newPassword !== confirmNewPassword) {
+                    this.showToast('Error', 'Password baru dan konfirmasi tidak cocok.', 'danger'); return;
+                }
+
+                const userIndex = this.users.findIndex(u => u.id === this.currentUser.id);
+                this.users[userIndex].password = this.hashPassword(newPassword);
+                this.currentUser.password = this.users[userIndex].password;
+                
+                if (sessionStorage.getItem('loggedInUser')) sessionStorage.setItem('loggedInUser', JSON.stringify(this.currentUser));
+                if (localStorage.getItem('loggedInUser')) localStorage.setItem('loggedInUser', JSON.stringify(this.currentUser));
+
+                this.saveData();
+                bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
+                document.getElementById('changePasswordForm').reset();
+                this.addActivity('User changed their password');
+                this.showToast('Sukses', 'Password berhasil diubah.', 'success');
+            }
+
+            saveVenueInfo() {
+                 if (this.currentUser.role !== 'admin') return;
+                 this.settings.venueName = document.getElementById('venueName').value;
+                 this.settings.venueLocation = document.getElementById('venueLocation').value;
+                 this.settings.venueDescription = document.getElementById('venueDescription').value;
+                 this.settings.venueLogo = document.getElementById('venueLogo').value;
+                 this.settings.venueWhatsapp = document.getElementById('venueWhatsapp').value;
+                 this.settings.venueWebsite = document.getElementById('venueWebsite').value;
+                 this.settings.venueEmail = document.getElementById('venueEmail').value;
+                 this.saveData();
+                 this.addActivity('Updated venue information');
+                 this.showToast('Sukses', 'Informasi tempat wisata disimpan.', 'success');
+            }
+
+            saveSystemSettings() {
+                if (this.currentUser.role !== 'admin') return;
+                this.settings.currency = document.getElementById('currency').value;
+                this.settings.dateFormat = document.getElementById('dateFormat').value;
+                this.settings.timeFormat = document.getElementById('timeFormat').value;
+                this.settings.enableTax = document.getElementById('enableTax').checked;
+                this.settings.taxRate = parseFloat(document.getElementById('taxRate').value);
+                this.settings.taxName = document.getElementById('taxName').value;
+                this.settings.enableReceiptFooter = document.getElementById('enableReceiptFooter').checked;
+                this.settings.receiptFooterText = document.getElementById('receiptFooterText').value;
+                this.saveData();
+                this.addActivity('Updated system settings');
+                this.showToast('Sukses', 'Pengaturan sistem disimpan.', 'success');
+            }
+
+            createBackup() {
+                if (this.currentUser.role !== 'admin') return;
+                const fileName = document.getElementById('backupFileName').value || 'VentraApp_Backup';
+                const dataStr = JSON.stringify(JSON.parse(localStorage.getItem('ticketSalesData')));
+                
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${fileName}_${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                this.addActivity('Created a system backup');
+                this.showToast('Sukses', 'Backup berhasil diunduh.', 'success');
+            }
+
+            restoreData() {
+                if (this.currentUser.role !== 'admin') return;
+                const fileInput = document.getElementById('restoreFile');
+                if (!fileInput.files.length) {
+                    this.showToast('Error', 'Pilih file backup terlebih dahulu.', 'danger'); return;
+                }
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        if (!data.settings || !data.users || !data.tickets || !data.transactions) throw new Error();
+                        
+                        this.showConfirmation('Restore Data', 'Ini akan menimpa semua data saat ini. Lanjutkan?', () => {
+                            localStorage.setItem('ticketSalesData', JSON.stringify(data));
+                            this.addActivity('Restored system from backup');
+                            this.showToast('Sukses', 'Data berhasil direstore. Harap logout dan login kembali.', 'success');
+                        });
+                    } catch {
+                        this.showToast('Error', 'File backup tidak valid atau rusak.', 'danger');
+                    }
+                };
+                reader.readAsText(file);
+            }
+            
+            resetSystem() {
+                if (this.currentUser.role !== 'admin') return;
+                const password = document.getElementById('resetPassword').value;
+                if (this.hashPassword(password) !== this.currentUser.password) {
+                    this.showToast('Error', 'Password admin salah.', 'danger'); return;
+                }
+                this.showConfirmation('Reset Sistem', 'PERINGATAN: SEMUA DATA AKAN DIHAPUS. Tindakan ini tidak dapat diurungkan. Yakin?', () => {
+                    localStorage.removeItem('ticketSalesData');
+                    this.showToast('Sukses', 'Sistem telah direset. Harap refresh halaman.', 'success');
+                    setTimeout(() => window.location.reload(), 2000);
+                });
+            }
+
+            deleteExpiredTickets() {
+                if (this.currentUser.role !== 'admin') return;
+                this.deleteTicketsByStatus('expired');
+            }
+
+            deleteSoldTickets() {
+                if (this.currentUser.role !== 'admin') return;
+                this.deleteTicketsByStatus('sold');
+            }
+
+            deleteTicketsByStatus(status) {
+                const ticketsToDelete = this.tickets.filter(t => t.status === status);
+                if (ticketsToDelete.length === 0) {
+                    this.showToast('Info', `Tidak ada tiket dengan status '${status}' untuk dihapus.`, 'info');
+                    return;
+                }
+
+                this.showConfirmation(
+                    `Hapus Tiket ${status === 'sold' ? 'Terjual' : 'Kedaluwarsa'}`,
+                    `Anda yakin ingin menghapus dan mengarsipkan ${ticketsToDelete.length} tiket? Tindakan ini tidak dapat dibatalkan.`,
+                    () => {
+                        const now = new Date().toISOString();
+                        const logEntries = ticketsToDelete.map(ticket => ({
+                            ...ticket,
+                            deletedAt: now,
+                            deletedBy: this.currentUser.username,
+                            statusAtDeletion: ticket.status
+                        }));
+                        
+                        this.deletedTicketsLog.push(...logEntries);
+                        this.tickets = this.tickets.filter(t => t.status !== status);
+                        
+                        this.saveData();
+                        this.loadTicketStock();
+                        this.addActivity(`Deleted and archived ${ticketsToDelete.length} ${status} tickets`);
+                        this.showToast('Sukses', `${ticketsToDelete.length} tiket berhasil dihapus dan diarsipkan.`, 'success');
+                    }
+                );
+            }
+
+            clearAllStock() {
+                if (this.currentUser.role !== 'admin') return;
+                 this.showConfirmation('Hapus Semua Stok Tiket', 'Anda yakin ingin menghapus SEMUA tiket (tersedia, terjual, dll)? Tindakan ini tidak dapat dibatalkan dan tiket tidak diarsipkan.', () => {
+                    this.tickets = [];
+                    this.saveData();
+                    this.loadTicketStock();
+                    this.addActivity('Cleared all ticket stock');
+                    this.showToast('Sukses', 'Semua stok tiket telah dihapus.', 'success');
+                });
+            }
+
+            clearTransactions() {
+                if (this.currentUser.role !== 'admin') return;
+                 this.showConfirmation('Hapus Riwayat Transaksi', 'Anda yakin ingin menghapus SEMUA riwayat transaksi?', () => {
+                    this.transactions = [];
+                    this.saveData();
+                    this.loadTransactions();
+                    this.addActivity('Cleared all transaction history');
+                    this.showToast('Sukses', 'Semua riwayat transaksi telah dihapus.', 'success');
+                });
+            }
+            
+            clearStockFilters() {
+                document.getElementById('filterStatus').value = 'all';
+                document.getElementById('filterType').value = 'all';
+                document.getElementById('filterDate').value = '';
+                document.getElementById('searchTicketInput').value = '';
+                this.loadTicketStock();
+            }
+
+            showLoading() { document.getElementById('loadingOverlay').classList.add('show'); }
+            hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
+
+            generateId() { return Date.now().toString(36) + Math.random().toString(36).substring(2); }
+            generateRandomString(length) {
+                return [...Array(length)].map(() => (~~(Math.random()*36)).toString(36)).join('').toUpperCase();
+            }
+
+            showToast(title, message, type = 'info') {
+                const toastEl = document.getElementById('alertToast');
+                const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+                document.getElementById('toastTitle').textContent = title;
+                document.getElementById('toastMessage').textContent = message;
+                toastEl.className = 'toast hide text-white';
+                const typeMap = { success: 'bg-success', warning: 'bg-warning', danger: 'bg-danger', info: 'bg-info' };
+                toastEl.classList.add(typeMap[type] || 'bg-primary');
+                toast.show();
+            }
+
+            showConfirmation(title, message, onConfirm) {
+                document.getElementById('confirmationModalTitle').textContent = title;
+                document.getElementById('confirmationModalBody').innerHTML = message;
+                const modalEl = document.getElementById('confirmationModal');
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                
+                const confirmBtn = document.getElementById('confirmActionBtn');
+                const newConfirmBtn = confirmBtn.cloneNode(true);
+                confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+                newConfirmBtn.addEventListener('click', () => {
+                    onConfirm();
+                    modal.hide();
+                }, { once: true });
+                
+                modal.show();
+            }
+            
+            addActivity(message) {
+                this.activities.push({
+                    id: this.generateId(),
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    user: this.currentUser ? this.currentUser.username : 'System'
+                });
+                if (this.activities.length > 100) this.activities.shift();
+                this.saveData();
+            }
+
+            printContent(contentHTML, title) {
+                const printable = document.getElementById('printable-content');
+                printable.innerHTML = `<h3 class="text-center mb-4 no-print">${title}</h3>${contentHTML}`;
+                setTimeout(() => {
+                    window.print();
+                    printable.innerHTML = '';
+                }, 100);
+            }
+
+            formatCurrency(amount) {
+                return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+            }
+            formatDate(dateStr) { 
+                if (!dateStr) return '-';
+                const date = new Date(dateStr);
+                // Adjust for timezone offset to prevent date from shifting
+                const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+                const correctedDate = new Date(date.getTime() + userTimezoneOffset);
+                return correctedDate.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric'});
+            }
+            formatDateTime(dateStr) { return dateStr ? new Date(dateStr).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : '-'; }
+            timeSince(dateStr) {
+                const seconds = Math.floor((new Date() - new Date(dateStr)) / 1000);
+                let interval = seconds / 31536000;
+                if (interval > 1) return Math.floor(interval) + " tahun lalu";
+                interval = seconds / 2592000;
+                if (interval > 1) return Math.floor(interval) + " bulan lalu";
+                interval = seconds / 86400;
+                if (interval > 1) return Math.floor(interval) + " hari lalu";
+                interval = seconds / 3600;
+                if (interval > 1) return Math.floor(interval) + " jam lalu";
+                interval = seconds / 60;
+                if (interval > 1) return Math.floor(interval) + " menit lalu";
+                return "Baru saja";
+            }
+            
+            formatTicketType(type) { return { regular: 'Regular', vip: 'VIP', family: 'Paket Keluarga', group: 'Grup' }[type] || type; }
+            formatPaymentMethod(method) { return { cash: 'Tunai', debit: 'Kartu Debit', credit: 'Kartu Kredit', transfer: 'Transfer Bank', ewallet: 'E-Wallet' }[method] || method; }
+            formatUserRole(role) { return { admin: 'Admin', cashier: 'Kasir', manager: 'Manager' }[role] || role; }
+
+            // == START: Perbaikan Proteksi Password (Fungsi Baru) ==
+            promptForAdminPassword(onSuccess) {
+                if (this.currentUser.role !== 'admin') {
+                    this.showToast('Akses Ditolak', 'Fitur ini hanya untuk Administrator.', 'danger');
+                    return;
+                }
+                const password = prompt("Masukkan password admin untuk melanjutkan:");
+                if (password === "LKS.1945") {
+                    onSuccess();
+                } else if (password !== null) { // Hanya tampilkan error jika user salah input, bukan saat klik cancel
+                    this.showToast('Akses Ditolak', 'Password yang Anda masukkan salah.', 'danger');
+                }
+            }
+            // == END: Perbaikan Proteksi Password (Fungsi Baru) ==
+            
+            // START: Fungsi baru untuk generate QR Code
+            generateQRCodeForTicket(ticket) {
+                // Timeout untuk memastikan elemen sudah ada di dalam DOM
+                setTimeout(() => {
+                    const qrElement = document.getElementById(`qr-${ticket.id}`);
+                    if (qrElement) {
+                        qrElement.innerHTML = ''; // Hapus QR code sebelumnya jika ada
+                        new QRCode(qrElement, {
+                            text: ticket.code,
+                            width: 72, // Sekitar 18mm
+                            height: 72,
+                            correctLevel: QRCode.CorrectLevel.H // Toleransi error yang tinggi
+                        });
+                    }
+                }, 0);
+            }
+            // END: Fungsi baru untuk generate QR Code
+            
+            // == START: FUNGSI DIPERBARUI - Perbaikan Tampilan Tiket Sesuai Desain Baru ==
+            generateTicketHTML(ticket) {
+                const expiryInfo = ticket.expiryDate ? `Berlaku s/d: <strong>${this.formatDate(ticket.expiryDate)}</strong>` : 'Berlaku Selamanya';
+                const venueNameShort = this.settings.venueName.split(' ')[0];
+
+                return `
+                    <div class="ticket-small-print">
+                        <div class="ticket-main">
+                            <div class="header">
+                                <img src="${this.settings.venueLogo}" alt="Logo" class="logo">
+                                <div class="venue-info">
+                                    <div class="venue-name">${this.settings.venueName}</div>
+                                    <div class="venue-location">${this.settings.venueLocation}</div>
+                                </div>
+                            </div>
+                            <div class="ticket-body">
+                                <div class="ticket-details">
+                                    <p class="ticket-type">${this.formatTicketType(ticket.type).toUpperCase()}</p>
+                                    <p class="ticket-code">${ticket.code}</p>
+                                    <p class="ticket-expiry">${expiryInfo}</p>
+                                </div>
+                                <div class="ticket-qr" id="qr-${ticket.id}">
+                                    </div>
+                                </div>
+                            <div class="ticket-footer">
+                                Dicetak: ${this.formatDateTime(ticket.generatedAt)} oleh ${ticket.generatedBy}
+                            </div>
+                        </div>
+                        <div class="ticket-stub">
+                            <div class="stub-venue">${venueNameShort}</div>
+                            <div class="stub-details">
+                                <div class="stub-type">${this.formatTicketType(ticket.type)}</div>
+                                <div class="stub-code">${ticket.code}</div>
+                                <div class="stub-price">${this.formatCurrency(ticket.price)}</div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                `;
+            }
+            // == END: FUNGSI DIPERBARUI ==
+            
+            viewTicket(ticketId) {
+                const ticket = this.tickets.find(t => t.id === ticketId);
+                if (!ticket) return;
+
+                const ticketHTML = this.generateTicketHTML(ticket);
+                document.getElementById('ticketModalContent').innerHTML = ticketHTML;
+                
+                // START: Generate QR Code untuk modal view
+                this.generateQRCodeForTicket(ticket);
+                // END: Generate QR Code
+                
+                const printBtn = document.getElementById('printTicketBtn');
+                const newPrintBtn = printBtn.cloneNode(true);
+                printBtn.parentNode.replaceChild(newPrintBtn, printBtn);
+                newPrintBtn.addEventListener('click', () => {
+                    bootstrap.Modal.getInstance(document.getElementById('viewTicketModal')).hide();
+                    this.printContent(`<div class="printable-ticket-wrapper">${ticketHTML}</div>`, `Tiket ${ticket.code}`);
+                });
+
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('viewTicketModal')).show();
+            }
+
+            searchAvailableTickets(query) {
+                const resultsContainer = document.getElementById('ticketSearchResults');
+                resultsContainer.innerHTML = '';
+                if (query.length < 2) {
+                    resultsContainer.style.display = 'none';
+                    return;
+                }
+                const available = this.tickets.filter(t => t.status === 'available' && t.code.toLowerCase().includes(query.toLowerCase()));
+                if(available.length > 0) {
+                    available.slice(0, 10).forEach(ticket => {
+                        const item = document.createElement('div');
+                        item.className = 'search-result-item';
+                        item.innerHTML = `${ticket.code} <span class="badge bg-primary">${this.formatTicketType(ticket.type)}</span> <span class="float-end">${this.formatCurrency(ticket.price)}</span>`;
+                        item.onclick = () => {
+                            this.addToCart(ticket.id);
+                            resultsContainer.style.display = 'none';
+                            document.getElementById('salesTicketSearchInput').value = '';
+                        };
+                        resultsContainer.appendChild(item);
+                    });
+                } else {
+                     resultsContainer.innerHTML = `<div class="search-result-item text-muted">Tidak ada tiket ditemukan</div>`;
+                }
+                resultsContainer.style.display = 'block';
+            }
+            
+            generateReport() {
+                this.showLoading();
+                
+                const reportType = document.getElementById('reportType').value;
+                let startDate, endDate;
+                const now = new Date();
+                
+                if (reportType === 'custom' || reportType === 'deleted') {
+                    startDate = new Date(document.getElementById('reportDateFrom').value);
+                    startDate.setHours(0, 0, 0, 0);
+                    endDate = new Date(document.getElementById('reportDateTo').value);
+                    endDate.setHours(23, 59, 59, 999);
+                } else {
+                    switch (reportType) {
+                        case 'daily':
+                            startDate = new Date(document.getElementById('reportDate').value);
+                            startDate.setHours(0, 0, 0, 0);
+                            endDate = new Date(startDate);
+                            endDate.setHours(23, 59, 59, 999);
+                            break;
+                        case 'weekly':
+                            const day = now.getDay();
+                            startDate = new Date(now.setDate(now.getDate() - day));
+                            startDate.setHours(0,0,0,0);
+                            endDate = new Date(startDate);
+                            endDate.setDate(endDate.getDate() + 6);
+                            endDate.setHours(23,59,59,999);
+                            break;
+                        case 'monthly':
+                            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                            endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+                            break;
+                        case 'yearly':
+                            startDate = new Date(now.getFullYear(), 0, 1);
+                            endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+                            break;
+                    }
+                }
+                
+                if (reportType === 'deleted') {
+                    const deletedTickets = this.deletedTicketsLog.filter(t => {
+                        const deletedDate = new Date(t.deletedAt);
+                        return deletedDate >= startDate && deletedDate <= endDate;
+                    });
+                    
+                    this.reportData = {
+                        title: `Laporan Tiket Dihapus (${this.formatDate(startDate)} - ${this.formatDate(endDate)})`,
+                        deletedTickets: deletedTickets.sort((a,b) => new Date(b.deletedAt) - new Date(a.deletedAt)),
+                        reportType: 'deleted'
+                    };
+
+                    this.renderDeletedTicketsReport(this.reportData);
+                    this.hideLoading();
+                    return;
+                }
+
+                const ticketType = document.getElementById('reportTicketType').value;
+                const user = document.getElementById('reportUser').value;
+                const paymentMethod = document.getElementById('reportPaymentMethod').value;
+                
+                let filteredTransactions = this.transactions.filter(t => {
+                    const transactionDate = new Date(t.date);
+                    return transactionDate >= startDate && transactionDate <= endDate;
+                });
+
+                if (user !== 'all') {
+                    filteredTransactions = filteredTransactions.filter(t => t.cashier === user);
+                }
+                if (paymentMethod !== 'all') {
+                    filteredTransactions = filteredTransactions.filter(t => t.paymentMethod === paymentMethod);
+                }
+
+                let totalRevenue = 0;
+                let totalTickets = 0;
+                const ticketTypeCount = {};
+                
+                const finalTransactions = [];
+
+                filteredTransactions.forEach(t => {
+                    let transactionContainsFilteredTicket = false;
+                    if (ticketType === 'all') {
+                        transactionContainsFilteredTicket = true;
+                    } else {
+                        if (t.items.some(item => item.type === ticketType)) {
+                            transactionContainsFilteredTicket = true;
+                        }
+                    }
+
+                    if (transactionContainsFilteredTicket) {
+                        finalTransactions.push(t);
+                        totalRevenue += t.total;
+                        t.items.forEach(item => {
+                            totalTickets++;
+                            ticketTypeCount[item.type] = (ticketTypeCount[item.type] || 0) + 1;
+                        });
+                    }
+                });
+
+                this.reportData = {
+                    title: `Laporan Penjualan (${this.formatDate(startDate)} - ${this.formatDate(endDate)})`,
+                    transactions: finalTransactions,
+                    totalRevenue, totalTickets, ticketTypeCount,
+                    reportType: reportType
+                };
+                
+                this.renderReport(this.reportData);
+                this.hideLoading();
+            }
+
+            renderReport(data) {
+                const container = document.getElementById('reportResults');
+                if (data.transactions.length === 0) {
+                    container.innerHTML = `<div class="text-center text-muted py-5"><i class="fas fa-info-circle fa-3x mb-3"></i><p>Tidak ada data ditemukan untuk filter yang dipilih.</p></div>`;
+                    return;
+                }
+
+                let ticketTypeSummary = Object.keys(data.ticketTypeCount).map(type => 
+                    `<li>${this.formatTicketType(type)}: <strong>${data.ticketTypeCount[type]} tiket</strong></li>`
+                ).join('');
+
+                const reportHTML = `
+                    <div id="report-content">
+                        <h4 class="mb-3">${data.title}</h4>
+                        <div class="card p-3 mb-4 report-summary-card">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h5>Total Pendapatan</h5>
+                                    <h3>${this.formatCurrency(data.totalRevenue)}</h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>Total Tiket Terjual</h5>
+                                    <h3>${data.totalTickets}</h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>Rincian Tipe Tiket</h5>
+                                    <ul class="list-unstyled">${ticketTypeSummary}</ul>
+                                </div>
+                            </div>
+                        </div>
+                        <h5>Detail Transaksi</h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr><th>ID Transaksi</th><th>Tanggal</th><th>Kasir</th><th>Jml Tiket</th><th>Total</th></tr>
+                                </thead>
+                                <tbody>
+                                    ${data.transactions.map(t => `
+                                        <tr>
+                                            <td>${t.transactionId}</td>
+                                            <td>${this.formatDateTime(t.date)}</td>
+                                            <td>${t.cashier}</td>
+                                            <td>${t.items.length}</td>
+                                            <td>${this.formatCurrency(t.total)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML = reportHTML;
+            }
+
+            renderDeletedTicketsReport(data) {
+                const container = document.getElementById('reportResults');
+                if (!data.deletedTickets || data.deletedTickets.length === 0) {
+                    container.innerHTML = `<div class="text-center text-muted py-5"><i class="fas fa-info-circle fa-3x mb-3"></i><p>Tidak ada data tiket yang dihapus ditemukan untuk filter yang dipilih.</p></div>`;
+                    return;
+                }
+
+                const reportHTML = `
+                    <div id="report-content">
+                        <h4 class="mb-3">${data.title}</h4>
+                        <div class="card p-3 mb-4 report-summary-card">
+                            <h5>Total Tiket Dihapus & Diarsipkan: ${data.deletedTickets.length}</h5>
+                        </div>
+                        <h5>Detail Tiket yang Dihapus</h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr><th>Kode Tiket</th><th>Jenis</th><th>Harga</th><th>Status</th><th>Dihapus Pada</th><th>Dihapus Oleh</th></tr>
+                                </thead>
+                                <tbody>
+                                    ${data.deletedTickets.map(t => `
+                                        <tr>
+                                            <td>${t.code}</td>
+                                            <td>${this.formatTicketType(t.type)}</td>
+                                            <td>${this.formatCurrency(t.price)}</td>
+                                            <td><span class="badge ${t.statusAtDeletion === 'sold' ? 'bg-danger' : 'bg-warning'}">${t.statusAtDeletion}</span></td>
+                                            <td>${this.formatDateTime(t.deletedAt)}</td>
+                                            <td>${t.deletedBy}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML = reportHTML;
+            }
+
+            exportReportPDF() {
+                if (!this.reportData || (!this.reportData.transactions && !this.reportData.deletedTickets)) {
+                    this.showToast('Peringatan', 'Generate laporan terlebih dahulu sebelum export.', 'warning');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const data = this.reportData;
+                
+                doc.setFontSize(18);
+                doc.text(this.settings.venueName || 'Laporan Ventra App', 14, 22);
+                doc.setFontSize(12);
+                doc.text(data.title, 14, 30);
+                
+                if (data.reportType === 'deleted') {
+                    doc.setFontSize(11);
+                    doc.text(`Total Tiket Dihapus: ${data.deletedTickets.length}`, 14, 45);
+                    
+                    const tableColumn = ["Kode", "Jenis", "Harga", "Status", "Dihapus Pada", "Dihapus Oleh"];
+                    const tableRows = [];
+
+                    data.deletedTickets.forEach(t => {
+                        tableRows.push([
+                            t.code, this.formatTicketType(t.type), this.formatCurrency(t.price),
+                            t.statusAtDeletion, this.formatDateTime(t.deletedAt), t.deletedBy
+                        ]);
+                    });
+                    doc.autoTable(tableColumn, tableRows, { startY: 55 });
+                } else {
+                    doc.setFontSize(11);
+                    doc.text(`Total Pendapatan: ${this.formatCurrency(data.totalRevenue)}`, 14, 45);
+                    doc.text(`Total Tiket Terjual: ${data.totalTickets}`, 14, 52);
+                    
+                    const tableColumn = ["ID Transaksi", "Tanggal", "Kasir", "Jumlah Tiket", "Total"];
+                    const tableRows = [];
+
+                    data.transactions.forEach(t => {
+                        tableRows.push([
+                            t.transactionId, this.formatDateTime(t.date), t.cashier,
+                            t.items.length, this.formatCurrency(t.total)
+                        ]);
+                    });
+                    doc.autoTable(tableColumn, tableRows, { startY: 60 });
+                }
+
+                doc.save(`Laporan - ${new Date().toISOString().split('T')[0]}.pdf`);
+                this.addActivity('Exported a report to PDF');
+            }
+            
+            printReport() {
+                 if (!this.reportData || (!this.reportData.transactions && !this.reportData.deletedTickets)) {
+                    this.showToast('Peringatan', 'Generate laporan terlebih dahulu sebelum mencetak.', 'warning');
+                    return;
+                }
+                const reportContent = document.getElementById('report-content')?.innerHTML;
+                if(reportContent) {
+                    this.printContent(reportContent, this.settings.venueName);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
