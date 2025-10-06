@@ -237,8 +237,40 @@
         .cta-section { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)), url('https://www.toptal.com/designers/subtlepatterns/uploads/double-bubble-outline.png'); color: var(--white-color); text-align: center; }
         .cta-section h2 { font-size: 2.5rem; margin-bottom: 20px; }
         .cta-section p { font-size: 1.1rem; max-width: 600px; margin: 0 auto 30px; opacity: 0.9; }
-        .btn-cta { background-color: var(--white-color); color: var(--primary-color); padding: 14px 32px; font-size: 1.1rem; }
+        .btn-cta { background-color: var(--white-color); color: var(--primary-color); padding: 14px 32px; font-size: 1.1rem; position: relative; z-index: 1; overflow: visible !important; }
         .btn-cta:hover { background-color: var(--accent-color); color: var(--dark-color); transform: translateY(-3px); }
+        
+        /* --- PENYEMPURNAAN: Animasi Gelombang Sinyal untuk Tombol CTA --- */
+        .btn-cta::before, .btn-cta::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            z-index: -1;
+            animation: signal-wave 2s ease-out infinite;
+        }
+
+        .btn-cta::after {
+            animation-delay: 1s;
+        }
+
+        @keyframes signal-wave {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                width: 200px;
+                height: 200px;
+                opacity: 0;
+            }
+        }
+        /* --- AKHIR PENYEMPURNAAN --- */
         
         /* Footer from AplikasiUsaha.com */
         .footer { background-color: var(--footer-bg); color: #cdd6f4; padding: 80px 0 20px; } 
@@ -428,6 +460,19 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
+        /* --- PENYEMPURNAAN: Animasi saat scroll --- */
+        .animated-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animated-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* --- AKHIR PENYEMPURNAAN --- */
+
+
         /* --- Responsive Design --- */
         
         /* Tablet & Large Phone */
@@ -521,23 +566,23 @@
 
         <section class="section features" id="features">
             <div class="container">
-                <div class="section-title">
+                <div class="section-title animated-item">
                     <h2>Fitur Unggulan Kami</h2>
                     <p>Kami menyediakan solusi lengkap untuk mengatasi berbagai tantangan dalam menjalankan bisnis modern.</p>
                 </div>
                 <div class="features-grid">
-                     <div class="feature-card"><div class="icon"><i class="fas fa-boxes-stacked"></i></div><h3>Manajemen Stok Cerdas</h3><p>Pantau stok barang secara real-time, dapatkan notifikasi saat stok menipis, dan kelola multi-gudang dengan mudah.</p></div>
-                    <div class="feature-card"><div class="icon"><i class="fas fa-chart-pie"></i></div><h3>Laporan Analitik Mendalam</h3><p>Dapatkan laporan penjualan, laba-rugi, dan performa produk secara otomatis untuk pengambilan keputusan yang lebih baik.</p></div>
-                    <div class="feature-card"><div class="icon"><i class="fas fa-cash-register"></i></div><h3>Sistem Kasir Modern (POS)</h3><p>Proses transaksi lebih cepat dengan sistem Point of Sale yang terintegrasi langsung dengan manajemen inventaris.</p></div>
-                    <div class="feature-card"><div class="icon"><i class="fas fa-users"></i></div><h3>Database Pelanggan (CRM)</h3><p>Simpan data pelanggan, lacak riwayat pembelian, dan bangun loyalitas melalui program keanggotaan.</p></div>
+                     <div class="feature-card animated-item"><div class="icon"><i class="fas fa-boxes-stacked"></i></div><h3>Manajemen Stok Cerdas</h3><p>Pantau stok barang secara real-time, dapatkan notifikasi saat stok menipis, dan kelola multi-gudang dengan mudah.</p></div>
+                    <div class="feature-card animated-item"><div class="icon"><i class="fas fa-chart-pie"></i></div><h3>Laporan Analitik Mendalam</h3><p>Dapatkan laporan penjualan, laba-rugi, dan performa produk secara otomatis untuk pengambilan keputusan yang lebih baik.</p></div>
+                    <div class="feature-card animated-item"><div class="icon"><i class="fas fa-cash-register"></i></div><h3>Sistem Kasir Modern (POS)</h3><p>Proses transaksi lebih cepat dengan sistem Point of Sale yang terintegrasi langsung dengan manajemen inventaris.</p></div>
+                    <div class="feature-card animated-item"><div class="icon"><i class="fas fa-users"></i></div><h3>Database Pelanggan (CRM)</h3><p>Simpan data pelanggan, lacak riwayat pembelian, dan bangun loyalitas melalui program keanggotaan.</p></div>
                 </div>
             </div>
         </section>
 
         <section class="section testimonial-section" id="testimonial">
             <div class="container">
-                <div class="section-title"><h2>Apa Kata Mereka?</h2><p>Kisah sukses dari 15 kota di seluruh Indonesia yang telah mempercayakan bisnisnya pada kami.</p></div>
-                 <div class="swiper testimonialSwiper">
+                <div class="section-title animated-item"><h2>Apa Kata Mereka?</h2><p>Kisah sukses dari 15 kota di seluruh Indonesia yang telah mempercayakan bisnisnya pada kami.</p></div>
+                 <div class="swiper testimonialSwiper animated-item">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide"><div class="testimonial-card"><div class="testimonial-header"><div class="testimonial-avatar"><i class="fas fa-hotel"></i></div><div class="testimonial-author"><h4>Ahmad Zulkifli</h4><span>Pemilik Villa, Jember</span></div></div><p class="testimonial-body">"Aplikasi Hotel ini mengubah cara kami mengelola booking. Kamar tidak pernah double-book lagi dan laporan okupansi sangat akurat. Wajib punya!"</p></div></div>
                         <div class="swiper-slide"><div class="testimonial-card"><div class="testimonial-header"><div class="testimonial-avatar"><i class="fas fa-cash-register"></i></div><div class="testimonial-author"><h4>Siti Aminah</h4><span>Toko Kelontong, Banyuwangi</span></div></div><p class="testimonial-body">"Pakai Aplikasi Kasir ini, saya jadi tahu barang apa yang paling laku. Stok opname sekarang cuma butuh beberapa jam, bukan berhari-hari. Sangat membantu!"</p></div></div>
@@ -554,7 +599,7 @@
         </section>
 
         <section class="section cta-section">
-            <div class="container">
+            <div class="container animated-item">
                 <h2>Siap Mengembangkan Usaha Anda ke Level Berikutnya?</h2>
                 <p>Isi formulir singkat dan tim kami akan segera menghubungi Anda untuk memulai transformasi digital bisnis Anda.</p>
                 <button id="openRegistrationModalBtn" class="btn btn-cta">Daftar Sekarang Juga</button>
@@ -591,7 +636,7 @@
     
     <div id="trialModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn" aria-label="Tutup">&times;</span>
             <h2>Pilih Aplikasi untuk Uji Coba</h2>
             <p>Silakan pilih salah satu aplikasi di bawah ini untuk memulai uji coba gratis.</p>
             <div class="app-grid">
@@ -614,7 +659,7 @@
     </div>
     
     <div id="registrationModal" class="modal">
-        <div class="modal-content"><span class="close-btn">&times;</span><div id="form-container"><h2>Formulir Konsultasi & Pendaftaran</h2><p style="text-align: center; margin-bottom: 25px; color: var(--gray-color);">Lengkapi data di bawah ini, dan tim ahli kami akan segera menghubungi Anda untuk demo atau konsultasi gratis.</p><form id="registrationForm">
+        <div class="modal-content"><span class="close-btn" aria-label="Tutup">&times;</span><div id="form-container"><h2>Formulir Konsultasi & Pendaftaran</h2><p style="text-align: center; margin-bottom: 25px; color: var(--gray-color);">Lengkapi data di bawah ini, dan tim ahli kami akan segera menghubungi Anda untuk demo atau konsultasi gratis.</p><form id="registrationForm">
             <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
             <input type="hidden" name="subject" value="Pendaftaran Baru dari Website AplikasiUsaha.com"><input type="hidden" name="from_name" value="AplikasiUsaha Website">
             <input type="hidden" id="legality_code_hidden" name="kode_legalitas">
@@ -641,29 +686,29 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
     <script>
-        // --- Particle generation script from ANEKAMARKET ---
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('particle-container');
-            if (container) {
-                const particleCount = 50;
-                for (let i = 0; i < particleCount; i++) {
-                    let particle = document.createElement('div');
-                    particle.classList.add('particle');
-                    const size = Math.random() * 8 + 2;
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
-                    particle.style.left = `${Math.random() * 100}%`;
-                    particle.style.top = `${Math.random() * 100}%`;
-                    const duration = Math.random() * 15 + 10;
-                    particle.style.animationDuration = `${duration}s`;
-                    const delay = Math.random() * 10;
-                    particle.style.animationDelay = `${delay}s`;
-                    container.appendChild(particle);
-                }
-            }
-        });
+    document.addEventListener('DOMContentLoaded', function() {
     
-        // --- All functional scripts from AplikasiUsaha.com ---
+        // --- Particle generation script from ANEKAMARKET ---
+        const particleContainer = document.getElementById('particle-container');
+        if (particleContainer) {
+            const particleCount = 50;
+            for (let i = 0; i < particleCount; i++) {
+                let particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 8 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                const duration = Math.random() * 15 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                const delay = Math.random() * 10;
+                particle.style.animationDelay = `${delay}s`;
+                particleContainer.appendChild(particle);
+            }
+        }
+    
+        // --- Hamburger Menu Logic ---
         const hamburger = document.querySelector(".hamburger");
         const navLinks = document.querySelector(".nav-links");
         if (hamburger && navLinks) {
@@ -673,30 +718,44 @@
             });
         }
         document.querySelectorAll(".nav-links a").forEach(n => n.addEventListener("click", () => {
-            if (!n.getAttribute('target') && hamburger && navLinks) {
+            if (hamburger && navLinks && navLinks.classList.contains('active')) {
                 hamburger.classList.remove("active");
                 navLinks.classList.remove("active");
             }
         }));
     
+        // --- Modal Setup Function ---
         function setupModal(modalId, openBtnId) {
             const modal = document.getElementById(modalId);
             const openBtn = document.getElementById(openBtnId);
             if (!modal) return { open: () => {}, close: () => {} };
+            
             const closeBtn = modal.querySelector(".close-btn");
+            
             const open = () => modal.style.display = "block";
             const close = () => modal.style.display = "none";
+            
             if (openBtn) openBtn.onclick = open;
             if (closeBtn) closeBtn.onclick = close;
+            
             window.addEventListener('click', (event) => {
                 if (event.target == modal) close();
             });
+
+            // PENYEMPURNAAN: Tutup modal dengan tombol Escape
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal.style.display === "block") {
+                    close();
+                }
+            });
+            
             return { open, close };
         }
     
         const trialModal = setupModal('trialModal', 'openTrialModalBtn');
         const registrationModal = setupModal('registrationModal', 'openRegistrationModalBtn');
     
+        // --- Registration Form Logic with Unique Code ---
         function generateUniqueCode() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let result = 'AU-';
@@ -716,48 +775,42 @@
                 const formResult = document.getElementById("form-result");
                 const regForm = document.getElementById('registrationForm');
     
+                if (regForm) regForm.reset();
                 if (legalityCodeInput) legalityCodeInput.value = newCode;
                 if (legalityCodeHiddenInput) legalityCodeHiddenInput.value = newCode;
                 if (formContainer) formContainer.style.display = "block";
                 if (formResult) formResult.style.display = "none";
-                if (regForm) regForm.reset();
-    
-                // Re-apply the code after reset
-                if (legalityCodeInput) legalityCodeInput.value = newCode;
-                if (legalityCodeHiddenInput) legalityCodeHiddenInput.value = newCode;
             });
         }
     
-        const form = document.getElementById('registrationForm');
-        if (form) {
-            form.addEventListener('submit', function(e) {
+        // --- Registration Form Submission (Web3Forms) ---
+        const registrationForm = document.getElementById('registrationForm');
+        if (registrationForm) {
+            registrationForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                const submitButton = form.querySelector('button[type="submit"]');
+                const submitButton = registrationForm.querySelector('button[type="submit"]');
                 submitButton.innerHTML = "Mengirim...";
                 submitButton.disabled = true;
-                const formData = new FormData(form);
+                
+                const formData = new FormData(registrationForm);
                 const object = Object.fromEntries(formData);
                 const json = JSON.stringify(object);
+                
                 const formContainer = document.getElementById("form-container");
                 const formResult = document.getElementById("form-result");
     
                 fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: json
                     })
                     .then(async (response) => {
                         let jsonResponse = await response.json();
                         if (formContainer) formContainer.style.display = "none";
                         if (formResult) formResult.style.display = "block";
+                        
                         if (response.status == 200) {
-                            const waNumber = "6287865614222";
-    
-                            // --- BAGIAN YANG DISEMPURNAKAN ---
-                            // Mengambil semua data dari formulir dengan fallback jika kosong
+                            const waNumber = "6287865614222"; 
                             const kodeLegalitas = object.kode_legalitas || "-";
                             const namaLengkap = object.name || "-";
                             const noWhatsApp = object.phone || "-";
@@ -766,11 +819,9 @@
                             const jenisUsaha = object.business_type || "Belum dipilih";
                             const pesanPengguna = object.message || "Tidak ada pesan tambahan.";
     
-                            // Membuat pesan WhatsApp yang terstruktur dan lengkap
                             const waMessage = `Halo, saya telah mengisi formulir pendaftaran di AplikasiUsaha.com.\n\nBerikut adalah detail data saya:\n----------------------------------\n*Kode Legalitas:* ${kodeLegalitas}\n*Nama Lengkap:* ${namaLengkap}\n*Nomor WhatsApp:* ${noWhatsApp}\n*Email:* ${alamatEmail}\n*Nama Usaha:* ${namaUsaha}\n*Jenis Usaha:* ${jenisUsaha}\n*Kebutuhan/Pesan:* ${pesanPengguna}\n----------------------------------\n\nMohon konfirmasi dan informasi selanjutnya. Terima kasih.`;
-                            // --- AKHIR BAGIAN YANG DISEMPURNAKAN ---
-    
                             const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
+                            
                             if (formResult) {
                                 formResult.className = "success";
                                 formResult.innerHTML = `<h4>Terima Kasih!</h4><p>Pendaftaran Anda telah berhasil kami terima. Tim kami akan segera menghubungi Anda.</p><a href="${waURL}" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Klik untuk Konfirmasi via WhatsApp</a>`;
@@ -778,7 +829,7 @@
                         } else {
                             if (formResult) {
                                 formResult.className = "error";
-                                formResult.innerHTML = `<p>${jsonResponse.message}</p>`;
+                                formResult.innerHTML = `<p>${jsonResponse.message || 'Terjadi kesalahan.'}</p>`;
                             }
                         }
                     })
@@ -799,7 +850,7 @@
             });
         }
     
-        // --- Logika Formulir Newsletter ---
+        // --- Newsletter Form Logic (Web3Forms) ---
         const newsletterForm = document.getElementById('newsletterForm');
         if (newsletterForm) {
             newsletterForm.addEventListener('submit', function(e) {
@@ -810,18 +861,14 @@
                 submitButton.disabled = true;
     
                 const formData = new FormData(newsletterForm);
-                const object = Object.fromEntries(formData);
-                const json = JSON.stringify(object);
-    
+                const json = JSON.stringify(Object.fromEntries(formData));
                 const newsletterResult = document.getElementById("newsletter-result");
+                
                 if (newsletterResult) newsletterResult.style.display = "none";
     
                 fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: json
                     })
                     .then(async (response) => {
@@ -851,62 +898,60 @@
                         submitButton.innerHTML = originalIconHTML;
                         submitButton.disabled = false;
                         setTimeout(() => {
-                            if (newsletterResult && newsletterResult.style.display === "block") {
-                                newsletterResult.style.display = "none";
-                            }
+                            if (newsletterResult) newsletterResult.style.display = "none";
                         }, 6000);
                     });
             });
         }
     
+        // --- Swiper JS for Testimonials ---
         var swiper = new Swiper(".testimonialSwiper", {
             slidesPerView: 1,
             spaceBetween: 30,
             loop: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev"
-            },
+            autoplay: { delay: 5000, disableOnInteraction: false },
+            pagination: { el: ".swiper-pagination", clickable: true },
+            navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
             breakpoints: {
-                768: {
-                    slidesPerView: 2
-                },
-                1024: {
-                    slidesPerView: 3
-                }
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 }
             },
         });
     
-        // --- Logika untuk Pencarian Google Melayang ---
+        // --- Floating Google Search Logic ---
         const googleSearchToggleBtn = document.getElementById('google-search-toggle-btn');
         const googleSearchFormContainer = document.getElementById('google-search-form-container');
         if (googleSearchToggleBtn && googleSearchFormContainer) {
             const googleSearchIcon = googleSearchToggleBtn.querySelector('i');
             googleSearchToggleBtn.addEventListener('click', () => {
                 const isVisible = googleSearchFormContainer.style.display === 'block';
-                if (isVisible) {
-                    googleSearchFormContainer.style.display = 'none';
-                    if (googleSearchIcon) {
-                        googleSearchIcon.classList.remove('fa-times');
-                        googleSearchIcon.classList.add('fa-search');
-                    }
-                } else {
-                    googleSearchFormContainer.style.display = 'block';
-                    if (googleSearchIcon) {
-                        googleSearchIcon.classList.remove('fa-search');
-                        googleSearchIcon.classList.add('fa-times');
-                    }
+                googleSearchFormContainer.style.display = isVisible ? 'none' : 'block';
+                if (googleSearchIcon) {
+                    googleSearchIcon.classList.toggle('fa-times', !isVisible);
+                    googleSearchIcon.classList.toggle('fa-search', isVisible);
                 }
             });
         }
+
+        // --- PENYEMPURNAAN: Intersection Observer for Scroll Animations ---
+        const animatedItems = document.querySelectorAll('.animated-item');
+        if (animatedItems.length > 0) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the item is visible
+            });
+
+            animatedItems.forEach(item => {
+                observer.observe(item);
+            });
+        }
+
+    });
     </script>
 </body>
 </html>
