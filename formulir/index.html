@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Pendaftaran Mitra ANEKAMARKET</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0D47A1;
+            --secondary-color: #1976D2;
+            --accent-color: #FFC107;
+            --dark-color: #1a1a1a;
+            --gray-color: #757575;
+            --light-gray-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --border-radius: 8px;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f4f7fa 0%, #d6e4f3 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--white-color);
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .logo-img {
+            max-width: 180px;
+            height: auto;
+        }
+
+        .form-container {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .required::after {
+            content: " *";
+            color: var(--error-color);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(13, 71, 161, 0.2);
+        }
+
+        input[readonly] {
+            background-color: var(--light-gray-bg);
+            cursor: not-allowed;
+            color: var(--gray-color);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            padding: 15px;
+            background-color: var(--light-gray-bg);
+            border-radius: var(--border-radius);
+        }
+
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--white-color);
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(25, 118, 210, 0.5);
+        }
+
+        .btn-primary:disabled {
+            background: var(--gray-color);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: var(--white-color);
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+        }
+
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--white-color);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 1000;
+            display: none;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .notification h2 {
+            color: var(--success-color);
+            margin-bottom: 15px;
+        }
+
+        .notification p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="https://raw.githubusercontent.com/anekamarket/aplikasi-situbondo/refs/heads/main/naikkelas.png" alt="ANEKAMARKET Logo" class="logo-img">
+            </div>
+            <h1>Formulir Pendaftaran Mitra ANEKAMARKET</h1>
+            <p>Bergabunglah dengan komunitas bisnis terdepan di Situbondo</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="registrationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nama" class="required">Nama (sesuai KTP)</label>
+                        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap sesuai KTP" required>
+                        <div class="error-message" id="nama-error">Nama harus diisi</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nik" class="required">NIK (Nomor KTP)</label>
+                        <input type="text" id="nik" name="nik" placeholder="Masukkan 16 digit NIK" required maxlength="16">
+                        <div class="error-message" id="nik-error">NIK harus 16 digit angka</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="alamat" class="required">Alamat (sesuai KTP)</label>
+                    <textarea id="alamat" name="alamat" rows="3" placeholder="Masukkan alamat lengkap sesuai KTP" required></textarea>
+                    <div class="error-message" id="alamat-error">Alamat harus diisi</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whatsapp" class="required">Nomor WhatsApp</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="08XXXXXXXXX" required pattern="08[0-9]{8,}">
+                        <div class="error-message" id="whatsapp-error">Nomor WhatsApp harus dimulai dengan 08 dan minimal 10 digit</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="contoh@gmail.com">
+                        <div class="error-message" id="email-error">Format email tidak valid</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nama_usaha" class="required">Nama Usaha</label>
+                    <input type="text" id="nama_usaha" name="nama_usaha" placeholder="Contoh: Cafe Bintang" required>
+                    <div class="error-message" id="nama_usaha-error">Nama usaha harus diisi</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="alamat_usaha" class="required">Alamat Usaha</label>
+                    <textarea id="alamat_usaha" name="alamat_usaha" rows="3" placeholder="Contoh: Jl. Cinta Desa Hati Kecamatan Jantung" required></textarea>
+                    <div class="error-message" id="alamat_usaha-error">Alamat usaha harus diisi</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="kategori_usaha" class="required">Kategori Usaha</label>
+                    <select id="kategori_usaha" name="kategori_usaha" required>
+                        <option value="">Pilih Kategori Usaha</option>
+                        <option value="UMKM">UMKM</option>
+                        <option value="Jasa Service HP">Jasa Service HP</option>
+                        <option value="Kuliner">Kuliner</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Pertanian">Pertanian</option>
+                        <option value="Perikanan">Perikanan</option>
+                        <option value="Kerajinan">Kerajinan</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                    <div class="error-message" id="kategori_usaha-error">Kategori usaha harus dipilih</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_permohonan">ID Permohonan</label>
+                        <input type="text" id="id_permohonan" name="id_permohonan" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal_pendaftaran">Tanggal Pendaftaran</label>
+                        <input type="text" id="tanggal_pendaftaran" name="tanggal_pendaftaran" readonly>
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agree" name="agree">
+                    <label for="agree">Saya menyetujui untuk mengirim data tersebut</label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Kirim Data</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="notification" id="successNotification">
+        <h2>Terima Kasih!</h2>
+        <p>Terima kasih telah bergabung dan menjadi Mitra ANEKAMARKET</p>
+        <button class="btn btn-success" id="okButton">OK</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate ID Permohonan
+            function generateIdPermohonan() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let result = 'AM-';
+                for (let i = 0; i < 6; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+            
+            // Set tanggal pendaftaran
+            function setTanggalPendaftaran() {
+                const now = new Date();
+                const options = { 
+                    day: '2-digit', 
+                    month: '2-digit', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                return now.toLocaleDateString('id-ID', options) + ' WIB';
+            }
+            
+            // Inisialisasi form
+            document.getElementById('id_permohonan').value = generateIdPermohonan();
+            document.getElementById('tanggal_pendaftaran').value = setTanggalPendaftaran();
+            
+            // Validasi form
+            const form = document.getElementById('registrationForm');
+            const requiredFields = form.querySelectorAll('[required]');
+            const checkbox = document.getElementById('agree');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Validasi real-time
+            form.addEventListener('input', function() {
+                validateForm();
+            });
+            
+            // Validasi checkbox
+            checkbox.addEventListener('change', function() {
+                validateForm();
+            });
+            
+            function validateForm() {
+                let allValid = true;
+                
+                // Validasi field wajib
+                requiredFields.forEach(field => {
+                    const errorElement = document.getElementById(`${field.id}-error`);
+                    
+                    if (field.type === 'text' || field.type === 'textarea') {
+                        if (field.value.trim() === '') {
+                            showError(field, errorElement, 'Field ini harus diisi');
+                            allValid = false;
+                        } else {
+                            hideError(field, errorElement);
+                        }
+                    }
+                    
+                    if (field.id === 'nik') {
+                        if (field.value.length !== 16 || isNaN(field.value)) {
+                            showError(field, errorElement, 'NIK harus 16 digit angka');
+                            allValid = false;
+                        } else {
+                            hideError(field, errorElement);
+                        }
+                    }
+                    
+                    if (field.id === 'whatsapp') {
+                        const pattern = /^08[0-9]{8,}$/;
+                        if (!pattern.test(field.value)) {
+                            showError(field, errorElement, 'Nomor WhatsApp harus dimulai dengan 08 dan minimal 10 digit');
+                            allValid = false;
+                        } else {
+                            hideError(field, errorElement);
+                        }
+                    }
+                    
+                    if (field.id === 'email' && field.value !== '') {
+                        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!pattern.test(field.value)) {
+                            showError(field, errorElement, 'Format email tidak valid');
+                            allValid = false;
+                        } else {
+                            hideError(field, errorElement);
+                        }
+                    }
+                    
+                    if (field.tagName === 'SELECT' && field.value === '') {
+                        showError(field, errorElement, 'Field ini harus dipilih');
+                        allValid = false;
+                    } else if (field.tagName === 'SELECT' && field.value !== '') {
+                        hideError(field, errorElement);
+                    }
+                });
+                
+                // Cek apakah checkbox dicentang
+                if (!checkbox.checked) {
+                    allValid = false;
+                }
+                
+                // Aktifkan atau nonaktifkan tombol submit
+                submitBtn.disabled = !allValid;
+                
+                return allValid;
+            }
+            
+            function showError(field, errorElement, message) {
+                field.style.borderColor = 'var(--error-color)';
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+            
+            function hideError(field, errorElement) {
+                field.style.borderColor = '#ddd';
+                errorElement.style.display = 'none';
+            }
+            
+            // Submit form
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    // Kirim data ke WhatsApp
+                    sendWhatsApp();
+                    
+                    // Tampilkan notifikasi sukses
+                    document.getElementById('overlay').style.display = 'block';
+                    document.getElementById('successNotification').style.display = 'block';
+                }
+            });
+            
+            // Fungsi untuk mengirim data ke WhatsApp
+            function sendWhatsApp() {
+                // Ambil semua data dari form
+                const nama = document.getElementById('nama').value;
+                const nik = document.getElementById('nik').value;
+                const alamat = document.getElementById('alamat').value;
+                const whatsapp = document.getElementById('whatsapp').value;
+                const email = document.getElementById('email').value || 'Tidak diisi';
+                const namaUsaha = document.getElementById('nama_usaha').value;
+                const alamatUsaha = document.getElementById('alamat_usaha').value;
+                const kategoriUsaha = document.getElementById('kategori_usaha').value;
+                const idPermohonan = document.getElementById('id_permohonan').value;
+                const tanggalPendaftaran = document.getElementById('tanggal_pendaftaran').value;
+                
+                // Format pesan WhatsApp
+                const message = `*PENDAFTARAN MITRA ANEKAMARKET*
+
+*Data Pribadi:*
+• Nama: ${nama}
+• NIK: ${nik}
+• Alamat: ${alamat}
+• WhatsApp: ${whatsapp}
+• Email: ${email}
+
+*Data Usaha:*
+• Nama Usaha: ${namaUsaha}
+• Alamat Usaha: ${alamatUsaha}
+• Kategori Usaha: ${kategoriUsaha}
+
+*Data Sistem:*
+• ID Permohonan: ${idPermohonan}
+• Tanggal Pendaftaran: ${tanggalPendaftaran}
+
+_Semua data di atas telah diverifikasi dan sesuai dengan dokumen asli._
+Terima kasih telah bergabung dengan ANEKAMARKET!`;
+                
+                // Encode pesan untuk URL
+                const encodedMessage = encodeURIComponent(message);
+                
+                // Buat URL WhatsApp
+                const whatsappURL = `https://wa.me/6285647709114?text=${encodedMessage}`;
+                
+                // Buka WhatsApp di tab baru
+                window.open(whatsappURL, '_blank');
+                
+                console.log('Data dikirim ke WhatsApp: 085647709114');
+                console.log('Pesan WhatsApp:', message);
+            }
+            
+            // Tombol OK di notifikasi
+            document.getElementById('okButton').addEventListener('click', function() {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('successNotification').style.display = 'none';
+                
+                // Redirect ke anekamarket.my.id
+                window.location.href = 'https://www.anekamarket.my.id';
+            });
+        });
+    </script>
+</body>
+</html>
