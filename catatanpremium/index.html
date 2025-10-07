@@ -6,7 +6,6 @@
     <title>Aplikasi Catatan UMKM Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.css">
     <style>
         :root {
             --primary-color: #4361ee;
@@ -52,7 +51,6 @@
             min-height: 100vh;
         }
 
-        /* Splash Screen */
         #splashScreen {
             position: fixed;
             top: 0;
@@ -150,7 +148,6 @@
             to { opacity: 1; }
         }
 
-        /* Modern Login Modal */
         #loginModal {
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
@@ -181,17 +178,6 @@
             width: 100%;
             height: 8px;
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        }
-
-        .login-container::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
-            z-index: -1;
         }
 
         .login-title {
@@ -241,14 +227,10 @@
             background-color: #f9f9f9;
         }
         
-        /* Styles for locked (readonly) login inputs */
         .form-floating input[readonly] {
             background-color: #e9ecef;
             cursor: not-allowed;
             user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
         }
 
         .form-floating input:focus {
@@ -300,7 +282,6 @@
             font-weight: 500;
         }
         
-        /* Captcha Styles */
         .captcha-container {
             text-align: left;
             margin-bottom: 20px;
@@ -321,11 +302,6 @@
             text-align: center;
             user-select: none;
         }
-
-        #refreshCaptcha {
-            padding: 10px;
-            line-height: 1;
-        }
         
         #captchaInput {
             margin-top: 10px;
@@ -336,8 +312,6 @@
             font-size: 1rem;
         }
         
-
-        /* Modern Header */
         .header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
@@ -353,28 +327,13 @@
             overflow: hidden;
         }
 
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
         .header h1 {
             font-size: 1.8rem;
             font-weight: 600;
-            position: relative;
-            z-index: 1;
         }
 
         .header-info {
             text-align: right;
-            position: relative;
-            z-index: 1;
         }
 
         .header-info p {
@@ -382,48 +341,6 @@
             font-size: 0.9rem;
         }
 
-        .header-info a {
-            color: white;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .header-info a:hover {
-            text-decoration: underline;
-            opacity: 0.9;
-        }
-
-        /* Modern Cards */
-        .note-card, .debt-card, .report-card {
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            border: none;
-        }
-
-        .note-card::before, .debt-card::before, .report-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.05), rgba(63, 55, 201, 0.05));
-            z-index: -1;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .note-card:hover::before, .debt-card:hover::before, .report-card:hover::before {
-            opacity: 1;
-        }
-
-        .note-card:hover, .debt-card:hover, .report-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Modern Buttons */
         .btn {
             position: relative;
             overflow: hidden;
@@ -468,7 +385,6 @@
             }
         }
 
-        /* Modern Modal */
         .modal {
             display: none;
             position: fixed;
@@ -494,13 +410,6 @@
             overflow-y: auto;
             box-shadow: var(--shadow-xl);
             animation: modalFadeIn 0.3s;
-            transform: none;
-            opacity: 1;
-        }
-
-        .admin-modal .modal-content {
-            max-width: 95%;
-            width: 95%;
         }
 
         @keyframes modalFadeIn {
@@ -539,18 +448,11 @@
             cursor: pointer;
             color: #999;
             transition: var(--transition);
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
         }
 
         .modal-close:hover {
             color: #333;
             transform: rotate(90deg);
-            background-color: var(--gray-light);
         }
 
         .modal-body {
@@ -574,7 +476,6 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* Error message styling */
         .error-message {
             color: var(--danger-color);
             font-size: 0.8rem;
@@ -582,7 +483,6 @@
             display: none;
         }
 
-        /* Loading spinner */
         .spinner {
             display: inline-block;
             width: 20px;
@@ -598,7 +498,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Toast notification */
         .toast {
             position: fixed;
             top: 20px;
@@ -620,28 +519,16 @@
             transform: translateX(0);
         }
 
-        .toast.success {
-            background-color: var(--success-color);
-        }
-
-        .toast.error {
-            background-color: var(--danger-color);
-        }
-
-        .toast.warning {
-            background-color: var(--warning-color);
-        }
-
-        .toast.info {
-            background-color: var(--info-color);
-        }
+        .toast.success { background-color: var(--success-color); }
+        .toast.error { background-color: var(--danger-color); }
+        .toast.warning { background-color: var(--warning-color); }
+        .toast.info { background-color: var(--info-color); }
 
         .toast i {
             margin-right: 10px;
             font-size: 1.2rem;
         }
 
-        /* Confirmation dialog */
         .confirmation-dialog {
             position: fixed;
             top: 0;
@@ -674,64 +561,25 @@
             margin-top: 20px;
         }
 
-        /* Print styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .receipt, .receipt * {
-                visibility: visible;
-            }
-            .receipt {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                max-width: 100%;
-                box-shadow: none;
-                padding: 0;
-                margin: 0;
-                font-size: 12px;
-            }
-            
-            .no-print {
-                display: none !important;
-            }
-        }
-
-        /* Container and Main Content */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            position: relative;
         }
 
         .main-content {
             display: flex;
             flex-wrap: wrap;
             gap: 25px;
-            transition: var(--transition);
         }
 
-        .left-panel {
+        .left-panel, .right-panel {
             flex: 1;
             min-width: 300px;
             background: white;
             border-radius: var(--rounded-xl);
             padding: 25px;
             box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-
-        .right-panel {
-            flex: 2;
-            min-width: 400px;
-            background: white;
-            border-radius: var(--rounded-xl);
-            padding: 25px;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
         }
 
         .panel-title {
@@ -746,13 +594,8 @@
             gap: 10px;
         }
 
-        .panel-title i {
-            color: var(--accent-color);
-        }
-
         .form-group {
             margin-bottom: 20px;
-            position: relative;
         }
 
         .form-group label {
@@ -789,9 +632,6 @@
             transition: var(--transition);
             text-align: center;
             font-weight: 500;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         .btn:hover {
@@ -799,70 +639,14 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow);
         }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
-
-        .btn-success {
-            background-color: var(--success-color);
-        }
-
-        .btn-success:hover {
-            background-color: #0d9b6c;
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-        }
-
-        .btn-danger:hover {
-            background-color: #dc2626;
-        }
-
-        .btn-warning {
-            background-color: var(--warning-color);
-        }
-
-        .btn-warning:hover {
-            background-color: #e69007;
-        }
-
-        .btn-info {
-            background-color: var(--info-color);
-        }
-
-        .btn-info:hover {
-            background-color: #2563eb;
-        }
-
-        .btn-secondary {
-            background-color: var(--gray-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: #4b5563;
-        }
-
-        .btn-sm {
-            padding: 8px 12px;
-            font-size: 0.85rem;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--primary-light);
-        }
+        
+        .btn-block { width: 100%; }
+        .btn-success { background-color: var(--success-color); }
+        .btn-danger { background-color: var(--danger-color); }
+        .btn-warning { background-color: var(--warning-color); }
+        .btn-info { background-color: var(--info-color); }
+        .btn-secondary { background-color: var(--gray-color); }
+        .btn-sm { padding: 8px 12px; font-size: 0.85rem; }
 
         .table-responsive {
             overflow-x: auto;
@@ -875,7 +659,6 @@
         .table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 0;
         }
 
         .table th, .table td {
@@ -888,46 +671,6 @@
             background-color: #f8f9fa;
             font-weight: 500;
             color: #555;
-            position: sticky;
-            top: 0;
-        }
-
-        .table tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
-        .badge-success {
-            background-color: var(--success-light);
-            color: #065f46;
-        }
-
-        .badge-danger {
-            background-color: var(--danger-light);
-            color: #b91c1c;
-        }
-
-        .badge-warning {
-            background-color: var(--warning-light);
-            color: #92400e;
-        }
-
-        .badge-info {
-            background-color: var(--info-light);
-            color: #1e40af;
-        }
-
-        .badge-primary {
-            background-color: #eef2ff;
-            color: var(--primary-color);
         }
 
         .search-box {
@@ -952,12 +695,6 @@
             display: flex;
             border-bottom: 1px solid #ddd;
             margin-bottom: 20px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .tabs::-webkit-scrollbar {
-            display: none;
         }
 
         .tab {
@@ -973,24 +710,16 @@
         .tab.active {
             border-bottom: 2px solid var(--primary-color);
             color: var(--primary-color);
-            font-weight: 600;
         }
 
         .tab-content {
             display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .tab-content.active {
             display: block;
         }
 
-        /* Empty state */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -1003,11 +732,6 @@
             margin-bottom: 15px;
         }
 
-        .empty-state p {
-            font-size: 0.9rem;
-        }
-
-        /* Data backup section */
         .data-backup {
             margin-top: 30px;
             padding-top: 20px;
@@ -1021,7 +745,6 @@
             flex-wrap: wrap;
         }
 
-        /* Sales report */
         .report-summary {
             display: flex;
             flex-wrap: wrap;
@@ -1036,27 +759,11 @@
             border-radius: var(--rounded-sm);
             padding: 20px;
             box-shadow: var(--shadow-sm);
-            transition: var(--transition);
         }
+        
+        .report-card-title { font-size: 0.9rem; color: #666; margin-bottom: 10px; }
+        .report-card-value { font-size: 1.5rem; font-weight: 600; color: var(--primary-color); }
 
-        .report-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .report-card-title {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .report-card-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        /* Floating action button */
         .fab {
             position: fixed;
             bottom: 30px;
@@ -1074,175 +781,45 @@
             transition: var(--transition);
             z-index: 100;
             border: none;
-            outline: none;
         }
 
         .fab:hover {
             background-color: var(--secondary-color);
             transform: translateY(-5px) scale(1.05);
-            box-shadow: var(--shadow-lg);
         }
 
-        .fab i {
-            font-size: 1.5rem;
-        }
-
-        /* Input group */
-        .input-group {
-            display: flex;
-            margin-bottom: 15px;
-        }
-
-        .input-group input {
-            flex: 1;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .input-group button {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-        /* Animation classes */
-        .fade-in {
-            animation: fadeIn 0.3s ease;
-        }
-
-        .slide-up {
-            animation: slideUp 0.3s ease;
-        }
-
-        /* Print button */
-        .print-btn {
-            background-color: var(--gray-color);
-        }
-
-        .print-btn:hover {
-            background-color: #4b5563;
-        }
-
-        /* Status indicators */
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-
-        .status-active {
-            background-color: var(--success-color);
-        }
-
-        .status-inactive {
-            background-color: var(--danger-color);
-        }
-
-        /* Note card styles */
-        .note-card {
+        .note-card, .debt-card {
             background: white;
             border-radius: var(--rounded);
             padding: 20px;
             margin-bottom: 15px;
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
-            border-left: 4px solid var(--primary-color);
         }
+        
+        .note-card { border-left: 4px solid var(--primary-color); }
+        .debt-card { border-left: 4px solid var(--danger-color); }
+        .debt-card.paid { border-left-color: var(--success-color); }
 
-        .note-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-5px);
-        }
-
-        .note-title {
+        .note-title, .debt-title {
             font-weight: 600;
             margin-bottom: 8px;
             color: var(--dark-color);
             font-size: 1.1rem;
         }
 
-        .note-date {
+        .note-date, .debt-due-date {
             font-size: 0.8rem;
             color: var(--gray-color);
             margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
 
-        .note-content {
-            margin-bottom: 15px;
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .note-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 15px;
-        }
-
-        .note-tag {
-            padding: 4px 10px;
-            background-color: var(--gray-light);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: var(--gray-color);
-        }
-
-        .note-actions {
+        .note-actions, .debt-actions {
             display: flex;
             justify-content: flex-end;
             gap: 8px;
         }
-
-        /* Debt card styles */
-        .debt-card {
-            background: white;
-            border-radius: var(--rounded);
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: var(--shadow-sm);
-            border-left: 4px solid var(--danger-color);
-            transition: var(--transition);
-        }
-
-        .debt-card.paid {
-            border-left-color: var(--success-color);
-        }
-
-        .debt-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .debt-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--dark-color);
-            font-size: 1.1rem;
-        }
-
-        .debt-person {
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            color: #555;
-        }
-
-        .debt-amount {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--dark-color);
-        }
-
-        .debt-due-date {
-            font-size: 0.8rem;
-            color: var(--gray-color);
-            margin-bottom: 12px;
-        }
-
+        
         .debt-status {
             display: inline-block;
             padding: 5px 12px;
@@ -1252,331 +829,55 @@
             margin-bottom: 15px;
         }
 
-        .debt-status.unpaid {
-            background-color: var(--danger-light);
-            color: var(--danger-color);
-        }
+        .debt-status.unpaid { background-color: var(--danger-light); color: var(--danger-color); }
+        .debt-status.paid { background-color: var(--success-light); color: var(--success-color); }
 
-        .debt-status.paid {
-            background-color: var(--success-light);
-            color: var(--success-color);
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }
 
-        .debt-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-
-        /* Calendar styles */
-        .calendar {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .calendar th, .calendar td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #eee;
-        }
-
-        .calendar th {
-            background-color: #f8f9fa;
-            font-weight: 500;
-            color: #555;
-            position: sticky;
-            top: 0;
-        }
-
-        .calendar-day {
-            height: 80px;
-            vertical-align: top;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .calendar-day:hover {
-            background-color: #f8f9fa;
-        }
-
-        .calendar-day.today {
-            background-color: #eef2ff;
-            font-weight: 600;
-        }
-
-        .calendar-day.has-note::after {
-            content: '';
-            display: block;
-            width: 6px;
-            height: 6px;
-            background-color: var(--primary-color);
-            border-radius: 50%;
-            margin: 5px auto 0;
-        }
-
-        .calendar-day-number {
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .calendar-note-preview {
-            font-size: 0.7rem;
-            color: var(--gray-color);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Summary cards */
-        .summary-card {
-            background: white;
-            border-radius: var(--rounded);
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-
-        .summary-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .summary-card-title {
-            font-size: 0.9rem;
-            color: var(--gray-color);
-            margin-bottom: 10px;
-        }
-
-        .summary-card-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .summary-card-description {
-            font-size: 0.8rem;
-            color: var(--gray-color);
-            margin-top: 5px;
-        }
-
-        /* Priority indicators */
-        .priority-high {
-            color: var(--danger-color);
-        }
-
-        .priority-medium {
-            color: var(--warning-color);
-        }
-
-        .priority-low {
-            color: var(--success-color);
-        }
-
-        /* Scrollbar styles */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--secondary-color);
-        }
-
-        /* Responsive styles */
         @media (max-width: 992px) {
-            .main-content {
-                flex-direction: column;
-            }
-            .left-panel, .right-panel {
-                min-width: 100%;
-            }
+            .main-content { flex-direction: column; }
         }
 
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-            .header-info {
-                text-align: center;
-                margin-top: 10px;
-            }
-            
-            .modal-content {
-                width: 95%;
-            }
-            
-            .admin-modal .modal-content {
-                width: 100%;
-                max-width: 100%;
-                height: 100%;
-                max-height: 100%;
-                border-radius: 0;
-            }
-            
-            .login-container {
-                padding: 30px 20px;
-            }
-            
-            .tabs {
-                overflow-x: auto;
-                white-space: nowrap;
-                padding-bottom: 5px;
-            }
-            
-            .tab {
-                padding: 10px 15px;
-            }
-            
-            .fab {
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-            }
+            .header { flex-direction: column; text-align: center; gap: 10px; }
+            .modal-content { width: 95%; }
         }
-
-        @media (max-width: 576px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .left-panel, .right-panel {
-                padding: 15px;
-            }
-            
-            .report-summary {
-                flex-direction: column;
-            }
-            
-            .report-card {
-                min-width: 100%;
-            }
-            
-            .backup-actions {
-                flex-direction: column;
-            }
-            
-            .backup-actions button {
-                width: 100%;
-            }
-        }
-
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 120px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.8rem;
-        }
-
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #333 transparent transparent transparent;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Additional utility classes */
-        .mt-1 { margin-top: 0.25rem; }
-        .mt-2 { margin-top: 0.5rem; }
-        .mt-3 { margin-top: 1rem; }
-        .mt-4 { margin-top: 1.5rem; }
-        .mt-5 { margin-top: 3rem; }
-
-        .mb-1 { margin-bottom: 0.25rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .mb-3 { margin-bottom: 1rem; }
-        .mb-4 { margin-bottom: 1.5rem; }
-        .mb-5 { margin-bottom: 3rem; }
-
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .text-left { text-align: left; }
-
-        .d-flex { display: flex; }
-        .align-items-center { align-items: center; }
-        .justify-content-between { justify-content: space-between; }
-        .gap-1 { gap: 0.25rem; }
-        .gap-2 { gap: 0.5rem; }
-        .gap-3 { gap: 1rem; }
-        .gap-4 { gap: 1.5rem; }
-        .gap-5 { gap: 3rem; }
     </style>
 </head>
 <body>
     <div id="splashScreen">
         <div class="particles" id="particles"></div>
-        <div class="splash-logo">
-            <i class="fas fa-book-open"></i>
-        </div>
+        <div class="splash-logo"><i class="fas fa-book-open"></i></div>
         <h1 class="splash-title">Aplikasi Catatan UMKM Pro</h1>
-        <p class="splash-subtitle">Manajemen Catatan dan Keuangan Profesional untuk Usaha Anda</p>
+        <p class="splash-subtitle">Manajemen Catatan dan Keuangan Profesional</p>
         <div class="splash-credits">
             Dibuat oleh <strong>Lentera Karya Situbondo</strong><br>
             Developer: <strong>www.aplikasiusaha.com</strong> | WhatsApp: <strong>085647709114</strong><br>
-            <small>Versi 2.0.1 | © 2025</small>
+            <small>Versi 3.0.0 | © 2025</small>
         </div>
     </div>
 
     <div id="toast" class="toast">
         <i class="fas fa-info-circle"></i>
-        <span id="toast-message">Notification message</span>
+        <span id="toast-message"></span>
     </div>
 
     <div id="confirmationDialog" class="confirmation-dialog" style="display: none;">
         <div class="confirmation-content">
-            <h4 id="confirmationMessage">Apakah Anda yakin?</h4>
+            <h4 id="confirmationMessage"></h4>
             <div class="confirmation-buttons">
                 <button id="confirmCancel" class="btn btn-secondary">Batal</button>
-                <button id="confirmOk" class="btn btn-danger">Ya, Hapus</button>
+                <button id="confirmOk" class="btn btn-danger">Ya</button>
             </div>
         </div>
     </div>
 
     <div id="loginModal" class="modal">
         <div class="login-container">
-            <div class="login-logo">
-                <i class="fas fa-book"></i>
-            </div>
+            <div class="login-logo"><i class="fas fa-book"></i></div>
             <h2 class="login-title">Masuk ke Aplikasi</h2>
             <form id="loginForm">
                 <div class="form-floating">
@@ -1587,24 +888,19 @@
                     <input type="password" id="password" placeholder="Password" required value="admin123" readonly>
                     <label for="password">Password</label>
                 </div>
-                
                 <div class="captcha-container">
-                    <label for="captchaInput" class="mb-2">Verifikasi Captcha</label>
-                    <div class="d-flex align-items-center gap-2">
+                    <label>Verifikasi Captcha</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
                         <div id="captchaBox" class="captcha-box"></div>
-                        <button type="button" id="refreshCaptcha" class="btn btn-secondary btn-sm" title="Refresh Captcha"><i class="fas fa-sync-alt"></i></button>
+                        <button type="button" id="refreshCaptcha" class="btn btn-secondary btn-sm" title="Refresh"><i class="fas fa-sync-alt"></i></button>
                     </div>
-                    <input type="text" id="captchaInput" class="form-control" placeholder="Masukkan captcha di atas" required autocomplete="off">
+                    <input type="text" id="captchaInput" class="form-control" placeholder="Masukkan captcha" required autocomplete="off" style="margin-top: 10px;">
                     <div class="error-message" id="captchaError"></div>
                 </div>
-
                 <button type="submit" class="btn btn-block" id="loginBtn">
                     <span id="loginBtnText">Login</span>
                 </button>
             </form>
-            <div class="login-footer">
-                <p>Verifikasi captcha untuk melanjutkan.</p>
-            </div>
         </div>
     </div>
 
@@ -1612,22 +908,20 @@
         <div class="header">
             <div>
                 <h1 id="appName">Aplikasi Catatan UMKM Pro</h1>
-                <p id="businessName">Lentera Karya Situbondo Apps-v.01041199</p>
+                <p id="businessName"></p>
             </div>
             <div class="header-info">
-                <p id="currentDate">Senin, 1 Januari 2025</p>
-                <p>Pengguna: <span id="loggedInUser">Admin</span> | <a href="#" id="logoutBtn" style="color: white; text-decoration: none;">Logout</a></p>
+                <p id="currentDate"></p>
+                <p>Pengguna: <span id="loggedInUser"></span> | <a href="#" id="logoutBtn" style="color: white;">Logout</a></p>
             </div>
         </div>
 
         <div class="main-content">
             <div class="left-panel">
                 <h2 class="panel-title"><i class="fas fa-bars"></i> Menu</h2>
-                
                 <div class="tabs">
                     <div class="tab active" data-tab="notes"><i class="fas fa-sticky-note"></i> Catatan</div>
                     <div class="tab" data-tab="debts"><i class="fas fa-hand-holding-usd"></i> Hutang Piutang</div>
-                    <div class="tab" data-tab="calendar"><i class="fas fa-calendar-alt"></i> Kalender</div>
                 </div>
 
                 <div class="tab-content active" id="notesTab">
@@ -1635,21 +929,7 @@
                         <i class="fas fa-search"></i>
                         <input type="text" id="noteSearch" class="form-control" placeholder="Cari catatan...">
                     </div>
-
-                    <div class="form-group">
-                        <label for="noteFilter">Filter</label>
-                        <select id="noteFilter" class="form-control">
-                            <option value="all">Semua Catatan</option>
-                            <option value="today">Hari Ini</option>
-                            <option value="week">Minggu Ini</option>
-                            <option value="month">Bulan Ini</option>
-                            <option value="important">Penting</option>
-                        </select>
-                    </div>
-
-                    <div id="notesList">
-                        </div>
-
+                    <div id="notesList"></div>
                     <button id="addNoteBtn" class="btn btn-success btn-block"><i class="fas fa-plus"></i> Tambah Catatan</button>
                 </div>
 
@@ -1658,39 +938,13 @@
                         <i class="fas fa-search"></i>
                         <input type="text" id="debtSearch" class="form-control" placeholder="Cari hutang/piutang...">
                     </div>
-
-                    <div class="form-group">
-                        <label for="debtFilter">Filter</label>
-                        <select id="debtFilter" class="form-control">
-                            <option value="all">Semua</option>
-                            <option value="debt">Hutang</option>
-                            <option value="receivable">Piutang</option>
-                            <option value="paid">Lunas</option>
-                            <option value="unpaid">Belum Lunas</option>
-                            <option value="overdue">Jatuh Tempo</option>
-                        </select>
-                    </div>
-
-                    <div id="debtsList">
-                        </div>
-
+                    <div id="debtsList"></div>
                     <button id="addDebtBtn" class="btn btn-success btn-block"><i class="fas fa-plus"></i> Tambah Hutang/Piutang</button>
-                </div>
-
-                <div class="tab-content" id="calendarTab">
-                    <div class="form-group">
-                        <label for="calendarMonth">Bulan</label>
-                        <input type="month" id="calendarMonth" class="form-control">
-                    </div>
-
-                    <div id="calendarView">
-                        </div>
                 </div>
             </div>
 
             <div class="right-panel">
                 <h2 class="panel-title"><i class="fas fa-chart-pie"></i> Ringkasan</h2>
-                
                 <div class="report-summary">
                     <div class="report-card">
                         <div class="report-card-title">Total Catatan</div>
@@ -1706,13 +960,8 @@
                     </div>
                 </div>
 
-                <h3 class="panel-title mt-4"><i class="fas fa-clock"></i> Catatan Terbaru</h3>
-                <div id="recentNotes">
-                    </div>
-
-                <h3 class="panel-title mt-4"><i class="fas fa-exclamation-triangle"></i> Hutang/Piutang Jatuh Tempo</h3>
-                <div id="dueDebts">
-                    </div>
+                <h3 class="panel-title" style="margin-top: 1.5rem;"><i class="fas fa-clock"></i> Catatan Terbaru</h3>
+                <div id="recentNotes"></div>
             </div>
         </div>
     </div>
@@ -1720,89 +969,35 @@
     <div id="noteModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Tambah Catatan</h3>
+                <h3 class="modal-title" id="noteModalTitle">Tambah Catatan</h3>
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="noteId">
                 <div class="form-group">
                     <label for="noteTitle">Judul Catatan</label>
-                    <input type="text" id="noteTitle" class="form-control" placeholder="Masukkan judul catatan">
+                    <input type="text" id="noteTitle" class="form-control" placeholder="Masukkan judul">
                 </div>
                 <div class="form-group">
                     <label for="noteContent">Isi Catatan</label>
-                    <textarea id="noteContent" class="form-control" rows="5" placeholder="Masukkan isi catatan"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="noteDate">Tanggal</label>
-                    <input type="date" id="noteDate" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="notePriority">Prioritas</label>
-                    <select id="notePriority" class="form-control">
-                        <option value="low">Rendah</option>
-                        <option value="medium">Sedang</option>
-                        <option value="high">Tinggi</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="noteTags">Tag (pisahkan dengan koma)</label>
-                    <input type="text" id="noteTags" class="form-control" placeholder="contoh: rapat, proyek, penting">
+                    <textarea id="noteContent" class="form-control" rows="5" placeholder="Masukkan isi"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary close-note-modal"><i class="fas fa-times"></i> Batal</button>
-                <button class="btn btn-success save-note"><i class="fas fa-save"></i> Simpan</button>
+                <button class="btn btn-secondary close-modal">Batal</button>
+                <button class="btn btn-success" id="saveNoteBtn">Simpan</button>
             </div>
         </div>
     </div>
-
-    <div id="editNoteModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Edit Catatan</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="editNoteId">
-                <div class="form-group">
-                    <label for="editNoteTitle">Judul Catatan</label>
-                    <input type="text" id="editNoteTitle" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="editNoteContent">Isi Catatan</label>
-                    <textarea id="editNoteContent" class="form-control" rows="5"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="editNoteDate">Tanggal</label>
-                    <input type="date" id="editNoteDate" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="editNotePriority">Prioritas</label>
-                    <select id="editNotePriority" class="form-control">
-                        <option value="low">Rendah</option>
-                        <option value="medium">Sedang</option>
-                        <option value="high">Tinggi</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="editNoteTags">Tag (pisahkan dengan koma)</label>
-                    <input type="text" id="editNoteTags" class="form-control">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary close-edit-note-modal"><i class="fas fa-times"></i> Batal</button>
-                <button class="btn btn-success update-note"><i class="fas fa-save"></i> Update</button>
-            </div>
-        </div>
-    </div>
-
+    
     <div id="debtModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Tambah Hutang/Piutang</h3>
+                <h3 class="modal-title" id="debtModalTitle">Tambah Hutang/Piutang</h3>
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="debtId">
                 <div class="form-group">
                     <label for="debtType">Jenis</label>
                     <select id="debtType" class="form-control">
@@ -1811,7 +1006,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="debtPerson">Nama Orang/Perusahaan</label>
+                    <label for="debtPerson">Nama</label>
                     <input type="text" id="debtPerson" class="form-control" placeholder="Masukkan nama">
                 </div>
                 <div class="form-group">
@@ -1819,18 +1014,10 @@
                     <input type="number" id="debtAmount" class="form-control" placeholder="Masukkan jumlah">
                 </div>
                 <div class="form-group">
-                    <label for="debtDescription">Keterangan</label>
-                    <textarea id="debtDescription" class="form-control" rows="3" placeholder="Masukkan keterangan"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="debtDate">Tanggal Transaksi</label>
-                    <input type="date" id="debtDate" class="form-control">
-                </div>
-                <div class="form-group">
                     <label for="debtDueDate">Tanggal Jatuh Tempo</label>
                     <input type="date" id="debtDueDate" class="form-control">
                 </div>
-                <div class="form-group">
+                 <div class="form-group">
                     <label for="debtStatus">Status</label>
                     <select id="debtStatus" class="form-control">
                         <option value="unpaid">Belum Lunas</option>
@@ -1839,102 +1026,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary close-debt-modal"><i class="fas fa-times"></i> Batal</button>
-                <button class="btn btn-success save-debt"><i class="fas fa-save"></i> Simpan</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="editDebtModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Edit Hutang/Piutang</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="editDebtId">
-                <div class="form-group">
-                    <label for="editDebtType">Jenis</label>
-                    <select id="editDebtType" class="form-control">
-                        <option value="debt">Hutang (Saya berhutang)</option>
-                        <option value="receivable">Piutang (Saya meminjamkan)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="editDebtPerson">Nama Orang/Perusahaan</label>
-                    <input type="text" id="editDebtPerson" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="editDebtAmount">Jumlah</label>
-                    <input type="number" id="editDebtAmount" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="editDebtDescription">Keterangan</label>
-                    <textarea id="editDebtDescription" class="form-control" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="editDebtDate">Tanggal Transaksi</label>
-                    <input type="date" id="editDebtDate" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="editDebtDueDate">Tanggal Jatuh Tempo</label>
-                    <input type="date" id="editDebtDueDate" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="editDebtStatus">Status</label>
-                    <select id="editDebtStatus" class="form-control">
-                        <option value="unpaid">Belum Lunas</option>
-                        <option value="paid">Lunas</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary close-edit-debt-modal"><i class="fas fa-times"></i> Batal</button>
-                <button class="btn btn-success update-debt"><i class="fas fa-save"></i> Update</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="viewNoteModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Detail Catatan</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <h4 id="viewNoteTitle" class="mb-3"></h4>
-                <div class="note-date mb-3" id="viewNoteDate"></div>
-                <div class="note-content mb-3" id="viewNoteContent"></div>
-                <div class="note-tags mb-3" id="viewNoteTags"></div>
-                <div class="mb-3">
-                    <span class="badge" id="viewNotePriority"></span>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary print-note"><i class="fas fa-print"></i> Cetak</button>
-                <button class="btn btn-secondary close-view-note-modal"><i class="fas fa-times"></i> Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="viewDebtModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Detail Hutang/Piutang</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="debt-title mb-2" id="viewDebtType"></div>
-                <div class="debt-person mb-2" id="viewDebtPerson"></div>
-                <div class="debt-amount mb-2" id="viewDebtAmount"></div>
-                <div class="debt-description mb-2" id="viewDebtDescription"></div>
-                <div class="debt-date mb-2" id="viewDebtDate"></div>
-                <div class="debt-due-date mb-2" id="viewDebtDueDate"></div>
-                <div class="debt-status mb-3" id="viewDebtStatus"></div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary print-debt"><i class="fas fa-print"></i> Cetak</button>
-                <button class="btn btn-secondary close-view-debt-modal"><i class="fas fa-times"></i> Tutup</button>
+                <button class="btn btn-secondary close-modal">Batal</button>
+                <button class="btn btn-success" id="saveDebtBtn">Simpan</button>
             </div>
         </div>
     </div>
@@ -1950,76 +1043,24 @@
                     <label for="businessNameSetting">Nama UMKM</label>
                     <input type="text" id="businessNameSetting" class="form-control" placeholder="Masukkan nama UMKM Anda">
                 </div>
-                
-                <h4 class="mt-4"><i class="fas fa-users"></i> Manajemen Pengguna</h4>
-                <button id="addUserBtn" class="btn btn-success mb-3"><i class="fas fa-plus"></i> Tambah Pengguna</button>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Role</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTable">
-                            </tbody>
-                    </table>
-                </div>
-                
                 <div class="data-backup">
-                    <h4><i class="fas fa-database"></i> Backup & Restore Data</h4>
-                    <p>Cadangkan atau pulihkan semua data aplikasi</p>
+                    <h4><i class="fas fa-database"></i> Backup & Restore</h4>
                     <div class="backup-actions">
                         <button id="backupDataBtn" class="btn btn-info"><i class="fas fa-download"></i> Backup Data</button>
                         <button id="restoreDataBtn" class="btn btn-warning"><i class="fas fa-upload"></i> Restore Data</button>
-                        <input type="file" id="restoreFileInput" style="display: none;" accept=".json">
+                        <input type="file" id="restoreFileInput" style="display: none;" accept=".prodata">
                     </div>
                 </div>
-                
-                <div class="mt-4">
-                    <h4><i class="fas fa-file-export"></i> Ekspor Data</h4>
-                    <p>Ekspor data ke berbagai format</p>
+                 <div class="data-backup">
+                    <h4><i class="fas fa-trash-alt"></i> Hapus Data</h4>
                     <div class="backup-actions">
-                        <button id="exportNotesPdfBtn" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Ekspor Catatan (PDF)</button>
-                        <button id="exportDebtsExcelBtn" class="btn btn-success"><i class="fas fa-file-excel"></i> Ekspor Hutang (Excel)</button>
-                        <button id="exportAllWordBtn" class="btn btn-primary"><i class="fas fa-file-word"></i> Ekspor Semua (Word)</button>
+                        <button id="clearDataBtn" class="btn btn-danger"><i class="fas fa-exclamation-triangle"></i> Hapus Semua Data</button>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary close-settings-modal"><i class="fas fa-times"></i> Tutup</button>
-                <button class="btn btn-success save-settings"><i class="fas fa-save"></i> Simpan Pengaturan</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Tambah Pengguna</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="newUsername">Username</label>
-                    <input type="text" id="newUsername" class="form-control" placeholder="Masukkan username">
-                </div>
-                <div class="form-group">
-                    <label for="newPassword">Password</label>
-                    <input type="password" id="newPassword" class="form-control" placeholder="Masukkan password">
-                </div>
-                <div class="form-group">
-                    <label for="newUserRole">Role</label>
-                    <select id="newUserRole" class="form-control">
-                        <option value="admin">Admin</option>
-                        <option value="user">User</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary close-user-modal"><i class="fas fa-times"></i> Batal</button>
-                <button class="btn btn-success save-user"><i class="fas fa-save"></i> Simpan</button>
+                <button class="btn btn-secondary close-modal">Tutup</button>
+                <button class="btn btn-success" id="saveSettingsBtn">Simpan Pengaturan</button>
             </div>
         </div>
     </div>
@@ -2030,1092 +1071,363 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.1.0/docx.min.js"></script>
     <script>
-        // Local storage keys
-        const STORAGE_KEYS = {
-            NOTES: 'umkm_notes',
-            DEBTS: 'umkm_debts',
-            USERS: 'umkm_users',
-            SETTINGS: 'umkm_settings',
-            CURRENT_USER: 'umkm_current_user'
-        };
-        
-        // Initialize data
-        let notes = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
-        let debts = JSON.parse(localStorage.getItem(STORAGE_KEYS.DEBTS)) || [];
-        let users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [
-            { username: 'admin', password: 'admin123', role: 'admin' },
-            { username: 'user', password: 'user123', role: 'user' }
-        ];
-        let settings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS)) || {
-            businessName: "UMKM Saya"
-        };
-        
-        // Current user
-        let currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) || null;
-        
-        // Captcha text
-        let captchaText = '';
-        
-        // Splash screen and particle effect
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 4 + 2;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-                
-                const duration = Math.random() * 20 + 10;
-                const delay = Math.random() * 5;
-                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Toast notification function
-        function showToast(message, type = 'info', duration = 3000) {
-            const toast = $('#toast');
-            const toastMessage = $('#toast-message');
-            
-            let icon = 'fa-info-circle';
-            if (type === 'success') icon = 'fa-check-circle';
-            if (type === 'error') icon = 'fa-exclamation-circle';
-            if (type === 'warning') icon = 'fa-exclamation-triangle';
-            
-            toast.find('i').attr('class', `fas ${icon}`);
-            
-            toast.removeClass('success error warning info').addClass(type);
-            toastMessage.text(message);
-            toast.addClass('show');
-            
-            setTimeout(() => {
-                toast.removeClass('show');
-            }, duration);
-        }
-        
-        // Confirmation dialog
-        function showConfirmation(message, callback) {
-            $('#confirmationMessage').text(message);
-            $('#confirmationDialog').show();
-            
-            $('#confirmOk').off('click').on('click', function() {
-                $('#confirmationDialog').hide();
-                if (typeof callback === 'function') {
-                    callback(true);
-                }
-            });
-            
-            $('#confirmCancel').off('click').on('click', function() {
-                $('#confirmationDialog').hide();
-                if (typeof callback === 'function') {
-                    callback(false);
-                }
-            });
-        }
-        
-        // Format currency
-        function formatCurrency(amount) {
-            return 'Rp ' + (amount || 0).toLocaleString('id-ID');
-        }
-        
-        // Format date
-        function formatDate(dateString) {
-            return moment(dateString).format('DD MMMM YYYY');
-        }
-        
-        // Format date with time
-        function formatDateTime(dateString) {
-            return moment(dateString).format('DD MMMM YYYY, HH:mm');
-        }
-        
-        // Generate PDF from element
-        function generatePDF(elementId, filename) {
-            const element = document.getElementById(elementId);
-            const opt = {
-                margin: 10,
-                filename: filename || 'document.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            
-            html2pdf().set(opt).from(element).save();
-        }
-        
-        // Export data to Excel
-        function exportToExcel(data, filename) {
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-            XLSX.writeFile(wb, filename || "export.xlsx");
-        }
-        
-        // Export data to Word
-        function exportToWord(data, filename) {
-            const { Document, Paragraph, TextRun, Packer } = docx;
-            
-            const doc = new Document({
-                sections: [{
-                    properties: {},
-                    children: data.map(item => {
-                        return new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: item.title || item.person,
-                                    bold: true
-                                }),
-                                new TextRun({
-                                    text: "\n" + (item.content || item.description),
-                                    break: 1
-                                }),
-                                new TextRun({
-                                    text: "\nTanggal: " + (item.date || item.transactionDate),
-                                    break: 1
-                                }),
-                                new TextRun({
-                                    text: "\n\n",
-                                    break: 2
-                                })
-                            ]
-                        });
-                    })
-                }]
-            });
-            
-            Packer.toBlob(doc).then(blob => {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = filename || 'export.docx';
-                link.click();
-                URL.revokeObjectURL(url);
-            });
-        }
-        
-        // Generate Captcha
-        function generateCaptcha() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < 6; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            captchaText = result;
-            $('#captchaBox').text(captchaText);
-            $('#captchaError').hide().text('');
-        }
-        
         $(document).ready(function() {
-            // Create particle effect
-            createParticles();
-            
-            // Hide splash screen after 3 seconds
-            setTimeout(() => {
-                $('#splashScreen').fadeOut(1000, function() {
-                    $(this).remove();
-                    
-                    if (!currentUser) {
-                        $('#loginModal').show();
-                        generateCaptcha(); // Generate first captcha
-                    } else {
-                        $('#loggedInUser').text(currentUser.username);
-                        $('#businessName').text(settings.businessName);
-                        $('#mainApp').show();
-                        loadSummary();
-                        loadNotes();
-                        loadDebts();
-                        loadCalendar();
-                    }
-                });
-            }, 3000);
+            const STORAGE_KEYS = {
+                NOTES: 'umkm_pro_notes',
+                DEBTS: 'umkm_pro_debts',
+                SETTINGS: 'umkm_pro_settings',
+                CURRENT_USER: 'umkm_pro_current_user'
+            };
 
-            initializeData();
-            updateCurrentDate();
-            setInterval(updateCurrentDate, 60000);
+            let notes = [];
+            let debts = [];
+            let settings = {};
+            let currentUser = null;
+            let captchaText = '';
+
+            function showToast(message, type = 'info') {
+                const toast = $('#toast');
+                toast.find('#toast-message').text(message);
+                toast.removeClass('success error warning info').addClass(type);
+                toast.addClass('show');
+                setTimeout(() => toast.removeClass('show'), 3000);
+            }
+
+            function showConfirmation(message, onConfirm) {
+                $('#confirmationMessage').text(message);
+                $('#confirmationDialog').show();
+                $('#confirmOk').off('click').on('click', function() {
+                    $('#confirmationDialog').hide();
+                    onConfirm(true);
+                });
+                $('#confirmCancel').off('click').on('click', function() {
+                    $('#confirmationDialog').hide();
+                    onConfirm(false);
+                });
+            }
+
+            function formatCurrency(amount) {
+                return 'Rp ' + (amount || 0).toLocaleString('id-ID');
+            }
+
+            function formatDate(dateString) {
+                return moment(dateString).format('DD MMMM YYYY');
+            }
+
+            function generateCaptcha() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                captchaText = '';
+                for (let i = 0; i < 6; i++) {
+                    captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                $('#captchaBox').text(captchaText);
+            }
+
+            function loadData() {
+                notes = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
+                debts = JSON.parse(localStorage.getItem(STORAGE_KEYS.DEBTS)) || [];
+                settings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS)) || { businessName: "UMKM Saya" };
+                currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) || null;
+            }
+
+            function saveData() {
+                localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
+                localStorage.setItem(STORAGE_KEYS.DEBTS, JSON.stringify(debts));
+                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(currentUser));
+            }
             
-            // Captcha refresh button
-            $('#refreshCaptcha').click(generateCaptcha);
+            function renderNotes(filter = '') {
+                const filteredNotes = notes.filter(n => n.title.toLowerCase().includes(filter) || n.content.toLowerCase().includes(filter));
+                const notesList = $('#notesList');
+                notesList.empty();
+                if (filteredNotes.length > 0) {
+                    filteredNotes.forEach(note => {
+                        const card = `
+                            <div class="note-card">
+                                <div class="note-title">${note.title}</div>
+                                <div class="note-content">${note.content}</div>
+                                <div class="note-actions">
+                                    <button class="btn btn-sm btn-info edit-note" data-id="${note.id}"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger delete-note" data-id="${note.id}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>`;
+                        notesList.append(card);
+                    });
+                } else {
+                    notesList.html('<div class="empty-state"><i class="fas fa-sticky-note"></i><p>Tidak ada catatan</p></div>');
+                }
+            }
+
+            function renderDebts(filter = '') {
+                const filteredDebts = debts.filter(d => d.person.toLowerCase().includes(filter));
+                const debtsList = $('#debtsList');
+                debtsList.empty();
+                 if (filteredDebts.length > 0) {
+                    filteredDebts.forEach(debt => {
+                        const card = `
+                            <div class="debt-card ${debt.status}">
+                                <div class="debt-title">${debt.type === 'debt' ? 'Hutang ke' : 'Piutang dari'} ${debt.person}</div>
+                                <div>Jumlah: ${formatCurrency(debt.amount)}</div>
+                                <div class="debt-due-date">Jatuh Tempo: ${formatDate(debt.dueDate)}</div>
+                                <div class="debt-status ${debt.status}">${debt.status === 'paid' ? 'LUNAS' : 'BELUM LUNAS'}</div>
+                                <div class="debt-actions">
+                                    <button class="btn btn-sm btn-info edit-debt" data-id="${debt.id}"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger delete-debt" data-id="${debt.id}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>`;
+                        debtsList.append(card);
+                    });
+                } else {
+                    debtsList.html('<div class="empty-state"><i class="fas fa-hand-holding-usd"></i><p>Tidak ada data hutang/piutang</p></div>');
+                }
+            }
             
-            // Login form handler
-            $('#loginForm').submit(function(e) {
+            function updateSummary() {
+                $('#totalNotes').text(notes.length);
+                const unpaidDebts = debts.filter(d => d.type === 'debt' && d.status === 'unpaid').reduce((sum, d) => sum + d.amount, 0);
+                $('#totalDebts').text(formatCurrency(unpaidDebts));
+                const unpaidReceivables = debts.filter(d => d.type === 'receivable' && d.status === 'unpaid').reduce((sum, d) => sum + d.amount, 0);
+                $('#totalReceivables').text(formatCurrency(unpaidReceivables));
+                
+                const recentNotesList = $('#recentNotes');
+                recentNotesList.empty();
+                if(notes.length > 0) {
+                    notes.slice(0, 3).forEach(note => {
+                         recentNotesList.append(`<div class="note-card"><b>${note.title}</b><p>${note.content.substring(0,50)}...</p></div>`);
+                    });
+                } else {
+                    recentNotesList.html('<div class="empty-state"><i class="fas fa-clock"></i><p>Belum ada catatan terbaru</p></div>');
+                }
+            }
+            
+            function refreshUI() {
+                renderNotes($('#noteSearch').val().toLowerCase());
+                renderDebts($('#debtSearch').val().toLowerCase());
+                updateSummary();
+                $('#businessName').text(settings.businessName);
+                $('#loggedInUser').text(currentUser.username);
+                 $('#currentDate').text(moment().format('dddd, D MMMM YYYY'));
+            }
+
+            // App Initialization
+            loadData();
+
+            if (!currentUser) {
+                $('#loginModal').css('display', 'flex');
+                generateCaptcha();
+            } else {
+                $('#mainApp').show();
+                refreshUI();
+            }
+            
+            setTimeout(() => $('#splashScreen').fadeOut(500), 2000);
+
+            // Event Handlers
+            $('#loginForm').on('submit', function(e) {
                 e.preventDefault();
-                const username = $('#username').val();
-                const password = $('#password').val();
-                const captchaInput = $('#captchaInput').val().trim();
-                
-                $('#captchaError').hide().text('');
-                
-                let isValid = true;
-                
-                if (!captchaInput) {
-                    $('#captchaError').text('Captcha harus diisi').show();
-                    isValid = false;
-                } else if (captchaInput.toLowerCase() !== captchaText.toLowerCase()) {
+                if ($('#captchaInput').val().toUpperCase() !== captchaText) {
                     $('#captchaError').text('Captcha tidak sesuai').show();
                     generateCaptcha();
-                    $('#captchaInput').val('');
-                    isValid = false;
+                    return;
                 }
-                
-                if (!isValid) return;
-                
-                $('#loginBtn').prop('disabled', true);
-                $('#loginBtnText').html('<div class="spinner"></div> Memproses...');
-                
-                setTimeout(() => {
-                    const user = users.find(u => 
-                        u.username === username && 
-                        u.password === password
-                    );
-                    
-                    if (user) {
-                        currentUser = user;
-                        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(currentUser));
-                        $('#loggedInUser').text(user.username);
-                        $('#businessName').text(settings.businessName);
-                        $('#loginModal').hide();
-                        $('#mainApp').fadeIn();
-                        
-                        showToast('Login berhasil', 'success');
-                        
-                        loadSummary();
-                        loadNotes();
-                        loadDebts();
-                        loadCalendar();
-                    } else {
-                        // This case is unlikely with readonly fields but kept for robustness
-                        showToast('Autentikasi gagal. Silakan coba lagi.', 'error');
-                        generateCaptcha();
-                    }
-                    
-                    $('#loginBtn').prop('disabled', false);
-                    $('#loginBtnText').text('Login');
-                }, 1000);
+                currentUser = { username: 'Admin' };
+                saveData();
+                $('#loginModal').hide();
+                $('#mainApp').show();
+                refreshUI();
+                showToast('Login berhasil!', 'success');
             });
-            
-            // Logout handler
-            $('#logoutBtn').click(function(e) {
+
+            $('#logoutBtn').on('click', function(e) {
                 e.preventDefault();
                 currentUser = null;
-                localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-                $('#mainApp').fadeOut();
-                $('#loginModal').fadeIn();
-                $('#captchaInput').val('');
-                generateCaptcha();
-                
-                showToast('Anda telah logout', 'info');
+                saveData();
+                window.location.reload();
             });
-            
-            // Tab switching
-            $('.tab').click(function() {
-                const tabId = $(this).data('tab');
+
+            $('.tab').on('click', function() {
+                const tab = $(this).data('tab');
                 $('.tab').removeClass('active');
                 $(this).addClass('active');
                 $('.tab-content').removeClass('active');
-                $(`#${tabId}Tab`).addClass('active');
-                
-                if (tabId === 'calendar') {
-                    loadCalendar();
-                }
+                $(`#${tab}Tab`).addClass('active');
             });
-            
-            // Add note button
-            $('#addNoteBtn').click(function() {
+
+            // Notes
+            $('#addNoteBtn').on('click', () => {
+                $('#noteModalTitle').text('Tambah Catatan');
+                $('#noteId').val('');
                 $('#noteTitle').val('');
                 $('#noteContent').val('');
-                $('#noteDate').val(moment().format('YYYY-MM-DD'));
-                $('#notePriority').val('medium');
-                $('#noteTags').val('');
-                $('#noteModal').show();
+                $('#noteModal').css('display', 'flex');
             });
-            
-            // Save note
-            $('.save-note').click(function() {
-                const note = {
-                    id: 'N' + moment().format('YYYYMMDDHHmmss'),
-                    title: $('#noteTitle').val(),
-                    content: $('#noteContent').val(),
-                    date: $('#noteDate').val(),
-                    priority: $('#notePriority').val(),
-                    tags: $('#noteTags').val().split(',').map(tag => tag.trim()).filter(tag => tag),
-                    createdAt: new Date(),
-                    createdBy: currentUser.username
-                };
-                
-                if (!note.title || !note.content) {
-                    showToast('Judul dan isi catatan harus diisi!', 'error');
-                    return;
-                }
-                
-                notes.unshift(note);
-                saveNotes();
-                loadNotes();
-                loadSummary();
-                loadCalendar();
-                $('#noteModal').hide();
-                showToast('Catatan berhasil ditambahkan', 'success');
-            });
-            
-            // Edit note
+
             $(document).on('click', '.edit-note', function() {
-                const noteId = $(this).data('id');
-                const note = notes.find(n => n.id === noteId);
-                
-                if (note) {
-                    $('#editNoteId').val(note.id);
-                    $('#editNoteTitle').val(note.title);
-                    $('#editNoteContent').val(note.content);
-                    $('#editNoteDate').val(note.date);
-                    $('#editNotePriority').val(note.priority);
-                    $('#editNoteTags').val(note.tags.join(', '));
-                    $('#editNoteModal').show();
-                }
+                const note = notes.find(n => n.id === $(this).data('id'));
+                $('#noteModalTitle').text('Edit Catatan');
+                $('#noteId').val(note.id);
+                $('#noteTitle').val(note.title);
+                $('#noteContent').val(note.content);
+                $('#noteModal').css('display', 'flex');
             });
-            
-            // Update note
-            $('.update-note').click(function() {
-                const noteId = $('#editNoteId').val();
-                const noteIndex = notes.findIndex(n => n.id === noteId);
-                
-                if (noteIndex !== -1) {
-                    const updatedNote = {
-                        ...notes[noteIndex],
-                        title: $('#editNoteTitle').val(),
-                        content: $('#editNoteContent').val(),
-                        date: $('#editNoteDate').val(),
-                        priority: $('#editNotePriority').val(),
-                        tags: $('#editNoteTags').val().split(',').map(tag => tag.trim()).filter(tag => tag),
-                        updatedAt: new Date(),
-                        updatedBy: currentUser.username
-                    };
-                    
-                    if (!updatedNote.title || !updatedNote.content) {
-                        showToast('Judul dan isi catatan harus diisi!', 'error');
-                        return;
-                    }
-                    
-                    notes[noteIndex] = updatedNote;
-                    saveNotes();
-                    loadNotes();
-                    loadSummary();
-                    loadCalendar();
-                    $('#editNoteModal').hide();
-                    
-                    showToast('Catatan berhasil diperbarui', 'success');
+
+            $('#saveNoteBtn').on('click', function() {
+                const id = $('#noteId').val();
+                const noteData = { title: $('#noteTitle').val(), content: $('#noteContent').val() };
+                if (id) {
+                    const index = notes.findIndex(n => n.id === id);
+                    notes[index] = { ...notes[index], ...noteData };
+                } else {
+                    notes.unshift({ id: 'N' + Date.now(), ...noteData });
                 }
+                saveData();
+                refreshUI();
+                $('#noteModal').hide();
+                showToast('Catatan disimpan!', 'success');
             });
-            
-            // Delete note
+
             $(document).on('click', '.delete-note', function() {
-                const noteId = $(this).data('id');
-                const note = notes.find(n => n.id === noteId);
-                
-                showConfirmation(`Apakah Anda yakin ingin menghapus catatan "${note?.title || 'ini'}"?`, (confirmed) => {
-                    if (confirmed) {
-                        notes = notes.filter(n => n.id !== noteId);
-                        saveNotes();
-                        loadNotes();
-                        loadSummary();
-                        loadCalendar();
-                        
-                        showToast('Catatan berhasil dihapus', 'success');
+                const id = $(this).data('id');
+                showConfirmation('Anda yakin ingin menghapus catatan ini?', (confirm) => {
+                    if (confirm) {
+                        notes = notes.filter(n => n.id !== id);
+                        saveData();
+                        refreshUI();
+                        showToast('Catatan dihapus!', 'success');
                     }
                 });
             });
             
-            // View note
-            $(document).on('click', '.view-note', function() {
-                const noteId = $(this).data('id');
-                const note = notes.find(n => n.id === noteId);
-                
-                if (note) {
-                    $('#viewNoteTitle').text(note.title);
-                    $('#viewNoteContent').text(note.content);
-                    $('#viewNoteDate').text(formatDateTime(note.createdAt));
-                    
-                    $('#viewNoteTags').empty();
-                    if (note.tags && note.tags.length > 0) {
-                        note.tags.forEach(tag => {
-                            $('#viewNoteTags').append(`<span class="note-tag">${tag}</span>`);
-                        });
-                    }
-                    
-                    $('#viewNotePriority').removeClass().addClass('badge');
-                    if (note.priority === 'high') {
-                        $('#viewNotePriority').addClass('badge-danger').text('Tinggi');
-                    } else if (note.priority === 'medium') {
-                        $('#viewNotePriority').addClass('badge-warning').text('Sedang');
-                    } else {
-                        $('#viewNotePriority').addClass('badge-success').text('Rendah');
-                    }
-                    
-                    $('#viewNoteModal').show();
-                }
-            });
-            
-            // Print note
-            $('.print-note').click(function() {
-                const content = `
-                    <div style="padding: 20px; font-family: Arial, sans-serif;">
-                        <h2 style="text-align: center; margin-bottom: 20px;">${$('#viewNoteTitle').text()}</h2>
-                        <p style="text-align: center; margin-bottom: 20px;">${$('#viewNoteDate').text()}</p>
-                        <div style="margin-bottom: 20px;">
-                            ${$('#viewNoteContent').text().replace(/\n/g, '<br>')}
-                        </div>
-                        <div style="margin-top: 30px; text-align: right; font-style: italic;">
-                            <p>Dicetak pada: ${moment().format('DD/MM/YYYY HH:mm')}</p>
-                            <p>Oleh: ${currentUser.username}</p>
-                        </div>
-                    </div>
-                `;
-                
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = content;
-                document.body.appendChild(tempDiv);
-                
-                const opt = {
-                    margin: 10,
-                    filename: `Catatan_${$('#viewNoteTitle').text().substring(0, 20)}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-                
-                html2pdf().set(opt).from(tempDiv).save().then(() => {
-                    document.body.removeChild(tempDiv);
-                });
-            });
-            
-            // Add debt button
-            $('#addDebtBtn').click(function() {
+            // Debts
+            $('#addDebtBtn').on('click', () => {
+                $('#debtModalTitle').text('Tambah Hutang/Piutang');
+                $('#debtId').val('');
                 $('#debtType').val('debt');
                 $('#debtPerson').val('');
                 $('#debtAmount').val('');
-                $('#debtDescription').val('');
-                $('#debtDate').val(moment().format('YYYY-MM-DD'));
-                $('#debtDueDate').val(moment().add(7, 'days').format('YYYY-MM-DD'));
+                $('#debtDueDate').val('');
                 $('#debtStatus').val('unpaid');
-                $('#debtModal').show();
+                $('#debtModal').css('display', 'flex');
             });
             
-            // Save debt
-            $('.save-debt').click(function() {
-                const debt = {
-                    id: 'D' + moment().format('YYYYMMDDHHmmss'),
-                    type: $('#debtType').val(),
-                    person: $('#debtPerson').val(),
-                    amount: parseFloat($('#debtAmount').val()) || 0,
-                    description: $('#debtDescription').val(),
-                    transactionDate: $('#debtDate').val(),
+             $(document).on('click', '.edit-debt', function() {
+                const debt = debts.find(d => d.id === $(this).data('id'));
+                $('#debtModalTitle').text('Edit Hutang/Piutang');
+                $('#debtId').val(debt.id);
+                $('#debtType').val(debt.type);
+                $('#debtPerson').val(debt.person);
+                $('#debtAmount').val(debt.amount);
+                $('#debtDueDate').val(debt.dueDate);
+                $('#debtStatus').val(debt.status);
+                $('#debtModal').css('display', 'flex');
+            });
+
+            $('#saveDebtBtn').on('click', function() {
+                const id = $('#debtId').val();
+                const debtData = { 
+                    type: $('#debtType').val(), 
+                    person: $('#debtPerson').val(), 
+                    amount: parseFloat($('#debtAmount').val()),
                     dueDate: $('#debtDueDate').val(),
-                    status: $('#debtStatus').val(),
-                    createdAt: new Date(),
-                    createdBy: currentUser.username
+                    status: $('#debtStatus').val()
                 };
-                
-                if (!debt.person || debt.amount <= 0) {
-                    showToast('Nama dan jumlah harus diisi dengan benar!', 'error');
-                    return;
+                if (id) {
+                    const index = debts.findIndex(d => d.id === id);
+                    debts[index] = { ...debts[index], ...debtData };
+                } else {
+                    debts.unshift({ id: 'D' + Date.now(), ...debtData });
                 }
-                
-                debts.unshift(debt);
-                saveDebts();
-                loadDebts();
-                loadSummary();
+                saveData();
+                refreshUI();
                 $('#debtModal').hide();
-                showToast('Hutang/Piutang berhasil ditambahkan', 'success');
+                 showToast('Data hutang/piutang disimpan!', 'success');
             });
             
-            // Edit debt
-            $(document).on('click', '.edit-debt', function() {
-                const debtId = $(this).data('id');
-                const debt = debts.find(d => d.id === debtId);
-                
-                if (debt) {
-                    $('#editDebtId').val(debt.id);
-                    $('#editDebtType').val(debt.type);
-                    $('#editDebtPerson').val(debt.person);
-                    $('#editDebtAmount').val(debt.amount);
-                    $('#editDebtDescription').val(debt.description);
-                    $('#editDebtDate').val(debt.transactionDate);
-                    $('#editDebtDueDate').val(debt.dueDate);
-                    $('#editDebtStatus').val(debt.status);
-                    $('#editDebtModal').show();
-                }
-            });
-            
-            // Update debt
-            $('.update-debt').click(function() {
-                const debtId = $('#editDebtId').val();
-                const debtIndex = debts.findIndex(d => d.id === debtId);
-                
-                if (debtIndex !== -1) {
-                    const updatedDebt = {
-                        ...debts[debtIndex],
-                        type: $('#editDebtType').val(),
-                        person: $('#editDebtPerson').val(),
-                        amount: parseFloat($('#editDebtAmount').val()) || 0,
-                        description: $('#editDebtDescription').val(),
-                        transactionDate: $('#editDebtDate').val(),
-                        dueDate: $('#editDebtDueDate').val(),
-                        status: $('#editDebtStatus').val(),
-                        updatedAt: new Date(),
-                        updatedBy: currentUser.username
-                    };
-                    
-                    if (!updatedDebt.person || updatedDebt.amount <= 0) {
-                        showToast('Nama dan jumlah harus diisi dengan benar!', 'error');
-                        return;
-                    }
-                    
-                    debts[debtIndex] = updatedDebt;
-                    saveDebts();
-                    loadDebts();
-                    loadSummary();
-                    $('#editDebtModal').hide();
-                    showToast('Hutang/Piutang berhasil diperbarui', 'success');
-                }
-            });
-            
-            // Delete debt
             $(document).on('click', '.delete-debt', function() {
-                const debtId = $(this).data('id');
-                const debt = debts.find(d => d.id === debtId);
-                
-                showConfirmation(`Apakah Anda yakin ingin menghapus catatan hutang/piutang "${debt?.person || 'ini'}"?`, (confirmed) => {
-                    if (confirmed) {
-                        debts = debts.filter(d => d.id !== debtId);
-                        saveDebts();
-                        loadDebts();
-                        loadSummary();
-                        showToast('Hutang/Piutang berhasil dihapus', 'success');
+                const id = $(this).data('id');
+                showConfirmation('Anda yakin ingin menghapus data ini?', (confirm) => {
+                    if (confirm) {
+                        debts = debts.filter(d => d.id !== id);
+                        saveData();
+                        refreshUI();
+                        showToast('Data dihapus!', 'success');
                     }
                 });
             });
-            
-            // View debt
-            $(document).on('click', '.view-debt', function() {
-                const debtId = $(this).data('id');
-                const debt = debts.find(d => d.id === debtId);
-                
-                if (debt) {
-                    $('#viewDebtType').text(debt.type === 'debt' ? 'Hutang' : 'Piutang');
-                    $('#viewDebtPerson').text(`Nama: ${debt.person}`);
-                    $('#viewDebtAmount').text(`Jumlah: ${formatCurrency(debt.amount)}`);
-                    $('#viewDebtDescription').text(`Keterangan: ${debt.description || '-'}`);
-                    $('#viewDebtDate').text(`Tanggal Transaksi: ${formatDate(debt.transactionDate)}`);
-                    $('#viewDebtDueDate').text(`Jatuh Tempo: ${formatDate(debt.dueDate)}`);
-                    
-                    $('#viewDebtStatus').removeClass().addClass('debt-status');
-                    if (debt.status === 'paid') {
-                        $('#viewDebtStatus').addClass('paid').text('LUNAS');
-                    } else {
-                        $('#viewDebtStatus').addClass('unpaid').text('BELUM LUNAS');
-                    }
-                    
-                    $('#viewDebtModal').show();
-                }
-            });
-            
-            // Print debt
-            $('.print-debt').click(function() {
-                const content = `
-                    <div style="padding: 20px; font-family: Arial, sans-serif;">
-                        <h2 style="text-align: center; margin-bottom: 20px;">Detail ${$('#viewDebtType').text()}</h2>
-                        <p style="margin-bottom: 5px;"><strong>${$('#viewDebtPerson').text()}</strong></p>
-                        <p style="margin-bottom: 5px;"><strong>${$('#viewDebtAmount').text()}</strong></p>
-                        <p style="margin-bottom: 5px;">${$('#viewDebtDescription').text()}</p>
-                        <p style="margin-bottom: 5px;">${$('#viewDebtDate').text()}</p>
-                        <p style="margin-bottom: 5px;">${$('#viewDebtDueDate').text()}</p>
-                        <p style="margin-bottom: 5px;">Status: ${$('#viewDebtStatus').text()}</p>
-                        <div style="margin-top: 30px; text-align: right; font-style: italic;">
-                            <p>Dicetak pada: ${moment().format('DD/MM/YYYY HH:mm')}</p>
-                            <p>Oleh: ${currentUser.username}</p>
-                        </div>
-                    </div>
-                `;
-                
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = content;
-                document.body.appendChild(tempDiv);
-                
-                const opt = {
-                    margin: 10,
-                    filename: `${$('#viewDebtType').text()}_${$('#viewDebtPerson').text().substring(6, 20)}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-                
-                html2pdf().set(opt).from(tempDiv).save().then(() => {
-                    document.body.removeChild(tempDiv);
-                });
-            });
-            
-            // Settings button
-            $('#settingsBtn').click(function() {
-                if (currentUser.role !== 'admin') {
-                    showToast('Hanya admin yang dapat mengakses pengaturan', 'error');
-                    return;
-                }
-                
+
+            // Settings
+            $('#settingsBtn').on('click', () => {
                 $('#businessNameSetting').val(settings.businessName);
-                loadUsers();
-                $('#settingsModal').show();
+                $('#settingsModal').css('display', 'flex');
             });
             
-            // Save settings
-            $('.save-settings').click(function() {
+            $('#saveSettingsBtn').on('click', () => {
                 settings.businessName = $('#businessNameSetting').val();
-                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
-                
-                $('#businessName').text(settings.businessName);
-                showToast('Pengaturan berhasil disimpan', 'success');
+                saveData();
+                refreshUI();
+                showToast('Pengaturan disimpan!', 'success');
             });
-            
-            // Add user button
-            $('#addUserBtn').click(function() {
-                $('#newUsername').val('');
-                $('#newPassword').val('');
-                $('#newUserRole').val('user');
-                $('#userModal').show();
+
+            $('#backupDataBtn').on('click', () => {
+                const data = btoa(JSON.stringify({ notes, debts, settings }));
+                const blob = new Blob([data], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `UMKM_Pro_Backup_${moment().format('YYYYMMDD')}.prodata`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('Backup data berhasil diunduh.', 'success');
             });
+
+            $('#restoreDataBtn').on('click', () => $('#restoreFileInput').click());
             
-            // Save user
-            $('.save-user').click(function() {
-                const user = {
-                    username: $('#newUsername').val().trim(),
-                    password: $('#newPassword').val(),
-                    role: $('#newUserRole').val()
-                };
-                
-                if (!user.username || !user.password) {
-                    showToast('Username dan password harus diisi!', 'error');
-                    return;
-                }
-                
-                if (users.some(u => u.username === user.username)) {
-                    showToast('Username sudah digunakan', 'error');
-                    return;
-                }
-                
-                users.push(user);
-                saveUsers();
-                loadUsers();
-                
-                $('#userModal').hide();
-                $('#newUsername').val('');
-                $('#newPassword').val('');
-                showToast('Pengguna berhasil ditambahkan', 'success');
-            });
-            
-            // Delete user
-            $(document).on('click', '.delete-user', function() {
-                const username = $(this).data('username');
-                
-                if (username === currentUser.username) {
-                    showToast('Tidak dapat menghapus akun yang sedang digunakan!', 'error');
-                    return;
-                }
-                
-                showConfirmation(`Apakah Anda yakin ingin menghapus pengguna "${username}"?`, (confirmed) => {
-                    if (confirmed) {
-                        users = users.filter(u => u.username !== username);
-                        saveUsers();
-                        loadUsers();
-                        showToast('Pengguna berhasil dihapus', 'success');
-                    }
-                });
-            });
-            
-            // Backup data
-            $('#backupDataBtn').click(function() {
-                const backupData = {
-                    notes: notes,
-                    debts: debts,
-                    users: users,
-                    settings: settings,
-                    timestamp: new Date().toISOString()
-                };
-                
-                const dataStr = JSON.stringify(backupData, null, 2);
-                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-                
-                const exportName = `UMKM_Backup_${moment().format('YYYYMMDD_HHmmss')}.json`;
-                
-                const linkElement = document.createElement('a');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', exportName);
-                linkElement.click();
-                
-                showToast('Backup data berhasil', 'success');
-            });
-            
-            // Restore data
-            $('#restoreDataBtn').click(function() {
-                $('#restoreFileInput').click();
-            });
-            
-            $('#restoreFileInput').change(function(e) {
+            $('#restoreFileInput').on('change', function(e) {
                 const file = e.target.files[0];
-                if (!file) return;
-                
-                if (file.type !== 'application/json') {
-                    showToast('File harus dalam format JSON', 'error');
-                    return;
-                }
-                
-                showConfirmation('Apakah Anda yakin ingin memulihkan data? Semua data saat ini akan diganti.', (confirmed) => {
-                    if (!confirmed) return;
-                    
+                if(file) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function(event) {
                         try {
-                            const backupData = JSON.parse(e.target.result);
-                            
-                            if (!backupData.notes || !backupData.debts || !backupData.users || !backupData.settings) {
-                                showToast('Format backup tidak valid', 'error');
-                                return;
+                            const restoredData = JSON.parse(atob(event.target.result));
+                            if(restoredData.notes && restoredData.debts && restoredData.settings) {
+                                notes = restoredData.notes;
+                                debts = restoredData.debts;
+                                settings = restoredData.settings;
+                                saveData();
+                                refreshUI();
+                                showToast('Data berhasil dipulihkan!', 'success');
+                            } else {
+                                showToast('File backup tidak valid.', 'error');
                             }
-                            
-                            notes = backupData.notes;
-                            debts = backupData.debts;
-                            users = backupData.users;
-                            settings = backupData.settings;
-                            
-                            saveNotes();
-                            saveDebts();
-                            saveUsers();
-                            
-                            $('#businessName').text(settings.businessName);
-                            loadSummary();
-                            loadNotes();
-                            loadDebts();
-                            loadCalendar();
-                            loadUsers();
-                            
-                            showToast('Data berhasil dipulihkan', 'success');
-                        } catch (error) {
-                            showToast('Gagal memproses file backup', 'error');
-                            console.error(error);
+                        } catch (err) {
+                            showToast('Gagal membaca file backup.', 'error');
                         }
                     };
                     reader.readAsText(file);
-                });
-            });
-            
-            // Export notes to PDF
-            $('#exportNotesPdfBtn').click(function() {
-                if (notes.length === 0) {
-                    showToast('Tidak ada catatan untuk diekspor', 'warning');
-                    return;
                 }
-                
-                const content = `
-                    <div style="padding: 20px; font-family: Arial, sans-serif;">
-                        <h2 style="text-align: center; margin-bottom: 20px;">Daftar Catatan UMKM</h2>
-                        <p style="text-align: center; margin-bottom: 20px;">${settings.businessName}</p>
-                        <p style="text-align: center; margin-bottom: 30px;">Dicetak pada: ${moment().format('DD/MM/YYYY HH:mm')}</p>
-                        
-                        ${notes.map(note => `
-                            <div style="margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
-                                <h3 style="margin-bottom: 5px;">${note.title}</h3>
-                                <p style="color: #666; margin-bottom: 10px;">${formatDateTime(note.createdAt)}</p>
-                                <div style="margin-bottom: 10px; white-space: pre-line;">${note.content}</div>
-                                ${note.tags && note.tags.length > 0 ? `
-                                    <div style="margin-bottom: 10px;">
-                                        ${note.tags.map(tag => `<span style="display: inline-block; background: #f3f4f6; padding: 3px 8px; border-radius: 20px; font-size: 0.8rem; margin-right: 5px;">${tag}</span>`).join('')}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `).join('')}
-                        
-                        <div style="margin-top: 30px; text-align: right; font-style: italic;">
-                            <p>Total Catatan: ${notes.length}</p>
-                            <p>Dicetak oleh: ${currentUser.username}</p>
-                        </div>
-                    </div>
-                `;
-                
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = content;
-                document.body.appendChild(tempDiv);
-                
-                const opt = {
-                    margin: 10,
-                    filename: `Catatan_UMKM_${moment().format('YYYYMMDD')}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-                
-                html2pdf().set(opt).from(tempDiv).save().then(() => {
-                    document.body.removeChild(tempDiv);
-                    showToast('Catatan berhasil diekspor ke PDF', 'success');
-                });
             });
             
-            // Export debts to Excel
-            $('#exportDebtsExcelBtn').click(function() {
-                if (debts.length === 0) {
-                    showToast('Tidak ada data hutang/piutang untuk diekspor', 'warning');
-                    return;
-                }
-                
-                const exportData = debts.map(d => ({
-                    'Jenis': d.type === 'debt' ? 'Hutang' : 'Piutang',
-                    'Nama': d.person,
-                    'Jumlah': d.amount,
-                    'Keterangan': d.description || '-',
-                    'Tanggal Transaksi': formatDate(d.transactionDate),
-                    'Jatuh Tempo': formatDate(d.dueDate),
-                    'Status': d.status === 'paid' ? 'Lunas' : 'Belum Lunas',
-                    'Dibuat Oleh': d.createdBy,
-                    'Tanggal Dibuat': formatDateTime(d.createdAt)
-                }));
-                
-                exportToExcel(exportData, `Hutang_Piutang_UMKM_${moment().format('YYYYMMDD')}.xlsx`);
-                showToast('Data hutang/piutang berhasil diekspor ke Excel', 'success');
-            });
-            
-            // Export all to Word
-            $('#exportAllWordBtn').click(function() {
-                if (notes.length === 0 && debts.length === 0) {
-                    showToast('Tidak ada data untuk diekspor', 'warning');
-                    return;
-                }
-                
-                const combinedData = [
-                    ...notes.map(n => ({
-                        title: `CATATAN: ${n.title}`,
-                        content: n.content,
-                        date: formatDateTime(n.createdAt)
-                    })),
-                    ...debts.map(d => ({
-                        title: `${d.type === 'debt' ? 'HUTANG' : 'PIUTANG'}: ${d.person}`,
-                        content: `Jumlah: ${formatCurrency(d.amount)}\nKeterangan: ${d.description || '-'}\nStatus: ${d.status === 'paid' ? 'Lunas' : 'Belum Lunas'}`,
-                        date: `Transaksi: ${formatDate(d.transactionDate)}\nJatuh Tempo: ${formatDate(d.dueDate)}`
-                    }))
-                ];
-                
-                exportToWord(combinedData, `Data_UMKM_${moment().format('YYYYMMDD')}.docx`);
-                showToast('Data berhasil diekspor ke Word', 'success');
-            });
-            
-            // Search & filter handlers
-            $('#noteSearch').on('input', () => loadNotes($('#noteSearch').val(), $('#noteFilter').val()));
-            $('#noteFilter').change(() => loadNotes($('#noteSearch').val(), $('#noteFilter').val()));
-            $('#debtSearch').on('input', () => loadDebts($('#debtSearch').val(), $('#debtFilter').val()));
-            $('#debtFilter').change(() => loadDebts($('#debtSearch').val(), $('#debtFilter').val()));
-            $('#calendarMonth').change(loadCalendar);
-            
-            // Close modals
-            $('.modal-close, .close-note-modal').click(() => $('#noteModal').hide());
-            $('.close-edit-note-modal').click(() => $('#editNoteModal').hide());
-            $('.close-view-note-modal').click(() => $('#viewNoteModal').hide());
-            $('.close-debt-modal').click(() => $('#debtModal').hide());
-            $('.close-edit-debt-modal').click(() => $('#editDebtModal').hide());
-            $('.close-view-debt-modal').click(() => $('#viewDebtModal').hide());
-            $('.close-settings-modal').click(() => $('#settingsModal').hide());
-            $('.close-user-modal').click(() => $('#userModal').hide());
-        });
-        
-        function updateCurrentDate() {
-            $('#currentDate').text(moment().format('dddd, D MMMM YYYY, HH:mm'));
-        }
-        
-        function initializeData() {
-            if (localStorage.getItem(STORAGE_KEYS.NOTES) === null) {
-                notes = [
-                    { id: 'N001', title: 'Contoh Catatan Penting', content: 'Ini adalah contoh catatan penting untuk rapat besok dengan supplier.', date: moment().format('YYYY-MM-DD'), priority: 'high', tags: ['rapat', 'supplier'], createdAt: new Date(), createdBy: 'admin' },
-                    { id: 'N002', title: 'Ide Pengembangan Produk', content: '1. Tambahkan varian rasa baru\n2. Kemasan yang lebih menarik\n3. Promosi di media sosial', date: moment().add(1, 'days').format('YYYY-MM-DD'), priority: 'medium', tags: ['produk', 'pengembangan'], createdAt: new Date(), createdBy: 'admin' }
-                ];
-                saveNotes();
-            }
-            
-            if (localStorage.getItem(STORAGE_KEYS.DEBTS) === null) {
-                debts = [
-                    { id: 'D001', type: 'receivable', person: 'Toko Sejahtera', amount: 500000, description: 'Pembayaran barang tanggal 1 Januari', transactionDate: moment().subtract(5, 'days').format('YYYY-MM-DD'), dueDate: moment().add(2, 'days').format('YYYY-MM-DD'), status: 'unpaid', createdAt: new Date(), createdBy: 'admin' },
-                    { id: 'D002', type: 'debt', person: 'Supplier ABC', amount: 750000, description: 'Pembelian bahan baku', transactionDate: moment().subtract(3, 'days').format('YYYY-MM-DD'), dueDate: moment().add(7, 'days').format('YYYY-MM-DD'), status: 'unpaid', createdAt: new Date(), createdBy: 'admin' }
-                ];
-                saveDebts();
-            }
-            
-            if (localStorage.getItem(STORAGE_KEYS.USERS) === null) {
-                saveUsers();
-            }
-            
-            $('#businessName').text(settings.businessName);
-        }
-        
-        function saveNotes() { localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes)); }
-        function saveDebts() { localStorage.setItem(STORAGE_KEYS.DEBTS, JSON.stringify(debts)); }
-        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); }
-        
-        function loadSummary() {
-            $('#totalNotes').text(notes.length);
-            
-            const totalDebts = debts.filter(d => d.type === 'debt' && d.status === 'unpaid').reduce((sum, d) => sum + d.amount, 0);
-            $('#totalDebts').text(formatCurrency(totalDebts));
-            
-            const totalReceivables = debts.filter(d => d.type === 'receivable' && d.status === 'unpaid').reduce((sum, d) => sum + d.amount, 0);
-            $('#totalReceivables').text(formatCurrency(totalReceivables));
-            
-            $('#recentNotes').empty();
-            const recentNotes = notes.slice(0, 5);
-            if (recentNotes.length === 0) {
-                $('#recentNotes').html(`<div class="empty-state"><i class="fas fa-sticky-note"></i><p>Tidak ada catatan terbaru</p></div>`);
-            } else {
-                recentNotes.forEach(note => {
-                    const priorityClass = note.priority === 'high' ? 'priority-high' : (note.priority === 'medium' ? 'priority-medium' : 'priority-low');
-                    $('#recentNotes').append(`<div class="note-card"><div class="note-title">${note.title}</div><div class="note-date">${formatDate(note.date)} <i class="fas fa-circle ${priorityClass}" style="font-size: 0.5rem;"></i></div><div class="note-content">${note.content.substring(0, 100)}${note.content.length > 100 ? '...' : ''}</div><div class="note-actions"><button class="btn btn-info btn-sm view-note" data-id="${note.id}" title="Lihat"><i class="fas fa-eye"></i></button><button class="btn btn-primary btn-sm edit-note" data-id="${note.id}" title="Edit"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm delete-note" data-id="${note.id}" title="Hapus"><i class="fas fa-trash"></i></button></div></div>`);
-                });
-            }
-            
-            $('#dueDebts').empty();
-            const dueDate = moment().add(7, 'days').format('YYYY-MM-DD');
-            const dueDebts = debts.filter(d => d.status === 'unpaid' && d.dueDate <= dueDate).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)).slice(0, 3);
-            if (dueDebts.length === 0) {
-                $('#dueDebts').html(`<div class="empty-state"><i class="fas fa-hand-holding-usd"></i><p>Tidak ada hutang/piutang jatuh tempo</p></div>`);
-            } else {
-                dueDebts.forEach(debt => {
-                    const isOverdue = moment().isAfter(debt.dueDate, 'day');
-                    $('#dueDebts').append(`<div class="debt-card ${debt.status === 'paid' ? 'paid' : ''}"><div class="debt-title">${debt.type === 'debt' ? 'Hutang' : 'Piutang'}</div><div class="debt-person">${debt.person}</div><div class="debt-amount">${formatCurrency(debt.amount)}</div><div class="debt-due-date">Jatuh tempo: ${formatDate(debt.dueDate)} ${isOverdue ? '<strong class="priority-high">(TERLAMBAT)</strong>' : ''}</div><div class="debt-status ${debt.status === 'paid' ? 'paid' : 'unpaid'}">${debt.status === 'paid' ? 'LUNAS' : 'BELUM LUNAS'}</div><div class="debt-actions"><button class="btn btn-info btn-sm view-debt" data-id="${debt.id}" title="Lihat"><i class="fas fa-eye"></i></button><button class="btn btn-primary btn-sm edit-debt" data-id="${debt.id}" title="Edit"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm delete-debt" data-id="${debt.id}" title="Hapus"><i class="fas fa-trash"></i></button></div></div>`);
-                });
-            }
-        }
-        
-        function loadNotes(searchTerm = '', filter = 'all') {
-            let filteredNotes = [...notes];
-            
-            if (searchTerm) {
-                const searchLower = searchTerm.toLowerCase();
-                filteredNotes = filteredNotes.filter(n => n.title.toLowerCase().includes(searchLower) || n.content.toLowerCase().includes(searchLower) || (n.tags && n.tags.some(tag => tag.toLowerCase().includes(searchLower))));
-            }
-            
-            if (filter === 'today') {
-                filteredNotes = filteredNotes.filter(n => moment(n.date).isSame(moment(), 'day'));
-            } else if (filter === 'week') {
-                filteredNotes = filteredNotes.filter(n => moment(n.date).isSame(moment(), 'week'));
-            } else if (filter === 'month') {
-                filteredNotes = filteredNotes.filter(n => moment(n.date).isSame(moment(), 'month'));
-            } else if (filter === 'important') {
-                filteredNotes = filteredNotes.filter(n => n.priority === 'high');
-            }
-            
-            $('#notesList').empty();
-            if (filteredNotes.length === 0) {
-                $('#notesList').html(`<div class="empty-state"><i class="fas fa-sticky-note"></i><p>Tidak ada catatan ditemukan</p></div>`);
-            } else {
-                filteredNotes.forEach(note => {
-                    const priorityClass = note.priority === 'high' ? 'priority-high' : (note.priority === 'medium' ? 'priority-medium' : 'priority-low');
-                    $('#notesList').append(`<div class="note-card"><div class="note-title">${note.title}</div><div class="note-date">${formatDate(note.date)} <i class="fas fa-circle ${priorityClass}" style="font-size: 0.5rem;"></i></div><div class="note-content">${note.content.substring(0, 100)}${note.content.length > 100 ? '...' : ''}</div>${note.tags && note.tags.length > 0 ? `<div class="note-tags">${note.tags.map(tag => `<span class="note-tag">${tag}</span>`).join('')}</div>` : ''}<div class="note-actions"><button class="btn btn-info btn-sm view-note" data-id="${note.id}" title="Lihat"><i class="fas fa-eye"></i></button><button class="btn btn-primary btn-sm edit-note" data-id="${note.id}" title="Edit"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm delete-note" data-id="${note.id}" title="Hapus"><i class="fas fa-trash"></i></button></div></div>`);
-                });
-            }
-        }
-        
-        function loadDebts(searchTerm = '', filter = 'all') {
-            let filteredDebts = [...debts];
-            
-            if (searchTerm) {
-                const searchLower = searchTerm.toLowerCase();
-                filteredDebts = filteredDebts.filter(d => d.person.toLowerCase().includes(searchLower) || (d.description && d.description.toLowerCase().includes(searchLower)));
-            }
-            
-            if (filter === 'debt') filteredDebts = filteredDebts.filter(d => d.type === 'debt');
-            else if (filter === 'receivable') filteredDebts = filteredDebts.filter(d => d.type === 'receivable');
-            else if (filter === 'paid') filteredDebts = filteredDebts.filter(d => d.status === 'paid');
-            else if (filter === 'unpaid') filteredDebts = filteredDebts.filter(d => d.status === 'unpaid');
-            else if (filter === 'overdue') {
-                const today = moment();
-                filteredDebts = filteredDebts.filter(d => d.status === 'unpaid' && moment(d.dueDate).isBefore(today, 'day'));
-            }
-            
-            $('#debtsList').empty();
-            if (filteredDebts.length === 0) {
-                $('#debtsList').html(`<div class="empty-state"><i class="fas fa-hand-holding-usd"></i><p>Tidak ada hutang/piutang ditemukan</p></div>`);
-            } else {
-                filteredDebts.forEach(debt => {
-                    const isOverdue = debt.status === 'unpaid' && moment().isAfter(debt.dueDate, 'day');
-                    $('#debtsList').append(`<div class="debt-card ${debt.status === 'paid' ? 'paid' : ''}"><div class="debt-title">${debt.type === 'debt' ? 'Hutang' : 'Piutang'}</div><div class="debt-person">${debt.person}</div><div class="debt-amount">${formatCurrency(debt.amount)}</div><div class="debt-due-date">Jatuh tempo: ${formatDate(debt.dueDate)} ${isOverdue ? '<strong class="priority-high">(TERLAMBAT)</strong>' : ''}</div><div class="debt-status ${debt.status === 'paid' ? 'paid' : 'unpaid'}">${debt.status === 'paid' ? 'LUNAS' : 'BELUM LUNAS'}</div><div class="debt-actions"><button class="btn btn-info btn-sm view-debt" data-id="${debt.id}" title="Lihat"><i class="fas fa-eye"></i></button><button class="btn btn-primary btn-sm edit-debt" data-id="${debt.id}" title="Edit"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm delete-debt" data-id="${debt.id}" title="Hapus"><i class="fas fa-trash"></i></button></div></div>`);
-                });
-            }
-        }
-        
-        function loadCalendar() {
-            const month = $('#calendarMonth').val() || moment().format('YYYY-MM');
-            const startDate = moment(month).startOf('month');
-            const endDate = moment(month).endOf('month');
-            const daysInMonth = endDate.date();
-            
-            $('#calendarView').empty();
-            let calendarHtml = `<table class="calendar"><thead><tr><th>Min</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th></tr></thead><tbody>`;
-            const firstDay = startDate.day();
-            
-            let day = 1;
-            for (let i = 0; i < 6; i++) {
-                calendarHtml += '<tr>';
-                for (let j = 0; j < 7; j++) {
-                    if ((i === 0 && j < firstDay) || day > daysInMonth) {
-                        calendarHtml += '<td></td>';
-                    } else {
-                        const currentDate = moment(month).date(day).format('YYYY-MM-DD');
-                        const isToday = moment().isSame(currentDate, 'day');
-                        const dayNotes = notes.filter(n => n.date === currentDate);
-                        
-                        calendarHtml += `<td class="calendar-day ${isToday ? 'today' : ''} ${dayNotes.length > 0 ? 'has-note' : ''}" data-date="${currentDate}"><div class="calendar-day-number">${day}</div>${dayNotes.length > 0 ? `<div class="calendar-note-preview" title="${dayNotes[0].title}">${dayNotes[0].title.substring(0, 10)}${dayNotes[0].title.length > 10 ? '...' : ''}</div>` : ''}</td>`;
-                        day++;
+            $('#clearDataBtn').on('click', () => {
+                 showConfirmation('PERINGATAN: Semua data akan dihapus permanen. Lanjutkan?', (confirm) => {
+                    if (confirm) {
+                        notes = [];
+                        debts = [];
+                        saveData();
+                        refreshUI();
+                        showToast('Semua data telah dihapus.', 'success');
                     }
-                }
-                calendarHtml += '</tr>';
-                if (day > daysInMonth) break;
-            }
-            calendarHtml += `</tbody></table>`;
-            $('#calendarView').html(calendarHtml);
-            
-            $('.calendar-day').click(function() {
-                const date = $(this).data('date');
-                if (!date) return;
-                
-                $('.tab[data-tab="notes"]').click();
-                $('#noteFilter').val('all');
-                
-                const dayNotes = notes.filter(n => n.date === date);
-                if (dayNotes.length > 0) {
-                    loadNotes(dayNotes[0].title, 'all');
-                    $('#noteSearch').val(dayNotes[0].title);
-                } else {
-                    showToast('Tidak ada catatan untuk tanggal ini', 'info');
-                    loadNotes();
-                    $('#noteSearch').val('');
-                }
-            });
-        }
-        
-        function loadUsers() {
-            $('#usersTable').empty();
-            if (users.length === 0) {
-                $('#usersTable').html(`<tr><td colspan="3"><div class="empty-state"><i class="fas fa-users"></i><p>Tidak ada pengguna</p></div></td></tr>`);
-            } else {
-                users.forEach(user => {
-                    const isCurrent = currentUser && user.username === currentUser.username;
-                    $('#usersTable').append(`<tr ${isCurrent ? 'style="background-color: #f8f9fa;"' : ''}><td>${user.username} ${isCurrent ? '(Anda)' : ''}</td><td><span class="badge ${user.role === 'admin' ? 'badge-primary' : 'badge-info'}">${user.role === 'admin' ? 'Admin' : 'User'}</span></td><td><button class="btn btn-danger btn-sm delete-user" data-username="${user.username}" title="Hapus" ${isCurrent ? 'disabled' : ''}><i class="fas fa-trash"></i></button></td></tr>`);
                 });
-            }
-        }
+            });
+
+            // Real-time Search
+            $('#noteSearch').on('input', function() { renderNotes($(this).val().toLowerCase()); });
+            $('#debtSearch').on('input', function() { renderDebts($(this).val().toLowerCase()); });
+            
+            // Modal Closing
+            $('.modal-close, .close-modal').on('click', () => $('.modal').hide());
+        });
     </script>
 </body>
 </html>
