@@ -104,7 +104,6 @@
             text-align: center;
             opacity: 0;
             animation: fadeIn 1s ease-out 1.5s forwards;
-            line-height: 1.5;
         }
 
         .splash-credits strong {
@@ -240,16 +239,6 @@
             transition: var(--transition);
             background-color: #f9f9f9;
         }
-        
-        /* Styles for locked (readonly) login inputs */
-        .form-floating input[readonly] {
-            background-color: #e9ecef;
-            cursor: not-allowed;
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-        }
 
         .form-floating input:focus {
             border-color: var(--primary-color);
@@ -277,15 +266,6 @@
             font-weight: 500;
             background-color: white;
         }
-        
-        .form-floating input[readonly] + label {
-            background-color: #e9ecef;
-        }
-        
-        .form-floating input[readonly]:focus + label,
-        .form-floating input[readonly]:not(:placeholder-shown) + label {
-            background-color: white;
-        }
 
         .login-footer {
             text-align: center;
@@ -299,43 +279,6 @@
             text-decoration: none;
             font-weight: 500;
         }
-        
-        /* Captcha Styles */
-        .captcha-container {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-
-        .captcha-box {
-            padding: 10px 15px;
-            background-color: #f3f4f6;
-            border: 1px solid #ddd;
-            border-radius: var(--rounded-sm);
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 5px;
-            text-decoration: line-through;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
-            color: var(--dark-color);
-            flex: 1;
-            text-align: center;
-            user-select: none;
-        }
-
-        #refreshCaptcha {
-            padding: 10px;
-            line-height: 1;
-        }
-        
-        #captchaInput {
-            margin-top: 10px;
-            padding: 15px;
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: var(--rounded-sm);
-            font-size: 1rem;
-        }
-        
 
         /* Modern Header */
         .header {
@@ -1551,9 +1494,8 @@
         <h1 class="splash-title">Aplikasi Catatan UMKM Pro</h1>
         <p class="splash-subtitle">Manajemen Catatan dan Keuangan Profesional untuk Usaha Anda</p>
         <div class="splash-credits">
-            Dibuat oleh <strong>Lentera Karya Situbondo</strong><br>
-            Developer: <strong>www.aplikasiusaha.com</strong> | WhatsApp: <strong>085647709114</strong><br>
-            <small>Versi 2.0.1 | © 2025</small>
+            Dibuat dengan ❤ oleh <strong>Lentera Karya Situbondo</strong><br>
+            <small>Versi 2.0.1 | © 2023</small>
         </div>
     </div>
 
@@ -1580,30 +1522,21 @@
             <h2 class="login-title">Masuk ke Aplikasi</h2>
             <form id="loginForm">
                 <div class="form-floating">
-                    <input type="text" id="username" placeholder="Username" required value="admin" readonly>
+                    <input type="text" id="username" placeholder="Username" required>
                     <label for="username">Username</label>
+                    <div class="error-message" id="usernameError"></div>
                 </div>
                 <div class="form-floating">
-                    <input type="password" id="password" placeholder="Password" required value="admin123" readonly>
+                    <input type="password" id="password" placeholder="Password" required>
                     <label for="password">Password</label>
+                    <div class="error-message" id="passwordError"></div>
                 </div>
-                
-                <div class="captcha-container">
-                    <label for="captchaInput" class="mb-2">Verifikasi Captcha</label>
-                    <div class="d-flex align-items-center gap-2">
-                        <div id="captchaBox" class="captcha-box"></div>
-                        <button type="button" id="refreshCaptcha" class="btn btn-secondary btn-sm" title="Refresh Captcha"><i class="fas fa-sync-alt"></i></button>
-                    </div>
-                    <input type="text" id="captchaInput" class="form-control" placeholder="Masukkan captcha di atas" required autocomplete="off">
-                    <div class="error-message" id="captchaError"></div>
-                </div>
-
                 <button type="submit" class="btn btn-block" id="loginBtn">
                     <span id="loginBtnText">Login</span>
                 </button>
             </form>
             <div class="login-footer">
-                <p>Verifikasi captcha untuk melanjutkan.</p>
+                <p>Gunakan username: <strong>admin</strong> dan password: <strong>admin123</strong> untuk mencoba</p>
             </div>
         </div>
     </div>
@@ -1816,7 +1749,7 @@
                 </div>
                 <div class="form-group">
                     <label for="debtAmount">Jumlah</label>
-                    <input type="number" id="debtAmount" class="form-control" placeholder="Masukkan jumlah">
+                    <input type="number" id="debtAmount" class="form-control" placeholder="Masukkan jumlah" min="0">
                 </div>
                 <div class="form-group">
                     <label for="debtDescription">Keterangan</label>
@@ -1866,7 +1799,7 @@
                 </div>
                 <div class="form-group">
                     <label for="editDebtAmount">Jumlah</label>
-                    <input type="number" id="editDebtAmount" class="form-control">
+                    <input type="number" id="editDebtAmount" class="form-control" min="0">
                 </div>
                 <div class="form-group">
                     <label for="editDebtDescription">Keterangan</label>
@@ -2059,9 +1992,6 @@
         // Current user
         let currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) || null;
         
-        // Captcha text
-        let captchaText = '';
-        
         // Splash screen and particle effect
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
@@ -2206,30 +2136,15 @@
             });
         }
         
-        // Generate Captcha
-        function generateCaptcha() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < 6; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            captchaText = result;
-            $('#captchaBox').text(captchaText);
-            $('#captchaError').hide().text('');
-        }
-        
         $(document).ready(function() {
-            // Create particle effect
             createParticles();
             
-            // Hide splash screen after 3 seconds
             setTimeout(() => {
                 $('#splashScreen').fadeOut(1000, function() {
                     $(this).remove();
                     
                     if (!currentUser) {
                         $('#loginModal').show();
-                        generateCaptcha(); // Generate first captcha
                     } else {
                         $('#loggedInUser').text(currentUser.username);
                         $('#businessName').text(settings.businessName);
@@ -2243,30 +2158,28 @@
             }, 3000);
 
             initializeData();
+            
             updateCurrentDate();
+            
             setInterval(updateCurrentDate, 60000);
             
-            // Captcha refresh button
-            $('#refreshCaptcha').click(generateCaptcha);
-            
-            // Login form handler
             $('#loginForm').submit(function(e) {
                 e.preventDefault();
-                const username = $('#username').val();
-                const password = $('#password').val();
-                const captchaInput = $('#captchaInput').val().trim();
+                const username = $('#username').val().trim();
+                const password = $('#password').val().trim();
                 
-                $('#captchaError').hide().text('');
+                $('#usernameError').hide().text('');
+                $('#passwordError').hide().text('');
                 
                 let isValid = true;
                 
-                if (!captchaInput) {
-                    $('#captchaError').text('Captcha harus diisi').show();
+                if (!username) {
+                    $('#usernameError').text('Username harus diisi').show();
                     isValid = false;
-                } else if (captchaInput.toLowerCase() !== captchaText.toLowerCase()) {
-                    $('#captchaError').text('Captcha tidak sesuai').show();
-                    generateCaptcha();
-                    $('#captchaInput').val('');
+                }
+                
+                if (!password) {
+                    $('#passwordError').text('Password harus diisi').show();
                     isValid = false;
                 }
                 
@@ -2296,9 +2209,10 @@
                         loadDebts();
                         loadCalendar();
                     } else {
-                        // This case is unlikely with readonly fields but kept for robustness
-                        showToast('Autentikasi gagal. Silakan coba lagi.', 'error');
-                        generateCaptcha();
+                        $('#usernameError').text('Username atau password salah').show();
+                        $('#passwordError').text('Username atau password salah').show();
+                        
+                        showToast('Username atau password salah', 'error');
                     }
                     
                     $('#loginBtn').prop('disabled', false);
@@ -2306,20 +2220,18 @@
                 }, 1000);
             });
             
-            // Logout handler
             $('#logoutBtn').click(function(e) {
                 e.preventDefault();
                 currentUser = null;
                 localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
                 $('#mainApp').fadeOut();
                 $('#loginModal').fadeIn();
-                $('#captchaInput').val('');
-                generateCaptcha();
+                $('#username').val('');
+                $('#password').val('');
                 
                 showToast('Anda telah logout', 'info');
             });
             
-            // Tab switching
             $('.tab').click(function() {
                 const tabId = $(this).data('tab');
                 $('.tab').removeClass('active');
@@ -2332,7 +2244,6 @@
                 }
             });
             
-            // Add note button
             $('#addNoteBtn').click(function() {
                 $('#noteTitle').val('');
                 $('#noteContent').val('');
@@ -2342,10 +2253,10 @@
                 $('#noteModal').show();
             });
             
-            // Save note
             $('.save-note').click(function() {
                 const note = {
-                    id: 'N' + moment().format('YYYYMMDDHHmmss'),
+                    // PERUBAIKAN: Menggunakan ID yang lebih unik untuk menghindari duplikasi
+                    id: 'N' + Date.now() + Math.random().toString(36).substr(2, 9),
                     title: $('#noteTitle').val(),
                     content: $('#noteContent').val(),
                     date: $('#noteDate').val(),
@@ -2362,14 +2273,16 @@
                 
                 notes.unshift(note);
                 saveNotes();
+                
                 loadNotes();
                 loadSummary();
                 loadCalendar();
+                
                 $('#noteModal').hide();
+                
                 showToast('Catatan berhasil ditambahkan', 'success');
             });
             
-            // Edit note
             $(document).on('click', '.edit-note', function() {
                 const noteId = $(this).data('id');
                 const note = notes.find(n => n.id === noteId);
@@ -2385,7 +2298,6 @@
                 }
             });
             
-            // Update note
             $('.update-note').click(function() {
                 const noteId = $('#editNoteId').val();
                 const noteIndex = notes.findIndex(n => n.id === noteId);
@@ -2418,7 +2330,6 @@
                 }
             });
             
-            // Delete note
             $(document).on('click', '.delete-note', function() {
                 const noteId = $(this).data('id');
                 const note = notes.find(n => n.id === noteId);
@@ -2436,7 +2347,6 @@
                 });
             });
             
-            // View note
             $(document).on('click', '.view-note', function() {
                 const noteId = $(this).data('id');
                 const note = notes.find(n => n.id === noteId);
@@ -2466,7 +2376,6 @@
                 }
             });
             
-            // Print note
             $('.print-note').click(function() {
                 const content = `
                     <div style="padding: 20px; font-family: Arial, sans-serif;">
@@ -2499,7 +2408,6 @@
                 });
             });
             
-            // Add debt button
             $('#addDebtBtn').click(function() {
                 $('#debtType').val('debt');
                 $('#debtPerson').val('');
@@ -2511,13 +2419,21 @@
                 $('#debtModal').show();
             });
             
-            // Save debt
             $('.save-debt').click(function() {
+                const amount = parseFloat($('#debtAmount').val()) || 0;
+                const person = $('#debtPerson').val();
+                
+                if (!person || amount <= 0) {
+                    showToast('Nama dan jumlah harus diisi dengan benar!', 'error');
+                    return;
+                }
+                
                 const debt = {
-                    id: 'D' + moment().format('YYYYMMDDHHmmss'),
+                    // PERUBAIKAN: Menggunakan ID yang lebih unik untuk menghindari duplikasi
+                    id: 'D' + Date.now() + Math.random().toString(36).substr(2, 9),
                     type: $('#debtType').val(),
-                    person: $('#debtPerson').val(),
-                    amount: parseFloat($('#debtAmount').val()) || 0,
+                    person: person,
+                    amount: amount,
                     description: $('#debtDescription').val(),
                     transactionDate: $('#debtDate').val(),
                     dueDate: $('#debtDueDate').val(),
@@ -2526,20 +2442,17 @@
                     createdBy: currentUser.username
                 };
                 
-                if (!debt.person || debt.amount <= 0) {
-                    showToast('Nama dan jumlah harus diisi dengan benar!', 'error');
-                    return;
-                }
-                
                 debts.unshift(debt);
                 saveDebts();
+                
                 loadDebts();
                 loadSummary();
+                
                 $('#debtModal').hide();
+                
                 showToast('Hutang/Piutang berhasil ditambahkan', 'success');
             });
             
-            // Edit debt
             $(document).on('click', '.edit-debt', function() {
                 const debtId = $(this).data('id');
                 const debt = debts.find(d => d.id === debtId);
@@ -2557,17 +2470,23 @@
                 }
             });
             
-            // Update debt
             $('.update-debt').click(function() {
                 const debtId = $('#editDebtId').val();
                 const debtIndex = debts.findIndex(d => d.id === debtId);
-                
+                const amount = parseFloat($('#editDebtAmount').val()) || 0;
+                const person = $('#editDebtPerson').val();
+
                 if (debtIndex !== -1) {
+                    if (!person || amount <= 0) {
+                        showToast('Nama dan jumlah harus diisi dengan benar!', 'error');
+                        return;
+                    }
+                    
                     const updatedDebt = {
                         ...debts[debtIndex],
                         type: $('#editDebtType').val(),
-                        person: $('#editDebtPerson').val(),
-                        amount: parseFloat($('#editDebtAmount').val()) || 0,
+                        person: person,
+                        amount: amount,
                         description: $('#editDebtDescription').val(),
                         transactionDate: $('#editDebtDate').val(),
                         dueDate: $('#editDebtDueDate').val(),
@@ -2576,21 +2495,16 @@
                         updatedBy: currentUser.username
                     };
                     
-                    if (!updatedDebt.person || updatedDebt.amount <= 0) {
-                        showToast('Nama dan jumlah harus diisi dengan benar!', 'error');
-                        return;
-                    }
-                    
                     debts[debtIndex] = updatedDebt;
                     saveDebts();
                     loadDebts();
                     loadSummary();
                     $('#editDebtModal').hide();
+                    
                     showToast('Hutang/Piutang berhasil diperbarui', 'success');
                 }
             });
             
-            // Delete debt
             $(document).on('click', '.delete-debt', function() {
                 const debtId = $(this).data('id');
                 const debt = debts.find(d => d.id === debtId);
@@ -2601,12 +2515,12 @@
                         saveDebts();
                         loadDebts();
                         loadSummary();
+                        
                         showToast('Hutang/Piutang berhasil dihapus', 'success');
                     }
                 });
             });
             
-            // View debt
             $(document).on('click', '.view-debt', function() {
                 const debtId = $(this).data('id');
                 const debt = debts.find(d => d.id === debtId);
@@ -2630,7 +2544,6 @@
                 }
             });
             
-            // Print debt
             $('.print-debt').click(function() {
                 const content = `
                     <div style="padding: 20px; font-family: Arial, sans-serif;">
@@ -2665,7 +2578,6 @@
                 });
             });
             
-            // Settings button
             $('#settingsBtn').click(function() {
                 if (currentUser.role !== 'admin') {
                     showToast('Hanya admin yang dapat mengakses pengaturan', 'error');
@@ -2677,16 +2589,15 @@
                 $('#settingsModal').show();
             });
             
-            // Save settings
             $('.save-settings').click(function() {
                 settings.businessName = $('#businessNameSetting').val();
                 localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
                 
                 $('#businessName').text(settings.businessName);
+                
                 showToast('Pengaturan berhasil disimpan', 'success');
             });
             
-            // Add user button
             $('#addUserBtn').click(function() {
                 $('#newUsername').val('');
                 $('#newPassword').val('');
@@ -2694,7 +2605,6 @@
                 $('#userModal').show();
             });
             
-            // Save user
             $('.save-user').click(function() {
                 const user = {
                     username: $('#newUsername').val().trim(),
@@ -2719,10 +2629,10 @@
                 $('#userModal').hide();
                 $('#newUsername').val('');
                 $('#newPassword').val('');
+                
                 showToast('Pengguna berhasil ditambahkan', 'success');
             });
             
-            // Delete user
             $(document).on('click', '.delete-user', function() {
                 const username = $(this).data('username');
                 
@@ -2736,12 +2646,12 @@
                         users = users.filter(u => u.username !== username);
                         saveUsers();
                         loadUsers();
+                        
                         showToast('Pengguna berhasil dihapus', 'success');
                     }
                 });
             });
             
-            // Backup data
             $('#backupDataBtn').click(function() {
                 const backupData = {
                     notes: notes,
@@ -2764,7 +2674,6 @@
                 showToast('Backup data berhasil', 'success');
             });
             
-            // Restore data
             $('#restoreDataBtn').click(function() {
                 $('#restoreFileInput').click();
             });
@@ -2817,7 +2726,6 @@
                 });
             });
             
-            // Export notes to PDF
             $('#exportNotesPdfBtn').click(function() {
                 if (notes.length === 0) {
                     showToast('Tidak ada catatan untuk diekspor', 'warning');
@@ -2868,7 +2776,6 @@
                 });
             });
             
-            // Export debts to Excel
             $('#exportDebtsExcelBtn').click(function() {
                 if (debts.length === 0) {
                     showToast('Tidak ada data hutang/piutang untuk diekspor', 'warning');
@@ -2891,7 +2798,6 @@
                 showToast('Data hutang/piutang berhasil diekspor ke Excel', 'success');
             });
             
-            // Export all to Word
             $('#exportAllWordBtn').click(function() {
                 if (notes.length === 0 && debts.length === 0) {
                     showToast('Tidak ada data untuk diekspor', 'warning');
@@ -2915,85 +2821,184 @@
                 showToast('Data berhasil diekspor ke Word', 'success');
             });
             
-            // Search & filter handlers
-            $('#noteSearch').on('input', () => loadNotes($('#noteSearch').val(), $('#noteFilter').val()));
-            $('#noteFilter').change(() => loadNotes($('#noteSearch').val(), $('#noteFilter').val()));
-            $('#debtSearch').on('input', () => loadDebts($('#debtSearch').val(), $('#debtFilter').val()));
-            $('#debtFilter').change(() => loadDebts($('#debtSearch').val(), $('#debtFilter').val()));
-            $('#calendarMonth').change(loadCalendar);
+            $('#noteSearch').on('input', function() {
+                loadNotes($(this).val());
+            });
             
-            // Close modals
-            $('.modal-close, .close-note-modal').click(() => $('#noteModal').hide());
-            $('.close-edit-note-modal').click(() => $('#editNoteModal').hide());
-            $('.close-view-note-modal').click(() => $('#viewNoteModal').hide());
-            $('.close-debt-modal').click(() => $('#debtModal').hide());
-            $('.close-edit-debt-modal').click(() => $('#editDebtModal').hide());
-            $('.close-view-debt-modal').click(() => $('#viewDebtModal').hide());
-            $('.close-settings-modal').click(() => $('#settingsModal').hide());
-            $('.close-user-modal').click(() => $('#userModal').hide());
+            $('#noteFilter').change(function() {
+                loadNotes($('#noteSearch').val(), $(this).val());
+            });
+            
+            $('#debtSearch').on('input', function() {
+                loadDebts($(this).val());
+            });
+            
+            $('#debtFilter').change(function() {
+                loadDebts($('#debtSearch').val(), $(this).val());
+            });
+            
+            $('#calendarMonth').change(function() {
+                loadCalendar();
+            });
+            
+            $('.modal-close, .close-note-modal').click(function() {
+                $('#noteModal').hide();
+            });
+            
+            $('.close-edit-note-modal').click(function() {
+                $('#editNoteModal').hide();
+            });
+            
+            $('.close-view-note-modal').click(function() {
+                $('#viewNoteModal').hide();
+            });
+            
+            $('.close-debt-modal').click(function() {
+                $('#debtModal').hide();
+            });
+            
+            $('.close-edit-debt-modal').click(function() {
+                $('#editDebtModal').hide();
+            });
+            
+            $('.close-view-debt-modal').click(function() {
+                $('#viewDebtModal').hide();
+            });
+            
+            $('.close-settings-modal').click(function() {
+                $('#settingsModal').hide();
+            });
+            
+            $('.close-user-modal').click(function() {
+                $('#userModal').hide();
+            });
         });
         
         function updateCurrentDate() {
             $('#currentDate').text(moment().format('dddd, D MMMM YYYY, HH:mm'));
         }
         
+        // PERUBAIKAN: Hapus data contoh bawaan
+        // Hanya inisialisasi array kosong jika belum ada di local storage
         function initializeData() {
             if (localStorage.getItem(STORAGE_KEYS.NOTES) === null) {
-                notes = [
-                    { id: 'N001', title: 'Contoh Catatan Penting', content: 'Ini adalah contoh catatan penting untuk rapat besok dengan supplier.', date: moment().format('YYYY-MM-DD'), priority: 'high', tags: ['rapat', 'supplier'], createdAt: new Date(), createdBy: 'admin' },
-                    { id: 'N002', title: 'Ide Pengembangan Produk', content: '1. Tambahkan varian rasa baru\n2. Kemasan yang lebih menarik\n3. Promosi di media sosial', date: moment().add(1, 'days').format('YYYY-MM-DD'), priority: 'medium', tags: ['produk', 'pengembangan'], createdAt: new Date(), createdBy: 'admin' }
-                ];
-                saveNotes();
+                localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify([]));
             }
-            
             if (localStorage.getItem(STORAGE_KEYS.DEBTS) === null) {
-                debts = [
-                    { id: 'D001', type: 'receivable', person: 'Toko Sejahtera', amount: 500000, description: 'Pembayaran barang tanggal 1 Januari', transactionDate: moment().subtract(5, 'days').format('YYYY-MM-DD'), dueDate: moment().add(2, 'days').format('YYYY-MM-DD'), status: 'unpaid', createdAt: new Date(), createdBy: 'admin' },
-                    { id: 'D002', type: 'debt', person: 'Supplier ABC', amount: 750000, description: 'Pembelian bahan baku', transactionDate: moment().subtract(3, 'days').format('YYYY-MM-DD'), dueDate: moment().add(7, 'days').format('YYYY-MM-DD'), status: 'unpaid', createdAt: new Date(), createdBy: 'admin' }
-                ];
-                saveDebts();
+                localStorage.setItem(STORAGE_KEYS.DEBTS, JSON.stringify([]));
             }
-            
             if (localStorage.getItem(STORAGE_KEYS.USERS) === null) {
-                saveUsers();
+                localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify([
+                    { username: 'admin', password: 'admin123', role: 'admin' },
+                    { username: 'user', password: 'user123', role: 'user' }
+                ]));
+            }
+            if (localStorage.getItem(STORAGE_KEYS.SETTINGS) === null) {
+                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify({ businessName: "UMKM Saya" }));
             }
             
             $('#businessName').text(settings.businessName);
         }
         
-        function saveNotes() { localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes)); }
-        function saveDebts() { localStorage.setItem(STORAGE_KEYS.DEBTS, JSON.stringify(debts)); }
-        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); }
+        function saveNotes() {
+            localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
+        }
+        
+        function saveDebts() {
+            localStorage.setItem(STORAGE_KEYS.DEBTS, JSON.stringify(debts));
+        }
+        
+        function saveUsers() {
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+        }
         
         function loadSummary() {
             $('#totalNotes').text(notes.length);
             
-            const totalDebts = debts.filter(d => d.type === 'debt' && d.status === 'unpaid').reduce((sum, d) => sum + d.amount, 0);
+            const totalDebts = debts
+                .filter(d => d.type === 'debt' && d.status === 'unpaid')
+                .reduce((sum, d) => sum + d.amount, 0);
             $('#totalDebts').text(formatCurrency(totalDebts));
             
-            const totalReceivables = debts.filter(d => d.type === 'receivable' && d.status === 'unpaid').reduce((sum, d) => sum + d.amount, 0);
+            const totalReceivables = debts
+                .filter(d => d.type === 'receivable' && d.status === 'unpaid')
+                .reduce((sum, d) => sum + d.amount, 0);
             $('#totalReceivables').text(formatCurrency(totalReceivables));
             
             $('#recentNotes').empty();
             const recentNotes = notes.slice(0, 5);
+            
             if (recentNotes.length === 0) {
-                $('#recentNotes').html(`<div class="empty-state"><i class="fas fa-sticky-note"></i><p>Tidak ada catatan terbaru</p></div>`);
+                $('#recentNotes').html(`
+                    <div class="empty-state">
+                        <i class="fas fa-sticky-note"></i>
+                        <p>Tidak ada catatan terbaru</p>
+                    </div>
+                `);
             } else {
                 recentNotes.forEach(note => {
-                    const priorityClass = note.priority === 'high' ? 'priority-high' : (note.priority === 'medium' ? 'priority-medium' : 'priority-low');
-                    $('#recentNotes').append(`<div class="note-card"><div class="note-title">${note.title}</div><div class="note-date">${formatDate(note.date)} <i class="fas fa-circle ${priorityClass}" style="font-size: 0.5rem;"></i></div><div class="note-content">${note.content.substring(0, 100)}${note.content.length > 100 ? '...' : ''}</div><div class="note-actions"><button class="btn btn-info btn-sm view-note" data-id="${note.id}" title="Lihat"><i class="fas fa-eye"></i></button><button class="btn btn-primary btn-sm edit-note" data-id="${note.id}" title="Edit"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm delete-note" data-id="${note.id}" title="Hapus"><i class="fas fa-trash"></i></button></div></div>`);
+                    const priorityClass = note.priority === 'high' ? 'priority-high' : 
+                                        note.priority === 'medium' ? 'priority-medium' : 'priority-low';
+                    
+                    $('#recentNotes').append(`
+                        <div class="note-card">
+                            <div class="note-title">${note.title}</div>
+                            <div class="note-date">${formatDate(note.date)} <i class="fas fa-circle ${priorityClass}" style="font-size: 0.5rem;"></i></div>
+                            <div class="note-content">${note.content.substring(0, 100)}${note.content.length > 100 ? '...' : ''}</div>
+                            <div class="note-actions">
+                                <button class="btn btn-info btn-sm view-note" data-id="${note.id}" title="Lihat">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm edit-note" data-id="${note.id}" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-note" data-id="${note.id}" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `);
                 });
             }
             
             $('#dueDebts').empty();
             const dueDate = moment().add(7, 'days').format('YYYY-MM-DD');
-            const dueDebts = debts.filter(d => d.status === 'unpaid' && d.dueDate <= dueDate).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)).slice(0, 3);
+            const dueDebts = debts
+                .filter(d => d.status === 'unpaid' && d.dueDate <= dueDate)
+                .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+                .slice(0, 3);
+            
             if (dueDebts.length === 0) {
-                $('#dueDebts').html(`<div class="empty-state"><i class="fas fa-hand-holding-usd"></i><p>Tidak ada hutang/piutang jatuh tempo</p></div>`);
+                $('#dueDebts').html(`
+                    <div class="empty-state">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <p>Tidak ada hutang/piutang jatuh tempo</p>
+                    </div>
+                `);
             } else {
                 dueDebts.forEach(debt => {
-                    const isOverdue = moment().isAfter(debt.dueDate, 'day');
-                    $('#dueDebts').append(`<div class="debt-card ${debt.status === 'paid' ? 'paid' : ''}"><div class="debt-title">${debt.type === 'debt' ? 'Hutang' : 'Piutang'}</div><div class="debt-person">${debt.person}</div><div class="debt-amount">${formatCurrency(debt.amount)}</div><div class="debt-due-date">Jatuh tempo: ${formatDate(debt.dueDate)} ${isOverdue ? '<strong class="priority-high">(TERLAMBAT)</strong>' : ''}</div><div class="debt-status ${debt.status === 'paid' ? 'paid' : 'unpaid'}">${debt.status === 'paid' ? 'LUNAS' : 'BELUM LUNAS'}</div><div class="debt-actions"><button class="btn btn-info btn-sm view-debt" data-id="${debt.id}" title="Lihat"><i class="fas fa-eye"></i></button><button class="btn btn-primary btn-sm edit-debt" data-id="${debt.id}" title="Edit"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm delete-debt" data-id="${debt.id}" title="Hapus"><i class="fas fa-trash"></i></button></div></div>`);
+                    const isOverdue = moment().isAfter(debt.dueDate);
+                    
+                    $('#dueDebts').append(`
+                        <div class="debt-card ${debt.status === 'paid' ? 'paid' : ''}">
+                            <div class="debt-title">${debt.type === 'debt' ? 'Hutang' : 'Piutang'}</div>
+                            <div class="debt-person">${debt.person}</div>
+                            <div class="debt-amount">${formatCurrency(debt.amount)}</div>
+                            <div class="debt-due-date">Jatuh tempo: ${formatDate(debt.dueDate)} ${isOverdue ? '(TERLAMBAT)' : ''}</div>
+                            <div class="debt-status ${debt.status === 'paid' ? 'paid' : 'unpaid'}">${debt.status === 'paid' ? 'LUNAS' : 'BELUM LUNAS'}</div>
+                            <div class="debt-actions">
+                                <button class="btn btn-info btn-sm view-debt" data-id="${debt.id}" title="Lihat">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm edit-debt" data-id="${debt.id}" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-debt" data-id="${debt.id}" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `);
                 });
             }
         }
@@ -3003,26 +3008,65 @@
             
             if (searchTerm) {
                 const searchLower = searchTerm.toLowerCase();
-                filteredNotes = filteredNotes.filter(n => n.title.toLowerCase().includes(searchLower) || n.content.toLowerCase().includes(searchLower) || (n.tags && n.tags.some(tag => tag.toLowerCase().includes(searchLower))));
+                filteredNotes = filteredNotes.filter(n => 
+                    n.title.toLowerCase().includes(searchLower) || 
+                    n.content.toLowerCase().includes(searchLower) ||
+                    (n.tags && n.tags.some(tag => tag.toLowerCase().includes(searchLower)))
+                );
             }
             
             if (filter === 'today') {
-                filteredNotes = filteredNotes.filter(n => moment(n.date).isSame(moment(), 'day'));
+                const today = moment().format('YYYY-MM-DD');
+                filteredNotes = filteredNotes.filter(n => n.date === today);
             } else if (filter === 'week') {
-                filteredNotes = filteredNotes.filter(n => moment(n.date).isSame(moment(), 'week'));
+                const startOfWeek = moment().startOf('week').format('YYYY-MM-DD');
+                const endOfWeek = moment().endOf('week').format('YYYY-MM-DD');
+                filteredNotes = filteredNotes.filter(n => n.date >= startOfWeek && n.date <= endOfWeek);
             } else if (filter === 'month') {
-                filteredNotes = filteredNotes.filter(n => moment(n.date).isSame(moment(), 'month'));
+                const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
+                const endOfMonth = moment().endOf('month').format('YYYY-MM-DD');
+                filteredNotes = filteredNotes.filter(n => n.date >= startOfMonth && n.date <= endOfMonth);
             } else if (filter === 'important') {
                 filteredNotes = filteredNotes.filter(n => n.priority === 'high');
             }
             
             $('#notesList').empty();
+            
             if (filteredNotes.length === 0) {
-                $('#notesList').html(`<div class="empty-state"><i class="fas fa-sticky-note"></i><p>Tidak ada catatan ditemukan</p></div>`);
+                $('#notesList').html(`
+                    <div class="empty-state">
+                        <i class="fas fa-sticky-note"></i>
+                        <p>Tidak ada catatan ditemukan</p>
+                    </div>
+                `);
             } else {
                 filteredNotes.forEach(note => {
-                    const priorityClass = note.priority === 'high' ? 'priority-high' : (note.priority === 'medium' ? 'priority-medium' : 'priority-low');
-                    $('#notesList').append(`<div class="note-card"><div class="note-title">${note.title}</div><div class="note-date">${formatDate(note.date)} <i class="fas fa-circle ${priorityClass}" style="font-size: 0.5rem;"></i></div><div class="note-content">${note.content.substring(0, 100)}${note.content.length > 100 ? '...' : ''}</div>${note.tags && note.tags.length > 0 ? `<div class="note-tags">${note.tags.map(tag => `<span class="note-tag">${tag}</span>`).join('')}</div>` : ''}<div class="note-actions"><button class="btn btn-info btn-sm view-note" data-id="${note.id}" title="Lihat"><i class="fas fa-eye"></i></button><button class="btn btn-primary btn-sm edit-note" data-id="${note.id}" title="Edit"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm delete-note" data-id="${note.id}" title="Hapus"><i class="fas fa-trash"></i></button></div></div>`);
+                    const priorityClass = note.priority === 'high' ? 'priority-high' : 
+                                        note.priority === 'medium' ? 'priority-medium' : 'priority-low';
+                    
+                    $('#notesList').append(`
+                        <div class="note-card">
+                            <div class="note-title">${note.title}</div>
+                            <div class="note-date">${formatDate(note.date)} <i class="fas fa-circle ${priorityClass}" style="font-size: 0.5rem;"></i></div>
+                            <div class="note-content">${note.content.substring(0, 100)}${note.content.length > 100 ? '...' : ''}</div>
+                            ${note.tags && note.tags.length > 0 ? `
+                                <div class="note-tags">
+                                    ${note.tags.map(tag => `<span class="note-tag">${tag}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                            <div class="note-actions">
+                                <button class="btn btn-info btn-sm view-note" data-id="${note.id}" title="Lihat">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm edit-note" data-id="${note.id}" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-note" data-id="${note.id}" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `);
                 });
             }
         }
@@ -3032,25 +3076,58 @@
             
             if (searchTerm) {
                 const searchLower = searchTerm.toLowerCase();
-                filteredDebts = filteredDebts.filter(d => d.person.toLowerCase().includes(searchLower) || (d.description && d.description.toLowerCase().includes(searchLower)));
+                filteredDebts = filteredDebts.filter(d => 
+                    d.person.toLowerCase().includes(searchLower) || 
+                    d.description.toLowerCase().includes(searchLower)
+                );
             }
             
-            if (filter === 'debt') filteredDebts = filteredDebts.filter(d => d.type === 'debt');
-            else if (filter === 'receivable') filteredDebts = filteredDebts.filter(d => d.type === 'receivable');
-            else if (filter === 'paid') filteredDebts = filteredDebts.filter(d => d.status === 'paid');
-            else if (filter === 'unpaid') filteredDebts = filteredDebts.filter(d => d.status === 'unpaid');
-            else if (filter === 'overdue') {
-                const today = moment();
-                filteredDebts = filteredDebts.filter(d => d.status === 'unpaid' && moment(d.dueDate).isBefore(today, 'day'));
+            if (filter === 'debt') {
+                filteredDebts = filteredDebts.filter(d => d.type === 'debt');
+            } else if (filter === 'receivable') {
+                filteredDebts = filteredDebts.filter(d => d.type === 'receivable');
+            } else if (filter === 'paid') {
+                filteredDebts = filteredDebts.filter(d => d.status === 'paid');
+            } else if (filter === 'unpaid') {
+                filteredDebts = filteredDebts.filter(d => d.status === 'unpaid');
+            } else if (filter === 'overdue') {
+                const today = moment().format('YYYY-MM-DD');
+                filteredDebts = filteredDebts.filter(d => d.status === 'unpaid' && d.dueDate < today);
             }
             
             $('#debtsList').empty();
+            
             if (filteredDebts.length === 0) {
-                $('#debtsList').html(`<div class="empty-state"><i class="fas fa-hand-holding-usd"></i><p>Tidak ada hutang/piutang ditemukan</p></div>`);
+                $('#debtsList').html(`
+                    <div class="empty-state">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <p>Tidak ada hutang/piutang ditemukan</p>
+                    </div>
+                `);
             } else {
                 filteredDebts.forEach(debt => {
-                    const isOverdue = debt.status === 'unpaid' && moment().isAfter(debt.dueDate, 'day');
-                    $('#debtsList').append(`<div class="debt-card ${debt.status === 'paid' ? 'paid' : ''}"><div class="debt-title">${debt.type === 'debt' ? 'Hutang' : 'Piutang'}</div><div class="debt-person">${debt.person}</div><div class="debt-amount">${formatCurrency(debt.amount)}</div><div class="debt-due-date">Jatuh tempo: ${formatDate(debt.dueDate)} ${isOverdue ? '<strong class="priority-high">(TERLAMBAT)</strong>' : ''}</div><div class="debt-status ${debt.status === 'paid' ? 'paid' : 'unpaid'}">${debt.status === 'paid' ? 'LUNAS' : 'BELUM LUNAS'}</div><div class="debt-actions"><button class="btn btn-info btn-sm view-debt" data-id="${debt.id}" title="Lihat"><i class="fas fa-eye"></i></button><button class="btn btn-primary btn-sm edit-debt" data-id="${debt.id}" title="Edit"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-sm delete-debt" data-id="${debt.id}" title="Hapus"><i class="fas fa-trash"></i></button></div></div>`);
+                    const isOverdue = debt.status === 'unpaid' && moment().isAfter(debt.dueDate);
+                    
+                    $('#debtsList').append(`
+                        <div class="debt-card ${debt.status === 'paid' ? 'paid' : ''}">
+                            <div class="debt-title">${debt.type === 'debt' ? 'Hutang' : 'Piutang'}</div>
+                            <div class="debt-person">${debt.person}</div>
+                            <div class="debt-amount">${formatCurrency(debt.amount)}</div>
+                            <div class="debt-due-date">Jatuh tempo: ${formatDate(debt.dueDate)} ${isOverdue ? '(TERLAMBAT)' : ''}</div>
+                            <div class="debt-status ${debt.status === 'paid' ? 'paid' : 'unpaid'}">${debt.status === 'paid' ? 'LUNAS' : 'BELUM LUNAS'}</div>
+                            <div class="debt-actions">
+                                <button class="btn btn-info btn-sm view-debt" data-id="${debt.id}" title="Lihat">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm edit-debt" data-id="${debt.id}" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-debt" data-id="${debt.id}" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `);
                 });
             }
         }
@@ -3061,58 +3138,134 @@
             const endDate = moment(month).endOf('month');
             const daysInMonth = endDate.date();
             
+            const monthName = startDate.format('MMMM YYYY');
             $('#calendarView').empty();
-            let calendarHtml = `<table class="calendar"><thead><tr><th>Min</th><th>Sen</th><th>Sel</th><th>Rab</th><th>Kam</th><th>Jum</th><th>Sab</th></tr></thead><tbody>`;
+            
+            let calendarHtml = `
+                <table class="calendar">
+                    <thead>
+                        <tr>
+                            <th>Minggu</th>
+                            <th>Senin</th>
+                            <th>Selasa</th>
+                            <th>Rabu</th>
+                            <th>Kamis</th>
+                            <th>Jumat</th>
+                            <th>Sabtu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
             const firstDay = startDate.day();
             
             let day = 1;
             for (let i = 0; i < 6; i++) {
                 calendarHtml += '<tr>';
+                
                 for (let j = 0; j < 7; j++) {
-                    if ((i === 0 && j < firstDay) || day > daysInMonth) {
+                    if (i === 0 && j < firstDay) {
+                        calendarHtml += '<td></td>';
+                    } else if (day > daysInMonth) {
                         calendarHtml += '<td></td>';
                     } else {
                         const currentDate = moment(month).date(day).format('YYYY-MM-DD');
-                        const isToday = moment().isSame(currentDate, 'day');
+                        const isToday = moment().format('YYYY-MM-DD') === currentDate;
+                        const hasNote = notes.some(n => n.date === currentDate);
+                        
                         const dayNotes = notes.filter(n => n.date === currentDate);
                         
-                        calendarHtml += `<td class="calendar-day ${isToday ? 'today' : ''} ${dayNotes.length > 0 ? 'has-note' : ''}" data-date="${currentDate}"><div class="calendar-day-number">${day}</div>${dayNotes.length > 0 ? `<div class="calendar-note-preview" title="${dayNotes[0].title}">${dayNotes[0].title.substring(0, 10)}${dayNotes[0].title.length > 10 ? '...' : ''}</div>` : ''}</td>`;
+                        calendarHtml += `
+                            <td class="calendar-day ${isToday ? 'today' : ''} ${hasNote ? 'has-note' : ''}">
+                                <div class="calendar-day-number">${day}</div>
+                                ${dayNotes.length > 0 ? `
+                                    <div class="calendar-note-preview" title="${dayNotes[0].title}">
+                                        ${dayNotes[0].title.substring(0, 10)}${dayNotes[0].title.length > 10 ? '...' : ''}
+                                    </div>
+                                ` : ''}
+                            </td>
+                        `;
                         day++;
                     }
                 }
+                
                 calendarHtml += '</tr>';
+                
                 if (day > daysInMonth) break;
             }
-            calendarHtml += `</tbody></table>`;
+            
+            calendarHtml += `
+                    </tbody>
+                </table>
+            `;
+            
             $('#calendarView').html(calendarHtml);
             
             $('.calendar-day').click(function() {
-                const date = $(this).data('date');
-                if (!date) return;
+                const dayNumber = $(this).find('.calendar-day-number').text();
+                if (!dayNumber) return;
                 
-                $('.tab[data-tab="notes"]').click();
-                $('#noteFilter').val('all');
+                const selectedDate = moment(month).date(dayNumber).format('YYYY-MM-DD');
+                const dayNotes = notes.filter(n => n.date === selectedDate);
                 
-                const dayNotes = notes.filter(n => n.date === date);
                 if (dayNotes.length > 0) {
-                    loadNotes(dayNotes[0].title, 'all');
-                    $('#noteSearch').val(dayNotes[0].title);
+                    $('#noteFilter').val('all');
+                    $('#noteSearch').val('');
+                    loadNotes('', 'all');
+                    
+                    const firstNoteId = dayNotes[0].id;
+                    setTimeout(() => {
+                        $(`[data-id="${firstNoteId}"]`).closest('.note-card')[0].scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                        
+                        const $noteCard = $(`[data-id="${firstNoteId}"]`).closest('.note-card');
+                        $noteCard.css('box-shadow', '0 0 0 2px #4361ee');
+                        setTimeout(() => {
+                            $noteCard.css('box-shadow', '');
+                        }, 2000);
+                    }, 100);
                 } else {
                     showToast('Tidak ada catatan untuk tanggal ini', 'info');
-                    loadNotes();
-                    $('#noteSearch').val('');
                 }
             });
         }
         
         function loadUsers() {
             $('#usersTable').empty();
+            
             if (users.length === 0) {
-                $('#usersTable').html(`<tr><td colspan="3"><div class="empty-state"><i class="fas fa-users"></i><p>Tidak ada pengguna</p></div></td></tr>`);
+                $('#usersTable').html(`
+                    <tr>
+                        <td colspan="3">
+                            <div class="empty-state">
+                                <i class="fas fa-users"></i>
+                                <p>Tidak ada pengguna</p>
+                            </div>
+                        </td>
+                    </tr>
+                `);
             } else {
                 users.forEach(user => {
                     const isCurrent = currentUser && user.username === currentUser.username;
-                    $('#usersTable').append(`<tr ${isCurrent ? 'style="background-color: #f8f9fa;"' : ''}><td>${user.username} ${isCurrent ? '(Anda)' : ''}</td><td><span class="badge ${user.role === 'admin' ? 'badge-primary' : 'badge-info'}">${user.role === 'admin' ? 'Admin' : 'User'}</span></td><td><button class="btn btn-danger btn-sm delete-user" data-username="${user.username}" title="Hapus" ${isCurrent ? 'disabled' : ''}><i class="fas fa-trash"></i></button></td></tr>`);
+                    
+                    $('#usersTable').append(`
+                        <tr ${isCurrent ? 'style="background-color: #f8f9fa;"' : ''}>
+                            <td>${user.username} ${isCurrent ? '(Anda)' : ''}</td>
+                            <td>
+                                <span class="badge ${user.role === 'admin' ? 'badge-primary' : 'badge-secondary'}">
+                                    ${user.role === 'admin' ? 'Admin' : 'User'}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm delete-user" data-username="${user.username}" title="Hapus" 
+                                    ${isCurrent ? 'disabled' : ''}>
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `);
                 });
             }
         }
