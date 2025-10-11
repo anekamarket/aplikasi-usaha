@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Catatan UMKM Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #eef2ff;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --success-color: #10b981;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-light: #fef3c7;
+            --info-color: #3b82f6;
+            --info-light: #dbeafe;
+            --gray-color: #6b7280;
+            --gray-light: #f3f4f6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --rounded-sm: 0.25rem;
+            --rounded: 0.5rem;
+            --rounded-lg: 0.75rem;
+            --rounded-xl: 1rem;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
+        }
+
+        .splash-logo {
+            font-size: 5rem;
+            color: white;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite, float 3s ease-in-out infinite;
+        }
+
+        .splash-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 0.3s forwards;
+        }
+
+        .splash-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+        }
+
+        .splash-credits {
+            position: absolute;
+            bottom: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.5s forwards;
+            line-height: 1.5;
+        }
+
+        .splash-credits strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #loginModal {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            max-width: 400px;
+            width: 90%;
+            margin: 20px auto;
+            background: white;
+            border-radius: var(--rounded-xl);
+            padding: 40px;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .login-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px 3px 0 0;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-logo i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+
+        .form-floating {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-floating input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: #f9f9f9;
+        }
+        
+        .form-floating input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+            user-select: none;
+        }
+
+        .form-floating input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+            background-color: white;
+        }
+
+        .form-floating label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: #999;
+            transition: var(--transition);
+            pointer-events: none;
+            background-color: #f9f9f9;
+            padding: 0 5px;
+        }
+
+        .form-floating input:focus + label,
+        .form-floating input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 10px;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            background-color: white;
+        }
+        
+        .form-floating input[readonly] + label {
+            background-color: #e9ecef;
+        }
+        
+        .form-floating input[readonly]:focus + label,
+        .form-floating input[readonly]:not(:placeholder-shown) + label {
+            background-color: white;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .login-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .captcha-container {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .captcha-box {
+            padding: 10px 15px;
+            background-color: #f3f4f6;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-decoration: line-through;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+            color: var(--dark-color);
+            flex: 1;
+            text-align: center;
+            user-select: none;
+        }
+        
+        #captchaInput {
+            margin-top: 10px;
+            padding: 15px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--rounded-lg);
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .header-info {
+            text-align: right;
+        }
+
+        .header-info p {
+            margin: 2px 0;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            z-index: 1;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+            z-index: -1;
+        }
+
+        .btn:hover::after {
+            animation: ripple 0.6s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--rounded-xl);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: #333;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            position: sticky;
+            bottom: 0;
+            background: white;
+            z-index: 1;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #333;
+            color: white;
+            border-radius: var(--rounded-sm);
+            box-shadow: var(--shadow-xl);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success { background-color: var(--success-color); }
+        .toast.error { background-color: var(--danger-color); }
+        .toast.warning { background-color: var(--warning-color); }
+        .toast.info { background-color: var(--info-color); }
+
+        .toast i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+        }
+
+        .confirmation-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--rounded-xl);
+            max-width: 400px;
+            width: 90%;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+
+        .left-panel, .right-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: var(--rounded-xl);
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            display: inline-flex;
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--rounded-sm);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-block { width: 100%; }
+        .btn-success { background-color: var(--success-color); }
+        .btn-danger { background-color: var(--danger-color); }
+        .btn-warning { background-color: var(--warning-color); }
+        .btn-info { background-color: var(--info-color); }
+        .btn-secondary { background-color: var(--gray-color); }
+        .btn-sm { padding: 8px 12px; font-size: 0.85rem; }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: var(--rounded-sm);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+            border-radius: 50px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+            font-weight: 500;
+            color: var(--gray-color);
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+
+        .data-backup {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .backup-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .report-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .report-card {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            border-radius: var(--rounded-sm);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .report-card-title { font-size: 0.9rem; color: #666; margin-bottom: 10px; }
+        .report-card-value { font-size: 1.5rem; font-weight: 600; color: var(--primary-color); }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-xl);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+            border: none;
+        }
+
+        .fab:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .note-card, .debt-card {
+            background: white;
+            border-radius: var(--rounded);
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        
+        .note-card { border-left: 4px solid var(--primary-color); }
+        .debt-card { border-left: 4px solid var(--danger-color); }
+        .debt-card.paid { border-left-color: var(--success-color); }
+
+        .note-title, .debt-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+        }
+
+        .note-date, .debt-due-date {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            margin-bottom: 12px;
+        }
+
+        .note-actions, .debt-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
+        .debt-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .debt-status.unpaid { background-color: var(--danger-light); color: var(--danger-color); }
+        .debt-status.paid { background-color: var(--success-light); color: var(--success-color); }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }
+
+        @media (max-width: 992px) {
+            .main-content { flex-direction: column; }
+        }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; text-align: center; gap: 10px; }
+            .modal-content { width: 95%; }
+        }
+    </style>
+</head>
+<body>
+    <div id="splashScreen">
+        <div class="particles" id="particles"></div>
+        <div class="splash-logo"><i class="fas fa-book-open"></i></div>
+        <h1 class="splash-title">Aplikasi Catatan UMKM Pro</h1>
+        <p class="splash-subtitle">Manajemen Catatan dan Keuangan Profesional</p>
+        <div class="splash-credits">
+            Dibuat oleh <strong>Lentera Karya Situbondo</strong><br>
+            Developer: <strong>www.aplikasiusaha.com</strong> | WhatsApp: <strong>085647709114</strong><br>
+            <small>Versi 3.0.0 | © 2025</small>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">
+        <i class="fas fa-info-circle"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div id="confirmationDialog" class="confirmation-dialog" style="display: none;">
+        <div class="confirmation-content">
+            <h4 id="confirmationMessage"></h4>
+            <div class="confirmation-buttons">
+                <button id="confirmCancel" class="btn btn-secondary">Batal</button>
+                <button id="confirmOk" class="btn btn-danger">Ya</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="login-container">
+            <div class="login-logo"><i class="fas fa-book"></i></div>
+            <h2 class="login-title">Masuk ke Aplikasi</h2>
+            <form id="loginForm">
+                <div class="form-floating">
+                    <input type="text" id="username" placeholder="Username" required value="admin" readonly>
+                    <label for="username">Username</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" id="password" placeholder="Password" required value="admin123" readonly>
+                    <label for="password">Password</label>
+                </div>
+                <div class="captcha-container">
+                    <label>Verifikasi Captcha</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div id="captchaBox" class="captcha-box"></div>
+                        <button type="button" id="refreshCaptcha" class="btn btn-secondary btn-sm" title="Refresh"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                    <input type="text" id="captchaInput" class="form-control" placeholder="Masukkan captcha" required autocomplete="off" style="margin-top: 10px;">
+                    <div class="error-message" id="captchaError"></div>
+                </div>
+                <button type="submit" class="btn btn-block" id="loginBtn">
+                    <span id="loginBtnText">Login</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" id="mainApp" style="display: none;">
+        <div class="header">
+            <div>
+                <h1 id="appName">Aplikasi Catatan UMKM Pro</h1>
+                <p id="businessName"></p>
+            </div>
+            <div class="header-info">
+                <p id="currentDate"></p>
+                <p>Pengguna: <span id="loggedInUser"></span> | <a href="#" id="logoutBtn" style="color: white;">Logout</a></p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <h2 class="panel-title"><i class="fas fa-bars"></i> Menu</h2>
+                <div class="tabs">
+                    <div class="tab active" data-tab="notes"><i class="fas fa-sticky-note"></i> Catatan</div>
+                    <div class="tab" data-tab="debts"><i class="fas fa-hand-holding-usd"></i> Hutang Piutang</div>
+                </div>
+
+                <div class="tab-content active" id="notesTab">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="noteSearch" class="form-control" placeholder="Cari catatan...">
+                    </div>
+                    <div id="notesList"></div>
+                    <button id="addNoteBtn" class="btn btn-success btn-block"><i class="fas fa-plus"></i> Tambah Catatan</button>
+                </div>
+
+                <div class="tab-content" id="debtsTab">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="debtSearch" class="form-control" placeholder="Cari hutang/piutang...">
+                    </div>
+                    <div id="debtsList"></div>
+                    <button id="addDebtBtn" class="btn btn-success btn-block"><i class="fas fa-plus"></i> Tambah Hutang/Piutang</button>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <h2 class="panel-title"><i class="fas fa-chart-pie"></i> Ringkasan</h2>
+                <div class="report-summary">
+                    <div class="report-card">
+                        <div class="report-card-title">Total Catatan</div>
+                        <div class="report-card-value" id="totalNotes">0</div>
+                    </div>
+                    <div class="report-card">
+                        <div class="report-card-title">Hutang Belum Lunas</div>
+                        <div class="report-card-value" id="totalDebts">Rp 0</div>
+                    </div>
+                    <div class="report-card">
+                        <div class="report-card-title">Piutang Belum Lunas</div>
+                        <div class="report-card-value" id="totalReceivables">Rp 0</div>
+                    </div>
+                </div>
+
+                <h3 class="panel-title" style="margin-top: 1.5rem;"><i class="fas fa-clock"></i> Catatan Terbaru</h3>
+                <div id="recentNotes"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="noteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="noteModalTitle">Tambah Catatan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="noteId">
+                <div class="form-group">
+                    <label for="noteTitle">Judul Catatan</label>
+                    <input type="text" id="noteTitle" class="form-control" placeholder="Masukkan judul">
+                </div>
+                <div class="form-group">
+                    <label for="noteContent">Isi Catatan</label>
+                    <textarea id="noteContent" class="form-control" rows="5" placeholder="Masukkan isi"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Batal</button>
+                <button class="btn btn-success" id="saveNoteBtn">Simpan</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="debtModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="debtModalTitle">Tambah Hutang/Piutang</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="debtId">
+                <div class="form-group">
+                    <label for="debtType">Jenis</label>
+                    <select id="debtType" class="form-control">
+                        <option value="debt">Hutang (Saya berhutang)</option>
+                        <option value="receivable">Piutang (Saya meminjamkan)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="debtPerson">Nama</label>
+                    <input type="text" id="debtPerson" class="form-control" placeholder="Masukkan nama">
+                </div>
+                <div class="form-group">
+                    <label for="debtAmount">Jumlah</label>
+                    <input type="number" id="debtAmount" class="form-control" placeholder="Masukkan jumlah">
+                </div>
+                <div class="form-group">
+                    <label for="debtDueDate">Tanggal Jatuh Tempo</label>
+                    <input type="date" id="debtDueDate" class="form-control">
+                </div>
+                 <div class="form-group">
+                    <label for="debtStatus">Status</label>
+                    <select id="debtStatus" class="form-control">
+                        <option value="unpaid">Belum Lunas</option>
+                        <option value="paid">Lunas</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Batal</button>
+                <button class="btn btn-success" id="saveDebtBtn">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Pengaturan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="businessNameSetting">Nama UMKM</label>
+                    <input type="text" id="businessNameSetting" class="form-control" placeholder="Masukkan nama UMKM Anda">
+                </div>
+                <div class="data-backup">
+                    <h4><i class="fas fa-database"></i> Backup & Restore</h4>
+                    <div class="backup-actions">
+                        <button id="backupDataBtn" class="btn btn-info"><i class="fas fa-download"></i> Backup Data</button>
+                        <button id="restoreDataBtn" class="btn btn-warning"><i class="fas fa-upload"></i> Restore Data</button>
+                        <input type="file" id="restoreFileInput" style="display: none;" accept=".prodata">
+                    </div>
+                </div>
+                 <div class="data-backup">
+                    <h4><i class="fas fa-trash-alt"></i> Hapus Data</h4>
+                    <div class="backup-actions">
+                        <button id="clearDataBtn" class="btn btn-danger"><i class="fas fa-exclamation-triangle"></i> Hapus Semua Data</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Tutup</button>
+                <button class="btn btn-success" id="saveSettingsBtn">Simpan Pengaturan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsBtn" class="fab" title="Pengaturan">
+        <i class="fas fa-cog"></i>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const STORAGE_KEYS = {
+                NOTES: 'umkm_pro_notes',
+                DEBTS: 'umkm_pro_debts',
+                SETTINGS: 'umkm_pro_settings',
+                CURRENT_USER: 'umkm_pro_current_user'
+            };
+
+            let notes = [];
+            let debts = [];
+            let settings = {};
+            let currentUser = null;
+            let captchaText = '';
+
+            function showToast(message, type = 'info') {
+                const toast = $('#toast');
+                toast.find('#toast-message').text(message);
+                toast.removeClass('success error warning info').addClass(type);
+                toast.addClass('show');
+                setTimeout(() => toast.removeClass('show'), 3000);
+            }
+
+            function showConfirmation(message, onConfirm) {
+                $('#confirmationMessage').text(message);
+                $('#confirmationDialog').show();
+                $('#confirmOk').off('click').on('click', function() {
+                    $('#confirmationDialog').hide();
+                    onConfirm(true);
+                });
+                $('#confirmCancel').off('click').on('click', function() {
+                    $('#confirmationDialog').hide();
+                    onConfirm(false);
+                });
+            }
+
+            function formatCurrency(amount) {
+                return 'Rp ' + (amount || 0).toLocaleString('id-ID');
+            }
+
+            function formatDate(dateString) {
+                return moment(dateString).format('DD MMMM YYYY');
+            }
+
+            function generateCaptcha() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                captchaText = '';
+                for (let i = 0; i < 6; i++) {
+                    captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                $('#captchaBox').text(captchaText);
+            }
+
+            function loadData() {
+                notes = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
+                debts = JSON.parse(localStorage.getItem(STORAGE_KEYS.DEBTS)) || [];
+                settings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS)) || { businessName: "UMKM Saya" };
+                currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) || null;
+            }
+
+            function saveData() {
+                localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
+                localStorage.setItem(STORAGE_KEYS.DEBTS, JSON.stringify(debts));
+                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+                localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(currentUser));
+            }
+            
+            function renderNotes(filter = '') {
+                const filteredNotes = notes.filter(n => n.title.toLowerCase().includes(filter) || n.content.toLowerCase().includes(filter));
+                const notesList = $('#notesList');
+                notesList.empty();
+                if (filteredNotes.length > 0) {
+                    filteredNotes.forEach(note => {
+                        const card = `
+                            <div class="note-card">
+                                <div class="note-title">${note.title}</div>
+                                <div class="note-content">${note.content}</div>
+                                <div class="note-actions">
+                                    <button class="btn btn-sm btn-info edit-note" data-id="${note.id}"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger delete-note" data-id="${note.id}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>`;
+                        notesList.append(card);
+                    });
+                } else {
+                    notesList.html('<div class="empty-state"><i class="fas fa-sticky-note"></i><p>Tidak ada catatan</p></div>');
+                }
+            }
+
+            function renderDebts(filter = '') {
+                const filteredDebts = debts.filter(d => d.person.toLowerCase().includes(filter));
+                const debtsList = $('#debtsList');
+                debtsList.empty();
+                 if (filteredDebts.length > 0) {
+                    filteredDebts.forEach(debt => {
+                        const card = `
+                            <div class="debt-card ${debt.status}">
+                                <div class="debt-title">${debt.type === 'debt' ? 'Hutang ke' : 'Piutang dari'} ${debt.person}</div>
+                                <div>Jumlah: ${formatCurrency(debt.amount)}</div>
+                                <div class="debt-due-date">Jatuh Tempo: ${formatDate(debt.dueDate)}</div>
+                                <div class="debt-status ${debt.status}">${debt.status === 'paid' ? 'LUNAS' : 'BELUM LUNAS'}</div>
+                                <div class="debt-actions">
+                                    <button class="btn btn-sm btn-info edit-debt" data-id="${debt.id}"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger delete-debt" data-id="${debt.id}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>`;
+                        debtsList.append(card);
+                    });
+                } else {
+                    debtsList.html('<div class="empty-state"><i class="fas fa-hand-holding-usd"></i><p>Tidak ada data hutang/piutang</p></div>');
+                }
+            }
+            
+            function updateSummary() {
+                $('#totalNotes').text(notes.length);
+                const unpaidDebts = debts.filter(d => d.type === 'debt' && d.status === 'unpaid').reduce((sum, d) => sum + d.amount, 0);
+                $('#totalDebts').text(formatCurrency(unpaidDebts));
+                const unpaidReceivables = debts.filter(d => d.type === 'receivable' && d.status === 'unpaid').reduce((sum, d) => sum + d.amount, 0);
+                $('#totalReceivables').text(formatCurrency(unpaidReceivables));
+                
+                const recentNotesList = $('#recentNotes');
+                recentNotesList.empty();
+                if(notes.length > 0) {
+                    notes.slice(0, 3).forEach(note => {
+                         recentNotesList.append(`<div class="note-card"><b>${note.title}</b><p>${note.content.substring(0,50)}...</p></div>`);
+                    });
+                } else {
+                    recentNotesList.html('<div class="empty-state"><i class="fas fa-clock"></i><p>Belum ada catatan terbaru</p></div>');
+                }
+            }
+            
+            function refreshUI() {
+                renderNotes($('#noteSearch').val().toLowerCase());
+                renderDebts($('#debtSearch').val().toLowerCase());
+                updateSummary();
+                $('#businessName').text(settings.businessName);
+                $('#loggedInUser').text(currentUser.username);
+                 $('#currentDate').text(moment().format('dddd, D MMMM YYYY'));
+            }
+
+            // App Initialization
+            loadData();
+
+            if (!currentUser) {
+                $('#loginModal').css('display', 'flex');
+                generateCaptcha();
+            } else {
+                $('#mainApp').show();
+                refreshUI();
+            }
+            
+            setTimeout(() => $('#splashScreen').fadeOut(500), 2000);
+
+            // Event Handlers
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
+                if ($('#captchaInput').val().toUpperCase() !== captchaText) {
+                    $('#captchaError').text('Captcha tidak sesuai').show();
+                    generateCaptcha();
+                    return;
+                }
+                currentUser = { username: 'Admin' };
+                saveData();
+                $('#loginModal').hide();
+                $('#mainApp').show();
+                refreshUI();
+                showToast('Login berhasil!', 'success');
+            });
+
+            $('#logoutBtn').on('click', function(e) {
+                e.preventDefault();
+                currentUser = null;
+                saveData();
+                window.location.reload();
+            });
+
+            $('.tab').on('click', function() {
+                const tab = $(this).data('tab');
+                $('.tab').removeClass('active');
+                $(this).addClass('active');
+                $('.tab-content').removeClass('active');
+                $(`#${tab}Tab`).addClass('active');
+            });
+
+            // Notes
+            $('#addNoteBtn').on('click', () => {
+                $('#noteModalTitle').text('Tambah Catatan');
+                $('#noteId').val('');
+                $('#noteTitle').val('');
+                $('#noteContent').val('');
+                $('#noteModal').css('display', 'flex');
+            });
+
+            $(document).on('click', '.edit-note', function() {
+                const note = notes.find(n => n.id === $(this).data('id'));
+                $('#noteModalTitle').text('Edit Catatan');
+                $('#noteId').val(note.id);
+                $('#noteTitle').val(note.title);
+                $('#noteContent').val(note.content);
+                $('#noteModal').css('display', 'flex');
+            });
+
+            $('#saveNoteBtn').on('click', function() {
+                const id = $('#noteId').val();
+                const noteData = { title: $('#noteTitle').val(), content: $('#noteContent').val() };
+                if (id) {
+                    const index = notes.findIndex(n => n.id === id);
+                    notes[index] = { ...notes[index], ...noteData };
+                } else {
+                    notes.unshift({ id: 'N' + Date.now(), ...noteData });
+                }
+                saveData();
+                refreshUI();
+                $('#noteModal').hide();
+                showToast('Catatan disimpan!', 'success');
+            });
+
+            $(document).on('click', '.delete-note', function() {
+                const id = $(this).data('id');
+                showConfirmation('Anda yakin ingin menghapus catatan ini?', (confirm) => {
+                    if (confirm) {
+                        notes = notes.filter(n => n.id !== id);
+                        saveData();
+                        refreshUI();
+                        showToast('Catatan dihapus!', 'success');
+                    }
+                });
+            });
+            
+            // Debts
+            $('#addDebtBtn').on('click', () => {
+                $('#debtModalTitle').text('Tambah Hutang/Piutang');
+                $('#debtId').val('');
+                $('#debtType').val('debt');
+                $('#debtPerson').val('');
+                $('#debtAmount').val('');
+                $('#debtDueDate').val('');
+                $('#debtStatus').val('unpaid');
+                $('#debtModal').css('display', 'flex');
+            });
+            
+             $(document).on('click', '.edit-debt', function() {
+                const debt = debts.find(d => d.id === $(this).data('id'));
+                $('#debtModalTitle').text('Edit Hutang/Piutang');
+                $('#debtId').val(debt.id);
+                $('#debtType').val(debt.type);
+                $('#debtPerson').val(debt.person);
+                $('#debtAmount').val(debt.amount);
+                $('#debtDueDate').val(debt.dueDate);
+                $('#debtStatus').val(debt.status);
+                $('#debtModal').css('display', 'flex');
+            });
+
+            $('#saveDebtBtn').on('click', function() {
+                const id = $('#debtId').val();
+                const debtData = { 
+                    type: $('#debtType').val(), 
+                    person: $('#debtPerson').val(), 
+                    amount: parseFloat($('#debtAmount').val()),
+                    dueDate: $('#debtDueDate').val(),
+                    status: $('#debtStatus').val()
+                };
+                if (id) {
+                    const index = debts.findIndex(d => d.id === id);
+                    debts[index] = { ...debts[index], ...debtData };
+                } else {
+                    debts.unshift({ id: 'D' + Date.now(), ...debtData });
+                }
+                saveData();
+                refreshUI();
+                $('#debtModal').hide();
+                 showToast('Data hutang/piutang disimpan!', 'success');
+            });
+            
+            $(document).on('click', '.delete-debt', function() {
+                const id = $(this).data('id');
+                showConfirmation('Anda yakin ingin menghapus data ini?', (confirm) => {
+                    if (confirm) {
+                        debts = debts.filter(d => d.id !== id);
+                        saveData();
+                        refreshUI();
+                        showToast('Data dihapus!', 'success');
+                    }
+                });
+            });
+
+            // Settings
+            $('#settingsBtn').on('click', () => {
+                $('#businessNameSetting').val(settings.businessName);
+                $('#settingsModal').css('display', 'flex');
+            });
+            
+            $('#saveSettingsBtn').on('click', () => {
+                settings.businessName = $('#businessNameSetting').val();
+                saveData();
+                refreshUI();
+                showToast('Pengaturan disimpan!', 'success');
+            });
+
+            $('#backupDataBtn').on('click', () => {
+                const data = btoa(JSON.stringify({ notes, debts, settings }));
+                const blob = new Blob([data], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `UMKM_Pro_Backup_${moment().format('YYYYMMDD')}.prodata`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('Backup data berhasil diunduh.', 'success');
+            });
+
+            $('#restoreDataBtn').on('click', () => $('#restoreFileInput').click());
+            
+            $('#restoreFileInput').on('change', function(e) {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        try {
+                            const restoredData = JSON.parse(atob(event.target.result));
+                            if(restoredData.notes && restoredData.debts && restoredData.settings) {
+                                notes = restoredData.notes;
+                                debts = restoredData.debts;
+                                settings = restoredData.settings;
+                                saveData();
+                                refreshUI();
+                                showToast('Data berhasil dipulihkan!', 'success');
+                            } else {
+                                showToast('File backup tidak valid.', 'error');
+                            }
+                        } catch (err) {
+                            showToast('Gagal membaca file backup.', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+            
+            $('#clearDataBtn').on('click', () => {
+                 showConfirmation('PERINGATAN: Semua data akan dihapus permanen. Lanjutkan?', (confirm) => {
+                    if (confirm) {
+                        notes = [];
+                        debts = [];
+                        saveData();
+                        refreshUI();
+                        showToast('Semua data telah dihapus.', 'success');
+                    }
+                });
+            });
+
+            // Real-time Search
+            $('#noteSearch').on('input', function() { renderNotes($(this).val().toLowerCase()); });
+            $('#debtSearch').on('input', function() { renderDebts($(this).val().toLowerCase()); });
+            
+            // Modal Closing
+            $('.modal-close, .close-modal').on('click', () => $('.modal').hide());
+        });
+    </script>
+</body>
+</html>
