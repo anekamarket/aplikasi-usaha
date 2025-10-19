@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -634,6 +633,15 @@
             margin-bottom: 16px;
             opacity: 0.9;
         }
+        
+        /* [REVISI] List fitur premium */
+        .trial-notification-content ul {
+            text-align: left; 
+            font-size: 0.85rem; 
+            margin: 0 0 20px 30px; 
+            opacity: 0.9;
+        }
+
         .trial-notification-content .btn-upgrade {
             background: var(--premium-gold);
             color: var(--dark);
@@ -1109,8 +1117,20 @@
     <div id="trialNotification" class="trial-notification-overlay">
         <div class="trial-notification-content">
             <button id="closeTrialNotification" class="trial-notification-close">&times;</button>
-            <h4><i class="fas fa-crown"></i> Versi Uji Coba Gratis</h4>
-            <p>Anda dapat melakukan hingga <strong>10x transaksi</strong>. Hubungi developer untuk upgrade ke versi premium dengan fitur lengkap!</p>
+            <h4><i class="fas fa-crown"></i> Versi Uji Coba Harian</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 8px; opacity: 0.9;">
+                Anda dapat melakukan hingga <strong>25x transaksi</strong> per hari.
+            </p>
+            <p style="font-size: 0.9rem; margin-bottom: 16px; opacity: 0.9;">
+                Upgrade ke versi premium untuk <strong>transaksi tanpa batas</strong> dan mendapatkan <strong>Password Kontrol Panel</strong> untuk membuka fitur:
+            </p>
+            <ul>
+                <li>Tambah pengguna (karyawan) baru</li>
+                <li>Mengatur password edit/hapus item</li>
+                <li>Mengatur password login pribadi</li>
+                <li>Mengatur password Kontrol Panel</li>
+                <li>Mengatur diskon member & pelanggan</li>
+            </ul>
             <a href="#" id="upgradeBtn" class="btn-upgrade"><i class="fab fa-whatsapp"></i> Upgrade ke Premium</a>
         </div>
     </div>
@@ -1263,7 +1283,7 @@
                     </div>
                 </div>
                 
-                <button id="processOrderBtn" class="btn btn-success mt-3">Proses Pesanan</button>
+                <button id="processOrderBtn" class="btn btn-success mt-3" disabled>Proses Pesanan</button>
             </section>
         </main>
 
@@ -1326,7 +1346,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-warning modal-close-btn">Batal</button>
-                <button id="completePaymentBtn" class="btn btn-success">
+                <button id="completePaymentBtn" class="btn btn-success" disabled>
                     <i class="fas fa-check-circle"></i> Selesaikan Pembayaran
                 </button>
             </div>
@@ -1544,8 +1564,12 @@
             <div class="modal-body">
                 <form id="storeInfoForm">
                     <div class="form-group">
-                        <label class="form-label">Nama Restoran</label>
-                        <input type="text" id="storeName" class="form-control" required>
+                        <label class="form-label">Nama Developer</label>
+                        <input type="text" id="storeName" class="form-control" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Usaha (UMKM)</label>
+                        <input type="text" id="umkmName" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Alamat Restoran</label>
@@ -1782,7 +1806,7 @@
             SETTINGS: 'warungmakan_settings',
             USERS: 'warungmakan_users',
             MEMBERS: 'warungmakan_members',
-            TRIAL_TRANSACTIONS: 'warungmakan_trial_transactions' // [REVISI] Kunci untuk Trial
+            DAILY_TRANSACTIONS: 'warungmakan_daily_transactions' // [REVISI] Kunci untuk limit harian
         };
 
         // [PENYEMPURNAAN] Kunci rahasia untuk enkripsi dan dekripsi file backup.
@@ -1819,7 +1843,11 @@
         let kitchenInterval;
         let passwordPromptCallback = null;
         let captchaText = '';
-        const TRIAL_LIMIT = 10; // [REVISI] Batas transaksi
+        
+        // [REVISI] Batas transaksi harian
+        const DAILY_LIMIT = 25; 
+        let currentOnlineDate = ''; // Variabel global untuk menyimpan tanggal online
+
         
         function initializeData() {
             let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
@@ -1842,11 +1870,24 @@
                 localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(sampleCategories));
             }
             if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify([]));
-            if (!localStorage.getItem(STORAGE_KEYS.TRIAL_TRANSACTIONS)) localStorage.setItem(STORAGE_KEYS.TRIAL_TRANSACTIONS, '0');
+            
+            // [REVISI] Kunci penyimpanan untuk limit harian
+            if (!localStorage.getItem(STORAGE_KEYS.DAILY_TRANSACTIONS)) {
+                localStorage.setItem(STORAGE_KEYS.DAILY_TRANSACTIONS, JSON.stringify({ date: '', count: 0 }));
+            }
+            
             if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
                 localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify({
-                    storeName: 'WARUNG MAKAN SEDERHANA', storeAddress: 'Jl. Contoh No. 123, Kota', storePhone: '081234567890', storeEmail: 'admin@resto.com', tableCount: 5,
-                    itemSecurityCode: CryptoJS.SHA256('17081945').toString(), panelSecurityCode: CryptoJS.SHA256('LKS.1945').toString(), memberDiscountPercent: 2, nonMemberDiscountPercent: 0
+                    storeName: 'MITRA ANEKAMARKET', // [REVISI] Nama developer, dikunci
+                    umkmName: 'Cafe Chacha', // [REVISI] Nama UMKM baru
+                    storeAddress: 'Jl. Cinta No. 8899, Kota Abadi', 
+                    storePhone: '081234567890', 
+                    storeEmail: 'admin@resto.com', 
+                    tableCount: 10,
+                    itemSecurityCode: CryptoJS.SHA256('17081945').toString(), 
+                    panelSecurityCode: CryptoJS.SHA256('LKS.1945').toString(), 
+                    memberDiscountPercent: 2, 
+                    nonMemberDiscountPercent: 0
                 }));
             }
         }
@@ -1894,6 +1935,9 @@
                 $('#loginModal').hide();
                 $('#mainApp').show();
                 initializeApp();
+                
+                // [REVISI] Set interval untuk notifikasi upgrade setiap 1 jam
+                setInterval(showTrialNotification, 3600000); 
             } else {
                 showTrialNotification(); // Tampilkan notifikasi saat pertama kali membuka
                 generateCaptcha();
@@ -2038,7 +2082,10 @@
             
             $('#processOrderBtn').click(function() {
                 if (currentOrder.items.length === 0) { showToast('Pesanan kosong', 'warning'); return; }
-                if (checkTransactionLimit(true)) return;
+                
+                // [REVISI] Tombol sudah di-cek limitnya secara async. 
+                // Jika bisa diklik, berarti limit aman.
+                
                 const member = members.find(m => m.id === currentOrder.memberId);
                 $('#customerName').val(member ? member.name : '');
                 updateOrderSummary(); updatePaymentTab(); switchPaymentModalTab('payment');
@@ -2065,8 +2112,10 @@
                             status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', statusLocked: false
                         };
                         orders.unshift(order); saveOrders();
-                        let currentCount = parseInt(localStorage.getItem(STORAGE_KEYS.TRIAL_TRANSACTIONS) || '0');
-                        localStorage.setItem(STORAGE_KEYS.TRIAL_TRANSACTIONS, ++currentCount);
+                        
+                        // [REVISI] Panggil fungsi increment limit harian
+                        incrementDailyTransactionCount();
+                        
                         if (order.memberId) {
                             const member = members.find(m => m.id === order.memberId);
                             if (member) { member.transactions = (member.transactions || 0) + 1; member.totalSpent = (member.totalSpent || 0) + order.total; saveMembers(); }
@@ -2074,7 +2123,6 @@
                         showReceiptModal(order); resetOrder();
                         $('#processOrderModal').hide();
                         showToast('Pesanan berhasil diproses', 'success');
-                        checkTransactionLimit(false); 
                     } finally {
                         setButtonLoading($btn, false, originalText);
                     }
@@ -2231,7 +2279,7 @@
             $('#downloadReceiptPdfBtn').on('click', downloadReceiptAsPdf);
         });
 
-        function initializeApp() { loadMenus(); updateOrder(); loadCategories(); updateCurrentDate(); updateStoreInfo(); updateTableNumbers(); $('#adminPanel').toggle(currentUser.role === 'admin'); checkTransactionLimit(false); }
+        function initializeApp() { loadMenus(); updateOrder(); loadCategories(); updateCurrentDate(); updateStoreInfo(); updateTableNumbers(); $('#adminPanel').toggle(currentUser.role === 'admin'); checkDailyTransactionLimit(false); }
         
         // === [PERBAIKAN] Fungsi Captcha ===
         function generateCaptcha() {
@@ -2274,25 +2322,88 @@
             }
         }
         
-        function checkTransactionLimit(showAlert) {
-            const transactionCount = parseInt(localStorage.getItem(STORAGE_KEYS.TRIAL_TRANSACTIONS) || '0');
-            const transactionsLeft = TRIAL_LIMIT - transactionCount;
-            if (transactionCount >= TRIAL_LIMIT) {
-                $('#completePaymentBtn').prop('disabled', true).html(`<i class="fas fa-lock"></i> Batas Uji Coba Tercapai`);
-                $('#processOrderBtn').prop('disabled', true).text('Batas Uji Coba Tercapai');
-                if (showAlert) showTrialLimitAlert();
-                return true;
+        // === [REVISI] Logika Cek Limit Transaksi Harian (Async) ===
+        function checkDailyTransactionLimit(showAlert = false) {
+            const $processBtn = $('#processOrderBtn');
+            const $completeBtn = $('#completePaymentBtn');
+            
+            // Nonaktifkan tombol saat pemeriksaan berlangsung
+            setButtonLoading($processBtn, true, 'Memeriksa Limit...');
+            $completeBtn.prop('disabled', true).html('<i class="fas fa-lock"></i> Memeriksa Limit...');
+
+            fetch('http://worldtimeapi.org/api/ip')
+                .then(response => response.json())
+                .then(data => {
+                    const onlineDate = data.datetime.split('T')[0];
+                    currentOnlineDate = onlineDate; // Simpan tanggal online global
+                    handleDateCheck(onlineDate, showAlert);
+                })
+                .catch(err => {
+                    console.warn("World Time API gagal, beralih ke waktu perangkat.", err);
+                    showToast('Gagal cek waktu online, pakai waktu perangkat.', 'warning');
+                    const deviceDate = moment().format('YYYY-MM-DD');
+                    currentOnlineDate = deviceDate; // Simpan tanggal perangkat global
+                    handleDateCheck(deviceDate, showAlert);
+                });
+        }
+        
+        function handleDateCheck(currentDate, showAlert) {
+            const $processBtn = $('#processOrderBtn');
+            const $completeBtn = $('#completePaymentBtn');
+            const originalProcessText = 'Proses Pesanan';
+            const originalCompleteText = '<i class="fas fa-check-circle"></i> Selesaikan Pembayaran';
+
+            let storedData = JSON.parse(localStorage.getItem(STORAGE_KEYS.DAILY_TRANSACTIONS)) || { date: '', count: 0 };
+            
+            if (storedData.date !== currentDate) {
+                // Hari baru, reset counter
+                storedData = { date: currentDate, count: 0 };
+                localStorage.setItem(STORAGE_KEYS.DAILY_TRANSACTIONS, JSON.stringify(storedData));
+            }
+            
+            const transactionsLeft = DAILY_LIMIT - storedData.count;
+
+            if (storedData.count >= DAILY_LIMIT) {
+                // Limit tercapai
+                $processBtn.prop('disabled', true).text('Limit Harian Tercapai');
+                $completeBtn.prop('disabled', true).html('<i class="fas fa-lock"></i> Limit Harian Tercapai');
+                if (showAlert) showDailyLimitAlert();
             } else {
-                $('#completePaymentBtn').prop('disabled', false).html(`<i class="fas fa-check-circle"></i> Selesaikan Pembayaran`);
-                $('#processOrderBtn').prop('disabled', false).text('Proses Pesanan');
-                showToast(`Sisa transaksi uji coba: ${transactionsLeft}`, 'warning');
-                return false;
+                // Masih bisa
+                setButtonLoading($processBtn, false, originalProcessText);
+                $completeBtn.prop('disabled', false).html(originalCompleteText);
+                if(transactionsLeft <= 5) { // Tampilkan sisa jika tinggal sedikit
+                   showToast(`Sisa transaksi harian: ${transactionsLeft}`, 'warning');
+                } else {
+                   showToast(`Limit transaksi harian terverifikasi.`, 'success');
+                }
             }
         }
-        function showTrialLimitAlert() {
-            const phone = "6287865614222", message = encodeURIComponent( "Halo Lentera Karya Situbondo, saya tertarik dengan Aplikasi Cafe & Resto Anda. Saya telah mencoba versi trial dan ingin melakukan upgrade ke versi premium. Mohon informasinya, terima kasih." ), waLink = `https://api.whatsapp.com/send?phone=${phone}&text=${message}`;
-            $('#confirmTitle').text('Batas Uji Coba Tercapai');
-            $('#confirmMessage').html(`Anda telah mencapai batas <strong>${TRIAL_LIMIT} transaksi</strong> untuk versi uji coba. Untuk melanjutkan transaksi dan membuka semua fitur, silakan upgrade ke versi premium.`);
+        
+        function incrementDailyTransactionCount() {
+            // Gunakan tanggal yg sudah disimpan dari `checkDailyTransactionLimit`
+            if (!currentOnlineDate) { 
+                currentOnlineDate = moment().format('YYYY-MM-DD');
+            }
+            
+            let storedData = JSON.parse(localStorage.getItem(STORAGE_KEYS.DAILY_TRANSACTIONS)) || { date: currentOnlineDate, count: 0 };
+            
+            if (storedData.date === currentOnlineDate) {
+                storedData.count++;
+            } else {
+                // Kasus pindah hari tepat saat transaksi
+                storedData = { date: currentOnlineDate, count: 1 };
+            }
+            localStorage.setItem(STORAGE_KEYS.DAILY_TRANSACTIONS, JSON.stringify(storedData));
+            
+            // Perbarui status tombol setelah increment
+            checkDailyTransactionLimit(false); 
+        }
+
+        function showDailyLimitAlert() {
+            const phone = "6287865614222", message = encodeURIComponent( "Halo Lentera Karya Situbondo, saya tertarik dengan Aplikasi Cafe & Resto Anda. Saya telah mencoba versi trial harian dan ingin melakukan upgrade ke versi premium. Mohon informasinya, terima kasih." ), waLink = `https://api.whatsapp.com/send?phone=${phone}&text=${message}`;
+            $('#confirmTitle').text('Batas Transaksi Harian Tercapai');
+            $('#confirmMessage').html(`Anda telah mencapai batas <strong>${DAILY_LIMIT} transaksi</strong> untuk hari ini. Untuk melanjutkan transaksi tanpa batas, silakan upgrade ke versi premium.`);
             const $confirmBtn = $('#confirmAction');
             $confirmBtn.off('click').on('click', () => { window.open(waLink, '_blank'); $('#confirmationModal').hide(); });
             $confirmBtn.removeClass('btn-danger').addClass('btn-success').html('<i class="fab fa-whatsapp"></i> Hubungi Developer');
@@ -2300,6 +2411,8 @@
             $('#confirmationModal').off('hidden.bs.modal').on('hidden.bs.modal', function () { $('#confirmCancel').show(); });
             $('#confirmationModal').css('display', 'flex');
         }
+        // === AKHIR DARI REVISI LOGIKA LIMIT ===
+
         function promptForPassword(type, callback) {
             const title = type === 'item' ? 'Password Edit/Hapus' : 'Password Kontrol Panel';
             $('#passwordPromptTitle').text(title);
@@ -2494,12 +2607,48 @@
         }
         function generateReceiptHTML(order) {
             const member = members.find(m => m.id === order.memberId);
-            return `<div id="receiptContent"><div class="receipt-header"><img src="https://raw.githubusercontent.com/anekamarket/tester/refs/heads/main/logo-cafe.png" alt="Logo" style="width: 80px; margin-bottom: 5px;"><div class="receipt-title">${settings.storeName}</div><div>${settings.storeAddress}</div><div>Telp: ${settings.storePhone}</div></div><div class="receipt-info"><div><span>Tanggal:</span> <span>${moment(order.date).format('DD/MM/YY HH:mm')}</span></div><div><span>No. Trx:</span> <span>${order.id}</span></div><div><span>Kasir:</span> <span>${order.cashier.name}</span></div><div><span>Pelanggan:</span> <span>${order.customerName}</span></div>${member ? `<div><span>Member:</span> <span>${member.name} (${member.id})</span></div>` : ''}<div><span>Tipe:</span> <span>${order.type === 'dinein' ? `Makan di Tempat (Meja ${order.tableNumber})` : 'Bungkus'}</span></div></div><div id="receiptItemsContainer">${order.items.map(item => `<div class="receipt-item"><div class="receipt-item-details"><div class="item-name">${item.menu.name}</div><div class="item-price-calc">${item.quantity} x ${formatCurrency(item.menu.price)}</div></div><span>${formatCurrency(item.menu.price * item.quantity)}</span></div>`).join('')}</div>${order.note ? `<div style="font-size:10px; font-style:italic; padding: 5px 0; border-top: 1px dashed #000;">Catatan: ${order.note}</div>` : ''}<div class="receipt-total"><div class="receipt-item"><span>Subtotal</span> <span>${formatCurrency(order.subtotal)}</span></div>${order.discount > 0 ? `<div class="receipt-item"><span>Diskon</span> <span>-${formatCurrency(order.discount)}</span></div>` : ''}<div class="receipt-item" style="font-weight:bold; font-size: 14px;"><span>TOTAL</span> <span>${formatCurrency(order.total)}</span></div><div class="receipt-item"><span>${{ cash: 'Tunai', transfer: 'Transfer', ewallet: 'E-Wallet' }[order.paymentMethod]}</span> <span>${formatCurrency(order.paymentAmount)}</span></div><div class="receipt-item"><span>Kembali</span> <span>${formatCurrency(order.change)}</span></div></div><div class="receipt-footer"><p>Terima kasih telah berkunjung</p><div id="receiptQrcode" style="display: flex; justify-content: center; margin: 10px 0;"></div><p style="margin-top: 10px; border-top: 1px dashed #000; padding-top: 5px;">AppWeb Lentera Karya Situbondo &copy; 2025<br>www.anekamarket.my.id | WA: 087865614222</p></div></div>`;
+            // [REVISI] Struk menampilkan Nama UMKM dan Nama Developer (Mitra Anekamarket)
+            return `<div id="receiptContent">
+                <div class="receipt-header">
+                    <img src="https://raw.githubusercontent.com/anekamarket/tester/refs/heads/main/logo-cafe.png" alt="Logo" style="width: 80px; margin-bottom: 5px;">
+                    <div class="receipt-title">${settings.umkmName}</div>
+                    <div>${settings.storeAddress}</div>
+                    <div>Telp: ${settings.storePhone}</div>
+                </div>
+                <div class="receipt-info">
+                    <div><span>Tanggal:</span> <span>${moment(order.date).format('DD/MM/YY HH:mm')}</span></div>
+                    <div><span>No. Trx:</span> <span>${order.id}</span></div>
+                    <div><span>Kasir:</span> <span>${order.cashier.name}</span></div>
+                    <div><span>Pelanggan:</span> <span>${order.customerName}</span></div>
+                    ${member ? `<div><span>Member:</span> <span>${member.name} (${member.id})</span></div>` : ''}
+                    <div><span>Tipe:</span> <span>${order.type === 'dinein' ? `Makan di Tempat (Meja ${order.tableNumber})` : 'Bungkus'}</span></div>
+                </div>
+                <div id="receiptItemsContainer">
+                    ${order.items.map(item => `<div class="receipt-item"><div class="receipt-item-details"><div class="item-name">${item.menu.name}</div><div class="item-price-calc">${item.quantity} x ${formatCurrency(item.menu.price)}</div></div><span>${formatCurrency(item.menu.price * item.quantity)}</span></div>`).join('')}
+                </div>
+                ${order.note ? `<div style="font-size:10px; font-style:italic; padding: 5px 0; border-top: 1px dashed #000;">Catatan: ${order.note}</div>` : ''}
+                <div class="receipt-total">
+                    <div class="receipt-item"><span>Subtotal</span> <span>${formatCurrency(order.subtotal)}</span></div>
+                    ${order.discount > 0 ? `<div class="receipt-item"><span>Diskon</span> <span>-${formatCurrency(order.discount)}</span></div>` : ''}
+                    <div class="receipt-item" style="font-weight:bold; font-size: 14px;"><span>TOTAL</span> <span>${formatCurrency(order.total)}</span></div>
+                    <div class="receipt-item"><span>${{ cash: 'Tunai', transfer: 'Transfer', ewallet: 'E-Wallet' }[order.paymentMethod]}</span> <span>${formatCurrency(order.paymentAmount)}</span></div>
+                    <div class="receipt-item"><span>Kembali</span> <span>${formatCurrency(order.change)}</span></div>
+                </div>
+                <div class="receipt-footer">
+                    <p>Terima kasih telah berkunjung</p>
+                    <div id="receiptQrcode" style="display: flex; justify-content: center; margin: 10px 0;"></div>
+                    <p style="margin-top: 10px; border-top: 1px dashed #000; padding-top: 5px;">
+                        Aplikasi Kasir ${settings.storeName}<br>
+                        Lentera Karya Situbondo &copy; 2025<br>
+                        www.anekamarket.my.id | WA: 087865614222
+                    </p>
+                </div>
+            </div>`;
         }
         function showReceiptModal(order) {
             showToast('Membuat struk...', 'info');
             $('#receiptModalBody').html(generateReceiptHTML(order));
-            const qrCodeData = JSON.stringify({ trxId: order.id, store: settings.storeName, date: moment(order.date).toISOString(), total: order.total });
+            const qrCodeData = JSON.stringify({ trxId: order.id, store: settings.umkmName, date: moment(order.date).toISOString(), total: order.total });
             $('#receiptQrcode').empty();
             new QRCode(document.getElementById("receiptQrcode"), { text: qrCodeData, width: 80, height: 80, correctLevel: QRCode.CorrectLevel.M });
             $('#downloadReceiptPdfBtn').data('order', order);
@@ -2518,13 +2667,15 @@
         }
         function openKtaModal(memberId) {
             const member = members.find(m => m.id === memberId); if (!member) return;
-            $('#ktaStoreName').text(settings.storeName);
+            // [REVISI] KTA menampilkan Nama UMKM
+            $('#ktaStoreName').text(settings.umkmName);
             $('#ktaStoreContact').text(`${settings.storeAddress} • ${settings.storePhone}`);
             $('#ktaMemberName').text(member.name); $('#ktaMemberId').text(`ID: ${member.id}`);
             showToast('Membuat kartu...', 'info');
             const qrContainer = document.getElementById("ktaQrcodeImg");
             $(qrContainer).empty();
-            const qrCodeData = JSON.stringify({ memberId: member.id, name: member.name, phone: member.phone, store: settings.storeName, joinDate: member.joinDate });
+            // [REVISI] QR Code KTA berisi Nama UMKM
+            const qrCodeData = JSON.stringify({ memberId: member.id, name: member.name, phone: member.phone, store: settings.umkmName, joinDate: member.joinDate });
             new QRCode(qrContainer, { text: qrCodeData, width: 160, height: 160, correctLevel : QRCode.CorrectLevel.H });
             $('#downloadKtaPdfBtn').data('member', member);
             $('#ktaModal').css('display', 'flex');
@@ -2615,11 +2766,24 @@
                 pdf.save(`Laporan_Penjualan_${moment().format('YYYY-MM-DD')}.pdf`);
             }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF report download error:", err); });
         }
-        function updateStoreInfo() { $('#storeNameHeader').text(settings.storeName || 'CAFE & RESTO'); document.title = settings.storeName || 'CAFE & RESTO'; }
-        function loadStoreInfo() { $('#storeName').val(settings.storeName || ''); $('#storeAddress').val(settings.storeAddress || ''); $('#storePhone').val(settings.storePhone || ''); $('#storeEmail').val(settings.storeEmail || ''); $('#tableCount').val(settings.tableCount || 5); }
+        function updateStoreInfo() { 
+            // [REVISI] Header dan Judul halaman menggunakan Nama UMKM
+            $('#storeNameHeader').text(settings.umkmName || 'CAFE & RESTO'); 
+            document.title = settings.umkmName || 'CAFE & RESTO'; 
+        }
+        function loadStoreInfo() { 
+            // [REVISI] Memuat Nama Developer (readonly) dan Nama UMKM (editable)
+            $('#storeName').val(settings.storeName || ''); 
+            $('#umkmName').val(settings.umkmName || '');
+            $('#storeAddress').val(settings.storeAddress || ''); 
+            $('#storePhone').val(settings.storePhone || ''); 
+            $('#storeEmail').val(settings.storeEmail || ''); 
+            $('#tableCount').val(settings.tableCount || 5); 
+        }
         function saveStoreInfo(e) {
             e.preventDefault();
-            settings.storeName = $('#storeName').val().trim();
+            // [REVISI] Nama Developer (storeName) tidak disimpan, hanya Nama UMKM
+            settings.umkmName = $('#umkmName').val().trim();
             settings.storeAddress = $('#storeAddress').val().trim();
             settings.storePhone = $('#storePhone').val().trim();
             settings.storeEmail = $('#storeEmail').val().trim();
