@@ -552,12 +552,26 @@
             gap: 8px;
         }
 
+        /* [PERBAIKAN] Form check input style */
+        .form-check-input {
+            width: 1.1em;
+            height: 1.1em;
+        }
+        .form-check-label {
+            font-weight: 500;
+        }
+
         .form-control {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: var(--rounded-sm);
             font-size: 1rem;
+        }
+        
+        .form-control:disabled {
+            background-color: #e9ecef;
+            opacity: 1;
         }
 
         textarea.form-control {
@@ -858,6 +872,10 @@
             margin-top: 16px;
         }
 
+        .mb-0 {
+            margin-bottom: 0px;
+        }
+
         .mb-2 {
             margin-bottom: 8px;
         }
@@ -912,6 +930,11 @@
             font-weight: bold;
             font-size: 14px;
             margin-bottom: 3px;
+        }
+        
+        .receipt-partner-name { /* [BARU] */
+            font-size: 13px;
+            font-weight: bold;
         }
 
         .receipt-info {
@@ -1118,6 +1141,60 @@
             font-weight: 700;
             color: var(--primary);
         }
+        
+        /* [BARU] Report Header Styles */
+        .report-header {
+            text-align:center; 
+            margin-bottom: 20px;
+        }
+        .report-header h3, .report-header h4, .report-header h5, .report-header p {
+            margin: 0;
+            padding: 0;
+        }
+        .report-header h3 {
+            font-size: 1.3rem;
+        }
+        .report-header h4 {
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+         .report-header h5 {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        .report-header p {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        /* === [BARU] CSS UNTUK NOTIFIKASI PREMIUM === */
+        #premium-notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000; /* Paling atas */
+            width: 380px;
+            max-width: 90vw;
+            display: none;
+            animation: premiumNotifSlideIn 0.5s ease-out;
+        }
+
+        @keyframes premiumNotifSlideIn {
+            from { transform: translateX(110%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        #premium-notification-container.premium-notif-hide {
+            animation: premiumNotifSlideOut 0.5s ease-in forwards;
+        }
+
+        @keyframes premiumNotifSlideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(110%); opacity: 0; }
+        }
+        /* === AKHIR DARI CSS NOTIFIKASI PREMIUM === */
     </style>
 </head>
 <body>
@@ -1255,6 +1332,10 @@
                         <span>Subtotal:</span>
                         <span id="orderSubtotal">Rp 0</span>
                     </div>
+                    <div id="itemDiscountRow" class="summary-row" style="display: none; color: var(--success);">
+                        <span>Diskon Item (2%):</span>
+                        <span id="orderItemDiscount">-Rp 0</span>
+                    </div>
                     <div id="discountRow" class="summary-row" style="display: none;">
                         <span>Diskon (0%):</span>
                         <span id="orderDiscount">-Rp 0</span>
@@ -1332,6 +1413,7 @@
             </div>
         </div>
     </div>
+    
     <div id="productModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1350,8 +1432,27 @@
                         <select id="productCategory" class="form-control" required></select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Satuan Produk (Contoh: Pcs, Kg, Pack)</label>
-                        <input type="text" id="productUnit" class="form-control" placeholder="e.g. Pcs" required>
+                        <label class="form-label">Satuan Produk</label>
+                        <select id="productUnit" class="form-control" required>
+                            <option value="Pcs">Pcs</option>
+                            <option value="Pack">Pack</option>
+                            <option value="Unit">Unit</option>
+                            <option value="Biji">Biji</option>
+                            <option value="Lembar">Lembar</option>
+                            <option value="Dus">Dus</option>
+                            <option value="Karung">Karung</option>
+                            <option value="Kotak">Kotak</option>
+                            <option value="Slop">Slop</option>
+                            <option value="Botol">Botol</option>
+                            <option value="Liter">Liter</option>
+                            <option value="Meter">Meter</option>
+                            <option value="Centi">Centi</option>
+                            <option value="Kg">Kg</option>
+                            <option value="Gram">Gram</option>
+                            <option value="Ons">Ons</option>
+                            <option value="Paket">Paket</option>
+                            <option value="Set">Set</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Harga Pokok (Kulak)</label>
@@ -1364,6 +1465,10 @@
                     <div class="form-group">
                         <label class="form-label">Stok Awal</label>
                         <input type="number" id="productStock" class="form-control" required min="0">
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="productHasItemDiscount">
+                        <label class="form-check-label" for="productHasItemDiscount"><b>Aktifkan Diskon 2% untuk item ini</b> (otomatis)</label>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Gambar (URL)</label>
@@ -1480,12 +1585,20 @@
             </div>
         </div>
     </div>
+    
     <div id="manageStoreInfoModal" class="modal">
         <div class="modal-content">
             <div class="modal-header"><h3 class="modal-title">Kelola Info Toko</h3><button class="modal-close">&times;</button></div>
             <div class="modal-body">
                 <form id="storeInfoForm">
-                    <div class="form-group"><label class="form-label">Nama Toko</label><input type="text" id="storeName" class="form-control" required></div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Toko (Brand Pusat)</label>
+                        <input type="text" id="storeName" class="form-control" required disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Mitra (Gerai Cabang)</label>
+                        <input type="text" id="partnerName" class="form-control" placeholder="Masukkan nama gerai cabang">
+                    </div>
                     <div class="form-group"><label class="form-label">Alamat Toko</label><textarea id="storeAddress" class="form-control" required></textarea></div>
                     <div class="form-group"><label class="form-label">Nomor Telepon/WA</label><input type="text" id="storePhone" class="form-control" required></div>
                     <div class="form-group"><label class="form-label">Email</label><input type="email" id="storeEmail" class="form-control" placeholder="Contoh: toko@email.com"></div>
@@ -1537,7 +1650,27 @@
                     <hr class="mt-3 mb-3">
                     <h4 class="mt-3">Pengaturan Diskon & Pajak</h4>
                     <form id="taxDiscountSettingsForm" class="mt-2">
-                        <div class="form-group"><label class="form-label">Diskon Member (%)</label><input type="number" id="memberDiscount" class="form-control" min="0" max="100" value="0" required></div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="isMemberDiscountEnabled">
+                            <label class="form-check-label" for="isMemberDiscountEnabled"><b>Aktifkan Diskon Member</b></label>
+                        </div>
+                        <div id="memberDiscountSettingsContainer" style="display: none; padding-left: 15px; border-left: 3px solid var(--light);">
+                            <div class="form-group">
+                                <label class="form-label">Diskon Member (%)</label>
+                                <input type="number" id="memberDiscount" class="form-control" min="0" max="100" value="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Berlaku Belanja Di Atas</label>
+                                <select id="memberDiscountMinPurchase" class="form-control">
+                                    <option value="0">Tanpa Minimum</option>
+                                    <option value="50000">Rp 50.000</option>
+                                    <option value="100000">Rp 100.000</option>
+                                    <option value="250000">Rp 250.000</option>
+                                    <option value="500000">Rp 500.000</option>
+                                    <option value="1000000">Rp 1.000.000</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group"><label class="form-label">Diskon Pelanggan Biasa (%)</label><input type="number" id="nonMemberDiscount" class="form-control" min="0" max="100" value="0" required></div>
                         <div class="form-group"><label class="form-label">Pajak / PPN (%)</label><input type="number" id="taxPercent" class="form-control" min="0" max="100" value="0" required></div>
                         <button type="submit" class="btn btn-sm btn-success">Simpan Pengaturan</button>
@@ -1609,6 +1742,7 @@
             <div class="modal-footer no-print"><button class="btn btn-warning modal-close-btn">Tutup</button><button class="btn btn-info" id="downloadKtaPdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button></div>
         </div>
     </div>
+
     <div id="stockManagementModal" class="modal">
         <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header"><h3 class="modal-title">Manajemen Stok</h3><button class="modal-close">&times;</button></div>
@@ -1626,13 +1760,48 @@
                             <label class="form-label">Cari Produk</label>
                             <input type="text" id="stockInProductSearch" class="form-control" placeholder="Ketik untuk mencari produk...">
                         </div>
-                        <div class="form-group"><label class="form-label">Pilih Produk</label><select id="stockInProduct" class="form-control" required size="5"></select></div>
-                        <div class="form-group"><label class="form-label">Jumlah Masuk</label><input type="number" id="stockInQuantity" class="form-control" min="1" required></div>
+                        <div class="form-group">
+                            <label class="form-label">Pilih Produk</label>
+                            <select id="stockInProduct" class="form-control" required size="5" onchange="loadProductStockDetails()"></select>
+                        </div>
+            
+                        <div id="stockDetailsContainer" style="display: none; background: #f9f9f9; padding: 12px; border-radius: var(--rounded-sm); margin-bottom: 16px;">
+                            <h5 style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Detail Produk Saat Ini</h5>
+                            <div class="d-flex gap-2" style="justify-content: space-between;">
+                                <div class="form-group mb-0" style="flex: 1;">
+                                    <label class="form-label" style="font-size: 0.8rem;">Stok Sistem</label>
+                                    <input type="text" id="stockInCurrentStock" class="form-control" disabled>
+                                </div>
+                                <div class="form-group mb-0" style="flex: 2;">
+                                    <label class="form-label" style="font-size: 0.8rem;">Harga Pokok (Lama)</label>
+                                    <input type="text" id="stockInOldCost" class="form-control" disabled>
+                                </div>
+                                <div class="form-group mb-0" style="flex: 2;">
+                                    <label class="form-label" style="font-size: 0.8rem;">Harga Jual (Lama)</label>
+                                    <input type="text" id="stockInOldPrice" class="form-control" disabled>
+                                </div>
+                                </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="form-group" style="flex: 1;">
+                                <label class="form-label">Jumlah Masuk</label>
+                                <input type="number" id="stockInQuantity" class="form-control" min="1" required>
+                            </div>
+                            <div class="form-group" style="flex: 2;">
+                                <label class="form-label">Harga Pokok Baru (per item)</label>
+                                <input type="number" id="stockInNewCost" class="form-control" min="0" required placeholder="Harga kulak baru">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Harga Jual Baru (Otomatis)</label>
+                            <input type="number" id="stockInNewPrice" class="form-control" min="0" placeholder="Kosongkan jika harga jual tidak berubah">
+                        </div>
+            
                         <div class="form-group"><label class="form-label">Sumber</label><select id="stockInSupplier" class="form-control" required><option value="pembelian_mandiri">Pembelian Mandiri (Kulak)</option></select></div>
                         <div class="form-group"><label class="form-label">Catatan (opsional)</label><textarea id="stockInNotes" class="form-control" placeholder="Contoh: No. faktur, dll."></textarea></div>
                         <button type="submit" class="btn btn-success">Simpan Stok Masuk</button>
                     </form>
-                </div>
+                    </div>
 
                 <div class="tab-content" id="stockOpnameTab">
                     <h4 class="mt-3">Penyesuaian Stok (Stok Opname)</h4>
@@ -1680,7 +1849,7 @@
                         <input type="hidden" id="supplierIdInput">
                         <div class="form-group"><label class="form-label">Nama Suplier</label><input type="text" id="supplierName" class="form-control" required></div>
                         <div class="form-group"><label class="form-label">Kontak Person</label><input type="text" id="supplierContactPerson" class="form-control"></div>
-                        <div class="form-group"><label class="form-label">Nomor Telepon</label><input type="tel" id="supplierPhone" class="form-control" required></div>
+                        <div class="form-group"><label class="form-label">Nomor Telepon (WA)</label><input type="tel" id="supplierPhone" class="form-control" required></div>
                         <div class="d-flex gap-2"><button type="button" id="cancelSupplierFormBtn" class="btn btn-warning">Batal</button><button type="submit" class="btn btn-success">Simpan</button></div>
                     </form>
                 </div>
@@ -1811,6 +1980,8 @@
     
     <div id="print-container" style="display:none;"></div>
     
+    <div id="premium-notification-container" style="display: none;"></div>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/id.min.js"></script>
@@ -1846,6 +2017,7 @@
         let products, categories, orders, settings, users, members, suppliers, stockHistory, returns, shifts, currentUser, currentOrder, activeShift;
         let passwordPromptCallback = null;
         let captchaText = '';
+        let premiumNotifInterval; // [BARU] Timer untuk notifikasi
         
         function initializeData() {
             let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
@@ -1864,10 +2036,18 @@
             
             if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
                 const initialSettings = {
-                    storeName: 'SUPERMARKET SITUBONDO', storeAddress: 'Jl. Harjakasi No. 1, Kota Situbondo',
+                    storeName: 'MITRA ANEKAMARKET', // [DIKUNCI]
+                    partnerName: 'Gerai Cabang Demo', // [BARU]
+                    storeAddress: 'Jl. Harjakasi Gang Naik Kelas No. 1, Kota Situbondo',
                     storePhone: '08786561422', storeEmail: 'admin@anekamarket.my.id',
                     itemSecurityCode: CryptoJS.SHA256('17081945').toString(), panelSecurityCode: CryptoJS.SHA256('LKS.1945').toString(),
-                    memberDiscountPercent: 2, nonMemberDiscountPercent: 0, taxPercent: 0,
+                    // [PERBAIKAN] Penambahan Seting Diskon Member
+                    memberDiscountPercent: 2, 
+                    isMemberDiscountEnabled: true, 
+                    memberDiscountMinPurchase: 0, 
+                    nonMemberDiscountPercent: 0, 
+                    taxPercent: 0,
+                    // Akhir [PERBAIKAN]
                     roles: {
                         admin: { label: "Admin", isEditable: false, permissions: getAllPermissions(true) },
                         store_manager: { label: "Kepala Toko", isEditable: true, permissions: { ...getAllPermissions(true), canAccessControlPanel: false } },
@@ -1894,7 +2074,7 @@
             shifts = JSON.parse(localStorage.getItem(STORAGE_KEYS.SHIFTS)) || []; // [BARU] Load data shift
             currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER)) || null;
             currentOrder = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_ORDER)) || {
-                items: [], subtotal: 0, total: 0, discount: 0, tax: 0, note: '', memberId: null
+                items: [], subtotal: 0, total: 0, discount: 0, itemDiscount: 0, tax: 0, note: '', memberId: null
             };
 
             $('#currentYear').text(new Date().getFullYear());
@@ -1958,7 +2138,7 @@
             $('#changeOwnPasswordForm').submit(changeOwnPassword);
             $('#taxDiscountSettingsForm').submit(saveTaxDiscountSettings);
             $('#supplierForm').submit(saveSupplier);
-            $('#stockInForm').submit(addIncomingStock);
+            $('#stockInForm').submit(addIncomingStock); // [PENYEMPURNAAN] Fungsi ini diubah
             $('#findOrderForReturnForm').submit(findOrderForReturn);
             $('#completeReturnBtn').click(completeReturn);
 
@@ -2050,6 +2230,7 @@
             updateStoreInfo();
             configureUIAccess();
             checkActiveShift(); // [BARU]
+            setupPremiumNotification(); // [BARU] Panggil fungsi notifikasi
         }
         
         function configureUIAccess() {
@@ -2112,6 +2293,9 @@
                 showToast('Anda harus menutup shift kerja terlebih dahulu sebelum logout.', 'warning');
                 return;
             }
+            
+            if (premiumNotifInterval) clearInterval(premiumNotifInterval); // [BARU] Hapus timer notifikasi
+            
             currentUser = null;
             localStorage.removeItem(STORAGE_KEYS.USER);
             $('#mainApp').fadeOut(() => {
@@ -2189,14 +2373,44 @@
             }, 500);
         }
 
+        // [PERBAIKAN] Logika updateOrder dengan Diskon Item 2% dan Kontrol Diskon Member
         function updateOrder() {
             currentOrder.subtotal = currentOrder.items.reduce((total, item) => total + (item.product.price * item.quantity), 0);
             
-            const discountPercent = currentOrder.memberId ? (settings.memberDiscountPercent ?? 0) : (settings.nonMemberDiscountPercent ?? 0);
-            const discountText = `Diskon (${discountPercent}%)`;
-            currentOrder.discount = (discountPercent > 0) ? currentOrder.subtotal * (discountPercent / 100) : 0;
+            // [BARU] Kalkulasi Diskon Item 2%
+            currentOrder.itemDiscount = 0;
+            currentOrder.items.forEach(item => {
+                if (item.product.hasItemDiscount) {
+                    currentOrder.itemDiscount += (item.product.price * item.quantity) * 0.02; // 2% discount
+                }
+            });
 
-            const subtotalAfterDiscount = currentOrder.subtotal - currentOrder.discount;
+            // Subtotal untuk diskon member dihitung SETELAH diskon item
+            const subtotalForMemberDiscount = currentOrder.subtotal - currentOrder.itemDiscount;
+            
+            let discountPercent = 0;
+            let discountText = 'Diskon (0%)';
+            
+            // [PERBAIKAN] Logika Diskon Member dengan Pengecekan
+            if (currentOrder.memberId && (settings.isMemberDiscountEnabled || false)) {
+                // Member logic
+                const minPurchase = settings.memberDiscountMinPurchase || 0;
+                if (subtotalForMemberDiscount > minPurchase) {
+                    discountPercent = settings.memberDiscountPercent ?? 0;
+                    discountText = `Diskon Member (${discountPercent}%)`;
+                } else {
+                    discountText = `Diskon (Min. ${formatCurrency(minPurchase)})`;
+                }
+            } else if (!currentOrder.memberId && settings.nonMemberDiscountPercent > 0) {
+                // Non-member logic (unchanged)
+                discountPercent = settings.nonMemberDiscountPercent ?? 0;
+                discountText = `Diskon (${discountPercent}%)`;
+            }
+
+            // Diskon member/reguler dihitung dari subtotal_setelah_diskon_item
+            currentOrder.discount = (discountPercent > 0) ? subtotalForMemberDiscount * (discountPercent / 100) : 0;
+            
+            const subtotalAfterDiscount = subtotalForMemberDiscount - currentOrder.discount;
             const taxPercent = settings.taxPercent || 0;
             const taxText = `Pajak (${taxPercent}%)`;
             currentOrder.tax = taxPercent > 0 ? subtotalAfterDiscount * (taxPercent / 100) : 0;
@@ -2208,8 +2422,15 @@
             const $orderItems = $('#orderItems').empty();
             $('#orderCount').text(`(${currentOrder.items.length} item)`);
             
-            $('#discountRow').toggle(currentOrder.discount > 0).find('span:first-child').text(discountText);
+            // [BARU] Update UI Diskon Item
+            $('#itemDiscountRow').toggle(currentOrder.itemDiscount > 0);
+            $('#orderItemDiscount').text(`-${formatCurrency(currentOrder.itemDiscount)}`);
+
+            // [PERBAIKAN] Update UI Diskon Member
+            $('#discountRow').toggle(currentOrder.discount > 0 || (currentOrder.memberId && (settings.isMemberDiscountEnabled || false)))
+                               .find('span:first-child').text(discountText);
             $('#orderDiscount').text(`-${formatCurrency(currentOrder.discount)}`);
+            
             $('#taxRow').toggle(currentOrder.tax > 0).find('span:first-child').text(taxText);
             $('#orderTax').text(formatCurrency(currentOrder.tax));
 
@@ -2234,7 +2455,7 @@
         }
 
         function resetOrder() {
-            currentOrder = { items: [], subtotal: 0, total: 0, discount: 0, tax: 0, note: '', memberId: null };
+            currentOrder = { items: [], subtotal: 0, total: 0, discount: 0, itemDiscount: 0, tax: 0, note: '', memberId: null };
             localStorage.setItem(STORAGE_KEYS.CURRENT_ORDER, JSON.stringify(currentOrder));
             updateOrder();
             $('#orderNote, #memberSearchInput').val('');
@@ -2357,6 +2578,18 @@
             $('#recapReportModal').css('display', 'flex');
         }
 
+        // [PENYEMPURNAAN] Tambah Nama Mitra di Laporan
+        function getReportHeader(title) {
+            return `
+                <div class="report-header">
+                    <h3>${settings.storeName}</h3>
+                    ${settings.partnerName ? `<h4>${settings.partnerName}</h4>` : ''}
+                    <h5>${title}</h5>
+                    <p>Dicetak pada: ${moment().format('D MMMM YYYY, HH:mm')}</p>
+                </div>`;
+        }
+        
+        // [PENYEMPURNAAN] Tambah Nama Mitra di Laporan
         function generateRecapReport() {
             let startDate, endDate;
             const period = $('#recapReportPeriod').val();
@@ -2371,19 +2604,15 @@
             }
 
             const activeTab = $('#recapReportModal .tabs .tab.active').data('tab');
-            let reportHTML = `
-                <div style="text-align:center; margin-bottom: 20px;">
-                    <h3>${settings.storeName}</h3>
-                    <h4>Laporan Periode: ${startDate.format('D MMM YYYY')} - ${endDate.format('D MMM YYYY')}</h4>
-                    <p>Dicetak pada: ${moment().format('D MMMM YYYY, HH:mm')}</p>
-                </div>`;
+            const periodString = `Periode: ${startDate.format('D MMM YYYY')} - ${endDate.format('D MMM YYYY')}`;
+            let reportHTML = "";
             
             if (activeTab === 'shiftRecap') {
-                reportHTML += generateShiftRecapHTML(startDate, endDate);
+                reportHTML = getReportHeader(`Laporan Harian (Shift) - ${periodString}`) + generateShiftRecapHTML(startDate, endDate);
             } else if (activeTab === 'profitLossRecap') {
-                reportHTML += generateProfitLossRecapHTML(startDate, endDate);
+                reportHTML = getReportHeader(`Laporan Laba Rugi - ${periodString}`) + generateProfitLossRecapHTML(startDate, endDate);
             } else if (activeTab === 'inventoryRecap') {
-                reportHTML += generateInventoryRecapHTML(startDate, endDate);
+                reportHTML = getReportHeader(`Laporan Inventaris - ${periodString}`) + generateInventoryRecapHTML(startDate, endDate);
             }
             
             $('#recapReportResults').html(reportHTML);
@@ -2430,14 +2659,22 @@
              if (filteredOrders.length === 0) return '<div class="empty-state"><p>Tidak ada data penjualan pada periode ini.</p></div>';
 
             let totalRevenue = 0, totalCost = 0, totalTransactions = filteredOrders.length;
+            let totalItemDiscount = 0, totalMemberDiscount = 0; // [BARU]
             filteredOrders.forEach(order => {
-                totalRevenue += order.subtotal - (order.discount || 0) + (order.tax || 0);
+                totalRevenue += order.subtotal; // [PERBAIKAN] Mulai dari subtotal kotor
+                totalItemDiscount += order.itemDiscount || 0;
+                totalMemberDiscount += order.discount || 0;
+                // totalRevenue += order.subtotal - (order.discount || 0) - (order.itemDiscount || 0) + (order.tax || 0);
                 order.items.forEach(item => {
-                    totalCost += (item.product.costPrice || 0) * item.quantity;
+                    const itemCost = item.product.costPrice || 0;
+                    totalCost += itemCost * item.quantity;
                 });
             });
 
-            const grossProfit = totalRevenue - totalCost;
+            const totalDiscounts = totalItemDiscount + totalMemberDiscount;
+            const netRevenue = totalRevenue - totalDiscounts; // Pendapatan bersih setelah diskon
+            const grossProfit = netRevenue - totalCost; // Laba kotor = Pendapatan Bersih - HPP
+            
             return `
                 <div class="recap-summary-card" style="border-color: var(--success);">
                     <div class="title">Total Laba Kotor</div>
@@ -2446,7 +2683,10 @@
                 <table class="data-table" id="profitLossReportTable">
                     <tbody>
                         <tr><td>Total Transaksi</td><td>${totalTransactions} Transaksi</td></tr>
-                        <tr><td>Total Pendapatan (Penjualan)</td><td class="text-success">${formatCurrency(totalRevenue)}</td></tr>
+                        <tr><td>Total Penjualan (Kotor)</td><td class="text-success">${formatCurrency(totalRevenue)}</td></tr>
+                        <tr><td>Total Diskon Item (2%)</td><td class="text-danger">-${formatCurrency(totalItemDiscount)}</td></tr>
+                        <tr><td>Total Diskon Member</td><td class="text-danger">-${formatCurrency(totalMemberDiscount)}</td></tr>
+                        <tr><td style="font-weight:bold;">Total Penjualan (Bersih)</td><td style="font-weight:bold;">${formatCurrency(netRevenue)}</td></tr>
                         <tr><td>Total Harga Pokok Penjualan (HPP)</td><td class="text-danger">-${formatCurrency(totalCost)}</td></tr>
                         <tr><td style="font-weight:bold;">LABA KOTOR</td><td style="font-weight:bold;">${formatCurrency(grossProfit)}</td></tr>
                     </tbody>
@@ -2461,32 +2701,44 @@
             let totalStockInValue = 0;
             stockIn.forEach(s => {
                 const product = products.find(p => p.id === s.productId);
-                totalStockInValue += s.quantityChange * (product?.costPrice || 0);
+                // [PERBAIKAN] Nilai stok masuk harus berdasarkan harga Beli saat itu, bukan harga rata-rata
+                // Kita bisa ekstrak dari notes jika ada, atau estimasi
+                let costMatch = s.notes.match(/@Rp ([\d,]+)/);
+                let cost = product ? product.costPrice : 0; // fallback ke costPrice saat ini
+                if(costMatch && costMatch[1]) {
+                    cost = parseFloat(costMatch[1].replace(/,/g, ''));
+                }
+                totalStockInValue += s.quantityChange * cost;
             });
 
             let totalReturnValue = 0;
             returnsIn.forEach(r => {
                 r.items.forEach(item => {
                     const product = products.find(p => p.id === item.productId);
-                    totalReturnValue += item.quantity * (product?.costPrice || 0);
+                    totalReturnValue += item.quantity * (product?.costPrice || 0); // Estimasi nilai retur
                 });
             });
             
             return `
                 <h5>Laporan Pasokan / Tambah Stok</h5>
                 <div class="recap-summary-card" style="border-color: var(--info);">
-                    <div class="title">Total Nilai Stok Masuk</div>
+                    <div class="title">Total Nilai Stok Masuk (Estimasi)</div>
                     <div class="value" style="color: var(--info);">${formatCurrency(totalStockInValue)}</div>
                 </div>
                 <table class="data-table" id="stockInReportTable"><thead><tr><th>Tanggal</th><th>Produk</th><th>Jumlah</th><th>Catatan</th><th>Nilai</th></tr></thead><tbody>
                     ${stockIn.length > 0 ? stockIn.map(s => {
                         const product = products.find(p => p.id === s.productId);
-                        return `<tr><td>${moment(s.date).format('DD/MM/YY')}</td><td>${s.productName}</td><td>+${s.quantityChange}</td><td>${s.notes}</td><td>${formatCurrency(s.quantityChange * (product?.costPrice || 0))}</td></tr>`
+                        let costMatch = s.notes.match(/@Rp ([\d,]+)/);
+                        let cost = product ? product.costPrice : 0;
+                        if(costMatch && costMatch[1]) {
+                            cost = parseFloat(costMatch[1].replace(/,/g, ''));
+                        }
+                        return `<tr><td>${moment(s.date).format('DD/MM/YY')}</td><td>${s.productName}</td><td>+${s.quantityChange}</td><td>${s.notes}</td><td>${formatCurrency(s.quantityChange * cost)}</td></tr>`
                     }).join('') : '<tr><td colspan="5" class="text-center">Tidak ada data stok masuk</td></tr>'}
                 </tbody></table>
                 <h5 class="mt-3">Laporan Retur</h5>
                  <div class="recap-summary-card" style="border-color: var(--warning);">
-                    <div class="title">Total Nilai Barang Retur</div>
+                    <div class="title">Total Nilai Barang Retur (Estimasi)</div>
                     <div class="value" style="color: var(--warning);">${formatCurrency(totalReturnValue)}</div>
                 </div>
                 <table class="data-table" id="returnReportTable"><thead><tr><th>Tanggal</th><th>Kode Transaksi Asal</th><th>Alasan</th><th>Nilai Retur</th></tr></thead><tbody>
@@ -2511,7 +2763,18 @@
                 const imgProps = pdf.getImageProperties(imgData);
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                pdf.addImage(imgData, 'PNG', 10, 10, pdfWidth - 20, pdfHeight - (pdfHeight > 270 ? 20 : 0));
+                let heightLeft = pdfHeight;
+                let position = 10;
+                
+                pdf.addImage(imgData, 'PNG', 10, position, pdfWidth - 20, pdfHeight);
+                heightLeft -= pdf.internal.pageSize.getHeight();
+                
+                while (heightLeft >= 0) {
+                    position = heightLeft - pdfHeight + 10;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 10, position, pdfWidth - 20, pdfHeight);
+                    heightLeft -= pdf.internal.pageSize.getHeight();
+                }
                 pdf.save(filename);
             }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); });
         }
@@ -2566,7 +2829,7 @@
                             ${canEdit ? `<div class="action-btn edit-btn edit-product" data-id="${product.id}"><i class="fas fa-edit"></i></div>` : ''}
                             ${canDelete ? `<div class="action-btn delete-btn delete-product" data-id="${product.id}"><i class="fas fa-trash"></i></div>` : ''}
                         </div>` : '';
-                    const unit = product.unit || ''; // [PERBAIKAN] Mengambil unit dari produk
+                    const unit = product.unit || 'Pcs'; // [PENYEMPURNAAN]
 
                     $productGrid.append(`
                         <div class="product-card" data-id="${product.id}">${adminActions}
@@ -2587,21 +2850,28 @@
             $('#productStock').prop('disabled', !!product);
             if (product) {
                 $('#productName').val(product.name); 
-                $('#productUnit').val(product.unit || ''); // [PERBAIKAN]
+                $('#productUnit').val(product.unit || 'Pcs'); // [PENYEMPURNAAN]
                 $('#productCostPrice').val(product.costPrice || 0);
                 $('#productPrice').val(product.price);
-                $('#productStock').val(product.stock); $('#productImage').val(product.image || '');
+                $('#productStock').val(product.stock); 
+                $('#productHasItemDiscount').prop('checked', product.hasItemDiscount || false); // [BARU]
+                $('#productImage').val(product.image || '');
                 $('#productDescription').val(product.description || ''); $('#productCategory').val(product.category);
+            } else {
+                $('#productHasItemDiscount').prop('checked', false); // [BARU] Default off
             }
             loadCategoriesForSelect();
             $('#productModal').css('display', 'flex');
         }
         
+        // [PENYEMPURNAAN] saveProduct dengan Diskon 2%
         function saveProduct() {
             const id = $('#productId').val(), name = $('#productName').val().trim(), category = $('#productCategory').val(),
-                  unit = $('#productUnit').val().trim(), // [PERBAIKAN]
+                  unit = $('#productUnit').val(), // [PENYEMPURNAAN] Mengambil dari select
                   costPrice = parseFloat($('#productCostPrice').val()) || 0, price = parseFloat($('#productPrice').val()) || 0, 
-                  stock = parseInt($('#productStock').val()) || 0, image = $('#productImage').val().trim(), 
+                  stock = parseInt($('#productStock').val()) || 0, 
+                  hasItemDiscount = $('#productHasItemDiscount').is(':checked'), // [BARU]
+                  image = $('#productImage').val().trim(), 
                   description = $('#productDescription').val().trim();
             if (!name || !category || !unit || price <= 0) return showToast('Nama, kategori, satuan, dan harga jual harus valid', 'error');
             if(costPrice > price) return showToast('Harga pokok tidak boleh lebih besar dari harga jual', 'warning');
@@ -2609,9 +2879,13 @@
             const action = () => {
                 if (id) {
                     const index = products.findIndex(p => p.id === id);
-                    if (index > -1) products[index] = { ...products[index], name, category, unit, costPrice, price, image, description }; // [PERBAIKAN]
+                    if (index > -1) products[index] = { 
+                        ...products[index], name, category, unit, costPrice, price, image, description, hasItemDiscount // [PENYEMPURNAAN]
+                    }; 
                 } else {
-                    const newProduct = { id: 'P' + moment().format('x'), name, category, unit, costPrice, price, stock, image, description }; // [PERBAIKAN]
+                    const newProduct = { 
+                        id: 'P' + moment().format('x'), name, category, unit, costPrice, price, stock, image, description, hasItemDiscount // [PENYEMPURNAAN]
+                    }; 
                     products.unshift(newProduct);
                     updateStock(newProduct.id, stock, 'initial', 'Stok awal produk baru');
                 }
@@ -2629,14 +2903,46 @@
         }
 
         // --- STOCK MANAGEMENT ---
+        
+        // [PENYEMPURNAAN] Modal Stok
         function openStockManagementModal() {
             switchModalTab($('#stockManagementModal'), 'stockIn');
-            $('#stockInProductSearch').val(''); // [PERBAIKAN] Reset search
+            $('#stockInProductSearch').val(''); // Reset search
+            $('#stockDetailsContainer').hide(); // [BARU] Sembunyikan detail
+            $('#stockInForm')[0].reset(); // [PENYEMPURNAAN] Reset form
             loadProductsForStockIn();
             loadSuppliersForSelect();
             $('#stockManagementModal').css('display', 'flex');
         }
+        
+        // [PENYEMPURNAAN] Fungsi untuk memuat detail produk di form stok masuk
+        function loadProductStockDetails() {
+            const productId = $('#stockInProduct').val();
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                $('#stockInCurrentStock').val(`${product.stock} ${product.unit || 'Pcs'}`);
+                $('#stockInOldCost').val(formatCurrency(product.costPrice || 0));
+                $('#stockInOldPrice').val(formatCurrency(product.price));
+                $('#stockInNewCost').val(product.costPrice || 0); // Pre-fill new cost with old cost
+                $('#stockInNewPrice').val(product.price); // Pre-fill new price with old price
 
+                // [BARU] Tampilkan status diskon 2%
+                const discountStatus = product.hasItemDiscount ? 'Aktif (2%)' : 'Non-Aktif';
+                $('#stockDetailsContainer').find('#stockInDiscountStatus').remove(); // Hapus jika ada
+                $('#stockDetailsContainer .d-flex').append(`
+                    <div class="form-group mb-0" style="flex: 1;" id="stockInDiscountStatus">
+                        <label class="form-label" style="font-size: 0.8rem;">Diskon 2%</label>
+                        <input type="text" class="form-control" value="${discountStatus}" disabled>
+                    </div>
+                `);
+                
+                $('#stockDetailsContainer').slideDown();
+            } else {
+                $('#stockDetailsContainer').slideUp();
+            }
+        }
+
+        // [REFACTOR] Fungsi updateStock hanya untuk kuantitas dan riwayat
         function updateStock(productId, quantityChange, type, notes = '') {
             const productIndex = products.findIndex(p => p.id === productId);
             if (productIndex === -1) return;
@@ -2652,28 +2958,71 @@
                 quantityChange, oldStock, newStock: product.stock,
                 type, notes, userId: currentUser.id
             });
-            saveProducts();
+            
+            // Hanya save produk jika dipanggil dari 'sale', 'opname', 'return', 'initial'
+            // Pemanggil 'supplier_in' (addIncomingStock) akan save manual setelah update harga
+            if (type !== 'supplier_in') {
+                saveProducts();
+            }
             saveStockHistory();
             loadProducts(); 
         }
 
+        // [PENYEMPURNAAN] Logika addIncomingStock dengan WAC (Weighted Average Cost)
         function addIncomingStock(e) {
             e.preventDefault();
             const productId = $('#stockInProduct').val();
-            const quantity = parseInt($('#stockInQuantity').val());
+            const quantityIn = parseInt($('#stockInQuantity').val());
+            const newCostPrice = parseFloat($('#stockInNewCost').val()); // [BARU]
+            const newSellingPrice = parseFloat($('#stockInNewPrice').val()); // [BARU]
             const supplierId = $('#stockInSupplier').val();
             const notes = $('#stockInNotes').val().trim();
 
-            if(!productId || !quantity || quantity <= 0) return showToast('Produk dan jumlah harus valid.', 'error');
+            if(!productId || !quantityIn || quantityIn <= 0) return showToast('Produk dan jumlah harus valid.', 'error');
+            if(isNaN(newCostPrice) || newCostPrice < 0) return showToast('Harga pokok baru tidak valid.', 'error'); // [BARU]
+
+            const productIndex = products.findIndex(p => p.id === productId);
+            if (productIndex === -1) return showToast('Produk tidak ditemukan.', 'error');
+            
+            const product = products[productIndex];
+            const oldStock = product.stock;
+            const oldCostPrice = product.costPrice || 0;
+
+            // --- [PENYEMPURNAAN] Kalkulasi Harga Pokok Rata-rata (Weighted Average Cost) ---
+            const oldTotalValue = oldStock * oldCostPrice;
+            const newTotalValue = quantityIn * newCostPrice;
+            const newTotalStock = oldStock + quantityIn;
+            // Hindari pembagian dengan nol jika stok awal 0
+            const newAverageCost = (newTotalStock > 0) ? (oldTotalValue + newTotalValue) / newTotalStock : newCostPrice;
+            
+            // Update harga pokok produk
+            product.costPrice = newAverageCost;
+
+            // Update harga jual jika diisi dan valid
+            if (!isNaN(newSellingPrice) && newSellingPrice > 0 && newSellingPrice !== product.price) {
+                if (newSellingPrice < newAverageCost) {
+                    showToast('Peringatan: Harga Jual Baru lebih rendah dari Harga Pokok Rata-rata.', 'warning');
+                }
+                product.price = newSellingPrice;
+            }
+            // --- Akhir [PENYEMPURNAAN] ---
 
             const supplier = suppliers.find(s => s.id === supplierId);
             const sourceName = supplier ? supplier.name : "Pembelian Mandiri";
-            const fullNotes = `Dari: ${sourceName}` + (notes ? ` | ${notes}` : '');
+            // Catat harga beli baru di notes
+            const fullNotes = `Dari: ${sourceName} | @${formatCurrency(newCostPrice)}` + (notes ? ` | ${notes}` : '');
             
-            updateStock(productId, quantity, 'supplier_in', fullNotes);
-            showToast('Stok berhasil ditambahkan.', 'success');
+            // Panggil updateStock HANYA untuk menambah jumlah & riwayat
+            updateStock(productId, quantityIn, 'supplier_in', fullNotes);
+            
+            // Simpan perubahan harga (costPrice & price) ke produk
+            saveProducts();
+            loadProducts(); // Refresh product grid untuk harga baru
+            
+            showToast('Stok berhasil ditambahkan. Harga pokok & jual diperbarui.', 'success');
             $('#stockInForm')[0].reset();
             $('#stockInProductSearch').val('');
+            $('#stockDetailsContainer').hide();
             loadProductsForStockIn();
         }
 
@@ -2702,7 +3051,7 @@
                 const physical = parseInt($(this).val()) || 0;
                 const system = product.stock;
                 const diff = physical - system;
-                const loss = -diff * (product.costPrice || 0);
+                const loss = -diff * (product.costPrice || 0); // Kerugian dihitung dari harga pokok
                 $row.find('.stock-diff').text(diff).css('color', diff < 0 ? 'var(--danger)' : 'var(--success)');
                 $row.find('.loss-value').text(formatCurrency(loss)).css('color', loss > 0 ? 'var(--danger)' : 'var(--success)');
             });
@@ -2724,7 +3073,7 @@
                 <h4>Ringkasan Kerugian Stok Opname</h4>
                 <div class="summary-row"><span>Total Produk Berselisih:</span> <span>${totalDiscrepancyItems} item</span></div>
                 <div class="summary-row total-row" style="color: ${totalLossValue > 0 ? 'var(--danger)' : 'var(--success)'}">
-                    <span>Total Nilai Kerugian:</span> <span>${formatCurrency(totalLossValue)}</span>
+                    <span>Total Nilai Kerugian (HPP):</span> <span>${formatCurrency(totalLossValue)}</span>
                 </div>
                 <small>${totalLossValue > 0 ? 'Nilai positif menunjukkan kerugian finansial.' : 'Nilai negatif menunjukkan kelebihan barang.'}</small>
             `;
@@ -2783,15 +3132,20 @@
             $('#manageSuppliersModal').css('display', 'flex');
         }
 
+        // [PERBAIKAN] loadSuppliersForManagement dengan Link WA
         function loadSuppliersForManagement() {
             const $list = $('#suppliersList').empty();
             if (suppliers.length === 0) return $list.html('<div class="empty-state"><i class="fas fa-truck"></i><p>Belum ada suplier</p></div>');
             suppliers.forEach(s => {
+                const waPhone = formatWaNumber(s.phone);
+                const phoneLink = waPhone ? `<a href="https://wa.me/${waPhone}" target="_blank" class="whatsapp-link">${s.phone}</a>` : s.phone;
+                const contactDisplay = s.contactPerson || '-';
+
                 $list.append(`
                     <div class="order-item">
                         <div class="order-item-info">
                             <div class="order-item-name">${s.name}</div>
-                            <div class="order-item-price">${s.contactPerson || '-'} | ${s.phone}</div>
+                            <div class="order-item-price">${contactDisplay} | ${phoneLink}</div>
                         </div>
                         <div class="order-item-qty gap-2">
                              <i class="fas fa-edit edit-supplier" style="cursor:pointer; color: var(--info);" data-id="${s.id}"></i>
@@ -2910,6 +3264,8 @@
         }
         
         // --- OTHER UTILITIES & HELPERS ---
+        
+        // [PENYEMPURNAAN] Struk dengan Nama Mitra dan Diskon Item
         function generateReceiptHTML(order) {
             const member = members.find(m => m.id === order.memberId);
             let itemsHTML = order.items.map(item => `
@@ -2925,7 +3281,7 @@
             <div id="receiptContent">
                 <div class="receipt-header">
                     <div class="receipt-title">${settings.storeName}</div>
-                    <div>${settings.storeAddress}</div>
+                    ${settings.partnerName ? `<div class="receipt-partner-name">${settings.partnerName}</div>` : ''} <div>${settings.storeAddress}</div>
                     <div>Telp: ${settings.storePhone}</div>
                 </div>
                 <div class="receipt-info">
@@ -2939,7 +3295,8 @@
                 ${order.note ? `<div style="font-size:10px; font-style:italic; padding: 5px 0; border-top: 1px dashed #000;">Catatan: ${order.note}</div>` : ''}
                 <div class="receipt-total">
                     <div class="receipt-item"><span>Subtotal</span> <span>${formatCurrency(order.subtotal)}</span></div>
-                    ${order.discount > 0 ? `<div class="receipt-item"><span>Diskon</span> <span>-${formatCurrency(order.discount)}</span></div>` : ''}
+                    ${(order.itemDiscount || 0) > 0 ? `<div class="receipt-item"><span>Diskon Item</span> <span>-${formatCurrency(order.itemDiscount)}</span></div>` : ''}
+                    ${order.discount > 0 ? `<div class="receipt-item"><span>Diskon Member</span> <span>-${formatCurrency(order.discount)}</span></div>` : ''}
                     ${order.tax > 0 ? `<div class="receipt-item"><span>Pajak</span> <span>${formatCurrency(order.tax)}</span></div>` : ''}
                     <div class="receipt-item" style="font-weight:bold; font-size: 14px;"><span>TOTAL</span> <span>${formatCurrency(order.total)}</span></div>
                     <div class="receipt-item"><span>${{ cash: 'Tunai', transfer: 'Transfer', ewallet: 'E-Wallet' }[order.paymentMethod]}</span> <span>${formatCurrency(order.paymentAmount)}</span></div>
@@ -3015,22 +3372,36 @@
             $('#changeContainer').toggle(change >= 0);
             $('#paymentChange').text(formatCurrency(change));
         }
+        
+        // [PERBAIKAN] updateOrderSummary dengan Diskon Item
         function updateOrderSummary() {
             let discountText = '', taxText = '';
-            if (currentOrder.discount > 0) {
-                const percent = currentOrder.memberId ? (settings.memberDiscountPercent??0) : (settings.nonMemberDiscountPercent??0);
-                discountText = `Diskon (${percent}%):`;
+            
+            if (currentOrder.memberId && (settings.isMemberDiscountEnabled || false)) {
+                const minPurchase = settings.memberDiscountMinPurchase || 0;
+                const subtotalForMemberDiscount = currentOrder.subtotal - currentOrder.itemDiscount;
+                if (subtotalForMemberDiscount > minPurchase) {
+                    discountText = `Diskon Member (${settings.memberDiscountPercent ?? 0}%)`;
+                } else {
+                    discountText = `Diskon (Min. ${formatCurrency(minPurchase)})`;
+                }
+            } else if (!currentOrder.memberId && settings.nonMemberDiscountPercent > 0) {
+                 discountText = `Diskon (${settings.nonMemberDiscountPercent ?? 0}%)`;
             }
+
             if (currentOrder.tax > 0) {
-                taxText = `Pajak (${settings.taxPercent || 0}%):`;
+                taxText = `Pajak (${settings.taxPercent || 0}%)`;
             }
+            
             const summaryHTML = currentOrder.items.map(item => `<div class="summary-row"><span>${item.product.name} (${item.quantity}x)</span><span>${formatCurrency(item.product.price * item.quantity)}</span></div>`).join('') +
                 `<div class="summary-row" style="border-top: 1px dashed #ddd; margin-top: 8px; padding-top: 8px;"><span>Subtotal:</span><span>${formatCurrency(currentOrder.subtotal)}</span></div>` +
-                (currentOrder.discount > 0 ? `<div class="summary-row"><span>${discountText}</span><span>-${formatCurrency(currentOrder.discount)}</span></div>` : '') +
-                (currentOrder.tax > 0 ? `<div class="summary-row"><span>${taxText}</span><span>${formatCurrency(currentOrder.tax)}</span></div>` : '') +
+                ((currentOrder.itemDiscount || 0) > 0 ? `<div class="summary-row"><span>Diskon Item (2%):</span><span>-${formatCurrency(currentOrder.itemDiscount)}</span></div>` : '') +
+                (currentOrder.discount > 0 ? `<div class="summary-row"><span>${discountText}:</span><span>-${formatCurrency(currentOrder.discount)}</span></div>` : '') +
+                (currentOrder.tax > 0 ? `<div class="summary-row"><span>${taxText}:</span><span>${formatCurrency(currentOrder.tax)}</span></div>` : '') +
                 `<div class="summary-row total-row"><span>Total:</span><span>${formatCurrency(currentOrder.total)}</span></div>`;
             $('#orderSummary').html(summaryHTML);
         }
+        
         function updatePaymentTab() {
             $('#paymentTotal').text(formatCurrency(currentOrder.total));
             $('#paymentAmount').val('').trigger('input');
@@ -3170,6 +3541,20 @@
             }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); });
         }
         function formatCurrency(amount) { return 'Rp ' + (amount != null ? amount : 0).toLocaleString('id-ID'); }
+        
+        // [BARU] Helper function untuk format nomor WA
+        function formatWaNumber(phone) {
+            if (!phone) return '';
+            let num = phone.replace(/[\s-()]/g, ''); // Hapus spasi, strip, kurung
+            if (num.startsWith('0')) {
+                num = '62' + num.substring(1);
+            } else if (num.startsWith('+62')) {
+                num = num.substring(1);
+            }
+            // Hanya return jika sepertinya valid (mulai dgn 62, panjang > 9)
+            return /^(628)\d{8,12}$/.test(num) ? num : ''; 
+        }
+
         function showToast(message, type = 'info', duration = 3000) {
             const $toast = $('#toast');
             $toast.removeClass('success error warning info').addClass(type);
@@ -3195,12 +3580,13 @@
             $('#reportResults').empty();
             $('#reportsModal').css('display', 'flex');
         }
-
+        
+        // [PENYEMPURNAAN] Laporan dengan Nama Mitra
         function generateReport() {
             let startDate, endDate;
             const period = $('#reportPeriod').val();
             if (period === 'today') { startDate = moment().startOf('day'); endDate = moment().endOf('day'); }
-            else if (period === 'week') { startDate = moment().startOf('week'); endDate = moment().endOf('week'); }
+            else if (period === 'week') { startDate = moment().startOf('week'); endDate = moment().endOf('auto'); }
             else if (period === 'month') { startDate = moment().startOf('month'); endDate = moment().endOf('month'); }
             else if (period === 'custom') {
                 startDate = moment($('#reportStartDate').val());
@@ -3209,7 +3595,8 @@
             }
 
             const reportType = $('#reportsModal .tabs .tab.active').data('tab');
-            let reportHTML = `<div style="text-align:center;"><h4>Laporan Periode: ${startDate.format('D MMM YYYY')} - ${endDate.format('D MMM YYYY')}</h4></div>`;
+            const periodString = `Periode: ${startDate.format('D MMM YYYY')} - ${endDate.format('D MMM YYYY')}`;
+            let reportHTML = getReportHeader(`Laporan Penjualan - ${periodString}`);
             
             if (reportType === 'salesReport') {
                 const filteredOrders = orders.filter(o => moment(o.date).isBetween(startDate, endDate));
@@ -3218,7 +3605,7 @@
                 let topProducts = {};
                 filteredOrders.forEach(order => {
                     totalSales += order.total;
-                    totalDiscount += order.discount || 0;
+                    totalDiscount += (order.discount || 0) + (order.itemDiscount || 0); // [PERBAIKAN] Jumlahkan semua diskon
                     totalTax += order.tax || 0;
                     order.items.forEach(item => {
                         topProducts[item.product.name] = (topProducts[item.product.name] || 0) + item.quantity;
@@ -3234,7 +3621,7 @@
                         <div class="summary-row"><span>Total Pajak:</span> <span>${formatCurrency(totalTax)}</span></div>
                     </div>
                     <h5 class="mt-3">Produk Terlaris</h5>
-                    <ul class="list-group">${sortedProducts.map(p => `<li class="list-group-item">${p[0]} (${p[1]} terjual)</li>`).join('')}</ul>
+                    <ul class="list-group">${sortedProducts.map(p => `<li class="list-group-item" style="border:none; padding-left: 0;">${p[0]} (${p[1]} terjual)</li>`).join('')}</ul>
                 `;
             }
             $('#reportResults').html(reportHTML);
@@ -3272,16 +3659,20 @@
             $('#manageMembersModal').css('display', 'flex');
         }
 
+        // [PERBAIKAN] loadMembersForManagement dengan Link WA
         function loadMembersForManagement(searchTerm = '') {
             const $list = $('#membersList').empty();
             const filtered = members.filter(m => !searchTerm || m.name.toLowerCase().includes(searchTerm.toLowerCase()) || m.id.toLowerCase().includes(searchTerm.toLowerCase()) || m.phone.includes(searchTerm));
             if (filtered.length === 0) return $list.html('<div class="empty-state"><p>Belum ada member terdaftar.</p></div>');
             filtered.forEach(m => {
+                const waPhone = formatWaNumber(m.phone);
+                const phoneLink = waPhone ? `<a href="https://wa.me/${waPhone}" target="_blank" class="whatsapp-link">${m.phone}</a>` : m.phone;
+                
                 $list.append(`
                     <div class="order-item">
                         <div class="order-item-info">
                             <div class="order-item-name">${m.name} <span class="member-badge">${m.id}</span></div>
-                            <div class="order-item-price">${m.phone} | Total Belanja: ${formatCurrency(m.totalSpent || 0)}</div>
+                            <div class="order-item-price">${phoneLink} | Total Belanja: ${formatCurrency(m.totalSpent || 0)}</div>
                         </div>
                         <div class="order-item-qty gap-2">
                             <i class="fas fa-id-card kta-member" style="cursor:pointer; color: var(--success);" data-id="${m.id}"></i>
@@ -3378,9 +3769,11 @@
                 pdf.save(filename);
             }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); });
         }
-
+        
+        // [PENYEMPURNAAN] Modal Info Toko dengan Nama Mitra
         function openManageStoreInfoModal() {
-            $('#storeName').val(settings.storeName);
+            $('#storeName').val(settings.storeName).prop('disabled', true); // [PENYEMPURNAAN] Kunci Nama Toko
+            $('#partnerName').val(settings.partnerName || ''); // [BARU]
             $('#storeAddress').val(settings.storeAddress);
             $('#storePhone').val(settings.storePhone);
             $('#storeEmail').val(settings.storeEmail);
@@ -3391,8 +3784,10 @@
             $('#storeNameHeader').text(settings.storeName || 'SUPERMARKET');
         }
 
+        // [PENYEMPURNAAN] Simpan Info Toko dengan Nama Mitra
         function saveStoreInfo() {
-            settings.storeName = $('#storeName').val().trim();
+            // settings.storeName = $('#storeName').val().trim(); // [DIHAPUS] Tidak bisa diubah
+            settings.partnerName = $('#partnerName').val().trim(); // [BARU]
             settings.storeAddress = $('#storeAddress').val().trim();
             settings.storePhone = $('#storePhone').val().trim();
             settings.storeEmail = $('#storeEmail').val().trim();
@@ -3402,13 +3797,26 @@
             showToast('Info toko berhasil diperbarui.', 'success');
         }
 
+        // [PERBAIKAN] openControlPanel dengan Kontrol Diskon Member
         function openControlPanel() {
             promptForPassword('panel', () => {
                 switchModalTab($('#controlPanelModal'), 'users');
                 loadUsers();
+                
+                // [PERBAIKAN] Load seting diskon baru
+                const isDiscountEnabled = settings.isMemberDiscountEnabled || false;
+                $('#isMemberDiscountEnabled').prop('checked', isDiscountEnabled);
                 $('#memberDiscount').val(settings.memberDiscountPercent ?? 0);
+                $('#memberDiscountMinPurchase').val(settings.memberDiscountMinPurchase ?? 0);
                 $('#nonMemberDiscount').val(settings.nonMemberDiscountPercent ?? 0);
                 $('#taxPercent').val(settings.taxPercent ?? 0);
+                
+                // [BARU] Tambah event listener untuk toggle
+                $('#memberDiscountSettingsContainer').toggle(isDiscountEnabled);
+                $('#isMemberDiscountEnabled').off('change').on('change', function() {
+                    $('#memberDiscountSettingsContainer').slideToggle($(this).is(':checked'));
+                });
+
                 $('#controlPanelModal').css('display', 'flex');
             });
         }
@@ -3522,9 +3930,12 @@
             showToast('Password login Anda berhasil diubah.', 'success');
         }
         
+        // [PERBAIKAN] saveTaxDiscountSettings dengan Kontrol Diskon Member
         function saveTaxDiscountSettings(e) {
             e.preventDefault();
+            settings.isMemberDiscountEnabled = $('#isMemberDiscountEnabled').is(':checked');
             settings.memberDiscountPercent = parseFloat($('#memberDiscount').val()) || 0;
+            settings.memberDiscountMinPurchase = parseFloat($('#memberDiscountMinPurchase').val()) || 0;
             settings.nonMemberDiscountPercent = parseFloat($('#nonMemberDiscount').val()) || 0;
             settings.taxPercent = parseFloat($('#taxPercent').val()) || 0;
             saveSettings();
@@ -3670,6 +4081,60 @@
             const $select = $('#stockInSupplier').html('<option value="pembelian_mandiri">Pembelian Mandiri (Kulak)</option>');
             suppliers.forEach(s => $select.append(`<option value="${s.id}">${s.name}</option>`));
         }
+
+        // --- [BARU] FUNGSI NOTIFIKASI PREMIUM ---
+        
+        function setupPremiumNotification() {
+            // Hapus interval lama jika ada (misal. saat re-login tanpa refresh)
+            if (premiumNotifInterval) clearInterval(premiumNotifInterval);
+
+            // Tampilkan notifikasi 10 detik setelah login/memuat ulang
+            setTimeout(showPremiumNotification, 10000); 
+
+            // Set interval untuk 1 jam
+            const ONE_HOUR = 3600 * 1000;
+            premiumNotifInterval = setInterval(showPremiumNotification, ONE_HOUR);
+        }
+        
+        function showPremiumNotification() {
+            const container = $('#premium-notification-container');
+            if (container.is(':visible')) return; // Jangan tampilkan jika sudah ada
+
+            fetch('notifikasi.html') // Memuat konten dari file eksternal
+                .then(response => {
+                    if (!response.ok) throw new Error('notifikasi.html tidak ditemukan');
+                    return response.text();
+                })
+                .then(html => {
+                    container.html(html).show();
+                    
+                    // Pasang listener untuk tombol close di dalam HTML yang di-load
+                    container.off('click', '.premium-notif-close').on('click', '.premium-notif-close', function() {
+                        closePremiumNotification();
+                    });
+                    
+                    // Set timer untuk auto-close (10 detik)
+                    const TEN_SECONDS = 10000;
+                    setTimeout(closePremiumNotification, TEN_SECONDS);
+                })
+                .catch(err => {
+                    console.error('Gagal memuat notifikasi premium:', err);
+                });
+        }
+
+        function closePremiumNotification() {
+            const container = $('#premium-notification-container');
+            if (!container.is(':visible')) return;
+            
+            container.addClass('premium-notif-hide');
+            
+            // Tunggu animasi selesai sebelum clear content dan hide
+            setTimeout(() => {
+                container.removeClass('premium-notif-hide').hide().empty();
+            }, 500); // 500ms (sesuai durasi animasi)
+        }
+
+        // --- AKHIR DARI FUNGSI NOTIFIKASI PREMIUM ---
 
         function saveProducts() { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products)); }
         function saveCategories() { localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories)); }
