@@ -1999,7 +1999,6 @@
             }
             
             loadTicketStock(options = {}) {
-                // ... (Fungsi tidak berubah signifikan, tetap sama)
                 const statusFilter = document.getElementById('filterStatus').value;
                 const typeFilter = document.getElementById('filterType').value;
                 const dateFilter = document.getElementById('filterDate').value;
@@ -2012,6 +2011,7 @@
                     (!query || t.code.toLowerCase().includes(query.toLowerCase()))
                 );
                 
+                // PERBAIKAN: Mengganti a.date menjadi a.generatedAt untuk sorting yang benar
                 filteredTickets.sort((a, b) => new Date(b.generatedAt) - new Date(a.generatedAt));
 
                 const tableBody = document.getElementById('stockTableBody');
@@ -2047,9 +2047,6 @@
                 }).join('');
             }
             
-            // ... (Fungsi-fungsi lain seperti addToCart, updateCart, completePayment, dll. tetap ada
-            // dan tidak diubah secara fungsional, hanya mungkin sedikit perapian)
-
             /**
              * REVISI TOTAL: Fungsi ini diperbarui untuk mencocokkan desain baru yang diminta.
              * - Info developer & website ditambahkan.
@@ -2250,7 +2247,6 @@
 
             // Fungsi lainnya (add to cart, payment, dll)
             printAllGeneratedTickets() { const container = document.getElementById('generatedTicketsContainer'); const ticketsHTML = container.querySelector('.printable-ticket-wrapper')?.innerHTML; if (!ticketsHTML || ticketsHTML.trim() === '') { this.showToast('Info', 'Tidak ada tiket untuk dicetak.', 'info'); return; } this.printContent(`<div class="printable-ticket-wrapper">${ticketsHTML}</div>`, 'Tiket Masuk'); }
-            loadTicketStock(options = {}) { const statusFilter = document.getElementById('filterStatus').value; const typeFilter = document.getElementById('filterType').value; const dateFilter = document.getElementById('filterDate').value; const query = options.query || ''; let filteredTickets = this.tickets.filter(t => (statusFilter === 'all' || t.status === statusFilter) && (typeFilter === 'all' || t.type === typeFilter) && (!dateFilter || t.generatedAt.startsWith(dateFilter)) && (!query || t.code.toLowerCase().includes(query.toLowerCase()))); filteredTickets.sort((a, b) => new Date(b.generatedAt) - new Date(a.date)); const tableBody = document.getElementById('stockTableBody'); tableBody.innerHTML = ''; if (filteredTickets.length === 0) { tableBody.innerHTML = `<tr><td colspan="8" class="text-center">Tidak ada data tiket ditemukan.</td></tr>`; return; } const statusConfig = { available: { badge: 'bg-success', text: 'Tersedia' }, sold: { badge: 'bg-danger', text: 'Terjual' }, expired: { badge: 'bg-warning', text: 'Kedaluwarsa' } }; tableBody.innerHTML = filteredTickets.map(ticket => { const {badge, text} = statusConfig[ticket.status] || {badge: 'bg-secondary', text: ticket.status}; return `<tr><td><input type="checkbox" class="ticket-checkbox form-check-input" data-id="${ticket.id}" ${ticket.status !== 'available' ? 'disabled' : ''}></td><td>${ticket.code}</td><td>${this.formatTicketType(ticket.type)}</td><td>${this.formatCurrency(ticket.price)}</td><td><span class="badge ${badge}">${text}</span></td><td>${this.formatDateTime(ticket.generatedAt)}</td><td>${ticket.expiryDate ? this.formatDate(ticket.expiryDate) : '-'}</td><td><button class="btn btn-sm btn-outline-info view-ticket-btn" data-id="${ticket.id}" title="Lihat Detail"><i class="fas fa-eye"></i></button> ${ticket.status === 'available' ? `<button class="btn btn-sm btn-outline-success add-to-cart-btn" data-id="${ticket.id}" title="Tambah ke Keranjang"><i class="fas fa-cart-plus"></i></button>` : ''}</td></tr>`; }).join(''); }
             toggleSelectAllTickets(checked) { document.querySelectorAll('#stockTableBody .ticket-checkbox:not(:disabled)').forEach(checkbox => checkbox.checked = checked); document.getElementById('selectAllTickets').checked = checked; document.getElementById('selectAllHeader').checked = checked; }
             addSelectedToCart() { const selectedCheckboxes = document.querySelectorAll('#stockTableBody .ticket-checkbox:checked'); if (selectedCheckboxes.length === 0) { this.showToast('Peringatan', 'Pilih setidaknya satu tiket untuk ditambahkan.', 'warning'); return; } let addedCount = 0; let alreadyInCartCount = 0; selectedCheckboxes.forEach(checkbox => { const result = this.addToCart(checkbox.dataset.id, false); if (result === 'added') addedCount++; else if (result === 'in_cart') alreadyInCartCount++; }); if (addedCount > 0) this.showToast('Sukses', `${addedCount} tiket berhasil ditambahkan.`, 'success'); if (alreadyInCartCount > 0) this.showToast('Info', `${alreadyInCartCount} tiket sudah ada di keranjang.`, 'info'); this.toggleSelectAllTickets(false); this.showSection('salesSection'); setTimeout(() => document.getElementById('amountPaid').focus(), 100); }
             addToCart(ticketId, showToast = true) { const ticket = this.tickets.find(t => t.id === ticketId); if (!ticket) { if (showToast) this.showToast('Error', 'Tiket tidak ditemukan.', 'danger'); return 'not_found'; } if (ticket.status !== 'available') { if (showToast) this.showToast('Error', `Tiket ${ticket.code} tidak tersedia.`, 'danger'); return 'unavailable'; } if (this.cart.some(item => item.id === ticket.id)) { if (showToast) this.showToast('Info', `Tiket ${ticket.code} sudah ada di keranjang.`, 'info'); return 'in_cart'; } this.cart.push({ id: ticket.id, code: ticket.code, type: ticket.type, price: ticket.price }); this.updateCart(); if (showToast) { this.showToast('Sukses', `Tiket ${ticket.code} ditambahkan.`, 'success'); document.getElementById('salesTicketSearchInput').focus(); } return 'added'; }
@@ -2294,3 +2290,4 @@
     </script>
 </body>
 </html>
+
