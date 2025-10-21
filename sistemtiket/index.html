@@ -2165,6 +2165,9 @@
             }
 
             // --- Helper & Utility Functions (Mostly unchanged) ---
+            // PENAMBAHAN: Menambahkan kembali fungsi showLoading dan hideLoading yang hilang
+            showLoading() { document.getElementById('loadingOverlay').classList.add('show'); }
+            hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
             camelToKebab(str) { return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); }
             generateId() { return Date.now().toString(36) + Math.random().toString(36).substring(2); }
             generateRandomString(length) { return [...Array(length)].map(() => (~~(Math.random()*36)).toString(36)).join('').toUpperCase(); }
