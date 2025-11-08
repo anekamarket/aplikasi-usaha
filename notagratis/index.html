@@ -555,10 +555,6 @@
             z-index: 1;
         }
         
-        /* [PERBAIKAN] Watermark dihapus karena tidak reliable di html2pdf */
-        /* .nota-body-content::after { ... } */
-
-
         /* Header Nota Baru (Layar) */
         .nota-brand-header {
             display: flex;
@@ -707,13 +703,14 @@
             opacity: 0.7;
         }
         
-        /* --- [PERBAIKAN BESAR] Gaya Khusus untuk Cetak (Download PDF) --- */
+        /* --- [PERBAIKAN] Gaya Khusus untuk PDF (Hapus Cetak Browser) --- */
         
         /* Elemen khusus cetak (default tersembunyi) */
         .nota-print-header, .nota-print-footer {
             display: none;
         }
         
+        /* @media print INI DIGUNAKAN OLEH html2pdf.js BUKAN window.print() */
         @media print {
             body, html {
                 background: #FFF;
@@ -1328,7 +1325,7 @@
 
     
     <script>
-        // [FUNGSI UTAMA] Helper untuk Generate PDF
+        // [FUNGSI UTAMA] Helper untuk Generate PDF (MENGGUNAKAN html2pdf.js)
         function generatePDFFromElement(elementId, filename) {
             const element = document.getElementById(elementId);
             
@@ -1338,15 +1335,12 @@
                 boxShadow: element.style.boxShadow
             };
             
-            // [PERBAIKAN] Tampilkan/Sembunyikan elemen print/layar secara manual
-            // html2pdf tidak selalu mematuhi @media print. Kita paksa.
             const printHeader = element.querySelector('.nota-print-header');
             const printFooter = element.querySelector('.nota-print-footer');
             const screenHeader = element.querySelector('.modal-header');
             const screenFooter = element.querySelector('.modal-footer');
             const screenBrandHeader = element.querySelector('.nota-brand-header');
 
-            // Simpan style display asli
             const originalDisplays = {
                 printHeader: printHeader ? printHeader.style.display : '',
                 printFooter: printFooter ? printFooter.style.display : '',
@@ -1360,37 +1354,35 @@
             if(screenFooter) screenFooter.style.display = 'none';
             if(screenBrandHeader) screenBrandHeader.style.display = 'none';
 
-            // Tampilkan elemen print
-            if(printHeader) printHeader.style.display = 'flex'; // 'flex' based on its CSS
-            if(printFooter) printFooter.style.display = 'block'; // 'block' based on its CSS
+            // Tampilkan elemen print (untuk PDF)
+            if(printHeader) printHeader.style.display = 'flex'; 
+            if(printFooter) printFooter.style.display = 'block'; 
             
-            // Terapkan style khusus untuk PDF (hilangkan border/shadow modal)
             element.style.border = 'none';
             element.style.boxShadow = 'none';
             
             const opt = {
-                margin: [10, 0, 10, 0], // top, left, bottom, right (mm) - Dibuat 0 agar konten bisa 100% width
+                margin: [10, 0, 10, 0], 
                 filename: filename || 'nota.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             
-            // Menggunakan html2pdf untuk membuat PDF dari elemen
+            // INI ADALAH FUNGSI DOWNLOAD PDF, BUKAN window.print()
             return html2pdf().set(opt).from(element).save().then(() => {
-                // [PERBAIKAN] Kembalikan tampilan modal seperti semula setelah PDF dibuat
+                // Kembalikan tampilan modal seperti semula
                 if(screenHeader) screenHeader.style.display = originalDisplays.screenHeader || 'flex';
                 if(screenFooter) screenFooter.style.display = originalDisplays.screenFooter || 'flex';
                 if(screenBrandHeader) screenBrandHeader.style.display = originalDisplays.screenBrandHeader || 'flex';
                 if(printHeader) printHeader.style.display = originalDisplays.printHeader || 'none';
                 if(printFooter) printFooter.style.display = originalDisplays.printFooter || 'none';
                 
-                // Kembalikan style elemen
                 element.style.border = originalStyles.border;
                 element.style.boxShadow = originalStyles.boxShadow;
             }).catch((err) => {
                 console.error("Gagal membuat PDF:", err);
-                // Pastikan untuk mengembalikan style bahkan jika terjadi error
+                // Kembalikan style bahkan jika terjadi error
                 if(screenHeader) screenHeader.style.display = originalDisplays.screenHeader || 'flex';
                 if(screenFooter) screenFooter.style.display = originalDisplays.screenFooter || 'flex';
                 if(screenBrandHeader) screenBrandHeader.style.display = originalDisplays.screenBrandHeader || 'flex';
@@ -1438,7 +1430,6 @@
                         (position) => {
                             const lat = position.coords.latitude;
                             const lon = position.coords.longitude;
-                            // [PERBAIKAN] Menggunakan URL Google Maps yang valid
                             const mapsLink = `https://www.google.com/maps?q=${lat},${lon}`;
                             
                             inputLokasi.value = mapsLink;
@@ -1493,12 +1484,10 @@
             jenisAcaraSelect.addEventListener('change', () => {
                 const value = jenisAcaraSelect.value;
                 
-                // Sembunyikan semua field spesifik acara dulu
                 [grupNamaAcara, grupNamaPria, grupNamaWanita, grupNamaAnak, grupOrtuPria, grupOrtuWanita, grupTanggalWaktu, grupLokasi].forEach(g => g && g.classList.add('hidden'));
 
-                if (!value) return; // Jika pilihannya "-- Pilih Jenis Acara --", jangan tampilkan apa-apa
+                if (!value) return; 
 
-                // Tampilkan field umum untuk semua acara
                 grupNamaAcara.classList.remove('hidden');
                 grupTanggalWaktu.classList.remove('hidden');
                 grupLokasi.classList.remove('hidden');
@@ -1510,30 +1499,27 @@
                     grupOrtuWanita.classList.remove('hidden');
                 } else if (value === 'khitanan') {
                     grupNamaAnak.classList.remove('hidden');
-                    grupOrtuPria.classList.remove('hidden'); // Seringkali nama ortu dicantumkan
-                    grupOrtuWanita.classList.remove('hidden'); // Seringkali nama ortu dicantumkan
+                    grupOrtuPria.classList.remove('hidden'); 
+                    grupOrtuWanita.classList.remove('hidden'); 
                 } else if (value === 'ulang-tahun') {
                     grupNamaAnak.classList.remove('hidden');
                 }
-                // Untuk 'syukuran', 'rapat', 'lainnya', hanya field umum yang tampil
             });
 
-            // --- [PERBAIKAN] Skrip Validasi & Modal Nota (Disesuaikan Desain Baru) ---
+            // --- Skrip Validasi & Modal Nota ---
             const btnBuatNota = document.getElementById('btn-buat-nota');
             const modal = document.getElementById('modal-nota');
             const btnCloseModal = document.getElementById('btn-close-modal');
             const btnCloseModal2 = document.getElementById('btn-close-modal-2');
             
-            // [PERBAIKAN] Mengganti ID tombol
+            // [PERBAIKAN] Ini adalah tombol DOWNLOAD PDF
             const btnDownloadPdf = document.getElementById('btn-download-pdf'); 
             const btnKirimWa = document.getElementById('btn-kirim-wa');
             
             const form = document.getElementById('form-pemesanan');
             
-            // Fungsi validasi sederhana
             const validateForm = () => {
                 let isValid = true;
-                // Ambil semua field required yang *tidak* berada di dalam grup 'hidden'
                 const requiredFields = form.querySelectorAll('.form-group:not(.hidden) [required]');
                 
                 requiredFields.forEach(field => {
@@ -1548,19 +1534,15 @@
                 return isValid;
             };
 
-            // Fungsi Buka/Tutup Modal
             const openModal = () => modal.classList.add('active');
             const closeModal = () => modal.classList.remove('active');
 
-            // Event listener untuk tombol Buat Nota
             btnBuatNota.addEventListener('click', () => {
                 if (validateForm()) {
-                    // 1. Generate Kode Pesanan (Untuk Layar & Cetak)
                     const kodePesanan = 'AD-' + Date.now().toString().slice(-6);
                     document.getElementById('nota-kode').textContent = kodePesanan;
-                    document.getElementById('nota-kode-print').textContent = kodePesanan; // BARU
+                    document.getElementById('nota-kode-print').textContent = kodePesanan; 
 
-                    // 2. Ambil data & isi ke Nota
                     document.getElementById('nota-nama-pemesan').textContent = document.getElementById('nama-pemesan').value;
                     document.getElementById('nota-wa-pemesan').textContent = document.getElementById('wa-pemesan').value;
                     
@@ -1568,15 +1550,12 @@
                     document.getElementById('nota-jenis-produk').textContent = produkSelect.options[produkSelect.selectedIndex].text;
                     
                     const catatan = document.getElementById('catatan-tambahan').value || '(Tidak ada catatan)';
-                    // [PERBAIKAN] Gunakan textContent untuk keamanan, pre-wrap akan handle baris baru
                     document.getElementById('nota-catatan-tambahan').textContent = catatan;
 
-                    // 3. Ambil data acara (jika ada)
                     const containerAcaraTbody = document.getElementById('nota-grup-acara-tbody');
-                    containerAcaraTbody.innerHTML = ''; // Kosongkan dulu
+                    containerAcaraTbody.innerHTML = ''; 
                     
                     const addNotaItem = (label, value, isHtml = false) => {
-                        // Hanya tambahkan jika grupnya tidak tersembunyi DAN valuenya ada
                         if (value) {
                             const newRow = containerAcaraTbody.insertRow();
                             const cell1 = newRow.insertCell(0);
@@ -1608,9 +1587,9 @@
                             let tglFormatted = tgl;
                             if (tgl) {
                                 try {
-                                    const tglObj = new Date(tgl + 'T00:00:00'); // Hindari masalah zona waktu
+                                    const tglObj = new Date(tgl + 'T00:00:00'); 
                                     tglFormatted = tglObj.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-                                } catch (e) { /* biarkan format aslinya jika error */ }
+                                } catch (e) { /* biarkan */ }
                             }
                             addNotaItem('Waktu Acara', `${tglFormatted} ${waktu ? 'Pukul ' + waktu + ' WIB' : ''}`.trim());
                         }
@@ -1625,40 +1604,35 @@
                         }
                     }
                     
-                    // 4. Tampilkan Modal
                     openModal();
                 } else {
                     alert('Harap isi semua field yang wajib (ditandai merah) dan terlihat.');
                 }
             });
 
-            // Event listener untuk tombol tutup modal
             btnCloseModal.addEventListener('click', closeModal);
             btnCloseModal2.addEventListener('click', closeModal);
 
             
-            // [PERBAIKAN] Event listener untuk Download (PDF)
+            // [PERBAIKAN] Event listener untuk DOWNLOAD PDF.
+            // TIDAK ADA window.print() DI SINI.
             btnDownloadPdf.addEventListener('click', () => {
-                // Ambil kode pesanan untuk nama file
                 const kodePesanan = document.getElementById('nota-kode').textContent || 'AD-Pesanan';
                 const filename = `Nota_Pra-Pesanan_${kodePesanan}.pdf`;
                 
-                // Ganti teks tombol untuk indikator loading
                 const originalBtnText = btnDownloadPdf.innerHTML;
                 btnDownloadPdf.innerHTML = 'Membuat PDF...';
                 btnDownloadPdf.disabled = true;
 
-                // Panggil fungsi generatePDF
+                // Panggil fungsi generatePDF (yang menggunakan html2pdf.js)
                 generatePDFFromElement('modal-nota-content-printable', filename)
                     .then(() => {
-                        // Kembalikan tombol ke kondisi semula
                         btnDownloadPdf.innerHTML = originalBtnText;
                         btnDownloadPdf.disabled = false;
                     })
                     .catch((err) => {
                         console.error("Gagal membuat PDF:", err);
                         alert("Gagal membuat PDF. Silakan coba lagi.");
-                        // Kembalikan tombol ke kondisi semula
                         btnDownloadPdf.innerHTML = originalBtnText;
                         btnDownloadPdf.disabled = false;
                     });
@@ -1724,10 +1698,8 @@
                 window.open(`https://wa.me/${adminNomor}?text=${encodedMessage}`, '_blank');
             };
 
-            // Event listener untuk tombol Kirim WA
             btnKirimWa.addEventListener('click', formatNotaForWhatsApp);
 
-            // Inisialisasi form
             hideAllEventFields();
             
         });
