@@ -3,27 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aneka Digital - Solusi Cetak Modern & Profesional</title>
-    <meta name="description" content="Jasa cetak foto, edit foto, undangan, cetak CD, dan ID card. Profesional, bersih, dan cepat. Hubungi kami via WhatsApp.">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Online Store Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.css">
     <style>
-        /* --- CSS Reset & Variabel (TEMA MODERN MEWAH) --- */
         :root {
-            --primary-color: #0A4D98; /* Biru Navy (Profesional/Mewah) */
-            --secondary-color: #083A75; /* Biru Lebih Tua (Untuk Hover) */
-            --dark-text: #333333;
-            --light-text: #666666;
-            --white-color: #FFFFFF;
-            --light-gray: #f8f9fa;
-            --border-color: #e9ecef;
-            --whatsapp-color: #25D366;
-            --error-color: #dc3545;
+            --primary-color: #4a6bff;
+            --primary-light: #e8f0fe;
+            --secondary-color: #3a56d4;
+            --accent-color: #5c8aff;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --success-color: #10b981;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-light: #fef3c7;
+            --info-color: #3b82f6;
+            --info-light: #dbeafe;
+            --gray-color: #64748b;
+            --gray-light: #f1f5f9;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --rounded-sm: 0.25rem;
+            --rounded: 0.5rem;
+            --rounded-lg: 0.75rem;
+            --rounded-xl: 1rem;
         }
 
         * {
@@ -33,1677 +42,2474 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            line-height: 1.7;
-            color: var(--dark-text);
-            background: var(--white-color);
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
         }
 
         .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        /* --- Header & Navigasi (Bersih & Modern) --- */
-        header {
-            background: var(--white-color);
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border-color);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .logo span {
-            color: var(--dark-text);
-            font-weight: 500;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            align-items: center;
-        }
-
-        nav li {
-            margin-left: 2.5rem;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--light-text);
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-            padding-bottom: 5px;
-        }
-
-        nav a:hover {
-            color: var(--primary-color);
-        }
-
-        /* Tombol CTA di Navigasi */
-        .nav-cta {
-            background: var(--primary-color);
-            color: var(--white-color) !important;
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .nav-cta:hover {
-            background: var(--secondary-color);
-            color: var(--white-color) !important;
-            transform: translateY(-2px);
-        }
-
-        /* --- Tombol Hamburger (Canggih) --- */
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .hamburger .bar {
-            width: 25px;
-            height: 3px;
-            background-color: var(--primary-color);
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-
-        /* --- Hero Section (Bersih & Profesional) --- */
-        #hero {
-            display: flex;
-            align-items: center;
-            min-height: 80vh;
-            padding-top: 100px; /* Offset header */
-            background: var(--light-gray); /* Latar belakang cerah */
-        }
-        
-        #hero .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 3rem;
-        }
-
-        .hero-content {
-            flex-basis: 55%;
-        }
-
-        .hero-image {
-            flex-basis: 40%;
-            text-align: center;
-        }
-
-        .hero-image img {
             max-width: 100%;
-            border-radius: 10px;
-            content: url('https://i.imgur.com/731UDrZ.jpeg');
-        }
-
-        #hero h1 {
-            font-size: 3.2rem; /* Ukuran pas */
-            font-weight: 700;
-            color: var(--dark-text);
-            margin-bottom: 1.5rem;
-            line-height: 1.3;
-        }
-        
-        #hero h1 span {
-            color: var(--primary-color);
-        }
-
-        #hero .subheadline {
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: var(--light-text);
-            margin-bottom: 2.5rem;
-            max-width: 500px;
-        }
-
-        .cta-button {
-            background: var(--primary-color);
-            color: var(--white-color);
-            padding: 0.9rem 2.2rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(10, 77, 152, 0.2);
-            border: none;
-            cursor: pointer;
-        }
-        
-        .cta-button:disabled {
-            background: var(--light-text);
-            cursor: not-allowed;
-        }
-
-        .cta-button:hover:not(:disabled) {
-            background: var(--secondary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(10, 77, 152, 0.3);
-        }
-
-        /* --- Section Umum --- */
-        section {
-            padding: 5rem 0;
-        }
-
-        section:nth-child(even) {
-            background: var(--light-gray);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--dark-text);
-            margin-bottom: 1rem;
-        }
-        
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.1rem;
-            color: var(--light-text);
-            margin-bottom: 3.5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* --- Layanan Section (Layout Diperbaiki) --- */
-        .services-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Default 1 kolom (mobile) */
-            gap: 2rem;
-        }
-
-        /* Tablet view: 2 kolom */
-        @media (min-width: 600px) {
-            .services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        /* Desktop view: 4 kolom */
-        @media (min-width: 1024px) {
-            .services-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        .service-card {
-            background: var(--white-color);
-            padding: 2rem;
-            text-align: left; /* Lebih profesional */
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            border-left: 4px solid var(--border-color);
-        }
-
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .service-card .icon-svg {
-            width: 45px;
-            height: 45px;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-        }
-        
-        .service-card h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--dark-text);
-            margin-bottom: 0.5rem;
-        }
-        
-        .service-card p {
-            font-size: 0.95rem;
-            color: var(--light-text);
-        }
-
-        /* --- Cara Pesan (#order) --- */
-        .order-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .step-card {
-            background: var(--light-gray);
-            padding: 2.5rem 2rem;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        .step-card .step-number {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            line-height: 50px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            color: var(--white-color);
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-        
-        .step-card h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--dark-text);
-            margin-bottom: 0.5rem;
-        }
-        
-        .step-card p {
-            font-size: 0.95rem;
-            color: var(--light-text);
-        }
-
-        /* --- Galeri (Efek Hover Bersih) --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.4s ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.05);
-        }
-        
-        /* --- Form Pemesanan --- */
-        #form-pemesanan {
-            max-width: 900px;
             margin: 0 auto;
-            background: var(--white-color);
-            padding: 3rem;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-group.hidden {
-            display: none;
+            padding: 20px;
         }
 
-        .form-group-full {
-            grid-column: 1 / -1;
-        }
-        
-        .form-group label {
-            font-weight: 600;
-            color: var(--dark-text);
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.9rem;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            font-size: 1rem;
-            font-family: 'Poppins', sans-serif;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(10, 77, 152, 0.15);
-        }
-        
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-        
-        .form-group .note {
-            font-size: 0.85rem;
-            color: var(--light-text);
-        }
-
-        .form-group.error input,
-        .form-group.error select {
-            border-color: var(--error-color);
-        }
-
-        .form-group .error-message {
-            font-size: 0.85rem;
-            color: var(--error-color);
-            display: none;
-        }
-
-        .form-group.error .error-message {
-            display: block;
-        }
-
-        /* --- Helper Button Maps --- */
-        .label-with-button {
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--rounded-lg);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: -0.25rem; /* Adjust spacing */
-        }
-        
-        .button-helper {
-            background: var(--light-gray);
-            border: 1px solid var(--border-color);
-            color: var(--primary-color);
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            cursor: pointer;
             transition: all 0.3s ease;
         }
-        
-        .button-helper:hover:not(:disabled) {
-            background: var(--border-color);
-        }
-        
-        .button-helper:disabled {
-            background: var(--light-gray);
-            color: var(--light-text);
-            cursor: wait;
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
         }
 
+        .header-subtitle {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
 
-        /* --- [PERBAIKAN DESAIN] Modal Nota (Profesional Baru) --- */
-        .modal-overlay {
+        .header-info {
+            text-align: right;
+        }
+
+        .header-info p {
+            margin: 2px 0;
+            font-size: 0.9rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .left-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: var(--rounded-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .right-panel {
+            flex: 2;
+            min-width: 400px;
+            background: white;
+            border-radius: var(--rounded-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 107, 255, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--rounded-sm);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #0d9b6c;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+
+        .btn-warning:hover {
+            background-color: #e69007;
+        }
+
+        .btn-info {
+            background-color: var(--info-color);
+        }
+
+        .btn-info:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: var(--gray-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.85rem;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: var(--rounded-sm);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #f1f3f5;
+            font-weight: 500;
+            color: #555;
+            position: sticky;
+            top: 0;
+        }
+
+        .table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background-color: var(--success-light);
+            color: #065f46;
+        }
+
+        .badge-danger {
+            background-color: var(--danger-light);
+            color: #b91c1c;
+        }
+
+        .badge-warning {
+            background-color: var(--warning-light);
+            color: #92400e;
+        }
+
+        .badge-info {
+            background-color: var(--info-light);
+            color: #1e40af;
+        }
+
+        .badge-primary {
+            background-color: #eef2ff;
+            color: var(--primary-color);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s ease;
+        }
+
+        .cart-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .cart-item-price {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item-qty button {
+            width: 25px;
+            height: 25px;
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .cart-item-qty button:hover {
+            background-color: #e9ecef;
+        }
+
+        .cart-item-qty input {
+            width: 40px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 3px;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #ddd;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-label {
+            font-weight: 500;
+        }
+
+        .summary-value {
+            font-weight: 500;
+        }
+
+        .total-row {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .payment-methods {
+            margin-top: 20px;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+
+        .payment-method:hover {
+            background-color: #f8f9fa;
+        }
+
+        .payment-method input {
+            margin-right: 10px;
+        }
+
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
             justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .modal-content {
-            background: var(--white-color);
-            padding: 0; /* Padding diatur di header/body/footer */
-            border-radius: 10px;
-            width: 90%;
-            max-width: 750px; /* Sedikit lebih lebar */
-            max-height: 90vh;
-            overflow: hidden; /* Kontrol overflow di body */
-            display: flex;
-            flex-direction: column;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
         }
 
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
+        .modal-content {
+            background-color: white;
+            border-radius: var(--rounded-lg);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalFadeIn 0.3s;
         }
-        
-        /* Header Modal (Layar) */
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .modal-header {
-            padding: 1.5rem 2.5rem;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
         }
-        
-        .modal-header h2 {
-            color: var(--primary-color);
-            font-size: 1.6rem;
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
         }
-        
-        .modal-close-btn {
-            font-size: 2.2rem;
-            color: var(--light-text);
+
+        .modal-close {
             background: none;
             border: none;
+            font-size: 1.5rem;
             cursor: pointer;
-            line-height: 1;
+            color: #999;
+            transition: all 0.2s;
         }
-        
-        /* Body Nota (Layar & Cetak) */
-        .nota-body {
-            font-size: 1rem;
-            padding: 2.5rem;
-            overflow-y: auto;
-            flex-grow: 1;
-            background: var(--light-gray);
+
+        .modal-close:hover {
+            color: #333;
+            transform: rotate(90deg);
         }
-        
-        .nota-body-content {
-            background: var(--white-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .setup-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            border-radius: var(--rounded-xl);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .setup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .setup-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .receipt {
+            background-color: white;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            max-width: 300px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            line-height: 1.4;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .receipt::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://raw.githubusercontent.com/LenteraKarya/transaksi/main/watermak-struk.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 60%;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .receipt > * {
             position: relative;
             z-index: 1;
         }
-        
-        /* Header Nota Baru (Layar) */
-        .nota-brand-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 2rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-        
-        .nota-brand-logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        .nota-brand-logo span {
-            color: var(--dark-text);
-            font-weight: 500;
-        }
-        
-        .nota-brand-code {
-            text-align: right;
-        }
-        .nota-brand-code strong {
-            display: block;
-            font-size: 0.95rem;
-            color: var(--light-text);
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-        .nota-brand-code span {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--dark-text);
-            background: var(--light-gray);
-            padding: 5px 12px;
-            border-radius: 5px;
-        }
-        
-        .nota-section {
-            padding: 2rem;
-        }
-        .nota-section:not(:last-child) {
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        /* [PERBAIKAN DESAIN] Judul Section Nota */
-        .nota-section h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        /* [PERBAIKAN DESAIN] Layout Tabel Nota Baru */
-        .nota-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .nota-table tbody tr {
-            border-bottom: 1px solid var(--border-color);
-        }
-        .nota-table tbody tr:last-child {
-            border-bottom: none;
-        }
-        
-        .nota-table td {
-            padding: 1rem 0.5rem;
-            vertical-align: top;
-            line-height: 1.6;
-        }
-        
-        /* Kolom label */
-        .nota-table td:first-child {
-            font-weight: 600;
-            color: var(--dark-text);
-            width: 30%;
-            min-width: 150px;
-        }
-        
-        /* Kolom value */
-        .nota-table td:last-child {
-            font-weight: 500;
-            color: var(--light-text);
-            word-break: break-word; /* Agar link panjang tidak merusak layout */
-        }
-        
-        .nota-table a {
-            color: var(--primary-color);
-            font-weight: 600;
-            text-decoration: none;
-        }
-        .nota-table a:hover {
-            text-decoration: underline;
-        }
-        
-        /* [PERBAIKAN DESAIN] Box Catatan Baru */
-        .nota-catatan-box {
-            color: var(--light-text);
-            font-size: 0.95rem;
-            line-height: 1.7;
-            white-space: pre-wrap; /* Menghargai baris baru dari textarea */
-            padding: 1rem;
-            background: var(--light-gray);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-        }
-        
-        /* Footer Modal (Layar) */
-        .modal-footer {
-            padding: 1.5rem 2.5rem;
-            border-top: 1px solid var(--border-color);
-            background: var(--white-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 10px;
         }
 
-        .modal-footer p {
+        .receipt-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .receipt-address {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .receipt-date {
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .receipt-items {
+            margin-bottom: 15px;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
             font-size: 0.9rem;
-            color: var(--light-text);
-            text-align: left;
-            margin: 0;
         }
-        
-        .cta-button-secondary {
-            background: var(--light-gray);
-            color: var(--dark-text);
-            padding: 0.8rem 1.8rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            margin-left: 1rem;
+
+        .receipt-item-name {
+            flex: 2;
         }
-        .cta-button-secondary:hover:not(:disabled) {
-            background: var(--border-color);
+
+        .receipt-item-price {
+            flex: 1;
+            text-align: right;
         }
-        .cta-button-secondary:disabled {
-            cursor: wait;
-            opacity: 0.7;
+
+        .receipt-total {
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+            margin-top: 10px;
+            font-weight: bold;
         }
-        
-        /* --- [PERBAIKAN] Gaya Khusus untuk PDF (Hapus Cetak Browser) --- */
-        
-        /* Elemen khusus cetak (default tersembunyi) */
-        .nota-print-header, .nota-print-footer {
+
+        .receipt-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+        }
+
+        .receipt-brand {
+            font-size: 0.7rem;
+            margin-top: 5px;
+            color: #555;
+        }
+
+        .receipt-order-info {
+            font-size: 0.7rem;
+            margin-top: 5px;
+            color: #555;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        .ml-2 {
+            margin-left: 10px;
+        }
+
+        .mt-2 {
+            margin-top: 10px;
+        }
+
+        .mt-3 {
+            margin-top: 15px;
+        }
+
+        .mt-4 {
+            margin-top: 20px;
+        }
+
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.8rem;
+            margin-top: 5px;
             display: none;
         }
-        
-        /* @media print INI DIGUNAKAN OLEH html2pdf.js BUKAN window.print() */
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #333;
+            color: white;
+            border-radius: var(--rounded-sm);
+            box-shadow: var(--shadow-md);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background-color: var(--success-color);
+        }
+
+        .toast.error {
+            background-color: var(--danger-color);
+        }
+
+        .toast.warning {
+            background-color: var(--warning-color);
+        }
+
+        .toast.info {
+            background-color: var(--info-color);
+        }
+
+        .toast i {
+            margin-right: 10px;
+        }
+
+        /* Confirmation dialog */
+        .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .confirmation-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--rounded-lg);
+            max-width: 400px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Additional fee section */
+        .additional-fee-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .additional-fee-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .additional-fee-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .additional-fee-option input[type="radio"] {
+            display: none;
+        }
+
+        .additional-fee-option label {
+            display: block;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .additional-fee-option input[type="radio"]:checked + label {
+            background-color: var(--primary-light);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .additional-fee-details {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: var(--rounded-sm);
+        }
+
+        .additional-fee-description {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Print styles */
         @media print {
-            body, html {
-                background: #FFF;
-                color: #000;
-                width: 100%;
-                font-family: Arial, sans-serif;
-            }
-            
-            /* Sembunyikan semua elemen di halaman KECUALI konten nota */
             body * {
                 visibility: hidden;
             }
-            #modal-nota-content-printable, #modal-nota-content-printable * {
+            #receiptPrint, #receiptPrint * {
                 visibility: visible;
             }
-            
-            /* Sembunyikan UI Modal (Tombol close, footer, dll) */
-            .modal-header, .modal-footer, .nota-brand-header {
-                display: none !important;
-            }
-            
-            /* Atur ulang posisi & style modal agar pas 1 halaman */
-            .modal-overlay {
-                position: static;
-                background: none;
-            }
-            .modal-content {
+            #receiptPrint {
+                position: absolute;
+                left: 0;
+                top: 0;
                 width: 100%;
                 max-width: 100%;
-                max-height: none;
-                height: auto;
-                border: none;
                 box-shadow: none;
                 padding: 0;
-                overflow: visible;
-                display: block;
-            }
-            .nota-body {
-                padding: 1.5rem;
-                overflow: visible;
-                background: #FFF;
-            }
-            .nota-body-content {
-                box-shadow: none;
-                border: 1px solid #AAA; /* Beri border tipis di PDF */
-                border-radius: 8px;
-            }
-
-            /* Tampilkan Header Cetak */
-            .nota-print-header {
-                display: flex !important;
-                justify-content: space-between;
-                align-items: flex-start;
-                padding: 1.5rem 1.5rem 1rem 1.5rem;
-                border-bottom: 2px solid #333;
-                margin: 0 1.5rem; /* Samakan dengan padding body */
-            }
-            .nota-print-logo {
-                font-size: 2rem;
-                font-weight: 700;
-                color: #0A4D98;
-                font-family: 'Poppins', sans-serif;
-            }
-            .nota-print-logo span {
-                color: #333;
-                font-weight: 500;
-            }
-            .nota-print-title {
-                text-align: right;
-            }
-            .nota-print-title h3 {
-                font-size: 1.6rem;
-                margin: 0 0 5px 0;
-                color: #000;
-                font-family: 'Poppins', sans-serif;
-            }
-            .nota-print-title span {
-                font-size: 1.1rem;
-                font-weight: 600;
-                color: #333;
-                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                font-size: 12px;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             
-            .nota-section {
-                padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-            }
-            /* [PERBAIKAN DESAIN PRINT] */
-            .nota-section h4 {
-                font-size: 1.2rem;
-                font-weight: 600;
-                color: #0A4D98;
-                border-bottom: 2px solid #0A4D98;
-                padding-bottom: 0.5rem;
-                margin-bottom: 1.5rem;
-                font-family: 'Poppins', sans-serif;
-            }
-            
-            .nota-table {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 10pt;
-            }
-            .nota-table tr {
-                border-bottom: 1px solid #ccc;
-            }
-            .nota-table tbody tr:last-child {
-                border-bottom: none;
-            }
-            .nota-table tbody tr:nth-child(even) {
-                background-color: #f7f7f7 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .nota-table td {
-                padding: 12px 8px;
-                color: #333;
-                vertical-align: top;
-            }
-            .nota-table td:first-child {
-                font-weight: 600;
-                color: #000;
-                width: 30%;
-            }
-            .nota-table a {
-                color: #333;
-                text-decoration: none;
-                font-weight: 600;
-            }
-            .nota-table a::after {
-                content: " (Lihat Link)";
-                font-size: 0.9em;
-                font-weight: 400;
-                color: #555;
-            }
-            
-            /* [PERBAIKAN DESAIN PRINT] */
-            .nota-catatan-box {
-                background: #f7f7f7 !important;
-                border: 1px solid #ddd;
-                padding: 1rem;
-                font-size: 10pt;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                white-space: pre-wrap;
-            }
-            
-            /* Tampilkan Footer Cetak */
-            .nota-print-footer {
-                display: block !important;
-                text-align: center;
-                font-size: 9pt;
-                color: #777;
-                border-top: 1px solid #ccc;
-                padding-top: 1.5rem;
-                margin: 2rem 1.5rem 1.5rem 1.5rem;
+            .no-print {
+                display: none !important;
             }
         }
 
-
-        /* --- Footer --- */
-        footer {
-            background: var(--dark-text);
-            color: var(--light-gray);
-            text-align: center;
-            padding: 3rem 0;
-        }
-
-        footer p {
-            font-weight: 400;
-            opacity: 0.8;
-        }
-        
-        footer p:first-of-type {
-            margin-bottom: 0.5rem;
-        }
-
-        footer p a {
-            color: var(--white-color);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        footer p a:hover {
-            text-decoration: underline;
-        }
-
-        /* --- Tombol WhatsApp Mengambang --- */
-        .whatsapp-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 40px;
-            right: 40px;
-            background-color: var(--whatsapp-color);
-            color: #FFF;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: transform 0.3s ease;
-        }
-        
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-        }
-
-        /* --- Responsive (Mobile) --- */
-        @media (max-width: 992px) {
-            #hero .container {
-                flex-direction: column-reverse;
-                text-align: center;
-            }
-            #hero .hero-image { margin-bottom: 2rem; }
-            #hero .subheadline { margin-left: auto; margin-right: auto; }
-            #hero h1 { font-size: 2.8rem; }
-            .form-grid { grid-template-columns: 1fr; }
-            .form-group-full { grid-column: 1; }
-            #form-pemesanan { padding: 1.5rem; }
-        }
-        
+        /* Responsive styles */
         @media (max-width: 768px) {
-            header .container { flex-wrap: wrap; }
-            .hamburger { display: flex; }
-            nav {
-                width: 100%;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.4s ease-out;
-                background: var(--white-color);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-                border-radius: 8px;
-                margin-top: 1rem;
+            .main-content {
+                flex-direction: column;
             }
-            nav ul { flex-direction: column; padding: 1rem; align-items: flex-start; }
-            nav li { margin: 0; width: 100%; }
-            nav a { display: block; padding: 0.8rem; width: 100%; border-radius: 5px; }
-            nav a:hover { background: var(--light-gray); }
-            .nav-cta { width: auto; margin: 0.5rem 0.8rem; }
-            nav.active { max-height: 400px; }
-            .hamburger.active .bar:nth-child(2) { opacity: 0; }
-            .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-            .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-            #hero h1 { font-size: 2.2rem; }
-            #hero .subheadline { font-size: 1rem; }
-            .section-title { font-size: 2rem; }
-            .section-subtitle { font-size: 1rem; }
-            .whatsapp-float { width: 50px; height: 50px; bottom: 20px; right: 20px; }
-
-            /* Responsive Modal */
+            .left-panel, .right-panel {
+                min-width: 100%;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header-info {
+                text-align: center;
+                margin-top: 10px;
+            }
+            
             .modal-content {
-                padding: 0;
                 width: 95%;
             }
-            .modal-header { padding: 1rem 1.5rem; }
-            .modal-header h2 { font-size: 1.3rem; }
-            .nota-body { padding: 1rem; }
-            .nota-brand-header { flex-direction: column; gap: 1rem; padding: 1.5rem; }
-            .nota-brand-code { text-align: left; }
-            .nota-section { padding: 1.5rem 1rem; }
-            .nota-table td:first-child { min-width: 120px; width: 30%; }
             
-            .modal-footer {
-                flex-direction: column-reverse;
-                gap: 1rem;
-                align-items: stretch;
-                padding: 1.5rem;
+            .setup-container {
+                padding: 20px;
+                margin: 20px auto;
             }
-            .modal-footer .cta-button, .modal-footer .cta-button-secondary {
-                width: 100%;
-                margin: 0;
-                text-align: center;
+            
+            /* Fix for receipt text visibility on mobile */
+            .receipt {
+                font-size: 14px;
+                max-width: 100%;
+                padding: 15px;
             }
-            .modal-footer p {
-                text-align: center;
+            
+            .receipt-item {
+                font-size: 12px;
+            }
+            
+            .receipt-title {
+                font-size: 16px;
+            }
+            
+            .additional-fee-options {
+                flex-direction: column;
             }
         }
 
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+
+        /* Radio button group */
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .radio-option {
+            flex: 1;
+        }
+
+        .radio-option input {
+            margin-right: 8px;
+        }
+
+        /* Select role */
+        .select-role {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .select-role select {
+            flex: 1;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1300;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+
+        /* Print button */
+        .print-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Settings button */
+        .settings-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .settings-button:hover {
+            background-color: var(--secondary-color);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* Settings modal */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-content {
+            background-color: white;
+            border-radius: var(--rounded-lg);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalFadeIn 0.3s;
+        }
+
+        .settings-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        /* Discount input */
+        .discount-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .discount-input input {
+            flex: 1;
+        }
+
+        .discount-input select {
+            width: 80px;
+        }
+        
+        /* Backup/Restore section */
+        .backup-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .backup-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .backup-actions .btn {
+            flex: 1;
+        }
+        
+        /* File input for restore */
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        /* Enhanced receipt styling */
+        .receipt-enhanced {
+            font-size: 14px;
+        }
+        
+        .receipt-enhanced .receipt-item {
+            font-size: 13px;
+        }
+        
+        .receipt-enhanced .receipt-title {
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-info-circle"></i>
+        <span id="toast-message">Notification message</span>
+    </div>
 
-    <a href="https://wa.me/6285647709114?text=Halo%20Admin%20Aneka%20Digital,%20saya%20tertarik%20dengan%20jasa%20Anda." class="whatsapp-float" target="_blank" aria-label="Chat di WhatsApp">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.068-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-        </svg>
-    </a>
-
-    <header>
-        <div class="container">
-            <a href="#hero" class="logo">Aneka<span>Digital</span></a>
-            <nav id="nav-menu">
-                <ul>
-                    <li><a href="#layanan">Layanan</a></li>
-                    <li><a href="#order">Cara Pesan</a></li>
-                    <li><a href="#galeri">Galeri</a></li>
-                    <li><a href="#pesan">Pesan Online</a></li> <li><a href="https://wa.me/6285647709114?text=Halo%20Admin%20Aneka%20Digital" class="nav-cta" target="_blank">Hubungi Kami</a></li>
-                </ul>
-            </nav>
-            <div class="hamburger" id="hamburger-button">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <section id="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Solusi Cetak <span>Canggih</span> untuk Semua Kebutuhan Anda</h1>
-                    <p class="subheadline">Dari cetak foto, undangan, hingga ID card. Dapatkan hasil profesional dengan layanan cepat dan interaktif via WhatsApp.</p>
-                    <a href="https://wa.me/6285647709114?text=Halo%20Admin%20Aneka%20Digital,%20saya%20mau%20konsultasi%20cetak." class="cta-button" target="_blank">Mulai Konsultasi (Gratis)</a>
-                </div>
-                <div class="hero-image">
-                    <img src="#" alt="Contoh Tumpukan Undangan Aneka Digital">
-                </div>
-            </div>
-        </section>
-
-        <section id="layanan">
-            <div class="container">
-                <h2 class="section-title">Layanan Profesional Kami</h2>
-                <p class="section-subtitle">Kami mengubah ide Anda menjadi produk cetak berkualitas tinggi dengan teknologi terkini.</p>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.174C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.174 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.04l-.821 1.316z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
-                        </svg>
-                        <h3>Cetak & Edit Foto</h3>
-                        <p>Cetak foto berkualitas tinggi dan layanan edit foto profesional (retouch, ganti background, dll).</p>
-                    </div>
-                    
-                    <div class="service-card">
-                        <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                        </svg>
-                        <h3>Desain & Cetak Undangan</h3>
-                        <p>Desain undangan custom yang mewah dan eksklusif untuk pernikahan, khitan, atau acara spesial.</p>
-                    </div>
-
-                    <div class="service-card">
-                        <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h6m3-3.75l-3 3m0 0l-3-3m3 3V1.5m6 5.25v11.25m-6-11.25v11.25m0 0H5.25m13.5 0H18m-3.75 0h.008v.008h-.008v-.008zm0 0H18m-3.75 0h.008v.008h-.008v-.008zm0 0H18m-3.75 0h.008v.008h-.008v-.008z" />
-                        </svg>
-                        <h3>Cetak ID Card & Member</h3>
-                        <p>Cetak ID Card, kartu member, atau kartu pegawai dengan bahan PVC berkualitas. Tahan lama dan warna tajam.</p>
-                    </div>
-
-                    <div class="service-card">
-                        <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 12.75c1.148 0 2.082.934 2.082 2.082s-.934 2.082-2.082 2.082-2.082-.934-2.082-2.082.934-2.082 2.082-2.082z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 12.75c-1.148 0-2.082-.934-2.082-2.082s.934-2.082 2.082-2.082 2.082.934 2.082 2.082-.934 2.082-2.082 2.082z" />
-                        </svg>
-                        <h3>Cetak & Duplikasi CD/DVD</h3>
-                        <p>Duplikasi data dan cetak label langsung di permukaan CD/DVD. Cocok untuk dokumentasi acara atau data penting.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="order">
-            <div class="container">
-                <h2 class="section-title">Pesan Semudah 1-2-3</h2>
-                <p class="section-subtitle">Proses kami dirancang untuk interaksi yang cepat dan efisien langsung ke admin, tanpa backend yang rumit.</p>
-                <div class="order-steps">
-                    <div class="step-card">
-                        <div class="step-number">1</div>
-                        <h3>Hubungi Admin</h3>
-                        <p>Klik tombol WhatsApp di website ini untuk terhubung langsung dengan admin kami.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-number">2</div>
-                        <h3>Konsultasi & Kirim File</h3>
-                        <p>Jelaskan kebutuhan Anda. Kirim file desain/foto Anda langsung via WhatsApp.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-number">3</div>
-                        <h3>Proses & Bayar</h3>
-                        <p>Kami akan konfirmasi total biaya. Setelah pembayaran, pesanan Anda langsung kami proses.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="galeri">
-            <div class="container">
-                <h2 class="section-title">Galeri Hasil Cetak Kami</h2>
-                <p class="section-subtitle">Kualitas adalah prioritas kami. Lihat beberapa contoh pekerjaan yang telah kami selesaikan.</p>
-                
-                <div class="gallery-grid">
-                    <div class="gallery-item"><img src="https://i.imgur.com/jGU8JnU.jpeg" alt="Proses Cetak Undangan"></div>
-                    <div class="gallery-item"><img src="https://i.imgur.com/aINNdhT.jpeg" alt="Proses Cetak ID Card"></div>
-                    <div class="gallery-item"><img src="https://i.imgur.com/TbQQw3e.jpeg" alt="Contoh Cetak Foto"></div>
-                    <div class="gallery-item"><img src="https://i.imgur.com/6C5WKsg.jpeg" alt="Contoh Cetak Disc"></div>
-                    <div class="gallery-item"><img src="https://i.imgur.com/731UDrZ.jpeg" alt="Tumpukan Undangan"></div>
-                    <div class="gallery-item"><img src="https://i.imgur.com/AR44IdI.jpeg" alt="Tumpukan ID Card"></div>
-                    <div class="gallery-item"><img src="https://i.imgur.com/iyAx3pL.jpeg" alt="Tumpukan Disc"></div>
-                    <div class="gallery-item"><img src="https://i.imgur.com/m6JdUaq.jpeg" alt="Contoh Undangan Lipat 2"></div>
-                    <div class="gallery-item"><img src="https://i.imgur.com/minZEhY.jpeg" alt="Contoh Undangan Lipat 3"></div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="pesan">
-            <div class="container">
-                <h2 class="section-title">Form Pemesanan Cerdas</h2>
-                <p class="section-subtitle">Isi data di bawah untuk membuat draf pesanan Anda. Khususnya untuk undangan dan acara.</p>
-                
-                <form id="form-pemesanan" novalidate>
-                    <div class="form-grid">
-                        
-                        <div class="form-group form-group-full">
-                            <label for="jenis-produk">Pilih Jenis Pesanan</label>
-                            <select id="jenis-produk" name="jenis-produk" required>
-                                <option value="">-- Pilih Opsi --</option>
-                                <option value="undangan">Desain & Cetak Undangan</option>
-                                <option value="id-card">Cetak ID Card / Member</option>
-                                <option value="cetak-foto">Cetak & Edit Foto</option>
-                                <option value="cetak-cd">Cetak & Duplikasi CD/DVD</option>
-                                <option value="lainnya">Lainnya</option>
-                            </select>
-                            <span class="error-message">Wajib dipilih.</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="nama-pemesan">Nama Anda (Pemesan)</label>
-                            <input type="text" id="nama-pemesan" name="nama-pemesan" placeholder="Contoh: Chacha" required>
-                            <span class="error-message">Nama wajib diisi.</span>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="wa-pemesan">No. WhatsApp Aktif</label>
-                            <input type="tel" id="wa-pemesan" name="wa-pemesan" placeholder="Contoh: 08123456789" required>
-                            <span class="error-message">Nomor WhatsApp wajib diisi.</span>
-                        </div>
-                        
-                        <div class="form-group form-group-full" id="grup-jenis-acara">
-                            <label for="jenis-acara">Jenis Acara (untuk Undangan)</label>
-                            <select id="jenis-acara" name="jenis-acara">
-                                <option value="">-- Pilih Jenis Acara --</option>
-                                <option value="pernikahan">Pernikahan</option>
-                                <option value="khitanan">Khitanan / Sunatan</option>
-                                <option value="ulang-tahun">Ulang Tahun</option>
-                                <option value="syukuran">Syukuran / Tasyakuran</option>
-                                <option value="rapat">Acara Formal / Rapat</option>
-                                <option value="lainnya">Lainnya</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group form-group-full hidden" id="grup-nama-acara">
-                            <label for="nama-acara">Nama Acara</label>
-                            <input type="text" id="nama-acara" name="nama-acara" placeholder="Contoh: Pernikahan, Tasyakuran Khitan, Rapat Tahunan">
-                        </div>
-
-                        <div class="form-group hidden" id="grup-nama-mempelai-pria">
-                            <label for="nama-mempelai-pria">Nama Mempelai Pria</label>
-                            <input type="text" id="nama-mempelai-pria" name="nama-mempelai-pria" placeholder="Nama Lengkap Pria">
-                        </div>
-
-                        <div class="form-group hidden" id="grup-nama-mempelai-wanita">
-                            <label for="nama-mempelai-wanita">Nama Mempelai Wanita</label>
-                            <input type="text" id="nama-mempelai-wanita" name="nama-mempelai-wanita" placeholder="Nama Lengkap Wanita">
-                        </div>
-
-                        <div class="form-group hidden" id="grup-nama-anak">
-                            <label for="nama-anak">Nama Anak (yang berhajat)</label>
-                            <input type="text" id="nama-anak" name="nama-anak" placeholder="Contoh: Ahmad Zaki, Citra Lestari">
-                        </div>
-                        
-                        <div class="form-group hidden" id="grup-ortu-pria">
-                            <label for="ortu-pria">Nama Orang Tua (Pihak Pria/Ayah)</label>
-                            <input type="text" id="ortu-pria" name="ortu-pria" placeholder="Bpk. [Nama Ayah] & Ibu. [Nama Ibu]">
-                        </div>
-
-                        <div class="form-group hidden" id="grup-ortu-wanita">
-                            <label for="ortu-wanita">Nama Orang Tua (Pihak Wanita/Ibu)</label>
-                            <input type="text" id="ortu-wanita" name="ortu-wanita" placeholder="Bpk. [Nama Ayah] & Ibu. [Nama Ibu]">
-                        </div>
-                        
-                        <div class="form-group form-group-full hidden" id="grup-tanggal-waktu">
-                            <label>Waktu & Tanggal Acara</label>
-                            <div class="form-grid" style="gap: 1rem; padding-top: 0.5rem;">
-                                <input type="date" id="tanggal-acara" name="tanggal-acara">
-                                <input type="time" id="waktu-acara" name="waktu-acara">
-                            </div>
-                        </div>
-
-                        <div class="form-group form-group-full hidden" id="grup-lokasi">
-                            <div class="label-with-button">
-                                <label for="lokasi-acara">Link Google Maps Lokasi Acara</label>
-                                <button type="button" id="btn-get-gps" class="button-helper">Gunakan Lokasi (GPS)</button>
-                            </div>
-                            <input type="url" id="lokasi-acara" name="lokasi-acara" placeholder="Contoh: https://www.google.com/maps?q=...">
-                            <p class="note"><b>Wajib diisi untuk undangan.</b> Klik 'Gunakan Lokasi (GPS)' untuk mengisi otomatis, atau cari manual di Google Maps, klik 'Share', lalu 'Copy link', dan tempel (paste) di sini.</p>
-                        </div>
-                        
-                        <div class="form-group form-group-full">
-                            <label for="catatan-tambahan">Catatan Tambahan</label>
-                            <textarea id="catatan-tambahan" name="catatan-tambahan" placeholder="Jelaskan kebutuhan lain, misal: jumlah cetak, jenis bahan, atau file desain jika sudah ada..."></textarea>
-                        </div>
-                        
-                        <div class="form-group form-group-full" style="text-align: center; margin-top: 1.5rem;">
-                            <button type="button" class="cta-button" id="btn-buat-nota">Buat Pra-Nota Pesanan</button>
-                        </div>
-                        
-                    </div>
-                </form>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>© 2025 <a href="#hero">Aneka Digital</a>. All Rights Reserved.</p>
-            <p>Dibuat oleh <a href="https://anekamarket.my.id" target="_blank">AnekaMarket.my.id</a></p>
-        </div>
-    </footer>
-    
-    <div class="modal-overlay" id="modal-nota">
-        <div class="modal-content" id="modal-nota-content-printable">
-            
-            <div class="nota-print-header">
-                <div class="nota-print-logo">Aneka<span>Digital</span></div>
-                <div class="nota-print-title">
-                    <h3>PRA-NOTA PESANAN</h3>
-                    <span id="nota-kode-print"></span>
-                </div>
-            </div>
-
-            <div class="modal-header">
-                <h2>Pra-Nota Pesanan</h2>
-                <button class="modal-close-btn" id="btn-close-modal">×</button>
-            </div>
-            
-            <div class="nota-body">
-                <div class="nota-body-content">
-                    
-                    <div class="nota-brand-header">
-                        <div class="nota-brand-logo">
-                            Aneka<span>Digital</span>
-                        </div>
-                        <div class="nota-brand-code">
-                            <strong>Kode Pra-Pesanan:</strong>
-                            <span id="nota-kode"></span>
-                        </div>
-                    </div>
-
-                    <div class="nota-section">
-                        <h4>Detail Pemesan</h4>
-                        <table class="nota-table">
-                            <tbody>
-                                <tr>
-                                    <td>Nama Pemesan</td>
-                                    <td id="nota-nama-pemesan"></td>
-                                </tr>
-                                <tr>
-                                    <td>Nomor WhatsApp</td>
-                                    <td id="nota-wa-pemesan"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="nota-section">
-                        <h4>Detail Pesanan</h4>
-                        <table class="nota-table">
-                            <tbody>
-                                <tr>
-                                    <td>Jenis Pesanan</td>
-                                    <td id="nota-jenis-produk"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        
-                        <table class="nota-table" id="nota-grup-acara-table">
-                            <tbody id="nota-grup-acara-tbody">
-                                </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="nota-section">
-                        <h4>Catatan Tambahan</h4>
-                        <p class="nota-catatan-box" id="nota-catatan-tambahan"></p>
-                    </div>
-                
-                </div>
-            </div>
-            
-            <div class="nota-print-footer">
-                <p>Ini adalah bukti pra-pesanan, bukan tagihan akhir. Admin akan menghubungi Anda untuk konfirmasi.<br>Terima kasih atas pesanan Anda.</p>
-            </div>
-
-            <div class="modal-footer">
-                <p>Ini adalah bukti pra-pesanan, bukan tagihan akhir.<br>Silakan kirim ke Admin untuk konfirmasi.</p>
-                <div>
-                    <button class="cta-button-secondary" id="btn-close-modal-2">Tutup</button>
-                    <button class="cta-button-secondary" id="btn-download-pdf">Download Nota (PDF)</button>
-                    <button class="cta-button" id="btn-kirim-wa">Kirim ke Admin (WA)</button>
-                </div>
+    <!-- Confirmation Dialog -->
+    <div id="confirmationDialog" class="confirmation-dialog" style="display: none;">
+        <div class="confirmation-content">
+            <h4 id="confirmationMessage">Apakah Anda yakin?</h4>
+            <div class="confirmation-buttons">
+                <button id="confirmCancel" class="btn btn-secondary">Batal</button>
+                <button id="confirmOk" class="btn btn-danger">Ya, Hapus</button>
             </div>
         </div>
     </div>
 
-    
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p id="loadingText">Memproses...</p>
+    </div>
+
+    <!-- Settings Button -->
+    <div class="settings-button" id="settingsButton">
+        <i class="fas fa-cog"></i>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="settings-modal">
+        <div class="settings-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Pengaturan Aplikasi</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-title">Pengaturan Pajak & Diskon</div>
+                
+                <div class="form-group">
+                    <label for="taxRate">Persentase Pajak (%)</label>
+                    <input type="number" id="taxRate" class="form-control" min="0" max="100" step="0.1" placeholder="Masukkan persentase pajak">
+                </div>
+                
+                <div class="form-group">
+                    <label for="discountType">Tipe Diskon Default</label>
+                    <select id="discountType" class="form-control">
+                        <option value="percentage">Persentase (%)</option>
+                        <option value="fixed">Nominal Tetap</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="discountValue">Nilai Diskon Default</label>
+                    <div class="discount-input">
+                        <input type="number" id="discountValue" class="form-control" min="0" placeholder="Masukkan nilai diskon">
+                        <select id="discountValueType" class="form-control">
+                            <option value="percentage">%</option>
+                            <option value="fixed">Rp</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="backup-section">
+                    <div class="settings-title">Backup & Restore Data</div>
+                    
+                    <div class="form-group">
+                        <label>Cadangkan data produk dan transaksi</label>
+                        <div class="backup-actions">
+                            <button id="backupDataBtn" class="btn btn-info">
+                                <i class="fas fa-download"></i> Backup Data
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Restore data dari backup</label>
+                        <div class="file-input-wrapper">
+                            <button class="btn btn-warning btn-block">
+                                <i class="fas fa-upload"></i> Pilih File Backup
+                            </button>
+                            <input type="file" id="restoreFile" accept=".json">
+                        </div>
+                        <small class="text-muted">Pilih file backup (.json) untuk mengembalikan data</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-settings-modal">Batal</button>
+                <button class="btn btn-success save-settings"><i class="fas fa-save"></i> Simpan Pengaturan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Fee Modal -->
+    <div id="additionalFeeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Biaya Tambahan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="additional-fee-options">
+                    <div class="additional-fee-option">
+                        <input type="radio" id="feeNone" name="additionalFee" value="none" checked>
+                        <label for="feeNone">Tidak Ada</label>
+                    </div>
+                    <div class="additional-fee-option">
+                        <input type="radio" id="feeShipping" name="additionalFee" value="shipping">
+                        <label for="feeShipping">Biaya Kirim/Antar</label>
+                    </div>
+                    <div class="additional-fee-option">
+                        <input type="radio" id="feeOther" name="additionalFee" value="other">
+                        <label for="feeOther">Biaya Lainnya</label>
+                    </div>
+                </div>
+                
+                <div id="shippingFeeDetails" class="additional-fee-details">
+                    <div class="form-group">
+                        <label for="shippingFeeAmount">Biaya Kirim/Antar</label>
+                        <input type="number" id="shippingFeeAmount" class="form-control" placeholder="Masukkan biaya kirim">
+                    </div>
+                </div>
+                
+                <div id="otherFeeDetails" class="additional-fee-details">
+                    <div class="form-group">
+                        <label for="otherFeeAmount">Jumlah Biaya</label>
+                        <input type="number" id="otherFeeAmount" class="form-control" placeholder="Masukkan jumlah biaya">
+                    </div>
+                    <div class="form-group">
+                        <label for="otherFeeDescription">Keterangan (maks. 180 karakter)</label>
+                        <textarea id="otherFeeDescription" class="form-control" rows="2" maxlength="180" placeholder="Masukkan keterangan biaya"></textarea>
+                        <div class="additional-fee-description">
+                            <span id="charCount">0</span>/180 karakter
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-additional-fee-modal">Batal</button>
+                <button class="btn btn-success save-additional-fee">Simpan Biaya</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Store Setup Modal -->
+    <div id="setupModal" class="modal">
+        <div class="setup-container">
+            <div class="setup-title">Setup Toko</div>
+            <form id="setupForm">
+                <div class="form-group">
+                    <label for="storeName">Nama Toko</label>
+                    <input type="text" id="storeName" class="form-control" placeholder="Masukkan nama toko" required>
+                    <div class="error-message" id="storeNameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Anda sebagai:</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="ownerRole" name="userRole" value="owner" checked>
+                            <label for="ownerRole">Owner</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="employeeRole" name="userRole" value="employee">
+                            <label for="employeeRole">Karyawan</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userPosition">Sebagai:</label>
+                    <select id="userPosition" class="form-control" required>
+                        <option value="kasir">Kasir</option>
+                        <option value="owner">Owner</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="storeAddress">Alamat Toko</label>
+                    <input type="text" id="storeAddress" class="form-control" placeholder="Masukkan alamat toko" required>
+                    <div class="error-message" id="storeAddressError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="storePhone">Nomor HP</label>
+                    <input type="tel" id="storePhone" class="form-control" placeholder="Masukkan nomor HP" required>
+                    <div class="error-message" id="storePhoneError"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-block" id="saveSetupBtn">
+                    <span id="saveSetupBtnText">Simpan</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container" id="mainApp" style="display: none;">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1 id="storeNameHeader">Online Store</h1>
+                <div class="header-subtitle">WebApp Versi.01.04.99 Copyright Lentera Karya Situbondo</div>
+                <div class="header-subtitle">www.anekamarket.my.id</div>
+            </div>
+            <div class="header-info">
+                <p id="currentDate">Senin, 1 Januari 2023</p>
+                <p>Kasir: <span id="loggedInUser">Admin</span></p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel -->
+            <div class="left-panel">
+                <h2 class="panel-title">Produk</h2>
+                
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="productSearch" class="form-control" placeholder="Cari produk...">
+                </div>
+
+                <div id="productList" class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Harga</th>
+                                <th>Stok</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productListBody">
+                            <!-- Products will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <button id="addProductBtn" class="btn btn-success btn-block">
+                    <i class="fas fa-plus"></i> Tambah Produk
+                </button>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <h2 class="panel-title">Transaksi</h2>
+                
+                <div id="cartItems">
+                    <!-- Cart items will be loaded here -->
+                </div>
+                
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span class="summary-label">Subtotal:</span>
+                        <span class="summary-value" id="cartSubtotal">Rp 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Diskon:</span>
+                        <span class="summary-value" id="cartDiscount">Rp 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Pajak (<span id="taxPercentage">10</span>%):</span>
+                        <span class="summary-value" id="cartTax">Rp 0</span>
+                    </div>
+                    <div class="additional-fee-section">
+                        <div class="summary-row">
+                            <span class="summary-label">Biaya Tambahan:</span>
+                            <span class="summary-value" id="cartAdditionalFee">Rp 0</span>
+                        </div>
+                        <div id="additionalFeeDescription" class="summary-value" style="font-size: 0.8rem; color: #666; text-align: right;"></div>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span class="summary-label">Total:</span>
+                        <span class="summary-value" id="cartTotal">Rp 0</span>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <button id="addAdditionalFeeBtn" class="btn btn-outline btn-block">
+                        <i class="fas fa-plus-circle"></i> Tambah Biaya
+                    </button>
+                </div>
+
+                <div class="payment-methods">
+                    <label>Metode Pembayaran:</label>
+                    <div class="payment-method">
+                        <input type="radio" id="cash" name="paymentMethod" value="cash" checked>
+                        <label for="cash">Tunai</label>
+                    </div>
+                    <div class="payment-method">
+                        <input type="radio" id="transfer" name="paymentMethod" value="transfer">
+                        <label for="transfer">Transfer Bank</label>
+                    </div>
+                    <div class="payment-method">
+                        <input type="radio" id="ewallet" name="paymentMethod" value="ewallet">
+                        <label for="ewallet">E-Wallet</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentAmount">Jumlah Pembayaran</label>
+                    <input type="number" id="paymentAmount" class="form-control" placeholder="Masukkan jumlah pembayaran">
+                </div>
+
+                <button id="completePayment" class="btn btn-success btn-block">
+                    <i class="fas fa-print"></i> Selesaikan & Cetak
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Template (Hidden) -->
+    <div id="receiptPrint" style="display: none;">
+        <div class="receipt receipt-enhanced">
+            <div class="receipt-header">
+                <div class="receipt-brand">WebApp Versi.010499 By.Cendhanu</div>
+                <div class="receipt-brand">Lentera Karya Situbondo</div>
+                <div class="receipt-title" id="receiptStoreName">ONLINE STORE</div>
+                <div class="receipt-address" id="receiptStoreAddress">Kabupaten Situbondo - Provinsi Jawa Timur</div>
+                <div class="receipt-address" id="receiptStorePhone">Telp: 081234567890</div>
+                <div class="receipt-date" id="receiptDate">01/01/2023 10:00:00</div>
+                <div id="receiptTransactionId">No. Transaksi: T20230101000000</div>
+            </div>
+            <div class="receipt-items" id="receiptItems">
+                <!-- Items will be added here -->
+            </div>
+            <div class="receipt-total">
+                <div class="receipt-item">
+                    <span>Subtotal</span>
+                    <span id="receiptSubtotal">Rp 0</span>
+                </div>
+                <div class="receipt-item">
+                    <span>Diskon</span>
+                    <span id="receiptDiscount">Rp 0</span>
+                </div>
+                <div class="receipt-item">
+                    <span>Pajak (<span id="receiptTaxPercentage">10</span>%)</span>
+                    <span id="receiptTax">Rp 0</span>
+                </div>
+                <div class="receipt-item" id="receiptAdditionalFeeItem" style="display: none;">
+                    <span id="receiptAdditionalFeeLabel">Biaya Tambahan</span>
+                    <span id="receiptAdditionalFeeValue">Rp 0</span>
+                </div>
+                <div class="receipt-item">
+                    <span>TOTAL</span>
+                    <span id="receiptTotal">Rp 0</span>
+                </div>
+                <div class="receipt-item">
+                    <span id="receiptPaymentMethod">Tunai</span>
+                    <span id="receiptPaymentAmount">Rp 0</span>
+                </div>
+                <div class="receipt-item">
+                    <span>Kembali</span>
+                    <span id="receiptChange">Rp 0</span>
+                </div>
+            </div>
+            <div class="receipt-footer">
+                <div>Terima kasih telah berbelanja</div>
+                <div class="receipt-order-info">Order Aplikasi Payment Pro</div>
+                <div class="receipt-order-info">kirim email: lenterakaryasitubondo@gmail.com</div>
+                <div>Kasir: <span id="receiptCashier">Admin</span></div>
+            </div>
+        </div>
+        <div class="print-button no-print">
+            <button id="printReceiptBtn" class="btn btn-primary">
+                <i class="fas fa-print"></i> Cetak Struk
+            </button>
+            <button id="downloadReceiptBtn" class="btn btn-success ml-2">
+                <i class="fas fa-download"></i> Download PDF
+            </button>
+            <button id="closeReceiptBtn" class="btn btn-secondary ml-2">
+                <i class="fas fa-times"></i> Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="productModalTitle">Tambah Produk</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label for="productName">Nama Produk</label>
+                    <input type="text" id="productName" class="form-control" placeholder="Masukkan nama produk">
+                    <div class="error-message" id="productNameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="productCategory">Kategori</label>
+                    <input type="text" id="productCategory" class="form-control" placeholder="Masukkan kategori">
+                    <div class="error-message" id="productCategoryError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Harga</label>
+                    <input type="number" id="productPrice" class="form-control" placeholder="Masukkan harga">
+                    <div class="error-message" id="productPriceError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="productStock">Stok</label>
+                    <input type="number" id="productStock" class="form-control" placeholder="Masukkan stok awal">
+                    <div class="error-message" id="productStockError"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-product-modal">Batal</button>
+                <button class="btn btn-success save-product"><i class="fas fa-save"></i> Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
-        // [FUNGSI UTAMA] Helper untuk Generate PDF (MENGGUNAKAN html2pdf.js)
-        function generatePDFFromElement(elementId, filename) {
+        // Local storage keys
+        const STORAGE_KEYS = {
+            PRODUCTS: 'online_store_products',
+            TRANSACTIONS: 'online_store_transactions',
+            STORE_INFO: 'online_store_info',
+            CURRENT_CART: 'online_store_current_cart',
+            SETTINGS: 'online_store_settings'
+        };
+        
+        // Initialize data
+        let products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS)) || [];
+        let transactions = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS)) || [];
+        let storeInfo = JSON.parse(localStorage.getItem(STORAGE_KEYS.STORE_INFO)) || null;
+        let settings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS)) || {
+            taxRate: 10,
+            discountType: 'percentage',
+            discountValue: 0
+        };
+        
+        // Current transaction
+        let currentCart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_CART)) || {
+            items: [],
+            discount: 0,
+            tax: 0,
+            additionalFee: 0,
+            additionalFeeDescription: '',
+            subtotal: 0,
+            total: 0
+        };
+        
+        // Toast notification function
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = $('#toast');
+            const toastMessage = $('#toast-message');
+            
+            toast.removeClass('success error warning info').addClass(type);
+            toastMessage.text(message);
+            toast.addClass('show');
+            
+            setTimeout(() => {
+                toast.removeClass('show');
+            }, duration);
+        }
+        
+        // Show loading overlay
+        function showLoading(message = 'Memproses...') {
+            $('#loadingText').text(message);
+            $('#loadingOverlay').fadeIn();
+        }
+        
+        // Hide loading overlay
+        function hideLoading() {
+            $('#loadingOverlay').fadeOut();
+        }
+        
+        // Confirmation dialog
+        function showConfirmation(message, callback) {
+            $('#confirmationMessage').text(message);
+            $('#confirmationDialog').show();
+            
+            $('#confirmOk').off('click').on('click', function() {
+                $('#confirmationDialog').hide();
+                if (typeof callback === 'function') {
+                    callback(true);
+                }
+            });
+            
+            $('#confirmCancel').off('click').on('click', function() {
+                $('#confirmationDialog').hide();
+                if (typeof callback === 'function') {
+                    callback(false);
+                }
+            });
+        }
+        
+        // Format currency
+        function formatCurrency(amount) {
+            return 'Rp ' + (amount || 0).toLocaleString('id-ID');
+        }
+        
+        // Generate PDF from receipt
+        function generatePDF(elementId, filename) {
             const element = document.getElementById(elementId);
-            
-            // Simpan style asli untuk dikembalikan nanti
-            const originalStyles = {
-                border: element.style.border,
-                boxShadow: element.style.boxShadow
-            };
-            
-            const printHeader = element.querySelector('.nota-print-header');
-            const printFooter = element.querySelector('.nota-print-footer');
-            const screenHeader = element.querySelector('.modal-header');
-            const screenFooter = element.querySelector('.modal-footer');
-            const screenBrandHeader = element.querySelector('.nota-brand-header');
-
-            const originalDisplays = {
-                printHeader: printHeader ? printHeader.style.display : '',
-                printFooter: printFooter ? printFooter.style.display : '',
-                screenHeader: screenHeader ? screenHeader.style.display : '',
-                screenFooter: screenFooter ? screenFooter.style.display : '',
-                screenBrandHeader: screenBrandHeader ? screenBrandHeader.style.display : ''
-            };
-
-            // Sembunyikan elemen layar
-            if(screenHeader) screenHeader.style.display = 'none';
-            if(screenFooter) screenFooter.style.display = 'none';
-            if(screenBrandHeader) screenBrandHeader.style.display = 'none';
-
-            // Tampilkan elemen print (untuk PDF)
-            if(printHeader) printHeader.style.display = 'flex'; 
-            if(printFooter) printFooter.style.display = 'block'; 
-            
-            element.style.border = 'none';
-            element.style.boxShadow = 'none';
-            
             const opt = {
-                margin: [10, 0, 10, 0], 
-                filename: filename || 'nota.pdf',
+                margin: 10,
+                filename: filename || 'receipt.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
+                html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             
-            // INI ADALAH FUNGSI DOWNLOAD PDF, BUKAN window.print()
-            return html2pdf().set(opt).from(element).save().then(() => {
-                // Kembalikan tampilan modal seperti semula
-                if(screenHeader) screenHeader.style.display = originalDisplays.screenHeader || 'flex';
-                if(screenFooter) screenFooter.style.display = originalDisplays.screenFooter || 'flex';
-                if(screenBrandHeader) screenBrandHeader.style.display = originalDisplays.screenBrandHeader || 'flex';
-                if(printHeader) printHeader.style.display = originalDisplays.printHeader || 'none';
-                if(printFooter) printFooter.style.display = originalDisplays.printFooter || 'none';
+            return html2pdf().set(opt).from(element).save();
+        }
+        
+        // Calculate discount
+        function calculateDiscount(subtotal) {
+            if (settings.discountType === 'percentage') {
+                return subtotal * (settings.discountValue / 100);
+            } else {
+                return Math.min(settings.discountValue, subtotal);
+            }
+        }
+        
+        // Create backup data
+        function createBackupData() {
+            return {
+                products: JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS)) || [],
+                transactions: JSON.parse(localStorage.getItem(STORAGE_KEYS.TRANSACTIONS)) || [],
+                storeInfo: JSON.parse(localStorage.getItem(STORAGE_KEYS.STORE_INFO)) || null,
+                settings: JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS)) || {
+                    taxRate: 10,
+                    discountType: 'percentage',
+                    discountValue: 0
+                }
+            };
+        }
+        
+        // Download backup file
+        function downloadBackup() {
+            const backupData = createBackupData();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `backup_${moment().format('YYYYMMDD_HHmmss')}.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+        
+        // Restore from backup
+        function restoreFromBackup(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
                 
-                element.style.border = originalStyles.border;
-                element.style.boxShadow = originalStyles.boxShadow;
-            }).catch((err) => {
-                console.error("Gagal membuat PDF:", err);
-                // Kembalikan style bahkan jika terjadi error
-                if(screenHeader) screenHeader.style.display = originalDisplays.screenHeader || 'flex';
-                if(screenFooter) screenFooter.style.display = originalDisplays.screenFooter || 'flex';
-                if(screenBrandHeader) screenBrandHeader.style.display = originalDisplays.screenBrandHeader || 'flex';
-                if(printHeader) printHeader.style.display = originalDisplays.printHeader || 'none';
-                if(printFooter) printFooter.style.display = originalDisplays.printFooter || 'none';
-                element.style.border = originalStyles.border;
-                element.style.boxShadow = originalStyles.boxShadow;
+                reader.onload = function(e) {
+                    try {
+                        const backupData = JSON.parse(e.target.result);
+                        resolve(backupData);
+                    } catch (error) {
+                        reject('Format file backup tidak valid');
+                    }
+                };
+                
+                reader.onerror = function() {
+                    reject('Gagal membaca file');
+                };
+                
+                reader.readAsText(file);
             });
         }
-    
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // --- Skrip Navigasi Hamburger ---
-            const hamburgerButton = document.getElementById('hamburger-button');
-            const navMenu = document.getElementById('nav-menu');
-
-            hamburgerButton.addEventListener('click', () => {
-                hamburgerButton.classList.toggle('active');
-                navMenu.classList.toggle('active');
+        
+        $(document).ready(function() {
+            // Set current date
+            updateCurrentDate();
+            
+            // Update date every minute
+            setInterval(updateCurrentDate, 60000);
+            
+            // Load settings
+            loadSettings();
+            
+            // Show setup modal if store info not set
+            if (!storeInfo) {
+                $('#setupModal').show();
+            } else {
+                initializeApp();
+            }
+            
+            // Settings button click
+            $('#settingsButton').click(function() {
+                $('#settingsModal').show();
             });
             
-            document.querySelectorAll('#nav-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    hamburgerButton.classList.remove('active');
-                    navMenu.classList.remove('active');
+            // Close settings modal
+            $('.close-settings-modal').click(function() {
+                $('#settingsModal').hide();
+            });
+            
+            // Save settings
+            $('.save-settings').click(function() {
+                const taxRate = parseFloat($('#taxRate').val()) || 0;
+                const discountType = $('#discountType').val();
+                const discountValue = parseFloat($('#discountValue').val()) || 0;
+                
+                // Validate inputs
+                if (taxRate < 0 || taxRate > 100) {
+                    showToast('Persentase pajak harus antara 0-100%', 'error');
+                    return;
+                }
+                
+                if (discountValue < 0) {
+                    showToast('Nilai diskon tidak boleh negatif', 'error');
+                    return;
+                }
+                
+                // Update settings
+                settings = {
+                    taxRate: taxRate,
+                    discountType: discountType,
+                    discountValue: discountValue
+                };
+                
+                // Save to local storage
+                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+                
+                // Update UI
+                $('#taxPercentage').text(taxRate);
+                
+                // Update cart calculations
+                updateCart();
+                
+                // Show success message
+                showToast('Pengaturan berhasil disimpan', 'success');
+                
+                // Close modal
+                $('#settingsModal').hide();
+            });
+            
+            // Discount type change
+            $('#discountType').change(function() {
+                if ($(this).val() === 'percentage') {
+                    $('#discountValueType').val('percentage');
+                } else {
+                    $('#discountValueType').val('fixed');
+                }
+            });
+            
+            // Backup data button
+            $('#backupDataBtn').click(function() {
+                showLoading('Menyiapkan backup data...');
+                
+                setTimeout(() => {
+                    downloadBackup();
+                    hideLoading();
+                    showToast('Backup data berhasil diunduh', 'success');
+                }, 500);
+            });
+            
+            // Restore data from file
+            $('#restoreFile').change(function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                showConfirmation('Restore data akan menggantikan semua data saat ini. Lanjutkan?', (confirmed) => {
+                    if (confirmed) {
+                        showLoading('Memproses file backup...');
+                        
+                        restoreFromBackup(file)
+                            .then(backupData => {
+                                // Validate backup data
+                                if (!backupData.products || !backupData.transactions || !backupData.settings) {
+                                    throw new Error('Format backup tidak valid');
+                                }
+                                
+                                // Save backup data to local storage
+                                localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(backupData.products));
+                                localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(backupData.transactions));
+                                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(backupData.settings));
+                                
+                                if (backupData.storeInfo) {
+                                    localStorage.setItem(STORAGE_KEYS.STORE_INFO, JSON.stringify(backupData.storeInfo));
+                                }
+                                
+                                // Reload data
+                                products = backupData.products;
+                                transactions = backupData.transactions;
+                                settings = backupData.settings;
+                                if (backupData.storeInfo) storeInfo = backupData.storeInfo;
+                                
+                                // Reset cart
+                                resetCart();
+                                
+                                // Reload UI
+                                loadProducts();
+                                loadSettings();
+                                
+                                // Show success message
+                                showToast('Data berhasil di-restore', 'success');
+                            })
+                            .catch(error => {
+                                showToast(error.message || 'Gagal memproses backup', 'error');
+                            })
+                            .finally(() => {
+                                hideLoading();
+                                $('#restoreFile').val('');
+                            });
+                    } else {
+                        $('#restoreFile').val('');
+                    }
                 });
             });
-
-            // --- Skrip Helper Tombol GPS (Otomatis) ---
-            const btnGetGps = document.getElementById('btn-get-gps');
-            const inputLokasi = document.getElementById('lokasi-acara');
             
-            if(btnGetGps && inputLokasi) {
-                btnGetGps.addEventListener('click', () => {
-                    if (!navigator.geolocation) {
-                        alert('Browser Anda tidak mendukung fitur Geolocation.');
+            // Store setup form handler
+            $('#setupForm').submit(function(e) {
+                e.preventDefault();
+                const storeName = $('#storeName').val().trim();
+                const userRole = $('input[name="userRole"]:checked').val();
+                const userPosition = $('#userPosition').val();
+                const storeAddress = $('#storeAddress').val().trim();
+                const storePhone = $('#storePhone').val().trim();
+                
+                // Reset error messages
+                $('.error-message').hide().text('');
+                
+                // Validate inputs
+                let isValid = true;
+                
+                if (!storeName) {
+                    $('#storeNameError').text('Nama toko harus diisi').show();
+                    isValid = false;
+                }
+                
+                if (!storeAddress) {
+                    $('#storeAddressError').text('Alamat toko harus diisi').show();
+                    isValid = false;
+                }
+                
+                if (!storePhone) {
+                    $('#storePhoneError').text('Nomor HP harus diisi').show();
+                    isValid = false;
+                } else if (!/^[0-9]{10,13}$/.test(storePhone)) {
+                    $('#storePhoneError').text('Nomor HP harus 10-13 digit angka').show();
+                    isValid = false;
+                }
+                
+                if (!isValid) return;
+                
+                // Show loading
+                showLoading('Menyimpan setup toko...');
+                
+                // Simulate async operation
+                setTimeout(() => {
+                    // Save store info
+                    storeInfo = {
+                        storeName: storeName,
+                        userRole: userRole,
+                        userPosition: userPosition,
+                        storeAddress: storeAddress,
+                        storePhone: storePhone,
+                        setupDate: new Date()
+                    };
+                    
+                    localStorage.setItem(STORAGE_KEYS.STORE_INFO, JSON.stringify(storeInfo));
+                    
+                    // Initialize app
+                    initializeApp();
+                    
+                    // Hide setup modal
+                    $('#setupModal').hide();
+                    
+                    // Hide loading
+                    hideLoading();
+                    
+                    // Show success toast
+                    showToast('Setup toko berhasil disimpan', 'success');
+                }, 1000);
+            });
+            
+            // Role radio button change
+            $('input[name="userRole"]').change(function() {
+                if ($(this).val() === 'owner') {
+                    $('#userPosition').val('owner');
+                } else {
+                    $('#userPosition').val('kasir');
+                }
+            });
+            
+            // Add product button
+            $('#addProductBtn').click(function() {
+                $('#productModalTitle').text('Tambah Produk');
+                $('#productId').val('');
+                $('#productName').val('');
+                $('#productCategory').val('');
+                $('#productPrice').val('');
+                $('#productStock').val('');
+                $('.error-message').hide();
+                $('#productModal').show();
+            });
+            
+            // Save product
+            $('.save-product').click(function() {
+                const productId = $('#productId').val();
+                const productName = $('#productName').val().trim();
+                const productCategory = $('#productCategory').val().trim();
+                const productPrice = parseFloat($('#productPrice').val()) || 0;
+                const productStock = parseInt($('#productStock').val()) || 0;
+                
+                // Reset error messages
+                $('.error-message').hide().text('');
+                
+                // Validate inputs
+                let isValid = true;
+                
+                if (!productName) {
+                    $('#productNameError').text('Nama produk harus diisi').show();
+                    isValid = false;
+                }
+                
+                if (!productCategory) {
+                    $('#productCategoryError').text('Kategori harus diisi').show();
+                    isValid = false;
+                }
+                
+                if (productPrice <= 0) {
+                    $('#productPriceError').text('Harga harus lebih dari 0').show();
+                    isValid = false;
+                }
+                
+                if (productStock < 0) {
+                    $('#productStockError').text('Stok tidak boleh negatif').show();
+                    isValid = false;
+                }
+                
+                if (!isValid) return;
+                
+                // Show loading
+                showLoading('Menyimpan produk...');
+                
+                // Simulate async operation
+                setTimeout(() => {
+                    if (productId) {
+                        // Edit existing product
+                        const productIndex = products.findIndex(p => p.id === productId);
+                        if (productIndex !== -1) {
+                            products[productIndex] = {
+                                ...products[productIndex],
+                                name: productName,
+                                category: productCategory,
+                                price: productPrice,
+                                stock: productStock
+                            };
+                            
+                            showToast('Produk berhasil diperbarui', 'success');
+                        }
+                    } else {
+                        // Add new product
+                        const newProduct = {
+                            id: 'P' + moment().format('YYYYMMDDHHmmss'),
+                            name: productName,
+                            category: productCategory,
+                            price: productPrice,
+                            stock: productStock
+                        };
+                        
+                        products.push(newProduct);
+                        showToast('Produk berhasil ditambahkan', 'success');
+                    }
+                    
+                    // Save products
+                    saveProducts();
+                    
+                    // Refresh product list
+                    loadProducts();
+                    
+                    // Close modal
+                    $('#productModal').hide();
+                    
+                    // Hide loading
+                    hideLoading();
+                }, 800);
+            });
+            
+            // Edit product (delegated event)
+            $(document).on('click', '.edit-product', function() {
+                const productId = $(this).data('id');
+                const product = products.find(p => p.id === productId);
+                
+                if (product) {
+                    $('#productModalTitle').text('Edit Produk');
+                    $('#productId').val(product.id);
+                    $('#productName').val(product.name);
+                    $('#productCategory').val(product.category);
+                    $('#productPrice').val(product.price);
+                    $('#productStock').val(product.stock);
+                    $('.error-message').hide();
+                    $('#productModal').show();
+                }
+            });
+            
+            // Delete product (delegated event)
+            $(document).on('click', '.delete-product', function() {
+                const productId = $(this).data('id');
+                const product = products.find(p => p.id === productId);
+                
+                showConfirmation(`Apakah Anda yakin ingin menghapus produk "${product?.name || 'ini'}"?`, (confirmed) => {
+                    if (confirmed) {
+                        showLoading('Menghapus produk...');
+                        
+                        setTimeout(() => {
+                            products = products.filter(p => p.id !== productId);
+                            saveProducts();
+                            loadProducts();
+                            
+                            hideLoading();
+                            showToast('Produk berhasil dihapus', 'success');
+                        }, 800);
+                    }
+                });
+            });
+            
+            // Add product to cart (delegated event)
+            $(document).on('click', '.add-to-cart', function() {
+                const productId = $(this).data('id');
+                const product = products.find(p => p.id === productId);
+                
+                if (product) {
+                    // Check if product is out of stock
+                    if (product.stock <= 0) {
+                        showToast('Stok produk habis', 'error');
                         return;
                     }
                     
-                    const originalText = btnGetGps.textContent;
-                    btnGetGps.textContent = 'Mencari...';
-                    btnGetGps.disabled = true;
-
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const lat = position.coords.latitude;
-                            const lon = position.coords.longitude;
-                            const mapsLink = `https://www.google.com/maps?q=${lat},${lon}`;
-                            
-                            inputLokasi.value = mapsLink;
-                            
-                            btnGetGps.textContent = originalText;
-                            btnGetGps.disabled = false;
-                        },
-                        (error) => {
-                            console.error('Geolocation Error:', error);
-                            alert('Gagal mendapatkan lokasi. Pastikan Anda mengizinkan akses lokasi di browser Anda.');
-                            btnGetGps.textContent = originalText;
-                            btnGetGps.disabled = false;
+                    // Check if product already in cart
+                    const existingItem = currentCart.items.find(item => item.product.id === productId);
+                    
+                    if (existingItem) {
+                        // Check if quantity exceeds stock
+                        if (existingItem.quantity + 1 > product.stock) {
+                            showToast('Jumlah melebihi stok yang tersedia', 'error');
+                            return;
                         }
-                    );
+                        existingItem.quantity += 1;
+                    } else {
+                        currentCart.items.push({
+                            product: product,
+                            quantity: 1
+                        });
+                    }
+                    
+                    updateCart();
+                    showToast(`${product.name} ditambahkan ke keranjang`, 'success');
+                }
+            });
+            
+            // Remove item from cart (delegated event)
+            $(document).on('click', '.remove-from-cart', function() {
+                const productId = $(this).data('id');
+                const product = products.find(p => p.id === productId);
+                currentCart.items = currentCart.items.filter(item => item.product.id !== productId);
+                updateCart();
+                
+                if (product) {
+                    showToast(`${product.name} dihapus dari keranjang`, 'info');
+                }
+            });
+            
+            // Update item quantity in cart (delegated event)
+            $(document).on('change', '.cart-item-quantity', function() {
+                const productId = $(this).data('id');
+                const quantity = parseInt($(this).val()) || 1;
+                
+                const item = currentCart.items.find(item => item.product.id === productId);
+                if (item) {
+                    // Check if quantity exceeds stock
+                    const product = products.find(p => p.id === productId);
+                    if (product && quantity > product.stock) {
+                        showToast('Jumlah melebihi stok yang tersedia', 'error');
+                        $(this).val(item.quantity); // Reset to previous value
+                        return;
+                    }
+                    
+                    item.quantity = quantity;
+                    updateCart();
+                }
+            });
+            
+            // Additional fee button
+            $('#addAdditionalFeeBtn').click(function() {
+                // Reset additional fee form
+                $('#feeNone').prop('checked', true);
+                $('#shippingFeeAmount').val('');
+                $('#otherFeeAmount').val('');
+                $('#otherFeeDescription').val('');
+                $('#charCount').text('0');
+                $('#shippingFeeDetails').hide();
+                $('#otherFeeDetails').hide();
+                
+                $('#additionalFeeModal').show();
+            });
+            
+            // Additional fee option change
+            $('input[name="additionalFee"]').change(function() {
+                const selectedOption = $(this).val();
+                
+                $('#shippingFeeDetails').hide();
+                $('#otherFeeDetails').hide();
+                
+                if (selectedOption === 'shipping') {
+                    $('#shippingFeeDetails').show();
+                } else if (selectedOption === 'other') {
+                    $('#otherFeeDetails').show();
+                }
+            });
+            
+            // Character count for description
+            $('#otherFeeDescription').on('input', function() {
+                const charCount = $(this).val().length;
+                $('#charCount').text(charCount);
+            });
+            
+            // Save additional fee
+            $('.save-additional-fee').click(function() {
+                const selectedOption = $('input[name="additionalFee"]:checked').val();
+                
+                if (selectedOption === 'shipping') {
+                    const shippingFee = parseFloat($('#shippingFeeAmount').val()) || 0;
+                    if (shippingFee < 0) {
+                        showToast('Biaya kirim tidak boleh negatif', 'error');
+                        return;
+                    }
+                    
+                    currentCart.additionalFee = shippingFee;
+                    currentCart.additionalFeeDescription = 'Biaya Kirim/Antar';
+                } else if (selectedOption === 'other') {
+                    const otherFee = parseFloat($('#otherFeeAmount').val()) || 0;
+                    const description = $('#otherFeeDescription').val().trim();
+                    
+                    if (otherFee < 0) {
+                        showToast('Biaya tidak boleh negatif', 'error');
+                        return;
+                    }
+                    
+                    if (description === '') {
+                        showToast('Keterangan biaya harus diisi', 'error');
+                        return;
+                    }
+                    
+                    currentCart.additionalFee = otherFee;
+                    currentCart.additionalFeeDescription = description;
+                } else {
+                    currentCart.additionalFee = 0;
+                    currentCart.additionalFeeDescription = '';
+                }
+                
+                updateCart();
+                $('#additionalFeeModal').hide();
+                showToast('Biaya tambahan berhasil disimpan', 'success');
+            });
+            
+            // Close additional fee modal
+            $('.close-additional-fee-modal').click(function() {
+                $('#additionalFeeModal').hide();
+            });
+            
+            // Complete payment
+            $('#completePayment').click(function() {
+                const paymentAmount = parseFloat($('#paymentAmount').val()) || 0;
+                
+                if (currentCart.items.length === 0) {
+                    showToast('Keranjang belanja kosong', 'warning');
+                    return;
+                }
+                
+                if (paymentAmount < currentCart.total) {
+                    showToast('Jumlah pembayaran kurang dari total', 'error');
+                    return;
+                }
+                
+                showConfirmation('Selesaikan transaksi ini dan cetak struk?', (confirmed) => {
+                    if (confirmed) {
+                        showLoading('Menyelesaikan transaksi...');
+                        
+                        setTimeout(() => {
+                            // Create transaction
+                            const transaction = {
+                                id: 'T' + moment().format('YYYYMMDDHHmmss'),
+                                date: new Date(),
+                                items: currentCart.items,
+                                subtotal: currentCart.subtotal,
+                                discount: currentCart.discount,
+                                tax: currentCart.tax,
+                                additionalFee: currentCart.additionalFee,
+                                additionalFeeDescription: currentCart.additionalFeeDescription,
+                                total: currentCart.total,
+                                paymentMethod: $('input[name="paymentMethod"]:checked').val(),
+                                paymentAmount: paymentAmount,
+                                change: paymentAmount - currentCart.total,
+                                cashier: storeInfo.userPosition === 'owner' ? 'Owner' : 'Kasir'
+                            };
+                            
+                            // Update product stock
+                            transaction.items.forEach(item => {
+                                const productIndex = products.findIndex(p => p.id === item.product.id);
+                                if (productIndex !== -1) {
+                                    products[productIndex].stock -= item.quantity;
+                                    if (products[productIndex].stock < 0) products[productIndex].stock = 0;
+                                }
+                            });
+                            
+                            // Save products with updated stock
+                            saveProducts();
+                            
+                            // Add to transactions
+                            transactions.unshift(transaction);
+                            saveTransactions();
+                            
+                            // Generate receipt
+                            generateReceipt(transaction);
+                            
+                            // Show receipt for printing
+                            $('#receiptPrint').show();
+                            
+                            // Print receipt automatically after a short delay
+                            setTimeout(() => {
+                                window.print();
+                                $('#receiptPrint').hide();
+                            }, 500);
+                            
+                            // Reset cart
+                            resetCart();
+                            
+                            // Hide loading
+                            hideLoading();
+                            
+                            // Show success message
+                            showToast('Transaksi berhasil disimpan!', 'success');
+                        }, 1000);
+                    }
+                });
+            });
+            
+            // Print receipt button
+            $(document).on('click', '#printReceiptBtn', function() {
+                window.print();
+            });
+            
+            // Download receipt as PDF
+            $(document).on('click', '#downloadReceiptBtn', function() {
+                showLoading('Membuat PDF...');
+                const transactionId = $('#receiptTransactionId').text().replace('No. Transaksi: ', '');
+                generatePDF('receiptPrint', `Struk_${transactionId}.pdf`).then(() => {
+                    hideLoading();
+                    showToast('PDF berhasil diunduh', 'success');
+                });
+            });
+            
+            // Close receipt
+            $(document).on('click', '#closeReceiptBtn, .close-receipt', function() {
+                $('#receiptPrint').hide();
+            });
+            
+            // Close modals
+            $('.modal-close, .close-product-modal').click(function() {
+                $(this).closest('.modal').hide();
+            });
+            
+            // Search products
+            $('#productSearch').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                loadProducts(searchTerm);
+            });
+        });
+        
+        // Update current date
+        function updateCurrentDate() {
+            $('#currentDate').text(moment().format('dddd, D MMMM YYYY, HH:mm'));
+        }
+        
+        // Load settings
+        function loadSettings() {
+            $('#taxRate').val(settings.taxRate);
+            $('#discountType').val(settings.discountType);
+            $('#discountValue').val(settings.discountValue);
+            $('#discountValueType').val(settings.discountType === 'percentage' ? 'percentage' : 'fixed');
+            
+            // Update UI
+            $('#taxPercentage').text(settings.taxRate);
+        }
+        
+        // Initialize app after setup
+        function initializeApp() {
+            // Update header with store info
+            $('#storeNameHeader').text(storeInfo.storeName);
+            $('#loggedInUser').text(storeInfo.userPosition === 'owner' ? 'Owner' : 'Kasir');
+            
+            // Load products
+            loadProducts();
+            
+            // Update cart
+            updateCart();
+            
+            // Show main app
+            $('#mainApp').fadeIn();
+        }
+        
+        // Save data to local storage
+        function saveProducts() {
+            localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+        }
+        
+        function saveTransactions() {
+            localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(transactions));
+        }
+        
+        function saveCurrentCart() {
+            localStorage.setItem(STORAGE_KEYS.CURRENT_CART, JSON.stringify(currentCart));
+        }
+        
+        // Load products to UI
+        function loadProducts(searchTerm = '') {
+            let filteredProducts = [...products];
+            
+            // Apply search filter
+            if (searchTerm) {
+                filteredProducts = filteredProducts.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm) || 
+                    p.category.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Display products
+            $('#productListBody').empty();
+            
+            if (filteredProducts.length === 0) {
+                $('#productListBody').html(`
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                <i class="fas fa-box-open"></i>
+                                <p>Tidak ada produk ditemukan</p>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            } else {
+                filteredProducts.forEach(product => {
+                    const stockClass = product.stock > 5 ? 'text-success' : product.stock > 0 ? 'text-warning' : 'text-danger';
+                    
+                    $('#productListBody').append(`
+                        <tr>
+                            <td>${product.name}</td>
+                            <td>${formatCurrency(product.price)}</td>
+                            <td class="${stockClass}">${product.stock}</td>
+                            <td>
+                                <button class="btn btn-success btn-sm add-to-cart" data-id="${product.id}" 
+                                    ${product.stock <= 0 ? 'disabled title="Stok habis"' : ''}>
+                                    <i class="fas fa-cart-plus"></i> Tambah
+                                </button>
+                                <button class="btn btn-info btn-sm edit-product" data-id="${product.id}" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-product" data-id="${product.id}" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `);
                 });
             }
-
-            // --- Skrip Form Cerdas (Tidak Berubah) ---
-            const jenisProdukSelect = document.getElementById('jenis-produk');
-            const jenisAcaraSelect = document.getElementById('jenis-acara');
+        }
+        
+        // Update cart UI
+        function updateCart() {
+            // Calculate subtotal
+            currentCart.subtotal = currentCart.items.reduce((total, item) => {
+                return total + (item.product.price * item.quantity);
+            }, 0);
             
-            const grupJenisAcara = document.getElementById('grup-jenis-acara');
-            const grupNamaAcara = document.getElementById('grup-nama-acara');
-            const grupNamaPria = document.getElementById('grup-nama-mempelai-pria');
-            const grupNamaWanita = document.getElementById('grup-nama-mempelai-wanita');
-            const grupNamaAnak = document.getElementById('grup-nama-anak');
-            const grupOrtuPria = document.getElementById('grup-ortu-pria');
-            const grupOrtuWanita = document.getElementById('grup-ortu-wanita');
-            const grupTanggalWaktu = document.getElementById('grup-tanggal-waktu');
-            const grupLokasi = document.getElementById('grup-lokasi');
-
-            const allEventGroups = [
-                grupJenisAcara, grupNamaAcara, grupNamaPria, grupNamaWanita, 
-                grupNamaAnak, grupOrtuPria, grupOrtuWanita, grupTanggalWaktu, grupLokasi
-            ];
-
-            const hideAllEventFields = () => {
-                allEventGroups.forEach(grup => grup && grup.classList.add('hidden'));
-            };
-
-            jenisProdukSelect.addEventListener('change', () => {
-                const value = jenisProdukSelect.value;
-                if (value === 'undangan') {
-                    grupJenisAcara.classList.remove('hidden');
-                    jenisAcaraSelect.value = '';
-                    jenisAcaraSelect.dispatchEvent(new Event('change'));
-                } else {
-                    hideAllEventFields();
-                }
-            });
-
-            jenisAcaraSelect.addEventListener('change', () => {
-                const value = jenisAcaraSelect.value;
-                
-                [grupNamaAcara, grupNamaPria, grupNamaWanita, grupNamaAnak, grupOrtuPria, grupOrtuWanita, grupTanggalWaktu, grupLokasi].forEach(g => g && g.classList.add('hidden'));
-
-                if (!value) return; 
-
-                grupNamaAcara.classList.remove('hidden');
-                grupTanggalWaktu.classList.remove('hidden');
-                grupLokasi.classList.remove('hidden');
-
-                if (value === 'pernikahan') {
-                    grupNamaPria.classList.remove('hidden');
-                    grupNamaWanita.classList.remove('hidden');
-                    grupOrtuPria.classList.remove('hidden');
-                    grupOrtuWanita.classList.remove('hidden');
-                } else if (value === 'khitanan') {
-                    grupNamaAnak.classList.remove('hidden');
-                    grupOrtuPria.classList.remove('hidden'); 
-                    grupOrtuWanita.classList.remove('hidden'); 
-                } else if (value === 'ulang-tahun') {
-                    grupNamaAnak.classList.remove('hidden');
-                }
-            });
-
-            // --- Skrip Validasi & Modal Nota ---
-            const btnBuatNota = document.getElementById('btn-buat-nota');
-            const modal = document.getElementById('modal-nota');
-            const btnCloseModal = document.getElementById('btn-close-modal');
-            const btnCloseModal2 = document.getElementById('btn-close-modal-2');
+            // Calculate discount
+            currentCart.discount = calculateDiscount(currentCart.subtotal);
             
-            // [PERBAIKAN] Ini adalah tombol DOWNLOAD PDF
-            const btnDownloadPdf = document.getElementById('btn-download-pdf'); 
-            const btnKirimWa = document.getElementById('btn-kirim-wa');
+            // Calculate tax
+            const taxableAmount = currentCart.subtotal - currentCart.discount;
+            currentCart.tax = taxableAmount * (settings.taxRate / 100);
             
-            const form = document.getElementById('form-pemesanan');
+            // Calculate total
+            currentCart.total = taxableAmount + currentCart.tax + currentCart.additionalFee;
             
-            const validateForm = () => {
-                let isValid = true;
-                const requiredFields = form.querySelectorAll('.form-group:not(.hidden) [required]');
-                
-                requiredFields.forEach(field => {
-                    const group = field.closest('.form-group');
-                    if (!field.value) {
-                        group.classList.add('error');
-                        isValid = false;
-                    } else {
-                        group.classList.remove('error');
-                    }
+            // Save cart
+            saveCurrentCart();
+            
+            // Update cart UI
+            $('#cartItems').empty();
+            
+            if (currentCart.items.length === 0) {
+                $('#cartItems').html(`
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Keranjang belanja kosong</p>
+                    </div>
+                `);
+            } else {
+                currentCart.items.forEach(item => {
+                    const itemTotal = item.product.price * item.quantity;
+                    $('#cartItems').append(`
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">${item.product.name}</div>
+                                <div class="cart-item-price">${formatCurrency(item.product.price)}</div>
+                            </div>
+                            <div class="cart-item-qty">
+                                <input type="number" value="${item.quantity}" min="1" max="${item.product.stock}" 
+                                    class="cart-item-quantity" data-id="${item.product.id}">
+                                <button class="btn btn-danger btn-sm ml-2 remove-from-cart" data-id="${item.product.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `);
                 });
-                return isValid;
-            };
-
-            const openModal = () => modal.classList.add('active');
-            const closeModal = () => modal.classList.remove('active');
-
-            btnBuatNota.addEventListener('click', () => {
-                if (validateForm()) {
-                    const kodePesanan = 'AD-' + Date.now().toString().slice(-6);
-                    document.getElementById('nota-kode').textContent = kodePesanan;
-                    document.getElementById('nota-kode-print').textContent = kodePesanan; 
-
-                    document.getElementById('nota-nama-pemesan').textContent = document.getElementById('nama-pemesan').value;
-                    document.getElementById('nota-wa-pemesan').textContent = document.getElementById('wa-pemesan').value;
-                    
-                    const produkSelect = document.getElementById('jenis-produk');
-                    document.getElementById('nota-jenis-produk').textContent = produkSelect.options[produkSelect.selectedIndex].text;
-                    
-                    const catatan = document.getElementById('catatan-tambahan').value || '(Tidak ada catatan)';
-                    document.getElementById('nota-catatan-tambahan').textContent = catatan;
-
-                    const containerAcaraTbody = document.getElementById('nota-grup-acara-tbody');
-                    containerAcaraTbody.innerHTML = ''; 
-                    
-                    const addNotaItem = (label, value, isHtml = false) => {
-                        if (value) {
-                            const newRow = containerAcaraTbody.insertRow();
-                            const cell1 = newRow.insertCell(0);
-                            const cell2 = newRow.insertCell(1);
-                            
-                            cell1.textContent = label;
-                            
-                            if (isHtml) {
-                                cell2.innerHTML = value;
-                            } else {
-                                cell2.textContent = value;
-                            }
-                        }
-                    };
-                    
-                    if (jenisProdukSelect.value === 'undangan' && jenisAcaraSelect.value) {
-                        const acaraSelect = document.getElementById('jenis-acara');
-                        addNotaItem('Jenis Acara', acaraSelect.options[acaraSelect.selectedIndex].text);
-                        addNotaItem('Nama Acara', document.getElementById('nama-acara').value);
-                        addNotaItem('Nama Mempelai Pria', document.getElementById('nama-mempelai-pria').value);
-                        addNotaItem('Nama Mempelai Wanita', document.getElementById('nama-mempelai-wanita').value);
-                        addNotaItem('Nama Anak', document.getElementById('nama-anak').value);
-                        addNotaItem('Orang Tua (Pihak Pria/Ayah)', document.getElementById('ortu-pria').value);
-                        addNotaItem('Orang Tua (Pihak Wanita/Ibu)', document.getElementById('ortu-wanita').value);
-                        
-                        const tgl = document.getElementById('tanggal-acara').value;
-                        const waktu = document.getElementById('waktu-acara').value;
-                        if (tgl || waktu) {
-                            let tglFormatted = tgl;
-                            if (tgl) {
-                                try {
-                                    const tglObj = new Date(tgl + 'T00:00:00'); 
-                                    tglFormatted = tglObj.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-                                } catch (e) { /* biarkan */ }
-                            }
-                            addNotaItem('Waktu Acara', `${tglFormatted} ${waktu ? 'Pukul ' + waktu + ' WIB' : ''}`.trim());
-                        }
-                        
-                        const lokasiValue = document.getElementById('lokasi-acara').value;
-                        if(lokasiValue) {
-                            if (lokasiValue.startsWith('http')) {
-                                addNotaItem('Lokasi Acara', `<a href="${lokasiValue}" target="_blank" rel="noopener noreferrer">Klik untuk Buka Peta</a>`, true);
-                            } else {
-                                addNotaItem('Lokasi Acara', lokasiValue);
-                            }
-                        }
-                    }
-                    
-                    openModal();
-                } else {
-                    alert('Harap isi semua field yang wajib (ditandai merah) dan terlihat.');
-                }
-            });
-
-            btnCloseModal.addEventListener('click', closeModal);
-            btnCloseModal2.addEventListener('click', closeModal);
-
+            }
             
-            // [PERBAIKAN] Event listener untuk DOWNLOAD PDF.
-            // TIDAK ADA window.print() DI SINI.
-            btnDownloadPdf.addEventListener('click', () => {
-                const kodePesanan = document.getElementById('nota-kode').textContent || 'AD-Pesanan';
-                const filename = `Nota_Pra-Pesanan_${kodePesanan}.pdf`;
-                
-                const originalBtnText = btnDownloadPdf.innerHTML;
-                btnDownloadPdf.innerHTML = 'Membuat PDF...';
-                btnDownloadPdf.disabled = true;
-
-                // Panggil fungsi generatePDF (yang menggunakan html2pdf.js)
-                generatePDFFromElement('modal-nota-content-printable', filename)
-                    .then(() => {
-                        btnDownloadPdf.innerHTML = originalBtnText;
-                        btnDownloadPdf.disabled = false;
-                    })
-                    .catch((err) => {
-                        console.error("Gagal membuat PDF:", err);
-                        alert("Gagal membuat PDF. Silakan coba lagi.");
-                        btnDownloadPdf.innerHTML = originalBtnText;
-                        btnDownloadPdf.disabled = false;
-                    });
-            });
-
-
-            // --- Fungsi Kirim ke WhatsApp (Tidak berubah) ---
-            const formatNotaForWhatsApp = () => {
-                const adminNomor = '6285647709114';
-                
-                const addLine = (label, value) => {
-                    if (value && value.trim() !== '' && value.trim() !== '(Tidak ada catatan)') {
-                        const cleanValue = value.replace(/<br\s*\/?>/gi, '\n');
-                        return `*${label}:* ${cleanValue}\n`;
-                    }
-                    return '';
-                };
-
-                let message = "Halo Admin Aneka Digital, saya mau pesan:\n\n";
-                message += "--- *DETAIL PEMESAN* ---\n";
-                message += addLine('Nama Pemesan', document.getElementById('nama-pemesan').value);
-                message += addLine('No. WhatsApp', document.getElementById('wa-pemesan').value);
-                
-                message += "\n--- *DETAIL PESANAN* ---\n";
-                const produkSelect = document.getElementById('jenis-produk');
-                const produkText = produkSelect.options[produkSelect.selectedIndex].text;
-                message += addLine('Jenis Pesanan', produkText);
-
-                if (document.getElementById('jenis-produk').value === 'undangan' && document.getElementById('jenis-acara').value) {
-                    const acaraSelect = document.getElementById('jenis-acara');
-                    const acaraText = acaraSelect.options[acaraSelect.selectedIndex].text;
-                    
-                    message += addLine('Jenis Acara', acaraText);
-                    message += addLine('Nama Acara', document.getElementById('nama-acara').value);
-                    message += addLine('Mempelai Pria', document.getElementById('nama-mempelai-pria').value);
-                    message += addLine('Mempelai Wanita', document.getElementById('nama-mempelai-wanita').value);
-                    message += addLine('Nama Anak', document.getElementById('nama-anak').value);
-                    message += addLine('Ortu Pria/Ayah', document.getElementById('ortu-pria').value);
-                    message += addLine('Ortu Wanita/Ibu', document.getElementById('ortu-wanita').value);
-                    
-                    const tgl = document.getElementById('tanggal-acara').value;
-                    const waktu = document.getElementById('waktu-acara').value;
-                    if (tgl || waktu) {
-                        let tglFormatted = tgl;
-                        if (tgl) {
-                            try {
-                                const tglObj = new Date(tgl + 'T00:00:00');
-                                tglFormatted = tglObj.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-                            } catch (e) { /* biarkan */ }
-                        }
-                        message += addLine('Waktu Acara', `${tglFormatted} ${waktu ? 'Pukul ' + waktu + ' WIB' : ''}`.trim());
-                    }
-                    message += addLine('Lokasi Acara (Link)', document.getElementById('lokasi-acara').value);
-                }
-
-                message += "\n"; 
-                message += addLine('Catatan Tambahan', document.getElementById('catatan-tambahan').value || '(Tidak ada catatan)');
-                
-                message += `\n\nKode Pra-Pesanan: *${document.getElementById('nota-kode').textContent}*\n`;
-                message += "Mohon konfirmasi dan info total biayanya. Terima kasih.";
-
-                const encodedMessage = encodeURIComponent(message);
-                window.open(`https://wa.me/${adminNomor}?text=${encodedMessage}`, '_blank');
-            };
-
-            btnKirimWa.addEventListener('click', formatNotaForWhatsApp);
-
-            hideAllEventFields();
+            // Update summary
+            $('#cartSubtotal').text(formatCurrency(currentCart.subtotal));
+            $('#cartDiscount').text(formatCurrency(currentCart.discount));
+            $('#cartTax').text(formatCurrency(currentCart.tax));
+            $('#cartAdditionalFee').text(formatCurrency(currentCart.additionalFee));
+            $('#cartTotal').text(formatCurrency(currentCart.total));
             
-        });
+            // Update additional fee description
+            if (currentCart.additionalFee > 0) {
+                $('#additionalFeeDescription').text(currentCart.additionalFeeDescription).show();
+            } else {
+                $('#additionalFeeDescription').text('').hide();
+            }
+        }
+        
+        // Reset cart
+        function resetCart() {
+            currentCart = {
+                items: [],
+                discount: 0,
+                tax: 0,
+                additionalFee: 0,
+                additionalFeeDescription: '',
+                subtotal: 0,
+                total: 0
+            };
+            
+            saveCurrentCart();
+            updateCart();
+            
+            // Reset payment form
+            $('#paymentAmount').val('');
+            $('#cash').prop('checked', true);
+        }
+        
+        // Generate receipt
+        function generateReceipt(transaction) {
+            const receiptDate = moment(transaction.date).format('DD/MM/YYYY HH:mm:ss');
+            const paymentMethod = transaction.paymentMethod === 'cash' ? 'Tunai' : 
+                                transaction.paymentMethod === 'transfer' ? 'Transfer Bank' : 'E-Wallet';
+            
+            // Update receipt header
+            $('#receiptStoreName').text(storeInfo.storeName);
+            $('#receiptStoreAddress').text(storeInfo.storeAddress);
+            $('#receiptStorePhone').text('Telp: ' + storeInfo.storePhone);
+            $('#receiptDate').text(receiptDate);
+            $('#receiptTransactionId').text('No. Transaksi: ' + transaction.id);
+            
+            // Create items HTML
+            let itemsHTML = '';
+            transaction.items.forEach(item => {
+                const itemTotal = item.product.price * item.quantity;
+                itemsHTML += `
+                    <div class="receipt-item">
+                        <div class="receipt-item-name">${item.quantity}x ${item.product.name}</div>
+                        <div class="receipt-item-price">${formatCurrency(itemTotal)}</div>
+                    </div>
+                `;
+            });
+            
+            // Update receipt items
+            $('#receiptItems').html(itemsHTML);
+            
+            // Update receipt summary
+            $('#receiptSubtotal').text(formatCurrency(transaction.subtotal));
+            $('#receiptDiscount').text(formatCurrency(transaction.discount));
+            $('#receiptTaxPercentage').text(settings.taxRate);
+            $('#receiptTax').text(formatCurrency(transaction.tax));
+            $('#receiptTotal').text(formatCurrency(transaction.total));
+            $('#receiptPaymentMethod').text(paymentMethod);
+            $('#receiptPaymentAmount').text(formatCurrency(transaction.paymentAmount));
+            $('#receiptChange').text(formatCurrency(transaction.change));
+            $('#receiptCashier').text(transaction.cashier);
+            
+            // Update additional fee if exists
+            if (transaction.additionalFee > 0) {
+                $('#receiptAdditionalFeeItem').show();
+                $('#receiptAdditionalFeeLabel').text(transaction.additionalFeeDescription);
+                $('#receiptAdditionalFeeValue').text(formatCurrency(transaction.additionalFee));
+            } else {
+                $('#receiptAdditionalFeeItem').hide();
+            }
+            
+            // Fixed footer text
+            const footerHTML = `
+                <div>Terima kasih telah berbelanja</div>
+                <div class="receipt-order-info">Order Aplikasi Payment Pro</div>
+                <div class="receipt-order-info">kirim email: lenterakaryasitubondo@gmail.com</div>
+                <div>Kasir: <span id="receiptCashier">${transaction.cashier}</span></div>
+            `;
+            
+            $('.receipt-footer').html(footerHTML);
+        }
     </script>
-
 </body>
 </html>
