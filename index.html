@@ -7,7 +7,12 @@
     <meta name="description" content="Portal layanan bisnis terlengkap: Digital Printing Online, Jasa Pembuatan Website Murah, Marketplace Gratis, dan Download Aplikasi Usaha.">
     <meta name="author" content="www.aplikasiusaha.com">
     
-    <meta name="keywords" content="digital printing online, cetak id card murah, jasa pembuatan website murah, bikin website toko online, marketplace gratis, aplikasi kasir gratis, download aplikasi usaha, cetak stiker online, percetakan online, aplikasi pembukuan gratis, promosi bisnis gratis, portal digital, anekamarket, aplikasiusaha">
+    <meta name="keywords" content="digital printing online, jasa pembuatan website murah, jasa website situbondo, web developer profesional, edit gambar online, edit foto, umkm online, umkm indonesia, umkm naik kelas, aplikasiusaha, aplikasi bisnis, aplikasi usaha, anekamarket situbondo, aneka market, aplikasi umkm, buat website toko online, jasa landing page, website company profile, bikin website sekolah, website desa pemerintah, jasa seo website, digital printing online, 
+    cetak undangan pernikahan unik, undangan murah situbondo, percetakan panarukan, percetakan besuki, percetakan bondowoso, percetakan jember, percetakan banyuwangi, percetakan probolinggo, cetak id card pvc, cetak member card, kartu pelajar, 
+    cetak foto online, cetak foto polaroid, cetak stiker label, cetak banner spanduk, cetak kalender, brosur flyer, kartu nama bisnis, aneka digital, aneka market, aplikasi kasir, source code aplikasi, jasa coding website, programmer web, 
+    domain hosting murah, beli domain com, subdomain gratis, integrasi qris, pembayaran digital, cetak cd dvd, burning cd, duplikasi cd, jasa edit foto, desain grafis online, branding bisnis umkm, solusi bisnis digital, marketplace percetakan, 
+    print on demand indonesia, cetak undangan sehari jadi, harga jasa website termurah, bikin web cepat, jasa it konsultan, software house jawa timur, undangan digital video, souvenir pernikahan unik,
+    jasa website responsif, cetak foto dari hp, cetak undangan custom, web developer terpercaya, jasa pembuatan aplikasi android, cetak stiker kemasan, percetakan online murah ongkir, cetak id card murah, jasa pembuatan website murah, bikin website toko online, marketplace gratis, aplikasi kasir gratis, download aplikasi usaha, cetak stiker online, percetakan online, aplikasi pembukuan gratis, promosi bisnis gratis, portal digital, anekamarket, aplikasiusaha, jasa seo website, desain grafis online, umkm go digital, web developer indonesia, cetak undangan murah, branding bisnis, software toko gratis">
     
     <meta name="robots" content="index, follow">
     
@@ -22,8 +27,8 @@
             --primary-orange: #ff7b00;
             --primary-green: #00ff88;
             --bg-dark: #050810;
-            --glass-bg: rgba(20, 25, 40, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(20, 25, 40, 0.75); /* Sedikit lebih gelap agar teks lebih terbaca */
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
 
         * {
@@ -68,21 +73,20 @@
         /* --- ANIMASI CAHAYA (GLOW) --- */
         @keyframes glowBlue {
             0% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.2); border-color: rgba(0, 242, 255, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(0, 242, 255, 0.6); border-color: rgba(0, 242, 255, 0.8); }
+            50% { box-shadow: 0 0 25px rgba(0, 242, 255, 0.5); border-color: rgba(0, 242, 255, 0.8); }
             100% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.2); border-color: rgba(0, 242, 255, 0.3); }
         }
         @keyframes glowOrange {
             0% { box-shadow: 0 0 5px rgba(255, 123, 0, 0.2); border-color: rgba(255, 123, 0, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(255, 123, 0, 0.6); border-color: rgba(255, 123, 0, 0.8); }
+            50% { box-shadow: 0 0 25px rgba(255, 123, 0, 0.5); border-color: rgba(255, 123, 0, 0.8); }
             100% { box-shadow: 0 0 5px rgba(255, 123, 0, 0.2); border-color: rgba(255, 123, 0, 0.3); }
         }
         @keyframes glowGreen {
             0% { box-shadow: 0 0 5px rgba(0, 255, 136, 0.2); border-color: rgba(0, 255, 136, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); border-color: rgba(0, 255, 136, 0.8); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 136, 0.5); border-color: rgba(0, 255, 136, 0.8); }
             100% { box-shadow: 0 0 5px rgba(0, 255, 136, 0.2); border-color: rgba(0, 255, 136, 0.3); }
         }
 
-        /* Button Animations */
         @keyframes pulseBtn {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
             70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
@@ -100,6 +104,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: gradientText 6s ease infinite;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         @keyframes gradientText {
@@ -110,106 +115,143 @@
 
         .hero-desc {
             font-size: 1.1rem;
-            color: #a0aaec;
+            color: #b8c0ff;
             max-width: 800px;
             text-align: center;
-            margin: 0 auto 3rem auto;
-            line-height: 1.6;
+            margin: 0 auto 3.5rem auto;
+            line-height: 1.7;
+            font-weight: 300;
         }
 
         .portal-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 2.5rem;
             width: 100%;
             margin-bottom: 4rem;
         }
 
         .card {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            padding: 3rem 2rem;
             text-decoration: none;
-            transition: transform 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             position: relative;
             overflow: hidden;
+            height: 100%; /* Memastikan tinggi card seragam dalam grid */
         }
 
         /* Penerapan Animasi Cahaya pada Card */
-        .card-market { animation: glowOrange 3s infinite alternate; }
-        .card-print { animation: glowBlue 3s infinite alternate; }
-        .card-apps { animation: glowGreen 3s infinite alternate; }
+        .card-market { animation: glowOrange 4s infinite alternate; }
+        .card-print { animation: glowBlue 4s infinite alternate; }
+        .card-apps { animation: glowGreen 4s infinite alternate; }
 
         .card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-12px);
+            background: rgba(30, 35, 55, 0.8);
         }
 
+        /* --- PERBAIKAN BAGIAN ICON --- */
         .icon-box {
-            font-size: 2.5rem;
+            height: 70px; /* Tinggi tetap untuk alignment yang presisi */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 1.5rem;
             transition: 0.3s;
         }
+
+        /* Single Icon Style */
+        .icon-box i {
+            font-size: 3rem;
+        }
+
+        /* Dual Icon Wrapper (Untuk Printing & Web) */
+        .dual-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        /* Ukuran diseimbangkan agar visual weight sama dengan single icon */
+        .dual-icon i {
+            font-size: 2.2rem !important; 
+        }
+
+        /* Divider garis miring estetik pengganti tanda "+" */
+        .icon-divider {
+            width: 2px;
+            height: 28px;
+            background-color: rgba(255,255,255,0.3);
+            transform: rotate(15deg);
+            margin: 0 5px;
+        }
         
-        .card-market .icon-box { color: var(--primary-orange); text-shadow: 0 0 15px rgba(255, 123, 0, 0.5); }
-        .card-print .icon-box { color: var(--primary-blue); text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); }
-        .card-apps .icon-box { color: var(--primary-green); text-shadow: 0 0 15px rgba(0, 255, 136, 0.5); }
+        .card-market .icon-box { color: var(--primary-orange); text-shadow: 0 0 20px rgba(255, 123, 0, 0.4); }
+        .card-print .icon-box { color: var(--primary-blue); text-shadow: 0 0 20px rgba(0, 242, 255, 0.4); }
+        .card-apps .icon-box { color: var(--primary-green); text-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
 
         .card h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin-bottom: 1rem;
             color: white;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: 600;
         }
 
         .card p {
             color: #d1d5db;
             font-size: 0.95rem;
             line-height: 1.6;
-            margin-bottom: 2rem;
-            flex-grow: 1; 
+            margin-bottom: 2.5rem;
+            flex-grow: 1; /* Memastikan tombol selalu di bawah */
         }
 
-        /* Helper class untuk bold text di deskripsi agar info penting terlihat */
         .highlight-text {
             color: #fff;
-            font-weight: 500;
+            font-weight: 600;
+            border-bottom: 1px dotted rgba(255,255,255,0.3);
         }
 
         .btn-access {
-            padding: 10px 25px;
+            padding: 12px 30px;
             border-radius: 50px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
             color: white;
             background: rgba(255,255,255,0.05);
             transition: 0.3s;
             position: relative;
             overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* Warna Button mengikuti tema Card */
-        .card-market .btn-access:hover { background: var(--primary-orange); border-color: var(--primary-orange); box-shadow: 0 0 15px var(--primary-orange); }
-        .card-print .btn-access:hover { background: var(--primary-blue); border-color: var(--primary-blue); box-shadow: 0 0 15px var(--primary-blue); }
-        .card-apps .btn-access:hover { background: var(--primary-green); border-color: var(--primary-green); box-shadow: 0 0 15px var(--primary-green); }
+        .card-market .btn-access:hover { background: var(--primary-orange); border-color: var(--primary-orange); box-shadow: 0 0 20px var(--primary-orange); }
+        .card-print .btn-access:hover { background: var(--primary-blue); border-color: var(--primary-blue); box-shadow: 0 0 20px var(--primary-blue); }
+        .card-apps .btn-access:hover { background: var(--primary-green); border-color: var(--primary-green); box-shadow: 0 0 20px var(--primary-green); }
 
-        /* Footer Styling Baru */
+        /* Footer Styling */
         .footer-section {
             margin-top: auto;
             text-align: center;
             padding: 3rem 1rem 2rem 1rem; 
             width: 100%;
             border-top: 1px solid rgba(255,255,255,0.05);
-            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
-            backdrop-filter: blur(5px);
+            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(5, 8, 16, 0.4));
+            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -218,23 +260,24 @@
         .btn-wa-dev {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             background: #25D366;
             color: white;
-            padding: 14px 35px;
+            padding: 14px 40px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 1.05rem;
             animation: pulseBtn 2s infinite;
             transition: all 0.3s ease;
             margin-bottom: 2.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         .btn-wa-dev:hover {
             background: #20bd5a;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(37, 211, 102, 0.8);
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.6);
         }
 
         .footer-info {
@@ -246,10 +289,11 @@
 
         .footer-info::before {
             content: '';
-            width: 50px;
-            height: 2px;
-            background: rgba(255,255,255,0.1);
-            margin: 0 auto 1rem auto;
+            width: 60px;
+            height: 3px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 2px;
+            margin: 0 auto 1.2rem auto;
             display: block;
         }
 
@@ -264,24 +308,27 @@
             text-decoration: none;
             font-weight: 700;
             transition: 0.3s;
+            position: relative;
         }
         
         .brand-credit a:hover {
             color: var(--primary-green);
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
         }
 
         .copyright-text {
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
             font-weight: 300;
         }
 
         @media (max-width: 768px) {
             .container { padding: 3rem 1.5rem; }
-            .hero-title { font-size: 2.2rem; }
-            .portal-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-            .card { padding: 2rem 1.5rem; }
+            .hero-title { font-size: 2.5rem; }
+            .portal-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .card { padding: 2.5rem 1.5rem; }
+            .icon-box i { font-size: 2.5rem; }
+            .dual-icon i { font-size: 2rem !important; }
         }
     </style>
 </head>
@@ -306,7 +353,11 @@
 
             <a href="https://www.anekamarket.my.id/anekadigital" class="card card-print">
                 <div class="icon-box">
-                    <i class="fas fa-print"></i> <span style="font-size: 1.5rem; vertical-align: middle;">+</span> <i class="fas fa-laptop-code" style="font-size: 1.8rem;"></i>
+                    <div class="dual-icon">
+                        <i class="fas fa-print" title="Digital Printing"></i>
+                        <span class="icon-divider"></span>
+                        <i class="fas fa-laptop-code" title="Jasa Website"></i>
+                    </div>
                 </div>
                 <h3>Printing & Jasa Web</h3>
                 <p>
@@ -330,7 +381,7 @@
     <footer class="footer-section">
         
         <a href="https://wa.me/6285647709114?text=Halo%20Developer%20AplikasiUsaha.com%2C%20saya%20tertarik%20dengan%20layanan%20Anda." target="_blank" class="btn-wa-dev">
-            <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i> Hubungi Developer
+            <i class="fab fa-whatsapp" style="font-size: 1.6rem;"></i> Hubungi Developer
         </a>
 
         <div class="footer-info">
