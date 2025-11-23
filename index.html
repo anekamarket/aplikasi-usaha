@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <meta name="description" content="Portal layanan bisnis terlengkap: Digital Printing Online, Marketplace Gratis, dan Download Aplikasi Usaha.">
+    <meta name="description" content="Portal layanan bisnis terlengkap: Digital Printing Online, Jasa Pembuatan Website Murah, Marketplace Gratis, dan Download Aplikasi Usaha.">
     <meta name="author" content="www.aplikasiusaha.com">
+    
+    <meta name="keywords" content="digital printing online, cetak id card murah, jasa pembuatan website murah, bikin website toko online, marketplace gratis, aplikasi kasir gratis, download aplikasi usaha, cetak stiker online, percetakan online, aplikasi pembukuan gratis, promosi bisnis gratis, portal digital, anekamarket, aplikasiusaha">
+    
     <meta name="robots" content="index, follow">
     
-    <title>Portal Digital - Digital Printing, Marketplace & Aplikasi Bisnis</title>
+    <title>Portal Digital - Printing, Website, Marketplace & Aplikasi Bisnis</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -63,7 +66,6 @@
         }
 
         /* --- ANIMASI CAHAYA (GLOW) --- */
-        /* Keyframes untuk efek bernapas */
         @keyframes glowBlue {
             0% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.2); border-color: rgba(0, 242, 255, 0.3); }
             50% { box-shadow: 0 0 20px rgba(0, 242, 255, 0.6); border-color: rgba(0, 242, 255, 0.8); }
@@ -175,6 +177,12 @@
             flex-grow: 1; 
         }
 
+        /* Helper class untuk bold text di deskripsi agar info penting terlihat */
+        .highlight-text {
+            color: #fff;
+            font-weight: 500;
+        }
+
         .btn-access {
             padding: 10px 25px;
             border-radius: 50px;
@@ -197,7 +205,7 @@
         .footer-section {
             margin-top: auto;
             text-align: center;
-            padding: 3rem 1rem 2rem 1rem; /* Padding lebih lega */
+            padding: 3rem 1rem 2rem 1rem; 
             width: 100%;
             border-top: 1px solid rgba(255,255,255,0.05);
             background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
@@ -218,10 +226,9 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 1rem;
-            /* Animasi denyut untuk tombol WA */
             animation: pulseBtn 2s infinite;
             transition: all 0.3s ease;
-            margin-bottom: 2.5rem; /* Jarak ke teks footer */
+            margin-bottom: 2.5rem;
         }
 
         .btn-wa-dev:hover {
@@ -230,7 +237,6 @@
             box-shadow: 0 0 20px rgba(37, 211, 102, 0.8);
         }
 
-        /* Penataan Teks Footer Baru */
         .footer-info {
             display: flex;
             flex-direction: column;
@@ -243,7 +249,7 @@
             width: 50px;
             height: 2px;
             background: rgba(255,255,255,0.1);
-            margin: 0 auto 1rem auto; /* Garis pemisah kecil */
+            margin: 0 auto 1rem auto;
             display: block;
         }
 
@@ -299,10 +305,16 @@
             </a>
 
             <a href="https://www.anekamarket.my.id/anekadigital" class="card card-print">
-                <div class="icon-box"><i class="fas fa-print"></i></div>
-                <h3>Digital Printing</h3>
-                <p>Solusi cetak online cepat & berkualitas. ID Card, CD, Foto, Undangan, stiker, dan merchandise dengan warna tajam serta harga kompetitif.</p>
-                <div class="btn-access">Cetak Sekarang <i class="fas fa-arrow-right"></i></div>
+                <div class="icon-box">
+                    <i class="fas fa-print"></i> <span style="font-size: 1.5rem; vertical-align: middle;">+</span> <i class="fas fa-laptop-code" style="font-size: 1.8rem;"></i>
+                </div>
+                <h3>Printing & Jasa Web</h3>
+                <p>
+                    Layanan lengkap untuk branding bisnis Anda: 
+                    <br>• <span class="highlight-text">Digital Printing:</span> ID Card, Undangan, Merchandise & Foto.
+                    <br>• <span class="highlight-text">Jasa Website Murah:</span> Buat website profesional harga terjangkau.
+                </p>
+                <div class="btn-access">Cetak & Buat Web <i class="fas fa-arrow-right"></i></div>
             </a>
 
             <a href="https://www.anekamarket.my.id/beliaplikasi" class="card card-apps">
