@@ -2993,6 +2993,7 @@
         }
         
         // --- NEW FUNCTION: Reload Data From Repo (reload.js) ---
+        // VERSI DIPERBARUI: Mendukung data terenkripsi (Base64)
         function handleReloadFromRepo() {
             if(!confirm("Apakah Anda yakin ingin me-reload data dari repository? Data lokal saat ini akan ditimpa dengan data dari file reload.js.")) return;
 
@@ -3013,12 +3014,26 @@
 
             script.onload = function() {
                 try {
-                    // Cek apakah data tersedia di global variable
-                    if (window.BARJAS_RELOAD_DATA) {
-                        const restored = window.BARJAS_RELOAD_DATA;
+                    // 1. Ambil konten raw dari global variable di reload.js
+                    if (window.BARJAS_BACKUP_ENCRYPTED) {
+                        const rawContent = window.BARJAS_BACKUP_ENCRYPTED;
+                        let restored;
+
+                        // 2. Coba DEKRIPSI (Sama seperti fitur Restore)
+                        try {
+                            // Jika formatnya string (terenkripsi/base64)
+                            if (typeof rawContent === 'string') {
+                                restored = JSON.parse(decodeURIComponent(escape(atob(rawContent))));
+                            } else {
+                                // Fallback jika user paste JSON mentah (bukan kode acak)
+                                restored = rawContent;
+                            }
+                        } catch (decryptionError) {
+                            throw new Error("Gagal mendekripsi data. Pastikan kode di reload.js disalin dengan benar.");
+                        }
                         
-                        // Validasi sederhana struktur data
-                        if(restored.appData && Array.isArray(restored.appData)) {
+                        // 3. Validasi & Terapkan Data
+                        if(restored && restored.appData && Array.isArray(restored.appData)) {
                             // Update data aplikasi
                             appData = restored.appData;
                             if(restored.appSettings) Object.assign(appSettings, restored.appSettings);
@@ -3033,23 +3048,23 @@
                             updateDashboard();
                             renderDataTable();
                             
-                            showNotification('Data berhasil di-reload dari Repository (reload.js)!', 'success');
+                            showNotification('Data berhasil di-reload & didekripsi dari Repository!', 'success');
                         } else {
-                            throw new Error('Format data di reload.js tidak valid.');
+                            throw new Error('Format data hasil dekripsi tidak valid.');
                         }
                     } else {
-                        throw new Error('Objek window.BARJAS_RELOAD_DATA tidak ditemukan.');
+                        throw new Error('Variabel window.BARJAS_BACKUP_ENCRYPTED tidak ditemukan di reload.js.');
                     }
                 } catch (e) {
-                    showNotification('Gagal memproses data: ' + e.message, 'error');
+                    showNotification('Error: ' + e.message, 'error');
                     console.error(e);
                 } finally {
                     // Reset tombol
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                     
-                    // Bersihkan variable global agar tidak bentrok reload berikutnya
-                    delete window.BARJAS_RELOAD_DATA;
+                    // Bersihkan variable global agar memori bersih
+                    delete window.BARJAS_BACKUP_ENCRYPTED;
                 }
             };
 
