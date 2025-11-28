@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISTEM APLIKASI BANTUAN BARANG PINJAM PAKAI BIDANG PEMBERDAYAAN NELAYAN</title>
+    <title>APLIKASI BARJAS - SISTEM BANTUAN</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
@@ -12,23 +12,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
-            --primary-color: #1a6aa2;
-            --secondary-color: #2e8b57;
-            --accent-color: #ff8c00;
-            --light-blue: #e6f7ff;
-            --dark-blue: #0a4a8a;
-            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            --gradient-secondary: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-            --gradient-accent: linear-gradient(135deg, var(--accent-color), #ff6b00);
+            --primary-color: #0d47a1;
+            --secondary-color: #00695c;
+            --accent-color: #ff8f00;
+            --light-blue: #e3f2fd;
+            --dark-blue: #082e5c;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--dark-blue));
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-color), #004d40);
+            --gradient-accent: linear-gradient(135deg, var(--accent-color), #e65100);
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
             --shadow-lg: 0 8px 28px rgba(0,0,0,0.15);
-            --login-gradient: linear-gradient(135deg, #1a6aa2, #2e8b57, #ff8c00);
+            --login-gradient: linear-gradient(135deg, #0d47a1, #00695c, #ff8f00);
         }
         
         body {
-            background: linear-gradient(135deg, #f0f9ff 0%, #f0fff4 100%);
-            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f9ff 0%, #e8f5e9 100%);
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
             min-height: 100vh;
             padding: 10px 0;
             overflow-x: hidden;
@@ -66,15 +66,10 @@
         }
         
         .app-logo {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             margin-bottom: 10px;
             position: relative;
             z-index: 1;
-            background: linear-gradient(135deg, #ffffff, #e6f7ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .app-title {
@@ -84,10 +79,6 @@
             position: relative;
             z-index: 1;
             text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-            background: linear-gradient(135deg, #ffffff, #e6f7ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
         .app-subtitle {
@@ -98,10 +89,6 @@
             font-weight: 300;
             letter-spacing: 0.5px;
             margin-bottom: 5px;
-            background: linear-gradient(135deg, #e6f7ff, #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
         .nav-pills .nav-link {
@@ -223,7 +210,7 @@
         
         .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(26, 106, 162, 0.2);
+            box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.2);
             transform: translateY(-2px);
         }
         
@@ -819,7 +806,7 @@
 
         .login-form-control:focus {
             border-color: var(--dark-blue);
-            box-shadow: 0 0 0 3px rgba(10, 74, 138, 0.2);
+            box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.2);
         }
 
         .login-input-group-text {
@@ -842,7 +829,7 @@
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(46, 139, 87, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 105, 92, 0.4);
         }
 
         .btn-login:disabled {
@@ -862,7 +849,7 @@
         .login-attempts-count {
             text-align: center;
             font-size: 0.9rem;
-            color: #ff8c00;
+            color: #ff8f00;
             font-weight: 500;
             margin-top: 5px;
         }
@@ -943,7 +930,7 @@
 
         /* Link Google Drive dalam tabel */
         .drive-link {
-            color: #1a6aa2;
+            color: #0d47a1;
             text-decoration: none;
             cursor: pointer;
         }
@@ -1020,13 +1007,13 @@
 
         .login-hint {
             font-size: 0.85rem;
-            color: #1a6aa2;
+            color: #0d6efd;
             margin-top: 5px;
             text-align: center;
             background-color: #f8f9fa;
             padding: 8px;
             border-radius: 4px;
-            border-left: 3px solid #1a6aa2;
+            border-left: 3px solid #0d6efd;
         }
 
         /* New styles for additional fields */
@@ -1117,7 +1104,7 @@
             <div class="modal-content">
                 <div class="login-header">
                     <div class="login-icon">
-                        <i class="fas fa-anchor"></i>
+                        <i class="fas fa-lock"></i>
                     </div>
                     <h2 class="login-title">AUTHENTICATION REQUIRED</h2>
                     <p class="login-subtitle">Masukkan Kode Keamanan untuk Mengakses Aplikasi</p>
@@ -1184,10 +1171,10 @@
         <div class="app-container animate-fadeIn">
             <div class="app-header">
                 <div class="app-logo">
-                    <i class="fas fa-anchor"></i>
+                    <i class="fas fa-hands-helping"></i>
                 </div>
-                <h1 class="app-title">SISTEM APLIKASI BANTUAN BARANG PINJAM PAKAI BIDANG PEMBERDAYAAN NELAYAN</h1>
-                <p class="app-subtitle">Dinas Peternakan dan Perikanan Kabupaten Situbondo</p>
+                <h1 class="app-title">SISTEM APLIKASI BARANG PINJAM PAKAI BIDANG PEMBERDAYAAN NELAYAN</h1>
+                <p class="app-subtitle">Dinas Peternakan Dan Perikanan Kabupaten Situbondo</p>
                 <div class="watermark">Versi Premium</div>
             </div>
             
@@ -1237,7 +1224,6 @@
                 
                 <div class="col-md-9 col-lg-10 p-5">
                     <div class="tab-content" id="v-pills-tabContent">
-                        <!-- Konten tab lainnya tetap sama, tidak diubah untuk menjaga struktur -->
                         <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
                             <h3 class="section-title">Dashboard</h3>
                             
@@ -1524,29 +1510,483 @@
                             </div>
                         </div>
                         
-                        <!-- Tab lainnya tetap sama seperti sebelumnya -->
                         <div class="tab-pane fade" id="v-pills-data" role="tabpanel" aria-labelledby="v-pills-data-tab">
-                            <!-- Konten data bantuan -->
+                            <h3 class="section-title">Data Bantuan</h3>
+                            
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-database me-2"></i> Daftar Penerima Bantuan
+                                    </div>
+                                    <div class="input-group" style="max-width: 300px;">
+                                        <input type="text" class="form-control form-control-sm" id="searchData" placeholder="Cari data...">
+                                        <button class="btn btn-sm btn-outline-secondary" id="clearSearchBtn">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover data-table" id="dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nama</th>
+                                                    <th>NIK</th>
+                                                    <th>WhatsApp</th>
+                                                    <th>Kelompok</th>
+                                                    <th>Jabatan</th>
+                                                    <th>Tahun</th>
+                                                    <th>Kecamatan</th>
+                                                    <th>Desa</th>
+                                                    <th>Jenis Bantuan</th>
+                                                    <th>Nama Bantuan</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Petugas</th>
+                                                    <th>Drive Link</th>
+                                                    <th>Kode Validasi</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="dataTableBody">
+                                                <tr>
+                                                    <td colspan="17" class="text-center py-4">Tidak ada data</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div class="text-muted" id="tableInfo">
+                                            Menampilkan 0 dari 0 data
+                                        </div>
+                                        <nav>
+                                            <ul class="pagination pagination-sm mb-0" id="pagination">
+                                                </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="tab-pane fade" id="v-pills-filter" role="tabpanel" aria-labelledby="v-pills-filter-tab">
-                            <!-- Konten filter data -->
+                            <h3 class="section-title">Filter Data Bantuan</h3>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-filter me-2"></i> Filter Data
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="filterTahun" class="form-label">Tahun</label>
+                                            <select class="form-select" id="filterTahun">
+                                                <option value="">Semua Tahun</option>
+                                                </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="filterKecamatan" class="form-label">Kecamatan</label>
+                                            <select class="form-select" id="filterKecamatan">
+                                                <option value="">Semua Kecamatan</option>
+                                                </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="filterDesa" class="form-label">Desa</label>
+                                            <select class="form-select" id="filterDesa">
+                                                <option value="">Semua Desa</option>
+                                                </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="filterJenis" class="form-label">Jenis Bantuan</label>
+                                            <select class="form-select" id="filterJenis">
+                                                <option value="">Semua Jenis</option>
+                                                <option value="Uang">Uang</option>
+                                                <option value="Barang">Barang</option>
+                                                <option value="Jasa">Jasa</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-secondary me-2" id="resetFilterBtn">
+                                            <i class="fas fa-undo me-1"></i> Reset Filter
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="applyFilterBtn">
+                                            <i class="fas fa-check me-1"></i> Terapkan Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card mt-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-list me-2"></i> Data Hasil Filter
+                                    </div>
+                                    <div class="badge bg-primary" id="filterResultCount">0 Data</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover data-table" id="filterTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nama</th>
+                                                    <th>NIK</th>
+                                                    <th>WhatsApp</th>
+                                                    <th>Kelompok</th>
+                                                    <th>Jabatan</th>
+                                                    <th>Tahun</th>
+                                                    <th>Kecamatan</th>
+                                                    <th>Desa</th>
+                                                    <th>Jenis Bantuan</th>
+                                                    <th>Nama Bantuan</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Petugas</th>
+                                                    <th>Drive Link</th>
+                                                    <th>Kode Validasi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="filterTableBody">
+                                                <tr>
+                                                    <td colspan="16" class="text-center py-4">Tidak ada data</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="tab-pane fade" id="v-pills-print" role="tabpanel" aria-labelledby="v-pills-print-tab">
-                            <!-- Konten cetak laporan -->
+                            <h3 class="section-title">Cetak Laporan</h3>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-print me-2"></i> Opsi Cetak Laporan
+                                </div>
+                                <div class="card-body">
+                                    <div class="control-panel mb-4">
+                                        <h6 class="control-title">1. Atur Filter Laporan</h6>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label for="printTahun" class="form-label">Tahun</label>
+                                                <select class="form-select" id="printTahun">
+                                                    <option value="">Semua Tahun</option>
+                                                    </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="printKecamatan" class="form-label">Kecamatan</label>
+                                                <select class="form-select" id="printKecamatan">
+                                                    <option value="">Semua Kecamatan</option>
+                                                    </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="printJenis" class="form-label">Jenis Bantuan</label>
+                                                <select class="form-select" id="printJenis">
+                                                    <option value="">Semua Jenis</option>
+                                                    <option value="Uang">Uang</option>
+                                                    <option value="Barang">Barang</option>
+                                                    <option value="Jasa">Jasa</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h6 class="control-title">2. Pilih Aksi</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card bg-light h-100">
+                                                <div class="card-body text-center d-flex flex-column justify-content-center">
+                                                    <i class="fas fa-eye fa-3x text-info mb-3"></i>
+                                                    <h5>Pratinjau Laporan</h5>
+                                                    <p class="text-muted small">Lihat laporan di layar sebelum mencetak atau mengunduh PDF.</p>
+                                                    <button class="btn btn-info mt-auto" id="previewBtn">
+                                                        <i class="fas fa-eye me-1"></i> Buka Pratinjau
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card bg-light h-100">
+                                                <div class="card-body text-center d-flex flex-column justify-content-center">
+                                                    <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
+                                                    <h5>Unduh Laporan PDF</h5>
+                                                    <p class="text-muted small">Simpan laporan yang telah difilter langsung sebagai file PDF.</p>
+                                                    <button class="btn btn-danger mt-auto" id="printPdfBtn">
+                                                        <i class="fas fa-download me-1"></i> Unduh PDF
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="tab-pane fade" id="v-pills-export" role="tabpanel" aria-labelledby="v-pills-export-tab">
-                            <!-- Konten ekspor data -->
+                            <h3 class="section-title">Ekspor Data</h3>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-file-export me-2"></i> Opsi Ekspor Data
+                                </div>
+                                <div class="card-body">
+                                    <div class="control-panel mb-4">
+                                        <h6 class="control-title">Atur Filter Ekspor</h6>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label for="exportTahun" class="form-label">Tahun</label>
+                                                <select class="form-select" id="exportTahun">
+                                                    <option value="">Semua Tahun</option>
+                                                    </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="exportKecamatan" class="form-label">Kecamatan</label>
+                                                <select class="form-select" id="exportKecamatan">
+                                                    <option value="">Semua Kecamatan</option>
+                                                    </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="exportJenis" class="form-label">Jenis Bantuan</label>
+                                                <select class="form-select" id="exportJenis">
+                                                    <option value="">Semua Jenis</option>
+                                                    <option value="Uang">Uang</option>
+                                                    <option value="Barang">Barang</option>
+                                                    <option value="Jasa">Jasa</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="card bg-light">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-file-excel fa-3x text-success mb-3"></i>
+                                                    <h5>Excel</h5>
+                                                    <p class="text-muted small">Format .xlsx</p>
+                                                    <button class="btn btn-success mt-2 w-100" id="exportExcelBtn">
+                                                        <i class="fas fa-download me-1"></i> Ekspor
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="card bg-light">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-file-csv fa-3x text-info mb-3"></i>
+                                                    <h5>CSV</h5>
+                                                    <p class="text-muted small">Format .csv</p>
+                                                    <button class="btn btn-info mt-2 w-100" id="exportCsvBtn">
+                                                        <i class="fas fa-download me-1"></i> Ekspor
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="card bg-light">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-file-code fa-3x text-warning mb-3"></i>
+                                                    <h5>JSON</h5>
+                                                    <p class="text-muted small">Format .json</p>
+                                                    <button class="btn btn-warning mt-2 w-100" id="exportJsonBtn">
+                                                        <i class="fas fa-download me-1"></i> Ekspor
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="card bg-light">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
+                                                    <h5>PDF</h5>
+                                                    <p class="text-muted small">Format .pdf</p>
+                                                    <button class="btn btn-danger mt-2 w-100" id="exportPdfBtn">
+                                                        <i class="fas fa-download me-1"></i> Ekspor
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="tab-pane fade" id="v-pills-backup" role="tabpanel" aria-labelledby="v-pills-backup-tab">
-                            <!-- Konten backup & restore -->
+                            <h3 class="section-title">Backup & Restore Data</h3>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <i class="fas fa-download me-2"></i> Backup Data
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-database fa-4x text-primary mb-3"></i>
+                                            <h5>Backup Seluruh Data</h5>
+                                            <p class="text-muted">Simpan salinan data ke file JSON (terenkripsi)</p>
+                                            <div class="mt-4">
+                                                <label for="backupFileName" class="form-label">Nama File Backup</label>
+                                                <input type="text" class="form-control" id="backupFileName" value="backup-barjas-secure">
+                                            </div>
+                                            <button class="btn btn-primary mt-3" id="backupDataBtn">
+                                                <i class="fas fa-download me-1"></i> Backup Data
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <i class="fas fa-upload me-2"></i> Restore Data
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-file-upload fa-4x text-success mb-3"></i>
+                                            <h5>Restore Data dari File</h5>
+                                            <p class="text-muted">Muat ulang data dari file backup</p>
+                                            <div class="mt-3">
+                                                <input type="file" class="form-control" id="restoreFileInput" accept=".json">
+                                                <button class="btn btn-success mt-3 w-100" id="restoreDataBtn" disabled>
+                                                    <i class="fas fa-upload me-1"></i> Restore Data
+                                                </button>
+                                            </div>
+                                            <div class="alert alert-warning mt-3">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                                <strong>Peringatan:</strong> Restore akan menimpa data yang ada!
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card mt-4">
+                                <div class="card-header bg-danger text-white">
+                                    <i class="fas fa-trash-alt me-2"></i> Reset Data (Zona Berbahaya)
+                                </div>
+                                <div class="card-body text-center">
+                                    <i class="fas fa-exclamation-triangle fa-4x text-danger mb-3"></i>
+                                    <h5>Reset Seluruh Data Aplikasi</h5>
+                                    <p class="text-muted">Hapus semua data dan kembali ke keadaan awal</p>
+                                    <button class="btn btn-danger mt-2" id="resetDataBtn" data-bs-toggle="modal" data-bs-target="#confirmResetModal">
+                                        <i class="fas fa-trash-alt me-1"></i> Reset Data
+                                    </button>
+                                    <div class="alert alert-danger mt-3">
+                                        <i class="fas fa-radiation me-1"></i>
+                                        <strong>PERINGATAN TINGGI:</strong> Tindakan ini tidak dapat dibatalkan! Semua data akan dihapus permanen.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                            <!-- Konten pengaturan -->
+                            <h3 class="section-title">Pengaturan Aplikasi</h3>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-cog me-2"></i> Pengaturan Umum
+                                </div>
+                                <div class="card-body">
+                                    <form id="settingsForm">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="appName" class="form-label">Nama Aplikasi</label>
+                                                <input type="text" class="form-control" id="appName" value="BARJAS">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="appSubtitle" class="form-label">Subjudul Aplikasi</label>
+                                                <input type="text" class="form-control" id="appSubtitle" value="Sistem Bantuan Terpadu">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="defaultTahun" class="form-label">Tahun Default</label>
+                                                <select class="form-select" id="defaultTahun">
+                                                    </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="itemsPerPage" class="form-label">Item per Halaman</label>
+                                                <select class="form-select" id="itemsPerPage">
+                                                    <option value="10">10 Item</option>
+                                                    <option value="25">25 Item</option>
+                                                    <option value="50">50 Item</option>
+                                                    <option value="100">100 Item</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="settingSecurityCode" class="form-label">Kode Keamanan Baru</label>
+                                                <input type="password" class="form-control" id="settingSecurityCode" placeholder="Biarkan kosong jika tidak ingin mengubah">
+                                                <div class="form-text">Ganti kode untuk mengakses aplikasi.</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="backupInterval" class="form-label">Interval Backup Otomatis</label>
+                                                <select class="form-select" id="backupInterval" disabled>
+                                                    <option value="0">Tidak Ada (Fitur belum aktif)</option>
+                                                    <option value="1">Setiap Hari</option>
+                                                    <option value="7">Setiap Minggu</option>
+                                                    <option value="30">Setiap Bulan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="notifications" checked>
+                                            <label class="form-check-label" for="notifications">Aktifkan Notifikasi</label>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <i class="fas fa-info-circle me-2"></i> Informasi Aplikasi
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Versi Aplikasi
+                                                    <span class="badge bg-primary rounded-pill">2.1.0-rev1</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Jumlah Data
+                                                    <span class="badge bg-info rounded-pill" id="settingsDataCount">0</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Tanggal Backup Terakhir
+                                                    <span class="badge bg-secondary rounded-pill" id="lastBackupDate">-</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Browser
+                                                    <span class="badge bg-success rounded-pill" id="browserInfo">-</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Local Storage
+                                                    <span class="badge bg-warning rounded-pill" id="storageInfo">-</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Status
+                                                    <span class="badge bg-success rounded-pill" id="appStatus">Aktif</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1574,7 +2014,6 @@
         </div>
     </div>
     
-    <!-- Modal lainnya tetap sama -->
     <div class="modal fade" id="confirmResetModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -1649,7 +2088,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.id.min.js"></script>
     
     <script>
-        // JavaScript tetap sama seperti sebelumnya, hanya CSS yang diubah
         // --- GLOBAL VARIABLES & CONSTANTS ---
         let appData = [];
         let appSettings = {
@@ -1689,6 +2127,7 @@
             "Sumbertengah", "Sumberwaru", "Tamankursi", "Tamansari", "Taman", "Talkandang", "Tanjung Glugur", "Tanjung Kamal", "Tanjung Pecinan", "Tambak Ukir", 
             "Telempong", "Tenggir", "Tepos", "Tokelan", "Tlogosari", "Trigonco", "Trebungan", "Widoropayung", "Wonokoyo", "Wonorejo", "Wringinanom"
         ].sort();
+        
         
         // --- APPLICATION LIFECYCLE ---
         document.addEventListener('DOMContentLoaded', function() {
@@ -2376,7 +2815,7 @@
         }
         
         function initializeCharts() {
-            Chart.defaults.font.family = "'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif";
+            Chart.defaults.font.family = "'Poppins', 'Segoe UI', sans-serif";
             const pieCtx = document.getElementById('kecamatanChart')?.getContext('2d');
             if (pieCtx) {
                 window.kecamatanChart = new Chart(pieCtx, { type: 'pie', options: { responsive: true, plugins: { legend: { position: 'right' } } } });
@@ -2395,7 +2834,7 @@
             if (window.kecamatanChart) {
                 window.kecamatanChart.data = {
                     labels: Object.keys(kecamatanData),
-                    datasets: [{ data: Object.values(kecamatanData), backgroundColor: ['#1a6aa2', '#2e8b57', '#ff8c00', '#64b5f6', '#90caf9', '#00695c', '#00897b', '#26a69a', '#80cbc4', '#b2dfdb', '#ff8f00', '#ffa000', '#ffb300', '#ffca28', '#ffecb3'] }]
+                    datasets: [{ data: Object.values(kecamatanData), backgroundColor: ['#0d47a1', '#1976d2', '#2196f3', '#64b5f6', '#90caf9', '#00695c', '#00897b', '#26a69a', '#80cbc4', '#b2dfdb', '#ff8f00', '#ffa000', '#ffb300', '#ffca28', '#ffecb3'] }]
                 };
                 window.kecamatanChart.update();
             }
@@ -2405,7 +2844,7 @@
             if (window.tahunChart) {
                 window.tahunChart.data = {
                     labels: sortedYears,
-                    datasets: [{ label: 'Jumlah Penerima', data: sortedYears.map(year => tahunData[year]), backgroundColor: '#2e8b57' }]
+                    datasets: [{ label: 'Jumlah Penerima', data: sortedYears.map(year => tahunData[year]), backgroundColor: '#00695c' }]
                 };
                 window.tahunChart.update();
             }
@@ -2444,7 +2883,7 @@
                 `${formatNumber(d.jumlahBantuan)} ${d.satuanBantuan}`, formatDate(d.tanggalTerima)
             ]);
             
-            doc.autoTable({ head: [cols], body: rows, startY: 60, theme: 'grid', headStyles: { fillColor: [26, 106, 162] } });
+            doc.autoTable({ head: [cols], body: rows, startY: 60, theme: 'grid', headStyles: { fillColor: [13, 71, 161] } });
             doc.save(`laporan_bantuan_${new Date().toISOString().slice(0,10)}.pdf`);
             showNotification('Laporan PDF berhasil diunduh.', 'success');
         }
@@ -2502,7 +2941,7 @@
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF('landscape', 'pt', 'a4');
                     doc.text('DATA BANTUAN', doc.internal.pageSize.getWidth()/2, 40, {align: 'center'});
-                    doc.autoTable({ body: dataToExport, startY: 60, theme: 'grid', headStyles: { fillColor: [26, 106, 162] } });
+                    doc.autoTable({ body: dataToExport, startY: 60, theme: 'grid', headStyles: { fillColor: [13, 71, 161] } });
                     doc.save(`${filename}.pdf`);
                     break;
             }
