@@ -22,7 +22,6 @@
             --light-bg: #f0f4f8;
             
             /* Luxurious Gradients */
-            /* Dominan: Hijau, Biru, Orange */
             --gradient-primary: linear-gradient(135deg, #001219 0%, #005f73 50%, #0a9396 100%);
             --gradient-header: linear-gradient(120deg, #003049 0%, #005f73 40%, #0a9396 70%, #ca6702 100%);
             --gradient-secondary: linear-gradient(135deg, #0a9396, #94d2bd);
@@ -230,10 +229,11 @@
             overflow: hidden;
             box-shadow: var(--shadow-sm);
             border: none;
+            white-space: nowrap; /* Agar tabel tidak hancur di mobile */
         }
         
         .data-table th {
-            background: var(--primary-color) !important; /* Flat color for header */
+            background: var(--primary-color) !important; 
             background: linear-gradient(90deg, #005f73, #0a9396) !important;
             color: white;
             font-weight: 600;
@@ -251,7 +251,7 @@
         }
 
         .data-table tr:hover {
-            background-color: #e0f2f1; /* Light teal hover */
+            background-color: #e0f2f1;
         }
         
         /* Cards & Stats */
@@ -291,6 +291,15 @@
         .login-header {
             background: var(--gradient-header);
             border-bottom: 4px solid #ee9b00;
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+        
+        /* FIX: Ikon Kapal di Login Modal agar tidak terpotong */
+        .login-header .fa-ship {
+            padding: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
         }
         
         .btn-login {
@@ -316,7 +325,7 @@
             text-align: center;
         }
 
-        /* Keep original functional classes */
+        /* Utils */
         .notification-toast { position: fixed; bottom: 20px; right: 20px; z-index: 1050; min-width: 280px; }
         .input-error { border-color: #dc3545 !important; box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2) !important; }
         .error-message { color: #dc3545; font-size: 0.8rem; margin-top: 5px; display: none; font-weight: 500; }
@@ -326,19 +335,38 @@
         .mobile-menu-btn { display: none; position: fixed; top: 15px; left: 15px; z-index: 1050; background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 45px; height: 45px; box-shadow: var(--shadow-lg); }
         .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040; }
         
+        /* Privacy/Sensor Style */
+        .privacy-blurred {
+            color: #6c757d;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fadeIn { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
         
-        /* Responsive */
+        /* Responsive Fixes */
         @media (max-width: 991.98px) {
+            .app-container {
+                margin: 0;
+                border-radius: 0;
+            }
             .col-md-3.col-lg-2 { position: fixed; left: -300px; top: 0; bottom: 0; z-index: 1050; width: 280px; transition: left 0.3s ease; overflow-y: auto; padding-top: 60px; background: white; }
             .col-md-3.col-lg-2.mobile-show { left: 0; }
             .col-md-9.col-lg-10 { width: 100%; flex: 0 0 100%; max-width: 100%; }
             .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
             .sidebar-overlay.mobile-show { display: block; }
-            .app-title { font-size: 1.2rem; }
-            .app-logo { font-size: 2.5rem; }
+            .app-title { font-size: 1.1rem; line-height: 1.2; }
+            .app-logo { font-size: 2rem; margin-bottom: 5px; }
+            .app-header { padding: 60px 15px 25px 15px; } /* Space for mobile menu btn */
+            .col-md-9.col-lg-10.p-5 { padding: 1.5rem !important; }
+            
+            /* Table Scroll fix for Mobile */
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
 
         @media print {
@@ -352,7 +380,7 @@
             .print-header { display: block !important; text-align: center; margin-bottom: 15px; }
         }
 
-        /* Other utility classes from original */
+        /* Other utility classes */
         .whatsapp-link { color: #25D366; text-decoration: none; }
         .whatsapp-number { color: #25D366; cursor: pointer; text-decoration: underline; font-weight: 500;}
         .drive-link { color: var(--primary-color); font-weight: 600; text-decoration: none; }
@@ -473,14 +501,7 @@
                         </button>
                     </div>
                     
-                    <div class="mt-4 p-3 rounded" style="background: #e9ecef; border-left: 3px solid var(--primary-color);">
-                        <h6 class="fw-bold mb-2" style="font-size: 0.8rem; color: var(--primary-color);">SUPPORT CENTER</h6>
-                        <div class="small">
-                            <p class="mb-1"><i class="fab fa-whatsapp me-2 text-success"></i> <a href="https://wa.me/6285647709114" class="text-decoration-none text-dark">+62 856-4770-9114</a></p>
-                            <p class="mb-0"><i class="fas fa-envelope me-2 text-primary"></i> <a href="mailto:admin@anekamarket.my.id" class="text-decoration-none text-dark">Email Admin</a></p>
-                        </div>
                     </div>
-                </div>
                 
                 <div class="col-md-9 col-lg-10 p-5">
                     <div class="tab-content" id="v-pills-tabContent">
@@ -989,14 +1010,39 @@
                                                 <select class="form-select" id="defaultTahun"></select>
                                             </div>
                                         </div>
+                                        
+                                        <div class="mb-3 p-3 bg-light border rounded">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="privacyToggle" checked>
+                                                <label class="form-check-label fw-bold" for="privacyToggle">Mode Privasi Data (Sensor NIK & HP)</label>
+                                            </div>
+                                            <small class="text-muted d-block mt-1">Aktifkan untuk mensensor 4 digit belakang NIK dan Nomor HP menjadi bintang (*). Default: Wajib ON.</small>
+                                        </div>
+                                        
                                         <div class="form-check form-switch mb-3">
                                             <input class="form-check-input" type="checkbox" id="notifications" checked>
                                             <label class="form-check-label" for="notifications">Aktifkan Notifikasi Suara & Pop-up</label>
                                         </div>
+                                        
                                         <div class="text-end">
                                             <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Simpan Perubahan</button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                            
+                            <div class="card mt-4 border-left-primary shadow-sm">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <h6 class="fw-bold mb-2" style="color: var(--primary-color);">SUPPORT CENTER</h6>
+                                            <p class="small text-muted mb-0">Butuh bantuan teknis? Hubungi tim pengembang.</p>
+                                        </div>
+                                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                            <a href="https://wa.me/6285647709114" class="btn btn-success btn-sm me-2"><i class="fab fa-whatsapp me-1"></i> WhatsApp</a>
+                                            <a href="mailto:admin@anekamarket.my.id" class="btn btn-primary btn-sm"><i class="fas fa-envelope me-1"></i> Email</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -1073,6 +1119,25 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="privacyAuthModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title fs-6 fw-bold">Keamanan Sensor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="closePrivacyModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="small mb-2">Masukkan PIN untuk mematikan sensor:</p>
+                    <input type="password" class="form-control text-center fw-bold" id="privacyPasswordInput" placeholder="PIN" maxlength="8">
+                    <div class="invalid-feedback d-block text-center mt-2" id="privacyError" style="display:none !important;">PIN Salah!</div>
+                </div>
+                <div class="modal-footer p-2 justify-content-center">
+                    <button type="button" class="btn btn-warning w-100 fw-bold" id="submitPrivacyAuth">Buka Sensor</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
@@ -1087,7 +1152,8 @@
             appName: 'SISTEM BANTUAN NELAYAN',
             appSubtitle: 'Dinas Peternakan dan Perikanan Kab. Situbondo',
             defaultTahun: new Date().getFullYear(),
-            lastBackupDate: '-'
+            lastBackupDate: '-',
+            privacyMode: true // Default Enabled (ON)
         };
         let currentPage = 1;
         let filteredData = [];
@@ -1188,10 +1254,22 @@
             
             // Settings
             document.getElementById('settingsForm').addEventListener('submit', handleSaveSettings);
+            document.getElementById('privacyToggle').addEventListener('click', handlePrivacyToggle);
+            document.getElementById('submitPrivacyAuth').addEventListener('click', checkPrivacyPassword);
+            document.getElementById('closePrivacyModal').addEventListener('click', cancelPrivacyChange);
             
             // UI/UX Helpers
             document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
             document.getElementById('sidebarOverlay').addEventListener('click', toggleMobileMenu);
+            // Tambahan: Tutup sidebar saat menu diklik di mobile
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 992 && document.getElementById('sidebarMenu').classList.contains('mobile-show')) {
+                        toggleMobileMenu();
+                    }
+                });
+            });
+
             document.getElementById('fabBtn').addEventListener('click', () => document.getElementById('v-pills-input-tab').click());
             document.getElementById('jenisBantuan').addEventListener('change', updateSatuanBantuan);
             document.getElementById('printFromPreviewBtn').addEventListener('click', () => window.print());
@@ -1330,6 +1408,64 @@
                 new bootstrap.Modal(document.getElementById('loginModal')).show();
                 showNotification('Anda telah berhasil logout.', 'info');
             }
+        }
+
+        // --- PRIVACY TOGGLE LOGIC ---
+        function handlePrivacyToggle(e) {
+            e.preventDefault(); // Stop direct toggle
+            const toggle = document.getElementById('privacyToggle');
+            const isTurningOff = toggle.checked; // Saat ini ON (checked), mau di klik jadi OFF
+
+            if (isTurningOff) {
+                // Mau matikan sensor -> Minta Password
+                document.getElementById('privacyPasswordInput').value = '';
+                document.getElementById('privacyError').style.display = 'none';
+                new bootstrap.Modal(document.getElementById('privacyAuthModal')).show();
+            } else {
+                // Mau hidupkan sensor -> Langsung bisa
+                toggle.checked = true;
+                appSettings.privacyMode = true;
+                saveSettings();
+                renderDataTable();
+                renderFilterTable();
+                showNotification('Sensor Data diaktifkan.', 'success');
+            }
+        }
+
+        function checkPrivacyPassword() {
+            const input = document.getElementById('privacyPasswordInput').value;
+            const errorMsg = document.getElementById('privacyError');
+            
+            if (input === '17081945') {
+                // Password Benar
+                document.getElementById('privacyToggle').checked = false;
+                appSettings.privacyMode = false;
+                saveSettings();
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('privacyAuthModal'));
+                modal.hide();
+                
+                renderDataTable();
+                renderFilterTable();
+                showNotification('Sensor Data dinonaktifkan.', 'warning');
+            } else {
+                // Password Salah
+                errorMsg.style.display = 'block';
+                document.getElementById('privacyPasswordInput').classList.add('is-invalid');
+            }
+        }
+
+        function cancelPrivacyChange() {
+            // Kembalikan toggle ke posisi ON jika batal
+            document.getElementById('privacyToggle').checked = true;
+        }
+
+        function formatPrivacy(value, type) {
+            if (!appSettings.privacyMode) return value;
+            if (!value) return '-';
+            const str = String(value);
+            if (str.length <= 4) return '****';
+            return str.slice(0, -4) + '****';
         }
         
         // --- FORM HANDLING & VALIDATION ---
@@ -1527,7 +1663,10 @@
         function loadSettings() {
             const savedSettings = localStorage.getItem('barjasSettings');
             if (savedSettings) {
-                Object.assign(appSettings, JSON.parse(savedSettings));
+                const loaded = JSON.parse(savedSettings);
+                Object.assign(appSettings, loaded);
+                // Ensure privacyMode is true by default if undefined in old data
+                if (typeof appSettings.privacyMode === 'undefined') appSettings.privacyMode = true; 
             }
         }
 
@@ -1541,6 +1680,7 @@
             document.getElementById('appName').value = appSettings.appName;
             document.getElementById('appSubtitle').value = appSettings.appSubtitle;
             document.getElementById('defaultTahun').value = appSettings.defaultTahun;
+            document.getElementById('privacyToggle').checked = appSettings.privacyMode;
         }
 
         function handleSaveSettings(e) {
@@ -1553,6 +1693,7 @@
             appSettings.appName = document.getElementById('appName').value;
             appSettings.appSubtitle = document.getElementById('appSubtitle').value;
             appSettings.defaultTahun = document.getElementById('defaultTahun').value;
+            // Privacy toggle is handled separately by click event
 
             saveSettings();
             applySettingsToUI();
@@ -1583,13 +1724,19 @@
             for (let i = startIndex; i < endIndex; i++) {
                 const data = dataToRender[i];
                 const row = document.createElement('tr');
-                const whatsappDisplay = data.whatsapp ? `0${data.whatsapp}` : '-';
+                
+                // Privacy Logic
+                const nikDisplay = formatPrivacy(data.nik, 'nik');
+                const whatsappRaw = data.whatsapp ? `0${data.whatsapp}` : '-';
+                const whatsappDisplay = formatPrivacy(whatsappRaw, 'hp');
+                const whatsappLink = appSettings.privacyMode ? '#' : `https://wa.me/62${data.whatsapp}`;
+                const whatsappClass = appSettings.privacyMode ? 'text-muted text-decoration-none' : 'whatsapp-number';
                 
                 row.innerHTML = `
                     <td>${i + 1}</td>
                     <td class="fw-bold text-primary">${data.nama}</td>
-                    <td>${data.nik}</td>
-                    <td><a href="https://wa.me/62${data.whatsapp}" target="_blank" class="whatsapp-number">${whatsappDisplay}</a></td>
+                    <td class="${appSettings.privacyMode ? 'privacy-blurred' : ''}">${nikDisplay}</td>
+                    <td><a href="${whatsappLink}" target="${appSettings.privacyMode ? '_self' : '_blank'}" class="${whatsappClass}">${whatsappDisplay}</a></td>
                     <td>${data.namaKelompok || '-'}</td>
                     <td>${data.jabatan || '-'}</td>
                     <td>${data.tahunAnggaran}</td>
@@ -1708,9 +1855,15 @@
             }
             
             filteredData.forEach((data, i) => {
+                const nikDisplay = formatPrivacy(data.nik, 'nik');
+                const whatsappRaw = data.whatsapp ? `0${data.whatsapp}` : '-';
+                const whatsappDisplay = formatPrivacy(whatsappRaw, 'hp');
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${i + 1}</td> <td>${data.nama}</td> <td>${data.nik}</td> <td>0${data.whatsapp}</td>
+                    <td>${i + 1}</td> <td>${data.nama}</td> 
+                    <td class="${appSettings.privacyMode ? 'privacy-blurred' : ''}">${nikDisplay}</td> 
+                    <td>${whatsappDisplay}</td>
                     <td>${data.namaKelompok || '-'}</td> <td>${data.jabatan || '-'}</td> <td>${data.tahunAnggaran}</td>
                     <td>${data.kecamatan}</td> <td>${data.desa}</td> <td>${data.jenisBantuan}</td>
                     <td>${data.namaBantuan || '-'}</td> <td>${formatNumber(data.jumlahBantuan)} ${data.satuanBantuan}</td>
@@ -1855,7 +2008,11 @@
             
             const cols = ["No", "Nama", "NIK", "Desa", "Kecamatan", "Nama Bantuan", "Jumlah", "Tanggal"];
             const rows = dataToPrint.map((d, i) => [
-                i + 1, d.nama, d.nik, d.desa, d.kecamatan, d.namaBantuan || '-',
+                i + 1, d.nama, 
+                // Di print PDF, jika mode sensor aktif, kita juga sensor, atau bisa dibuka full tergantung kebijakan.
+                // Disini kita ikut mode aplikasi.
+                formatPrivacy(d.nik, 'nik'), 
+                d.desa, d.kecamatan, d.namaBantuan || '-',
                 `${formatNumber(d.jumlahBantuan)} ${d.satuanBantuan}`, formatDate(d.tanggalTerima)
             ]);
             
@@ -1881,7 +2038,7 @@
 
             dataToPreview.forEach((d, i) => {
                 content += `<tr>
-                    <td>${i + 1}</td><td>${d.nama}</td><td>${d.nik}</td><td>${d.desa}</td>
+                    <td>${i + 1}</td><td>${d.nama}</td><td>${formatPrivacy(d.nik, 'nik')}</td><td>${d.desa}</td>
                     <td>${d.namaBantuan}</td><td>${formatNumber(d.jumlahBantuan)} ${d.satuanBantuan}</td><td>${formatDate(d.tanggalTerima)}</td>
                 </tr>`;
             });
@@ -1941,8 +2098,6 @@
             const filename = `backup-auto-${timestamp}`;
             const dataToBackup = { appData, appSettings, generatedCodes };
             const dataStr = btoa(unescape(encodeURIComponent(JSON.stringify(dataToBackup))));
-            // Note: autoBackup typically shouldn't download automatically on unload in modern browsers, 
-            // but the function logic is preserved here as per instructions.
             // downloadFile(dataStr, 'application/json', `${filename}.json`); 
             appSettings.lastBackupDate = new Date().toLocaleDateString('id-ID');
             saveSettings();
