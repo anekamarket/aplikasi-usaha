@@ -330,60 +330,99 @@
         .error-message { color: #dc3545; font-size: 0.8rem; margin-top: 5px; display: none; font-weight: 500; }
         .watermark { position: absolute; bottom: 10px; right: 15px; opacity: 0.8; font-size: 0.8rem; color: rgba(255,255,255,0.7); font-weight: 300; letter-spacing: 1px;}
         
-        /* Existing Floating Action Btn */
-        .floating-action-btn { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-accent); color: white; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); z-index: 1000; cursor: pointer; transition: all 0.3s; font-size: 1.5rem; }
-        .floating-action-btn:hover { transform: scale(1.1) rotate(90deg); background: #ee9b00; }
+        /* ==========================================================================
+           REFACTORED FLOATING BUTTONS & SMART MENU (PROFESSIONAL PULSE EFFECT)
+           ========================================================================== */
         
-        .mobile-menu-btn { display: none; position: fixed; top: 15px; left: 15px; z-index: 1050; background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 45px; height: 45px; box-shadow: var(--shadow-lg); }
-        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040; }
-        
-        /* Privacy/Sensor Style */
-        .privacy-blurred {
-            color: #6c757d;
-            letter-spacing: 2px;
-            font-weight: bold;
+        /* Keyframes for Signal Pulse Animation */
+        @keyframes signal-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(238, 155, 0, 0.7), 0 0 0 0 rgba(10, 147, 150, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(238, 155, 0, 0), 0 0 0 30px rgba(10, 147, 150, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(238, 155, 0, 0), 0 0 0 0 rgba(10, 147, 150, 0);
+            }
         }
 
-        /* SMART MENU STYLES */
+        /* Common FAB Base Styles for Equality */
+        .fab-common {
+            position: fixed;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 1045;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.4rem;
+            border: none;
+        }
+
+        /* 1. Floating Action Button (Add Data) */
+        .floating-action-btn {
+            bottom: 25px;
+            background: var(--gradient-accent);
+            animation: signal-pulse 2.5s infinite; /* Active Pulse */
+        }
+        
+        .floating-action-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: #ee9b00;
+            box-shadow: 0 10px 20px rgba(238, 155, 0, 0.4);
+        }
+
+        /* 2. Smart Menu Container & Toggle */
         .smart-menu-container {
             position: fixed;
-            bottom: 90px;
-            right: 20px;
+            bottom: 100px; /* Positioned exactly above FAB with gap */
+            right: 25px;
             z-index: 1045;
             display: flex;
             flex-direction: column-reverse;
             align-items: center;
-            gap: 12px;
+            gap: 15px; /* Consistent gap */
         }
 
         .smart-menu-toggle {
-            width: 50px;
-            height: 50px;
+            width: 60px; /* Equal size to FAB */
+            height: 60px; /* Equal size to FAB */
             border-radius: 50%;
             background: var(--primary-color);
             color: white;
             border: none;
-            box-shadow: var(--shadow-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             cursor: pointer;
+            box-shadow: var(--shadow-md);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Optional: Add pulse to this too if desired, or keep distinct */
+             box-shadow: 0 5px 15px rgba(0, 95, 115, 0.4);
         }
 
         .smart-menu-toggle:hover {
             transform: scale(1.1);
+            background: #0a9396;
         }
 
         .smart-menu-toggle.active {
             transform: rotate(45deg);
             background: #dc3545;
+            box-shadow: 0 0 20px rgba(220, 53, 69, 0.6);
         }
 
+        /* Smart Menu Items (Children) */
         .smart-menu-item {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: white;
             color: var(--primary-color);
@@ -393,8 +432,8 @@
             justify-content: center;
             text-decoration: none;
             opacity: 0;
-            transform: translateY(20px) scale(0.8);
-            transition: all 0.3s ease;
+            transform: translateY(20px) scale(0.5);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             pointer-events: none;
             position: relative;
             box-shadow: var(--shadow-sm);
@@ -410,33 +449,36 @@
             background: var(--primary-color);
             color: white;
             border-color: white;
+            transform: scale(1.1);
         }
 
         /* Tooltips for Smart Menu */
         .smart-menu-tooltip {
             position: absolute;
-            right: 55px;
+            right: 60px;
             top: 50%;
-            transform: translateY(-50%) translateX(10px);
-            background: rgba(0, 18, 25, 0.8);
+            transform: translateY(-50%) translateX(20px);
+            background: rgba(0, 18, 25, 0.9);
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
             font-weight: 600;
             white-space: nowrap;
             opacity: 0;
-            transition: all 0.2s;
+            transition: all 0.3s;
             pointer-events: none;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            visibility: hidden;
         }
 
         .smart-menu-item:hover .smart-menu-tooltip {
             opacity: 1;
+            visibility: visible;
             transform: translateY(-50%) translateX(0);
         }
 
-        /* Staggered Animation Delay for Smart Menu */
+        /* Staggered Animation Delay for Smart Menu Items */
         .smart-menu-container.active .smart-menu-item:nth-child(2) { transition-delay: 0.05s; }
         .smart-menu-container.active .smart-menu-item:nth-child(3) { transition-delay: 0.1s; }
         .smart-menu-container.active .smart-menu-item:nth-child(4) { transition-delay: 0.15s; }
@@ -446,6 +488,18 @@
         .smart-menu-container.active .smart-menu-item:nth-child(8) { transition-delay: 0.35s; }
         .smart-menu-container.active .smart-menu-item:nth-child(9) { transition-delay: 0.4s; }
         .smart-menu-container.active .smart-menu-item:nth-child(10) { transition-delay: 0.45s; }
+
+        /* End of Floating Buttons Styles */
+        
+        .mobile-menu-btn { display: none; position: fixed; top: 15px; left: 15px; z-index: 1050; background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 45px; height: 45px; box-shadow: var(--shadow-lg); }
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040; }
+        
+        /* Privacy/Sensor Style */
+        .privacy-blurred {
+            color: #6c757d;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
 
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -464,8 +518,8 @@
             .app-header { padding: 60px 15px 25px 15px; }
             .col-md-9.col-lg-10.p-5 { padding: 1.5rem !important; }
             .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            .smart-menu-container { bottom: 90px; right: 15px; }
-            .floating-action-btn { right: 15px; }
+            .smart-menu-container { bottom: 100px; right: 20px; }
+            .floating-action-btn { bottom: 20px; right: 20px; }
         }
 
         @media print {
@@ -1131,7 +1185,7 @@
         </div>
         
         <div class="smart-menu-container" id="smartMenu">
-            <button class="smart-menu-toggle" id="smartMenuToggle" title="Menu Pintas">
+            <button class="smart-menu-toggle pulse-effect" id="smartMenuToggle" title="Menu Pintas">
                 <i class="fas fa-th-large"></i>
             </button>
 
@@ -1173,9 +1227,9 @@
             </a>
         </div>
 
-        <div class="floating-action-btn" id="fabBtn" title="Tambah Data Baru">
+        <button class="floating-action-btn fab-common" id="fabBtn" title="Tambah Data Baru">
             <i class="fas fa-plus"></i>
-        </div>
+        </button>
         
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
             <div class="toast notification-toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="4000">
@@ -1320,21 +1374,20 @@
         }
 
         function setupEventListeners() {
-            // Login
+            // Login & Auth
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
             
             // Password Visibility Toggles
-            // 1. Login Modal
-            document.querySelector('.toggle-password').addEventListener('click', function() {
-                togglePasswordVisibility(this, 'securityCode');
-            });
-            // 2. Settings
-            document.querySelector('.toggle-password-settings').addEventListener('click', function() {
-                togglePasswordVisibility(this, 'settingSecurityCode');
-            });
-            // 3. Privacy Modal
-            document.querySelector('.toggle-password-privacy').addEventListener('click', function() {
-                togglePasswordVisibility(this, 'privacyPasswordInput');
+            const toggleHandlers = [
+                { btn: '.toggle-password', input: 'securityCode' },
+                { btn: '.toggle-password-settings', input: 'settingSecurityCode' },
+                { btn: '.toggle-password-privacy', input: 'privacyPasswordInput' }
+            ];
+            
+            toggleHandlers.forEach(handler => {
+                document.querySelector(handler.btn).addEventListener('click', function() {
+                    togglePasswordVisibility(this, handler.input);
+                });
             });
             
             // Main Input Form
@@ -1352,7 +1405,7 @@
                 document.getElementById(id).addEventListener('input', () => clearError(id));
             });
             
-            // Data Table
+            // Data Table & Search
             document.getElementById('searchData').addEventListener('input', handleSearch);
             document.getElementById('clearSearchBtn').addEventListener('click', clearSearch);
             
@@ -1360,7 +1413,7 @@
             document.getElementById('applyFilterBtn').addEventListener('click', applyFilter);
             document.getElementById('resetFilterBtn').addEventListener('click', resetFilter);
             
-            // Print & Export
+            // Print & Export Actions
             document.getElementById('printPdfBtn').addEventListener('click', printToPdf);
             document.getElementById('previewBtn').addEventListener('click', showPreview);
             document.getElementById('exportExcelBtn').addEventListener('click', () => exportData('excel'));
@@ -1368,22 +1421,22 @@
             document.getElementById('exportJsonBtn').addEventListener('click', () => exportData('json'));
             document.getElementById('exportPdfBtn').addEventListener('click', () => exportData('pdf'));
             
-            // Backup, Restore, Reset
+            // System Management
             document.getElementById('backupDataBtn').addEventListener('click', backupData);
             document.getElementById('restoreFileInput').addEventListener('change', enableRestoreButton);
             document.getElementById('restoreDataBtn').addEventListener('click', restoreData);
             document.getElementById('resetConfirmationInput').addEventListener('input', enableResetButton);
             document.getElementById('confirmResetBtn').addEventListener('click', resetData);
             
-            // Settings
+            // Settings Form
             document.getElementById('settingsForm').addEventListener('submit', handleSaveSettings);
             
-            // FIX: Event listener for Privacy Toggle Logic
+            // Privacy Toggle Logic
             document.getElementById('privacyToggle').addEventListener('click', handlePrivacyToggle);
             document.getElementById('submitPrivacyAuth').addEventListener('click', checkPrivacyPassword);
             document.getElementById('closePrivacyModal').addEventListener('click', cancelPrivacyChange);
             
-            // UI/UX Helpers
+            // UI Helpers
             document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
             document.getElementById('sidebarOverlay').addEventListener('click', toggleMobileMenu);
             document.querySelectorAll('.nav-link').forEach(link => {
@@ -1401,7 +1454,14 @@
             
             document.getElementById('btn-reload-repo').addEventListener('click', handleReloadFromRepo);
 
-            // Smart Menu Logic
+            // Refactored Smart Menu Logic
+            setupSmartMenu();
+
+            window.addEventListener('beforeunload', autoBackupData);
+        }
+
+        // --- SMART MENU LOGIC ---
+        function setupSmartMenu() {
             const smartMenuToggle = document.getElementById('smartMenuToggle');
             const smartMenuContainer = document.getElementById('smartMenu');
             
@@ -1418,11 +1478,8 @@
                     smartMenuContainer.classList.remove('active');
                 }
             });
-
-            window.addEventListener('beforeunload', autoBackupData);
         }
 
-        // Smart Menu Trigger Function
         function triggerSmartMenu(targetId) {
             const targetEl = document.getElementById(targetId);
             if (targetEl) {
@@ -1564,7 +1621,7 @@
             }
         }
 
-        // --- FIX: PRIVACY TOGGLE LOGIC ---
+        // --- PRIVACY TOGGLE LOGIC ---
         function handlePrivacyToggle(e) {
             const toggle = e.target;
             
@@ -1580,7 +1637,6 @@
                 authModal.show();
             } else {
                 // Jika user baru saja men-check (ingin menyalakan sensor)
-                // Langsung izinkan
                 appSettings.privacyMode = true;
                 saveSettings();
                 renderDataTable();
@@ -1592,45 +1648,32 @@
         function checkPrivacyPassword() {
             const input = document.getElementById('privacyPasswordInput').value;
             
-            if (input === '17081945') { // Password validasi sesuai request
-                // Password Benar
+            if (input === '17081945') { // Password validasi hardcoded
                 appSettings.privacyMode = false;
                 saveSettings();
                 
-                // Update UI Switch menjadi OFF
                 document.getElementById('privacyToggle').checked = false;
-                
-                // Tutup Modal
                 const modalEl = document.getElementById('privacyAuthModal');
                 const modal = bootstrap.Modal.getInstance(modalEl);
                 modal.hide();
                 
-                // Refresh Data agar terlihat
                 renderDataTable();
                 renderFilterTable();
-                
                 showNotification('Sensor Data dinonaktifkan. NIK dan No HP terlihat.', 'warning');
             } else {
-                // Password Salah
                 document.getElementById('privacyError').style.display = 'block';
                 document.getElementById('privacyPasswordInput').classList.add('is-invalid');
             }
         }
 
         function cancelPrivacyChange() {
-            // Pastikan toggle tetap ON jika user menutup modal tanpa input password
             document.getElementById('privacyToggle').checked = true;
         }
 
-        function formatPrivacy(value, type) {
-            // Jika mode privacy mati (False), kembalikan nilai asli
+        function formatPrivacy(value) {
             if (!appSettings.privacyMode) return value;
-            
-            // Jika nilai kosong
             if (!value) return '-';
-            
             const str = String(value);
-            // Logika Masking
             if (str.length <= 4) return '****';
             return str.slice(0, -4) + '****';
         }
@@ -1832,7 +1875,6 @@
             if (savedSettings) {
                 const loaded = JSON.parse(savedSettings);
                 Object.assign(appSettings, loaded);
-                // Ensure privacyMode is true by default if undefined
                 if (typeof appSettings.privacyMode === 'undefined') appSettings.privacyMode = true; 
             }
         }
@@ -1847,8 +1889,6 @@
             document.getElementById('appName').value = appSettings.appName;
             document.getElementById('appSubtitle').value = appSettings.appSubtitle;
             document.getElementById('defaultTahun').value = appSettings.defaultTahun;
-            
-            // FIX: Set toggle state based on setting
             document.getElementById('privacyToggle').checked = appSettings.privacyMode;
         }
 
@@ -1862,7 +1902,6 @@
             appSettings.appName = document.getElementById('appName').value;
             appSettings.appSubtitle = document.getElementById('appSubtitle').value;
             appSettings.defaultTahun = document.getElementById('defaultTahun').value;
-            // Note: Privacy Toggle handled by click event separately
 
             saveSettings();
             applySettingsToUI();
@@ -1894,13 +1933,10 @@
                 const data = dataToRender[i];
                 const row = document.createElement('tr');
                 
-                // Privacy Logic Applied Here
-                const nikDisplay = formatPrivacy(data.nik, 'nik');
+                const nikDisplay = formatPrivacy(data.nik);
                 const whatsappRaw = data.whatsapp ? `0${data.whatsapp}` : '-';
-                const whatsappDisplay = formatPrivacy(whatsappRaw, 'hp');
+                const whatsappDisplay = formatPrivacy(whatsappRaw);
                 
-                // Link is active only if privacy mode is OFF (or handle click accordingly)
-                // If Privacy ON: link goes nowhere or just '#'
                 const whatsappLink = appSettings.privacyMode ? 'javascript:void(0)' : `https://wa.me/62${data.whatsapp}`;
                 const whatsappClass = appSettings.privacyMode ? 'text-muted text-decoration-none' : 'whatsapp-number';
                 const privacyClass = appSettings.privacyMode ? 'privacy-blurred' : '';
@@ -2028,9 +2064,9 @@
             }
             
             filteredData.forEach((data, i) => {
-                const nikDisplay = formatPrivacy(data.nik, 'nik');
+                const nikDisplay = formatPrivacy(data.nik);
                 const whatsappRaw = data.whatsapp ? `0${data.whatsapp}` : '-';
-                const whatsappDisplay = formatPrivacy(whatsappRaw, 'hp');
+                const whatsappDisplay = formatPrivacy(whatsappRaw);
                 const privacyClass = appSettings.privacyMode ? 'privacy-blurred' : '';
 
                 const row = document.createElement('tr');
@@ -2183,7 +2219,7 @@
             const cols = ["No", "Nama", "NIK", "Desa", "Kecamatan", "Nama Bantuan", "Jumlah", "Tanggal"];
             const rows = dataToPrint.map((d, i) => [
                 i + 1, d.nama, 
-                formatPrivacy(d.nik, 'nik'), // Function will respect the setting
+                formatPrivacy(d.nik), 
                 d.desa, d.kecamatan, d.namaBantuan || '-',
                 `${formatNumber(d.jumlahBantuan)} ${d.satuanBantuan}`, formatDate(d.tanggalTerima)
             ]);
@@ -2210,7 +2246,7 @@
 
             dataToPreview.forEach((d, i) => {
                 content += `<tr>
-                    <td>${i + 1}</td><td>${d.nama}</td><td>${formatPrivacy(d.nik, 'nik')}</td><td>${d.desa}</td>
+                    <td>${i + 1}</td><td>${d.nama}</td><td>${formatPrivacy(d.nik)}</td><td>${d.desa}</td>
                     <td>${d.namaBantuan}</td><td>${formatNumber(d.jumlahBantuan)} ${d.satuanBantuan}</td><td>${formatDate(d.tanggalTerima)}</td>
                 </tr>`;
             });
@@ -2266,8 +2302,6 @@
         // --- BACKUP & RELOAD ---
         function autoBackupData() {
             if (appData.length === 0) return;
-            const dataToBackup = { appData, appSettings, generatedCodes };
-            // Backup logic internal
             appSettings.lastBackupDate = new Date().toLocaleDateString('id-ID');
             saveSettings();
         }
