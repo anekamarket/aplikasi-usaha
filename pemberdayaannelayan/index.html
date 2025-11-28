@@ -329,8 +329,11 @@
         .input-error { border-color: #dc3545 !important; box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2) !important; }
         .error-message { color: #dc3545; font-size: 0.8rem; margin-top: 5px; display: none; font-weight: 500; }
         .watermark { position: absolute; bottom: 10px; right: 15px; opacity: 0.8; font-size: 0.8rem; color: rgba(255,255,255,0.7); font-weight: 300; letter-spacing: 1px;}
+        
+        /* Existing Floating Action Btn */
         .floating-action-btn { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-accent); color: white; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); z-index: 1000; cursor: pointer; transition: all 0.3s; font-size: 1.5rem; }
         .floating-action-btn:hover { transform: scale(1.1) rotate(90deg); background: #ee9b00; }
+        
         .mobile-menu-btn { display: none; position: fixed; top: 15px; left: 15px; z-index: 1050; background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 45px; height: 45px; box-shadow: var(--shadow-lg); }
         .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040; }
         
@@ -340,6 +343,109 @@
             letter-spacing: 2px;
             font-weight: bold;
         }
+
+        /* SMART MENU STYLES */
+        .smart-menu-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 1045;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .smart-menu-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .smart-menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .smart-menu-toggle.active {
+            transform: rotate(45deg);
+            background: #dc3545;
+        }
+
+        .smart-menu-item {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .smart-menu-container.active .smart-menu-item {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .smart-menu-item:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: white;
+        }
+
+        /* Tooltips for Smart Menu */
+        .smart-menu-tooltip {
+            position: absolute;
+            right: 55px;
+            top: 50%;
+            transform: translateY(-50%) translateX(10px);
+            background: rgba(0, 18, 25, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            transition: all 0.2s;
+            pointer-events: none;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .smart-menu-item:hover .smart-menu-tooltip {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        /* Staggered Animation Delay for Smart Menu */
+        .smart-menu-container.active .smart-menu-item:nth-child(2) { transition-delay: 0.05s; }
+        .smart-menu-container.active .smart-menu-item:nth-child(3) { transition-delay: 0.1s; }
+        .smart-menu-container.active .smart-menu-item:nth-child(4) { transition-delay: 0.15s; }
+        .smart-menu-container.active .smart-menu-item:nth-child(5) { transition-delay: 0.2s; }
+        .smart-menu-container.active .smart-menu-item:nth-child(6) { transition-delay: 0.25s; }
+        .smart-menu-container.active .smart-menu-item:nth-child(7) { transition-delay: 0.3s; }
+        .smart-menu-container.active .smart-menu-item:nth-child(8) { transition-delay: 0.35s; }
+        .smart-menu-container.active .smart-menu-item:nth-child(9) { transition-delay: 0.4s; }
+        .smart-menu-container.active .smart-menu-item:nth-child(10) { transition-delay: 0.45s; }
 
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -358,6 +464,8 @@
             .app-header { padding: 60px 15px 25px 15px; }
             .col-md-9.col-lg-10.p-5 { padding: 1.5rem !important; }
             .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .smart-menu-container { bottom: 90px; right: 15px; }
+            .floating-action-btn { right: 15px; }
         }
 
         @media print {
@@ -365,7 +473,7 @@
             body * { visibility: hidden; }
             .app-container, .app-container * { visibility: visible; }
             .app-container { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; }
-            .nav-pills, .mobile-menu-btn, .sidebar-overlay, .floating-action-btn, .btn-group, .filter-section, .toast, .col-md-3.col-lg-2 { display: none !important; }
+            .nav-pills, .mobile-menu-btn, .sidebar-overlay, .floating-action-btn, .smart-menu-container, .btn-group, .filter-section, .toast, .col-md-3.col-lg-2 { display: none !important; }
             .col-md-9.col-lg-10 { width: 100%; flex: 0 0 100%; max-width: 100%; padding: 0 !important; }
             .data-table th:last-child, .data-table td:last-child { display: none !important; }
             .print-header { display: block !important; text-align: center; margin-bottom: 15px; }
@@ -939,7 +1047,12 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Kode Keamanan Baru</label>
-                                                <input type="password" class="form-control" id="settingSecurityCode" placeholder="Biarkan kosong jika tidak berubah">
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control" id="settingSecurityCode" placeholder="Biarkan kosong jika tidak berubah">
+                                                    <button class="btn btn-outline-secondary toggle-password-settings" type="button">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Baris per Halaman</label>
@@ -1017,6 +1130,49 @@
             </div>
         </div>
         
+        <div class="smart-menu-container" id="smartMenu">
+            <button class="smart-menu-toggle" id="smartMenuToggle" title="Menu Pintas">
+                <i class="fas fa-th-large"></i>
+            </button>
+
+            <a href="#" class="smart-menu-item" onclick="triggerSmartMenu('btn-reload-repo')">
+                <i class="fas fa-sync-alt"></i>
+                <span class="smart-menu-tooltip">Reload Data</span>
+            </a>
+            <a href="#" class="smart-menu-item" onclick="triggerSmartMenu('v-pills-settings-tab')">
+                <i class="fas fa-cog"></i>
+                <span class="smart-menu-tooltip">Pengaturan</span>
+            </a>
+            <a href="#" class="smart-menu-item" onclick="triggerSmartMenu('v-pills-backup-tab')">
+                <i class="fas fa-download"></i>
+                <span class="smart-menu-tooltip">Backup & Restore</span>
+            </a>
+            <a href="#" class="smart-menu-item" onclick="triggerSmartMenu('v-pills-export-tab')">
+                <i class="fas fa-file-export"></i>
+                <span class="smart-menu-tooltip">Ekspor Data</span>
+            </a>
+            <a href="#" class="smart-menu-item" onclick="triggerSmartMenu('v-pills-print-tab')">
+                <i class="fas fa-print"></i>
+                <span class="smart-menu-tooltip">Cetak Laporan</span>
+            </a>
+            <a href="#" class="smart-menu-item" onclick="triggerSmartMenu('v-pills-filter-tab')">
+                <i class="fas fa-filter"></i>
+                <span class="smart-menu-tooltip">Filter Data</span>
+            </a>
+            <a href="#" class="smart-menu-item" onclick="triggerSmartMenu('v-pills-data-tab')">
+                <i class="fas fa-database"></i>
+                <span class="smart-menu-tooltip">Data Bantuan</span>
+            </a>
+            <a href="#" class="smart-menu-item" onclick="triggerSmartMenu('v-pills-input-tab')">
+                <i class="fas fa-pencil-alt"></i>
+                <span class="smart-menu-tooltip">Input Data</span>
+            </a>
+            <a href="#" class="smart-menu-item" onclick="triggerSmartMenu('v-pills-dashboard-tab')">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="smart-menu-tooltip">Dashboard</span>
+            </a>
+        </div>
+
         <div class="floating-action-btn" id="fabBtn" title="Tambah Data Baru">
             <i class="fas fa-plus"></i>
         </div>
@@ -1079,7 +1235,12 @@
                 </div>
                 <div class="modal-body">
                     <p class="small mb-2">Masukkan PIN untuk melihat data lengkap:</p>
-                    <input type="password" class="form-control text-center fw-bold" id="privacyPasswordInput" placeholder="PIN: 17081945" maxlength="8">
+                    <div class="input-group">
+                        <input type="password" class="form-control text-center fw-bold" id="privacyPasswordInput" placeholder="PIN: 17081945" maxlength="8">
+                        <button class="btn btn-outline-secondary toggle-password-privacy" type="button">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
                     <div class="invalid-feedback d-block text-center mt-2" id="privacyError" style="display:none !important;">PIN Salah!</div>
                 </div>
                 <div class="modal-footer p-2 justify-content-center">
@@ -1161,7 +1322,20 @@
         function setupEventListeners() {
             // Login
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
-            document.querySelector('.toggle-password').addEventListener('click', togglePasswordVisibility);
+            
+            // Password Visibility Toggles
+            // 1. Login Modal
+            document.querySelector('.toggle-password').addEventListener('click', function() {
+                togglePasswordVisibility(this, 'securityCode');
+            });
+            // 2. Settings
+            document.querySelector('.toggle-password-settings').addEventListener('click', function() {
+                togglePasswordVisibility(this, 'settingSecurityCode');
+            });
+            // 3. Privacy Modal
+            document.querySelector('.toggle-password-privacy').addEventListener('click', function() {
+                togglePasswordVisibility(this, 'privacyPasswordInput');
+            });
             
             // Main Input Form
             document.getElementById('inputForm').addEventListener('submit', handleFormSubmit);
@@ -1226,7 +1400,37 @@
             document.getElementById('v-pills-logout-tab').addEventListener('click', logout);
             
             document.getElementById('btn-reload-repo').addEventListener('click', handleReloadFromRepo);
+
+            // Smart Menu Logic
+            const smartMenuToggle = document.getElementById('smartMenuToggle');
+            const smartMenuContainer = document.getElementById('smartMenu');
+            
+            smartMenuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('active');
+                smartMenuContainer.classList.toggle('active');
+            });
+
+            // Close smart menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!smartMenuContainer.contains(e.target)) {
+                    smartMenuToggle.classList.remove('active');
+                    smartMenuContainer.classList.remove('active');
+                }
+            });
+
             window.addEventListener('beforeunload', autoBackupData);
+        }
+
+        // Smart Menu Trigger Function
+        function triggerSmartMenu(targetId) {
+            const targetEl = document.getElementById(targetId);
+            if (targetEl) {
+                targetEl.click();
+                // Close menu after selection
+                document.getElementById('smartMenuToggle').classList.remove('active');
+                document.getElementById('smartMenu').classList.remove('active');
+            }
         }
         
         function fillYearDropdowns() {
@@ -1311,9 +1515,9 @@
             }, 500);
         }
         
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('securityCode');
-            const icon = this.querySelector('i');
+        function togglePasswordVisibility(btn, inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
             const isPassword = passwordInput.type === 'password';
             passwordInput.type = isPassword ? 'text' : 'password';
             icon.classList.toggle('fa-eye', !isPassword);
