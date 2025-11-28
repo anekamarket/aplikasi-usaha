@@ -1205,6 +1205,9 @@
                         <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                             <i class="fas fa-cog feature-icon"></i> Pengaturan
                         </button>
+                        <button class="nav-link" id="btn-reload-repo" type="button">
+                            <i class="fas fa-sync-alt feature-icon"></i> Reload Data
+                        </button>
                         <button class="nav-link" id="v-pills-logout-tab" type="button">
                             <i class="fas fa-sign-out-alt feature-icon"></i> Keluar
                         </button>
@@ -2205,8 +2208,11 @@
             document.getElementById('jenisBantuan').addEventListener('change', updateSatuanBantuan);
             document.getElementById('printFromPreviewBtn').addEventListener('click', () => window.print());
             document.getElementById('v-pills-logout-tab').addEventListener('click', logout);
+            
+            // REVISI BARU: Event listener untuk reload data dari repo
+            document.getElementById('btn-reload-repo').addEventListener('click', handleReloadFromRepo);
 
-            // --- REVISI: Listener untuk backup otomatis saat menutup/merefresh halaman ---
+            // Listener untuk backup otomatis saat menutup/merefresh halaman
             window.addEventListener('beforeunload', autoBackupData);
         }
         
@@ -2332,7 +2338,6 @@
         }
         
         function logout() {
-            // --- REVISI: Panggil fungsi backup otomatis saat tombol logout diklik ---
             autoBackupData();
             
             if (confirm('Apakah Anda yakin ingin keluar?')) {
@@ -2953,27 +2958,20 @@
             document.body.removeChild(link);
         }
 
-        // --- BACKUP, RESTORE, RESET ---
+        // --- BACKUP, RESTORE, RESET & RELOAD FROM REPO ---
 
-        // --- REVISI: Fungsi baru untuk backup otomatis ---
         function autoBackupData() {
-            // Fungsi ini berjalan tanpa notifikasi ke pengguna agar tidak mengganggu.
             if (appData.length === 0) {
-                return; // Jangan backup jika tidak ada data.
+                return;
             }
 
-            const timestamp = new Date().toISOString().slice(0, 10); // Format YYYY-MM-DD
-            // Membuat nama file sesuai permintaan: [nama aplikasi] - auto-backup-[tanggal]
+            const timestamp = new Date().toISOString().slice(0, 10);
             const filename = `${appSettings.appName} - auto-backup-${timestamp}`;
             const dataToBackup = { appData, appSettings, generatedCodes };
             
-            // Menggunakan metode enkripsi yang sama dengan backup manual (btoa) untuk konsistensi.
             const dataStr = btoa(unescape(encodeURIComponent(JSON.stringify(dataToBackup))));
-
-            // Menggunakan fungsi helper yang sudah ada untuk men-download file.
             downloadFile(dataStr, 'application/json', `${filename}.json`);
             
-            // Perbarui tanggal backup terakhir di pengaturan, meskipun tidak ditampilkan notifikasinya.
             appSettings.lastBackupDate = new Date().toLocaleDateString('id-ID');
             saveSettings();
             applySettingsToUI();
@@ -2994,6 +2992,77 @@
             showNotification('Backup data terenkripsi berhasil diunduh.', 'success');
         }
         
+        // --- NEW FUNCTION: Reload Data From Repo (reload.js) ---
+        function handleReloadFromRepo() {
+            if(!confirm("Apakah Anda yakin ingin me-reload data dari repository? Data lokal saat ini akan ditimpa dengan data dari file reload.js.")) return;
+
+            // Tampilkan loading di tombol
+            const btn = document.getElementById('btn-reload-repo');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin feature-icon"></i> Loading...';
+            btn.disabled = true;
+
+            // Hapus script lama jika ada
+            const oldScript = document.getElementById('reload-script');
+            if(oldScript) oldScript.remove();
+
+            // Buat element script baru
+            const script = document.createElement('script');
+            script.id = 'reload-script';
+            script.src = './reload.js?v=' + new Date().getTime(); // Cache busting
+
+            script.onload = function() {
+                try {
+                    // Cek apakah data tersedia di global variable
+                    if (window.BARJAS_RELOAD_DATA) {
+                        const restored = window.BARJAS_RELOAD_DATA;
+                        
+                        // Validasi sederhana struktur data
+                        if(restored.appData && Array.isArray(restored.appData)) {
+                            // Update data aplikasi
+                            appData = restored.appData;
+                            if(restored.appSettings) Object.assign(appSettings, restored.appSettings);
+                            if(restored.generatedCodes) generatedCodes = restored.generatedCodes;
+
+                            // Simpan ke localStorage
+                            saveData();
+                            saveSettings();
+                            
+                            // Update UI
+                            applySettingsToUI();
+                            updateDashboard();
+                            renderDataTable();
+                            
+                            showNotification('Data berhasil di-reload dari Repository (reload.js)!', 'success');
+                        } else {
+                            throw new Error('Format data di reload.js tidak valid.');
+                        }
+                    } else {
+                        throw new Error('Objek window.BARJAS_RELOAD_DATA tidak ditemukan.');
+                    }
+                } catch (e) {
+                    showNotification('Gagal memproses data: ' + e.message, 'error');
+                    console.error(e);
+                } finally {
+                    // Reset tombol
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    
+                    // Bersihkan variable global agar tidak bentrok reload berikutnya
+                    delete window.BARJAS_RELOAD_DATA;
+                }
+            };
+
+            script.onerror = function() {
+                showNotification('Gagal memuat file reload.js. Pastikan file sudah ada di repository.', 'error');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            };
+
+            // Tambahkan ke body untuk eksekusi
+            document.body.appendChild(script);
+        }
+
         function enableRestoreButton() {
             document.getElementById('restoreDataBtn').disabled = !this.files.length;
         }
