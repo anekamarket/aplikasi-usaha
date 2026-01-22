@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAFE & RESTO</title>
+    <title>CAFE & RESTO PREMIUM</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -543,27 +543,24 @@
         }
 
         /* === [PERBAIKAN] DESAIN LOGIN === */
-        /* Perbaikan ini berfokus pada membuat kotak login lebih proporsional,
-           seimbang secara visual, dan berada tepat di tengah layar. */
         #loginModal {
             background: linear-gradient(45deg, #f0f2f5, #e6e9ed);
-            /* Memastikan modal flexbox bekerja dengan benar untuk pemusatan */
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px; /* Memberi sedikit ruang di tepi layar kecil */
+            padding: 20px;
         }
 
         .login-container {
-            width: 100%; /* Lebar penuh relatif terhadap padding parent */
-            max-width: 400px; /* Batas lebar maksimum agar tidak terlalu lebar di layar besar */
-            margin: 0; /* Menghapus margin auto karena flexbox sudah menangani pemusatan */
+            width: 100%;
+            max-width: 400px;
+            margin: 0;
             background: var(--white);
             border-radius: var(--rounded-lg);
             padding: 32px;
             box-shadow: var(--shadow);
             border-top: 5px solid var(--primary);
-            animation: fadeIn 0.4s; /* Menambahkan animasi lembut saat muncul */
+            animation: fadeIn 0.4s;
         }
 
         .login-header {
@@ -588,7 +585,6 @@
         .login-header p {
             color: var(--gray);
         }
-        /* === AKHIR DARI PERBAIKAN DESAIN LOGIN === */
 
         /* Toast Notification */
         .toast {
@@ -955,8 +951,6 @@
         }
         
         /* === [PENYEMPURNAAN] KODE CETAK STRUK & HISTORI === */
-        /* Penyempurnaan ini berfokus pada pencegahan halaman kosong saat mencetak
-           dengan mengatur ulang layout secara ketat khusus untuk mode cetak. */
         #receiptContent {
             font-family: 'Courier New', Courier, monospace;
             width: 300px;
@@ -1028,29 +1022,24 @@
         }
         
         @media print {
-            /* [FIX] Atur ulang body dan html untuk mencegah overflow yang bisa menyebabkan halaman kosong. */
             html, body {
                 width: 100%;
                 height: auto;
                 margin: 0 !important;
                 padding: 0 !important;
-                overflow: visible !important; /* Mencegah scrollbar virtual */
+                overflow: visible !important;
                 box-shadow: none;
             }
 
-            /* Sembunyikan semua elemen di body secara default */
             body * {
                 visibility: hidden;
             }
             
-            /* [FIX] Tampilkan hanya kontainer cetak dan pastikan ia menjadi satu-satunya yang terlihat. */
-            /* Ini adalah langkah kunci untuk mengisolasi konten yang akan dicetak. */
             #print-container, #print-container * {
                 visibility: visible;
-                box-sizing: border-box !important; /* Pastikan padding/border tidak menambah ukuran */
+                box-sizing: border-box !important;
             }
             
-            /* Posisikan kontainer cetak untuk mengisi seluruh halaman */
             #print-container {
                 position: absolute;
                 left: 0;
@@ -1062,26 +1051,24 @@
                 display: block !important;
             }
             
-            /* [FIX] Atur ulang gaya elemen struk agar sesuai dengan kertas dan tidak terpotong. */
             #print-container .printable-area,
             #print-container #receiptContent {
                 margin: 0 !important;
-                padding: 5px !important; /* Beri sedikit padding agar tidak menempel di tepi kertas */
+                padding: 5px !important;
                 box-shadow: none !important;
                 border: none !important;
                 display: block !important;
                 color: #000 !important;
                 background: #fff !important;
                 width: 100% !important; 
-                font-size: 11pt !important; /* Ukuran font yang nyaman dibaca di kertas */
-                page-break-inside: avoid; /* Mencegah struk terpotong di tengah halaman */
+                font-size: 11pt !important;
+                page-break-inside: avoid;
             }
 
             #print-container #receiptContent {
-                font-size: 10pt !important; /* Struk thermal biasanya lebih kecil fontnya */
+                font-size: 10pt !important;
             }
 
-            /* [FIX] Pastikan histori tidak memiliki scrollbar dan tampil penuh saat dicetak */
             #print-container #historyResultsContainer, 
             #print-container #historyResults {
                 max-height: none !important;
@@ -1089,18 +1076,15 @@
                 height: auto !important;
             }
             
-            /* Sembunyikan elemen yang tidak perlu dicetak seperti tombol */
             .no-print, .modal-footer, .modal-header, .app-header, .app-footer, .order-panel, .menu-panel, #loginModal {
                 display: none !important;
             }
             
-            /* Atur halaman cetak */
             @page {
                 size: auto; 
                 margin: 10mm; 
             }
         }
-        /* === AKHIR DARI PENYEMPURNAAN KODE CETAK === */
 
         /* Backup Restore Styles */
         .backup-actions {
@@ -1247,6 +1231,165 @@
             border-top: 1px solid rgba(255,255,255,0.3);
             z-index: 1;
         }
+
+        /* Menu List PDF Styles */
+        .menu-list-pdf-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: var(--rounded);
+        }
+
+        .menu-list-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .menu-category-section {
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+
+        .menu-category-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-list-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .menu-list-table th {
+            background-color: var(--light);
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .menu-list-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .menu-available {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .menu-unavailable {
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        /* Form Order Customer */
+        .order-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: var(--rounded);
+            box-shadow: var(--shadow);
+        }
+
+        .order-form-group {
+            margin-bottom: 20px;
+        }
+
+        .order-form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .order-item-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .order-item-select {
+            flex: 2;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+        }
+
+        .order-item-qty-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            text-align: center;
+        }
+
+        .add-item-btn {
+            padding: 10px 15px;
+            background-color: var(--info);
+            color: white;
+            border: none;
+            border-radius: var(--rounded-sm);
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .remove-item-btn {
+            padding: 8px 12px;
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            border-radius: var(--rounded-sm);
+            cursor: pointer;
+        }
+
+        .order-summary {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: var(--rounded-sm);
+            margin-top: 20px;
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: var(--rounded-sm);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+
+        /* Premium Badge */
+        .premium-badge {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 5px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -1259,10 +1402,10 @@
         <div class="login-container">
             <div class="login-header">
                 <div class="login-logo">
-                    <i class="fas fa-utensils"></i>
+                    <i class="fas fa-crown"></i>
                 </div>
-                <h1 class="login-title">CAFE & RESTO</h1>
-                <p>Aplikasi Penjualan Digital</p>
+                <h1 class="login-title">CAFE & RESTO <span class="premium-badge">PREMIUM</span></h1>
+                <p>Aplikasi Penjualan Digital Full Version</p>
             </div>
             <form id="loginForm">
                 <div class="form-group">
@@ -1284,6 +1427,11 @@
                 </div>
                 <button type="submit" class="btn mt-3">Login</button>
             </form>
+            <div class="mt-3 text-center">
+                <a href="order-form.html" class="btn btn-outline-primary" style="width: auto;">
+                    <i class="fas fa-shopping-cart"></i> Form Pemesanan Pelanggan
+                </a>
+            </div>
         </div>
     </div>
 
@@ -1291,10 +1439,10 @@
         <header class="app-header">
             <div class="header-title-container">
                 <div class="header-logo">
-                    <i class="fas fa-utensils"></i>
+                    <i class="fas fa-crown"></i>
                 </div>
                 <div>
-                    <h1 class="app-title" id="storeNameHeader">CAFE & RESTO</h1>
+                    <h1 class="app-title" id="storeNameHeader">CAFE & RESTO <span class="premium-badge">PREMIUM</span></h1>
                     <p id="currentDate">Rabu, 24 September 2025</p>
                 </div>
             </div>
@@ -1307,7 +1455,7 @@
         <main class="app-content">
             <section class="panel menu-panel">
                 <h2 class="panel-title">
-                    <span>Daftar Menu</span>
+                    <span>Daftar Menu <span class="premium-badge">FULL VERSION</span></span>
                     <span id="menuCount">(0 menu)</span>
                 </h2>
                 
@@ -1324,7 +1472,7 @@
                     </div>
 
                 <div id="adminPanel" class="admin-panel">
-                    <h3 class="panel-title">Admin Panel</h3>
+                    <h3 class="panel-title">Admin Panel <span class="premium-badge">PREMIUM</span></h3>
                     <div class="admin-grid">
                         <button id="addMenuBtn" class="btn btn-sm">Tambah Menu</button>
                         <button id="manageCategoriesBtn" class="btn btn-sm">Kelola Kategori</button>
@@ -1333,6 +1481,7 @@
                         <button id="kitchenDisplayBtn" class="btn btn-sm">Info Pesanan</button>
                         <button id="manageMembersBtn" class="btn btn-sm">Kelola Member</button>
                         <button id="manageStoreInfoBtn" class="btn btn-sm">Info Restoran</button>
+                        <button id="printMenuListBtn" class="btn btn-sm btn-info">Cetak Daftar Menu</button>
                         <button id="controlPanelBtn" class="btn btn-sm btn-warning">Kontrol Panel</button>
                     </div>
                     
@@ -1352,7 +1501,7 @@
 
             <section class="panel order-panel">
                 <h2 class="panel-title">
-                    <span>Pesanan</span>
+                    <span>Pesanan <span class="premium-badge">UNLIMITED</span></span>
                     <span id="orderCount">(0 item)</span>
                 </h2>
                 
@@ -1413,18 +1562,27 @@
                 </div>
                 
                 <button id="processOrderBtn" class="btn btn-success mt-3">Proses Pesanan</button>
+                <div class="mt-2 text-center">
+                    <a href="order-form.html" class="whatsapp-link">
+                        <i class="fas fa-external-link-alt"></i> Buka Form Pemesanan Pelanggan
+                    </a>
+                </div>
             </section>
         </main>
 
         <footer class="app-footer">
-            <p>&copy; <span id="currentYear"></span> CAFE & RESTO - Hak Cipta oleh Lentera Karya Situbondo</p>
+            <p>&copy; <span id="currentYear"></span> CAFE & RESTO PREMIUM - Hak Cipta oleh Lentera Karya Situbondo</p>
+            <p class="mt-2">
+                <strong>VERSI PREMIUM - TANPA BATASAN</strong> | 
+                <a href="order-form.html" class="whatsapp-link">Form Pemesanan Pelanggan</a>
+            </p>
         </footer>
     </div>
 
     <div id="processOrderModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Proses Pembayaran</h3>
+                <h3 class="modal-title">Proses Pembayaran <span class="premium-badge">PREMIUM</span></h3>
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body" style="padding: 0 16px 16px 16px;">
@@ -1505,6 +1663,13 @@
                         <input type="number" id="menuPrice" class="form-control" required min="0">
                     </div>
                     <div class="form-group">
+                        <label class="form-label">Status Ketersediaan</label>
+                        <select id="menuAvailable" class="form-control">
+                            <option value="true">Tersedia</option>
+                            <option value="false">Tidak Tersedia</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">Gambar (URL)</label>
                         <input type="text" id="menuImage" class="form-control" placeholder="Masukkan URL gambar">
                     </div>
@@ -1544,7 +1709,7 @@
     <div id="reportsModal" class="modal">
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
-                <h3 class="modal-title">Laporan</h3>
+                <h3 class="modal-title">Laporan <span class="premium-badge">PREMIUM</span></h3>
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body" style="padding: 0 16px 16px 16px;">
@@ -1729,7 +1894,7 @@
     <div id="controlPanelModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Kontrol Panel</h3>
+                <h3 class="modal-title">Kontrol Panel <span class="premium-badge">PREMIUM</span></h3>
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body" style="padding: 0 16px 16px 16px;">
@@ -1909,6 +2074,29 @@
                  </div>
         </div>
     </div>
+
+    <div id="menuListPdfModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Daftar Menu PDF</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="menuListPdfContent" class="menu-list-pdf-container printable-area">
+                    <!-- Konten akan diisi oleh JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-success" id="generateMenuListPdfBtn">
+                    <i class="fas fa-file-pdf"></i> Generate PDF
+                </button>
+                <button class="btn btn-primary" id="printMenuListBtn2">
+                    <i class="fas fa-print"></i> Cetak Daftar Menu
+                </button>
+            </div>
+        </div>
+    </div>
     
     <div id="print-container" style="display:none;"></div>
     
@@ -1919,6 +2107,133 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    
+    <!-- Script Daftar Menu (Terpisah) -->
+    <script id="daftarmenu-js">
+        // ============================================
+        // DAFTARMENU.JS - Script untuk cetak daftar menu
+        // ============================================
+        
+        // Fungsi untuk menampilkan modal daftar menu
+        function showMenuListModal() {
+            generateMenuListHTML();
+            $('#menuListPdfModal').css('display', 'flex');
+        }
+
+        // Fungsi untuk membuat HTML daftar menu
+        function generateMenuListHTML() {
+            const $content = $('#menuListPdfContent');
+            
+            // Kelompokkan menu berdasarkan kategori
+            const menusByCategory = {};
+            categories.forEach(category => {
+                menusByCategory[category.name] = menus.filter(menu => menu.category === category.name);
+            });
+            
+            let html = `
+                <div class="menu-list-header">
+                    <h1>${settings.storeName || 'CAFE & RESTO'}</h1>
+                    <p>${settings.storeAddress || ''}</p>
+                    <p>Telp: ${settings.storePhone || ''}</p>
+                    <p><strong>DAFTAR MENU</strong></p>
+                    <p>Tanggal: ${moment().format('DD/MM/YYYY')}</p>
+                </div>`;
+            
+            // Loop melalui setiap kategori
+            for (const [categoryName, categoryMenus] of Object.entries(menusByCategory)) {
+                if (categoryMenus.length === 0) continue;
+                
+                html += `
+                    <div class="menu-category-section">
+                        <h2 class="menu-category-title">${categoryName}</h2>
+                        <table class="menu-list-table">
+                            <thead>
+                                <tr>
+                                    <th width="50">No</th>
+                                    <th>Nama Menu</th>
+                                    <th width="150">Harga</th>
+                                    <th width="120">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                
+                categoryMenus.forEach((menu, index) => {
+                    const status = menu.available !== false ? 
+                        '<span class="menu-available">Tersedia</span>' : 
+                        '<span class="menu-unavailable">Tidak Tersedia</span>';
+                    
+                    html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${menu.name}</td>
+                            <td>${formatCurrency(menu.price)}</td>
+                            <td>${status}</td>
+                        </tr>`;
+                });
+                
+                html += `
+                            </tbody>
+                        </table>
+                    </div>`;
+            }
+            
+            // Tambahkan QR Code
+            html += `
+                <div class="text-center mt-4">
+                    <div id="menuListQrcode" style="display: inline-block; padding: 10px; background: white; border-radius: 8px;"></div>
+                    <p class="mt-2"><strong>Scan untuk pemesanan online:</strong><br>www.aplikasiusaha.com/orderku</p>
+                </div>`;
+            
+            $content.html(html);
+            
+            // Generate QR Code
+            $('#menuListQrcode').empty();
+            new QRCode(document.getElementById("menuListQrcode"), {
+                text: "www.aplikasiusaha.com/orderku",
+                width: 150,
+                height: 150,
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        }
+
+        // Fungsi untuk membuat PDF daftar menu
+        function generateMenuListPDF() {
+            const element = document.getElementById('menuListPdfContent');
+            const filename = `Daftar_Menu_${settings.storeName || 'Resto'}_${moment().format('YYYY-MM-DD')}.pdf`;
+            
+            showToast('Membuat PDF daftar menu...', 'info');
+            
+            html2canvas(element, { 
+                scale: 2,
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+                
+                const imgWidth = 190;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+                pdf.save(filename);
+                
+                showToast('PDF daftar menu berhasil dibuat', 'success');
+            }).catch(err => {
+                showToast('Gagal membuat PDF daftar menu', 'error');
+                console.error("PDF generation error:", err);
+            });
+        }
+
+        // Fungsi untuk mencetak daftar menu
+        function printMenuList() {
+            printElement('#menuListPdfContent');
+        }
+    </script>
+
     <script>
         // Set locale to Indonesian
         moment.locale('id');
@@ -1996,11 +2311,51 @@
             
             if (!localStorage.getItem(STORAGE_KEYS.MENUS)) {
                 const sampleMenus = [
-                    { id: 'M001', name: 'Nasi Goreng', category: 'Makanan', price: 15000, image: DEFAULT_MENU_IMAGES['Makanan']['Nasi Goreng'], description: 'Nasi goreng spesial dengan telur dan ayam' },
-                    { id: 'M002', name: 'Mie Goreng', category: 'Makanan', price: 12000, image: DEFAULT_MENU_IMAGES['Makanan']['Mie Goreng'], description: 'Mie goreng dengan sayuran dan telur' },
-                    { id: 'M003', name: 'Ayam Goreng', category: 'Makanan', price: 18000, image: DEFAULT_MENU_IMAGES['Makanan']['Ayam Goreng'], description: 'Ayam goreng krispi dengan sambal' },
-                    { id: 'M004', name: 'Es Teh', category: 'Minuman', price: 5000, image: DEFAULT_MENU_IMAGES['Minuman']['Es Teh'], description: 'Es teh manis segar' },
-                    { id: 'M005', name: 'Es Jeruk', category: 'Minuman', price: 7000, image: DEFAULT_MENU_IMAGES['Minuman']['Es Jeruk'], description: 'Es jeruk asli' }
+                    { 
+                        id: 'M001', 
+                        name: 'Nasi Goreng', 
+                        category: 'Makanan', 
+                        price: 15000, 
+                        image: DEFAULT_MENU_IMAGES['Makanan']['Nasi Goreng'], 
+                        description: 'Nasi goreng spesial dengan telur dan ayam',
+                        available: true
+                    },
+                    { 
+                        id: 'M002', 
+                        name: 'Mie Goreng', 
+                        category: 'Makanan', 
+                        price: 12000, 
+                        image: DEFAULT_MENU_IMAGES['Makanan']['Mie Goreng'], 
+                        description: 'Mie goreng dengan sayuran dan telur',
+                        available: true
+                    },
+                    { 
+                        id: 'M003', 
+                        name: 'Ayam Goreng', 
+                        category: 'Makanan', 
+                        price: 18000, 
+                        image: DEFAULT_MENU_IMAGES['Makanan']['Ayam Goreng'], 
+                        description: 'Ayam goreng krispi dengan sambal',
+                        available: true
+                    },
+                    { 
+                        id: 'M004', 
+                        name: 'Es Teh', 
+                        category: 'Minuman', 
+                        price: 5000, 
+                        image: DEFAULT_MENU_IMAGES['Minuman']['Es Teh'], 
+                        description: 'Es teh manis segar',
+                        available: true
+                    },
+                    { 
+                        id: 'M005', 
+                        name: 'Es Jeruk', 
+                        category: 'Minuman', 
+                        price: 7000, 
+                        image: DEFAULT_MENU_IMAGES['Minuman']['Es Jeruk'], 
+                        description: 'Es jeruk asli',
+                        available: true
+                    }
                 ];
                 localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(sampleMenus));
             }
@@ -2018,7 +2373,7 @@
             
             if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
                 localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify({
-                    storeName: 'WARUNG MAKAN SEDERHANA',
+                    storeName: 'CAFE & RESTO PREMIUM',
                     storeAddress: 'Jl. Contoh No. 123, Kota',
                     storePhone: '081234567890',
                     storeEmail: 'admin@resto.com',
@@ -2120,19 +2475,35 @@
                 showToast('Anda telah logout', 'info');
             });
             
-            $('#menuSearch').on('input', function() { loadMenus($(this).val(), $('.filter-chip.active').data('category')); });
+            $('#menuSearch').on('input', function() { 
+                const searchTerm = $(this).val();
+                const category = $('.filter-chip.active').data('category');
+                loadMenus(searchTerm, category); 
+            });
             
             $(document).on('click', '.menu-card', function() {
                 const menu = menus.find(m => m.id === $(this).data('id'));
                 if (menu) {
+                    if (menu.available === false) {
+                        showToast(`${menu.name} sedang tidak tersedia`, 'warning');
+                        return;
+                    }
+                    
                     const existingItem = currentOrder.items.find(item => item.menu.id === menu.id);
-                    if (existingItem) existingItem.quantity++; else currentOrder.items.push({ menu: menu, quantity: 1, status: 'pending' });
+                    if (existingItem) existingItem.quantity++; 
+                    else currentOrder.items.push({ menu: menu, quantity: 1, status: 'pending' });
+                    
                     updateOrder();
                     showToast(`${menu.name} ditambahkan`, 'success');
                 }
             });
             
-            $(document).on('click', '.edit-menu', function(e) { e.stopPropagation(); if (currentUser.role === 'admin') openEditMenuModal(menus.find(m => m.id === $(this).data('id'))); });
+            $(document).on('click', '.edit-menu', function(e) { 
+                e.stopPropagation(); 
+                if (currentUser.role === 'admin') {
+                    openEditMenuModal(menus.find(m => m.id === $(this).data('id'))); 
+                }
+            });
             
             $(document).on('click', '.delete-menu', function(e) {
                 e.stopPropagation();
@@ -2141,7 +2512,9 @@
                 promptForPassword('item', () => {
                     showConfirmation('Hapus Menu', 'Yakin ingin menghapus menu ini?', () => {
                         menus = menus.filter(m => m.id !== menuId);
-                        saveMenus(); loadMenus(); showToast('Menu berhasil dihapus', 'success');
+                        saveMenus(); 
+                        loadMenus(); 
+                        showToast('Menu berhasil dihapus', 'success');
                     });
                 });
             });
@@ -2204,10 +2577,17 @@
                 $('#memberSearchResults').hide();
             });
 
-            $(document).on('click', function(e) { if (!$(e.target).closest('.member-search-container').length) $('#memberSearchResults').hide(); });
+            $(document).on('click', function(e) { 
+                if (!$(e.target).closest('.member-search-container').length) {
+                    $('#memberSearchResults').hide(); 
+                }
+            });
             
             $('#processOrderBtn').click(function() {
-                if (currentOrder.items.length === 0) { showToast('Pesanan kosong', 'warning'); return; }
+                if (currentOrder.items.length === 0) { 
+                    showToast('Pesanan kosong', 'warning'); 
+                    return; 
+                }
                 const member = members.find(m => m.id === currentOrder.memberId);
                 $('#customerName').val(member ? member.name : '');
                 updateOrderSummary();
@@ -2216,13 +2596,21 @@
                 $('#processOrderModal').css('display', 'flex');
             });
             
-            $('.modal-body .tabs .tab').click(function() { switchPaymentModalTab($(this).data('tab')); });
+            $('.modal-body .tabs .tab').click(function() { 
+                switchPaymentModalTab($(this).data('tab')); 
+            });
+            
             $('#paymentAmount').on('input', calculateChange);
-            $(document).on('click', '.quick-cash-btn', function() { $('#paymentAmount').val($(this).data('amount')).trigger('input'); });
+            $(document).on('click', '.quick-cash-btn', function() { 
+                $('#paymentAmount').val($(this).data('amount')).trigger('input'); 
+            });
             
             $('#completePaymentBtn').click(function() {
                 const paymentAmount = parseFloat($('#paymentAmount').val()) || 0;
-                if (paymentAmount < currentOrder.total) { showToast('Jumlah pembayaran kurang', 'error'); return; }
+                if (paymentAmount < currentOrder.total) { 
+                    showToast('Jumlah pembayaran kurang', 'error'); 
+                    return; 
+                }
                 
                 const $btn = $(this), originalText = $btn.html();
                 setButtonLoading($btn, true);
@@ -2230,11 +2618,16 @@
                 setTimeout(() => {
                     try {
                         const order = {
-                            id: 'ORD' + moment().format('YYYYMMDDHHmmss'), date: new Date(), ...currentOrder,
-                            paymentMethod: $('#paymentMethod').val(), paymentAmount,
-                            change: paymentAmount - currentOrder.total, cashier: currentUser,
+                            id: 'ORD' + moment().format('YYYYMMDDHHmmss'), 
+                            date: new Date(), 
+                            ...currentOrder,
+                            paymentMethod: $('#paymentMethod').val(), 
+                            paymentAmount,
+                            change: paymentAmount - currentOrder.total, 
+                            cashier: currentUser,
                             customerName: $('#customerName').val().trim() || 'Pelanggan',
-                            status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', statusLocked: false
+                            status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', 
+                            statusLocked: false
                         };
                         
                         orders.unshift(order);
@@ -2265,8 +2658,16 @@
                 loadMenus($('#menuSearch').val(), $(this).data('category'));
             });
             
-            $('#addMenuBtn').click(() => { if (currentUser.role === 'admin') openEditMenuModal(null); });
-            $('#manageCategoriesBtn').click(() => { if (currentUser.role === 'admin') { loadCategoriesForManagement(); $('#manageCategoriesModal').css('display', 'flex'); } });
+            $('#addMenuBtn').click(() => { 
+                if (currentUser.role === 'admin') openEditMenuModal(null); 
+            });
+            
+            $('#manageCategoriesBtn').click(() => { 
+                if (currentUser.role === 'admin') { 
+                    loadCategoriesForManagement(); 
+                    $('#manageCategoriesModal').css('display', 'flex'); 
+                } 
+            });
             
             $('#viewReportsBtn').click(() => { 
                 if (currentUser.role !== 'admin') return;
@@ -2284,14 +2685,39 @@
                 $('#historyModal').css('display', 'flex');
             });
 
-            $('#kitchenDisplayBtn').click(() => { loadKitchenOrders(); kitchenInterval = setInterval(loadKitchenOrders, 30000); $('#kitchenDisplayModal').css('display', 'flex'); });
-            $('#manageMembersBtn').click(() => { if (currentUser.role === 'admin') { resetMemberForm(); loadMembersForManagement(); $('#memberAdminFields').toggle(currentUser.role === 'admin'); $('#manageMembersModal').css('display', 'flex'); } });
+            $('#kitchenDisplayBtn').click(() => { 
+                loadKitchenOrders(); 
+                kitchenInterval = setInterval(loadKitchenOrders, 30000); 
+                $('#kitchenDisplayModal').css('display', 'flex'); 
+            });
             
+            $('#manageMembersBtn').click(() => { 
+                if (currentUser.role === 'admin') { 
+                    resetMemberForm(); 
+                    loadMembersForManagement(); 
+                    $('#memberAdminFields').toggle(currentUser.role === 'admin'); 
+                    $('#manageMembersModal').css('display', 'flex'); 
+                } 
+            });
+
             $('#manageMemberSearchInput').on('input', function() {
                 loadMembersForManagement($(this).val());
             });
 
-            $('#manageStoreInfoBtn').click(() => { if (currentUser.role === 'admin') { loadStoreInfo(); $('#manageStoreInfoModal').css('display', 'flex'); } });
+            $('#manageStoreInfoBtn').click(() => { 
+                if (currentUser.role === 'admin') { 
+                    loadStoreInfo(); 
+                    $('#manageStoreInfoModal').css('display', 'flex'); 
+                } 
+            });
+            
+            $('#printMenuListBtn').click(() => {
+                if (currentUser.role !== 'admin') return;
+                showMenuListModal();
+            });
+
+            $('#generateMenuListPdfBtn').click(generateMenuListPDF);
+            $('#printMenuListBtn2').click(printMenuList);
             
             $('#controlPanelBtn').click(() => {
                 if (currentUser.role !== 'admin') return;
@@ -2305,84 +2731,201 @@
                 });
             });
 
-            $('#backupDataBtn').click(() => { if (currentUser.role === 'admin') showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lksbackup). Lanjutkan?', backupData); });
-            $('#restoreFile').change(function() { if (currentUser.role === 'admin') { restoreFromFile(this.files[0]); $(this).val(''); } });
-            $('#resetDataBtn').click(() => { if (currentUser.role === 'admin') promptForPassword('item', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', resetAllData, 'danger')); });
+            $('#backupDataBtn').click(() => { 
+                if (currentUser.role === 'admin') {
+                    showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lksbackup). Lanjutkan?', backupData); 
+                }
+            });
+            
+            $('#restoreFile').change(function() { 
+                if (currentUser.role === 'admin') { 
+                    restoreFromFile(this.files[0]); 
+                    $(this).val(''); 
+                } 
+            });
+            
+            $('#resetDataBtn').click(() => { 
+                if (currentUser.role === 'admin') {
+                    promptForPassword('item', () => {
+                        showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', resetAllData, 'danger');
+                    });
+                }
+            });
             
             $('#saveMenuBtn').click(function() {
-                const id = $('#menuId').val(), name = $('#menuName').val().trim(), category = $('#menuCategory').val(), price = parseFloat($('#menuPrice').val()) || 0, image = $('#menuImage').val().trim(), description = $('#menuDescription').val().trim();
-                if (!name || !category || price <= 0) { showToast('Nama, kategori, dan harga harus valid', 'error'); return; }
+                const id = $('#menuId').val();
+                const name = $('#menuName').val().trim();
+                const category = $('#menuCategory').val();
+                const price = parseFloat($('#menuPrice').val()) || 0;
+                const image = $('#menuImage').val().trim();
+                const description = $('#menuDescription').val().trim();
+                const available = $('#menuAvailable').val() === 'true';
+                
+                if (!name || !category || price <= 0) { 
+                    showToast('Nama, kategori, dan harga harus valid', 'error'); 
+                    return; 
+                }
                 
                 const action = () => {
                     if (id) {
                         const menuIndex = menus.findIndex(m => m.id === id);
-                        if (menuIndex > -1) menus[menuIndex] = { ...menus[menuIndex], name, category, price, image, description };
+                        if (menuIndex > -1) {
+                            menus[menuIndex] = { 
+                                ...menus[menuIndex], 
+                                name, 
+                                category, 
+                                price, 
+                                image, 
+                                description,
+                                available
+                            };
+                        }
                     } else {
-                        menus.unshift({ id: 'M' + moment().format('x'), name, category, price, image, description });
+                        menus.unshift({ 
+                            id: 'M' + moment().format('x'), 
+                            name, 
+                            category, 
+                            price, 
+                            image, 
+                            description,
+                            available: true
+                        });
                     }
-                    saveMenus(); loadMenus(); $('#menuModal').hide(); showToast(`Menu ${id ? 'diperbarui' : 'disimpan'}`, 'success');
+                    saveMenus(); 
+                    loadMenus(); 
+                    $('#menuModal').hide(); 
+                    showToast(`Menu ${id ? 'diperbarui' : 'disimpan'}`, 'success');
                 };
-                if (id) promptForPassword('item', action); else action();
+                
+                if (id) {
+                    promptForPassword('item', action); 
+                } else {
+                    action();
+                }
             });
             
             $('#addCategoryBtn').click(function() {
                 const name = $('#newCategoryName').val().trim();
                 if (!name) return showToast('Nama kategori harus diisi', 'error');
-                if (categories.some(c => c.name.toLowerCase() === name.toLowerCase())) return showToast('Kategori sudah ada', 'error');
+                if (categories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+                    return showToast('Kategori sudah ada', 'error');
+                }
                 categories.unshift({ id: 'C' + moment().format('x'), name });
-                saveCategories(); loadCategories(); loadCategoriesForManagement(); $('#newCategoryName').val(''); showToast('Kategori ditambahkan', 'success');
+                saveCategories(); 
+                loadCategories(); 
+                loadCategoriesForManagement(); 
+                $('#newCategoryName').val(''); 
+                showToast('Kategori ditambahkan', 'success');
             });
             
             $(document).on('click', '.remove-category', function() {
-                const categoryId = $(this).data('id'), category = categories.find(c => c.id === categoryId);
-                if (menus.some(m => m.category === category.name)) return showToast('Kategori sedang digunakan', 'error');
+                const categoryId = $(this).data('id');
+                const category = categories.find(c => c.id === categoryId);
+                if (menus.some(m => m.category === category.name)) {
+                    return showToast('Kategori sedang digunakan', 'error');
+                }
                 promptForPassword('item', () => {
                     categories = categories.filter(c => c.id !== categoryId);
-                    saveCategories(); loadCategories(); loadCategoriesForManagement(); showToast('Kategori dihapus', 'success');
+                    saveCategories(); 
+                    loadCategories(); 
+                    loadCategoriesForManagement(); 
+                    showToast('Kategori dihapus', 'success');
                 });
             });
             
-            $('#showAddMemberFormBtn').click(() => { resetMemberForm(); $('#memberFormContainer').slideDown(); });
+            $('#showAddMemberFormBtn').click(() => { 
+                resetMemberForm(); 
+                $('#memberFormContainer').slideDown(); 
+            });
+            
             $('#cancelMemberFormBtn').click(() => $('#memberFormContainer').slideUp(resetMemberForm));
             
             $('#memberForm').submit(function(e) {
                 e.preventDefault();
-                const id = $('#memberIdInput').val(), name = $('#memberName').val().trim(), phone = $('#memberPhone').val().trim(), address = $('#memberAddress').val().trim();
-                if (!name || !phone) return showToast('Nama dan nomor telepon harus diisi', 'error');
+                const id = $('#memberIdInput').val();
+                const name = $('#memberName').val().trim();
+                const phone = $('#memberPhone').val().trim();
+                const address = $('#memberAddress').val().trim();
+                
+                if (!name || !phone) {
+                    return showToast('Nama dan nomor telepon harus diisi', 'error');
+                }
+                
                 if (id) {
                     const memberIndex = members.findIndex(m => m.id === id);
-                    if (memberIndex > -1) members[memberIndex] = { ...members[memberIndex], name, phone, address };
+                    if (memberIndex > -1) {
+                        members[memberIndex] = { 
+                            ...members[memberIndex], 
+                            name, 
+                            phone, 
+                            address 
+                        };
+                    }
                 } else {
-                    members.unshift({ id: generateMemberId(), name, phone, address, joinDate: new Date().toISOString(), transactions: 0, totalSpent: 0 });
+                    members.unshift({ 
+                        id: generateMemberId(), 
+                        name, 
+                        phone, 
+                        address, 
+                        joinDate: new Date().toISOString(), 
+                        transactions: 0, 
+                        totalSpent: 0 
+                    });
                 }
-                saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm); showToast(`Member ${id ? 'diperbarui' : 'ditambahkan'}`, 'success');
+                saveMembers(); 
+                loadMembersForManagement(); 
+                $('#memberFormContainer').slideUp(resetMemberForm); 
+                showToast(`Member ${id ? 'diperbarui' : 'ditambahkan'}`, 'success');
             });
             
             $(document).on('click', '.edit-member', function() {
                 const member = members.find(m => m.id === $(this).data('id'));
                 if (!member) return;
-                $('#memberFormTitle').text('Edit Member'); $('#memberIdInput').val(member.id); $('#memberName').val(member.name); $('#memberPhone').val(member.phone); $('#memberAddress').val(member.address || ''); $('#memberTransactions').val(member.transactions || 0); $('#memberTotalSpent').val(formatCurrency(member.totalSpent || 0)); $('#saveMemberBtn').text('Simpan Perubahan'); $('#deleteMemberBtn').show().data('id', member.id); $('#memberFormContainer').slideDown();
+                $('#memberFormTitle').text('Edit Member'); 
+                $('#memberIdInput').val(member.id); 
+                $('#memberName').val(member.name); 
+                $('#memberPhone').val(member.phone); 
+                $('#memberAddress').val(member.address || ''); 
+                $('#memberTransactions').val(member.transactions || 0); 
+                $('#memberTotalSpent').val(formatCurrency(member.totalSpent || 0)); 
+                $('#saveMemberBtn').text('Simpan Perubahan'); 
+                $('#deleteMemberBtn').show().data('id', member.id); 
+                $('#memberFormContainer').slideDown();
             });
             
             $('#deleteMemberBtn').click(function() {
                 const memberId = $(this).data('id');
-                promptForPassword('item', () => showConfirmation('Hapus Member', 'Yakin ingin menghapus member ini?', () => {
-                    members = members.filter(m => m.id !== memberId);
-                    saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm); showToast('Member dihapus', 'success');
-                }, 'danger'));
+                promptForPassword('item', () => {
+                    showConfirmation('Hapus Member', 'Yakin ingin menghapus member ini?', () => {
+                        members = members.filter(m => m.id !== memberId);
+                        saveMembers(); 
+                        loadMembersForManagement(); 
+                        $('#memberFormContainer').slideUp(resetMemberForm); 
+                        showToast('Member dihapus', 'success');
+                    }, 'danger');
+                });
             });
             
-            $(document).on('click', '.kta-member', function() { openKtaModal($(this).data('id')); });
+            $(document).on('click', '.kta-member', function() { 
+                openKtaModal($(this).data('id')); 
+            });
+            
             $('#downloadKtaPdfBtn').click(downloadKtaAsPdf);
 
             $('#generateReportBtn').click(generateReport);
             $('#printReportBtn').click(printReport);
             $('#downloadReportBtn').click(downloadReportAsPdf);
-            $('#reportsModal .tabs .tab').click(function() { switchReportsModalTab($(this).data('tab')); });
+            $('#reportsModal .tabs .tab').click(function() { 
+                switchReportsModalTab($(this).data('tab')); 
+            });
             
-            $('#historySearchInput').on('input', function() { loadTransactionHistory($(this).val()); });
+            $('#historySearchInput').on('input', function() { 
+                loadTransactionHistory($(this).val()); 
+            });
+            
             $('#printHistoryBtn').click(() => printElement('#historyResultsContainer .printable-area'));
             $('#downloadHistoryBtn').click(downloadHistoryAsPdf);
+            
             $(document).on('click', '.reprint-receipt', function() {
                 const orderId = $(this).data('id');
                 const order = orders.find(o => o.id === orderId);
@@ -2394,24 +2937,47 @@
                 if (!order || order.statusLocked) return;
                 order.status = order.status === 'preparing' ? 'ready' : 'preparing';
                 if (order.status === 'ready') order.statusLocked = true;
-                saveOrders(); loadKitchenOrders(); showToast(`Status pesanan ${order.id} diperbarui`, 'success');
+                saveOrders(); 
+                loadKitchenOrders(); 
+                showToast(`Status pesanan ${order.id} diperbarui`, 'success');
             });
             
             $('#refreshKitchenBtn').click(loadKitchenOrders);
             $('#saveStoreInfoBtn').click(saveStoreInfo);
             
-            $('#controlPanelModal .tabs .tab').click(function() { switchControlPanelTab($(this).data('tab')); });
-            $('#showAddUserFormBtn').click(() => { resetUserForm(); $('#userFormContainer').slideDown(); });
+            $('#controlPanelModal .tabs .tab').click(function() { 
+                switchControlPanelTab($(this).data('tab')); 
+            });
+            
+            $('#showAddUserFormBtn').click(() => { 
+                resetUserForm(); 
+                $('#userFormContainer').slideDown(); 
+            });
+            
             $('#cancelUserFormBtn').click(() => $('#userFormContainer').slideUp(resetUserForm));
             $('#userForm').submit(saveUser);
-            $(document).on('click', '.edit-user', function() { const user = users.find(u => u.id === $(this).data('id')); if (user) { populateUserForm(user); $('#userFormContainer').slideDown(); } });
+            
+            $(document).on('click', '.edit-user', function() { 
+                const user = users.find(u => u.id === $(this).data('id')); 
+                if (user) { 
+                    populateUserForm(user); 
+                    $('#userFormContainer').slideDown(); 
+                } 
+            });
+            
             $(document).on('click', '.delete-user', function() {
                 const userId = $(this).data('id');
-                if (users.length <= 1) return showToast('Tidak dapat menghapus satu-satunya pengguna.', 'error');
-                if (userId === currentUser.id) return showToast('Anda tidak dapat menghapus akun Anda sendiri.', 'error');
+                if (users.length <= 1) {
+                    return showToast('Tidak dapat menghapus satu-satunya pengguna.', 'error');
+                }
+                if (userId === currentUser.id) {
+                    return showToast('Anda tidak dapat menghapus akun Anda sendiri.', 'error');
+                }
                 showConfirmation('Hapus Pengguna', 'Yakin ingin menghapus pengguna ini?', () => {
                     users = users.filter(u => u.id !== userId);
-                    saveUsers(); loadUsersForManagement(); showToast('Pengguna dihapus', 'success');
+                    saveUsers(); 
+                    loadUsersForManagement(); 
+                    showToast('Pengguna dihapus', 'success');
                 }, 'danger');
             });
             
@@ -2439,9 +3005,14 @@
             $('.modal-close, .modal-close-btn').click(function() {
                 const modal = $(this).closest('.modal');
                 modal.hide();
-                if (modal.attr('id') === 'kitchenDisplayModal' && kitchenInterval) clearInterval(kitchenInterval);
+                if (modal.attr('id') === 'kitchenDisplayModal' && kitchenInterval) {
+                    clearInterval(kitchenInterval);
+                }
             });
-            $('#reportPeriod').change(() => $('#customDateRange').toggle($('#reportPeriod').val() === 'custom'));
+            
+            $('#reportPeriod').change(() => {
+                $('#customDateRange').toggle($('#reportPeriod').val() === 'custom');
+            });
             
             $('#printReceiptBtn').on('click', () => printElement('#receiptModalBody #receiptContent'));
             $('#downloadReceiptPdfBtn').on('click', downloadReceiptAsPdf);
@@ -2483,7 +3054,10 @@
             e.preventDefault();
             const formId = $(this).attr('id');
             const newPassword = formId === 'itemSecurityForm' ? $('#itemSecurityCode').val() : $('#panelSecurityCode').val();
-            if (newPassword.length < 4) { showToast('Password minimal 4 karakter', 'error'); return; }
+            if (newPassword.length < 4) { 
+                showToast('Password minimal 4 karakter', 'error'); 
+                return; 
+            }
             
             if (formId === 'itemSecurityForm') {
                 settings.itemSecurityCode = CryptoJS.SHA256(newPassword).toString();
@@ -2501,9 +3075,13 @@
             const currentPass = $('#currentPassword').val();
             const newPass = $('#newPassword').val();
             if (CryptoJS.SHA256(currentPass).toString() !== currentUser.password) {
-                showToast('Password saat ini salah.', 'error'); return;
+                showToast('Password saat ini salah.', 'error'); 
+                return;
             }
-            if (newPass.length < 6) { showToast('Password baru minimal 6 karakter', 'error'); return; }
+            if (newPass.length < 6) { 
+                showToast('Password baru minimal 6 karakter', 'error'); 
+                return; 
+            }
 
             const userIndex = users.findIndex(u => u.id === currentUser.id);
             if (userIndex !== -1) {
@@ -2538,34 +3116,62 @@
         }
 
         function resetUserForm() {
-            $('#userForm')[0].reset(); $('#userIdInput').val('');
-            $('#userFormTitle').text('Tambah Pengguna'); $('#userUsername').prop('disabled', false);
+            $('#userForm')[0].reset(); 
+            $('#userIdInput').val('');
+            $('#userFormTitle').text('Tambah Pengguna'); 
+            $('#userUsername').prop('disabled', false);
         }
 
         function populateUserForm(user) {
-            $('#userFormTitle').text('Edit Pengguna'); $('#userIdInput').val(user.id);
-            $('#userName').val(user.name); $('#userUsername').val(user.username).prop('disabled', true);
+            $('#userFormTitle').text('Edit Pengguna'); 
+            $('#userIdInput').val(user.id);
+            $('#userName').val(user.name); 
+            $('#userUsername').val(user.username).prop('disabled', true);
             $('#userRole').val(user.role);
         }
 
         function saveUser(e) {
             e.preventDefault();
-            const id = $('#userIdInput').val(), name = $('#userName').val().trim(), username = $('#userUsername').val().trim(), password = $('#userPassword').val(), role = $('#userRole').val();
-            if (!name || !username) { showToast('Nama dan username harus diisi.', 'error'); return; }
+            const id = $('#userIdInput').val();
+            const name = $('#userName').val().trim();
+            const username = $('#userUsername').val().trim();
+            const password = $('#userPassword').val();
+            const role = $('#userRole').val();
+            
+            if (!name || !username) { 
+                showToast('Nama dan username harus diisi.', 'error'); 
+                return; 
+            }
             
             if (id) {
                 const userIndex = users.findIndex(u => u.id === id);
                 if (userIndex !== -1) {
                     users[userIndex].name = name;
                     users[userIndex].role = role;
-                    if (password) users[userIndex].password = CryptoJS.SHA256(password).toString();
+                    if (password) {
+                        users[userIndex].password = CryptoJS.SHA256(password).toString();
+                    }
                 }
             } else {
-                if (!password) { showToast('Password harus diisi untuk pengguna baru.', 'error'); return; }
-                if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) { showToast('Username sudah digunakan.', 'error'); return; }
-                users.push({ id: 'U' + moment().format('x'), name, username, password: CryptoJS.SHA256(password).toString(), role });
+                if (!password) { 
+                    showToast('Password harus diisi untuk pengguna baru.', 'error'); 
+                    return; 
+                }
+                if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) { 
+                    showToast('Username sudah digunakan.', 'error'); 
+                    return; 
+                }
+                users.push({ 
+                    id: 'U' + moment().format('x'), 
+                    name, 
+                    username, 
+                    password: CryptoJS.SHA256(password).toString(), 
+                    role 
+                });
             }
-            saveUsers(); loadUsersForManagement(); $('#userFormContainer').slideUp(resetUserForm);
+            saveUsers(); 
+            loadUsersForManagement(); 
+            $('#userFormContainer').slideUp(resetUserForm);
             showToast(`Pengguna berhasil ${id ? 'diperbarui' : 'ditambahkan'}.`, 'success');
         }
 
@@ -2576,13 +3182,21 @@
          */
         function backupData() {
             try {
-                const backup = { menus, categories, orders, settings, users, members, backupDate: new Date().toISOString() };
+                const backup = { 
+                    menus, 
+                    categories, 
+                    orders, 
+                    settings, 
+                    users, 
+                    members, 
+                    backupDate: new Date().toISOString() 
+                };
                 const dataStr = JSON.stringify(backup);
                 const encryptedData = CryptoJS.AES.encrypt(dataStr, ENCRYPTION_KEY).toString();
                 
                 const linkElement = document.createElement('a');
                 linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
-                linkElement.download = `backup_cafe_resto_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
+                linkElement.download = `backup_cafe_resto_premium_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
                 linkElement.click();
                 showToast('Backup data terenkripsi berhasil', 'success');
             } catch (err) {
@@ -2632,11 +3246,17 @@
                 localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(data.users));
                 localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(data.members));
                 location.reload();
-            } catch (e) { showToast('Gagal melakukan restore data', 'error'); }
+            } catch (e) { 
+                showToast('Gagal melakukan restore data', 'error'); 
+            }
         }
         
         function resetAllData() {
-            Object.values(STORAGE_KEYS).forEach(key => { if (key !== STORAGE_KEYS.USER) localStorage.removeItem(key); });
+            Object.values(STORAGE_KEYS).forEach(key => { 
+                if (key !== STORAGE_KEYS.USER) {
+                    localStorage.removeItem(key); 
+                }
+            });
             location.reload();
         }
         
@@ -2645,9 +3265,14 @@
             $('#menuForm')[0].reset();
             $('#menuId').val(menu ? menu.id : '');
             if (menu) {
-                $('#menuName').val(menu.name); $('#menuPrice').val(menu.price);
-                $('#menuImage').val(menu.image || ''); $('#menuDescription').val(menu.description || '');
+                $('#menuName').val(menu.name); 
+                $('#menuPrice').val(menu.price);
+                $('#menuImage').val(menu.image || ''); 
+                $('#menuDescription').val(menu.description || '');
                 $('#menuCategory').val(menu.category);
+                $('#menuAvailable').val(menu.available !== false ? 'true' : 'false');
+            } else {
+                $('#menuAvailable').val('true');
             }
             loadCategoriesForSelect();
             $('#menuModal').css('display', 'flex');
@@ -2655,9 +3280,23 @@
         
         function loadMenus(searchTerm = '', category = 'all') {
             const lowerSearchTerm = searchTerm.toLowerCase();
-            let filteredMenus = menus.filter(m => (category === 'all' || m.category === category) && (!searchTerm || m.name.toLowerCase().includes(lowerSearchTerm)));
+            let filteredMenus = menus.filter(m => {
+                // Filter berdasarkan kategori
+                if (category !== 'all' && m.category !== category) {
+                    return false;
+                }
+                
+                // Filter berdasarkan pencarian
+                if (searchTerm && !m.name.toLowerCase().includes(lowerSearchTerm)) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
             $('#menuCount').text(`(${filteredMenus.length} menu)`);
             const $menuGrid = $('#menuGrid').empty();
+            
             if (filteredMenus.length === 0) {
                 $menuGrid.html('<div class="empty-state"><i class="fas fa-utensils"></i><p>Tidak ada menu ditemukan</p></div>');
             } else {
@@ -2667,12 +3306,23 @@
                             <div class="action-btn edit-btn edit-menu" data-id="${menu.id}"><i class="fas fa-edit"></i></div>
                             <div class="action-btn delete-btn delete-menu" data-id="${menu.id}"><i class="fas fa-trash"></i></div>
                         </div>` : '';
+                    
+                    const availabilityBadge = menu.available === false ? 
+                        '<span class="menu-unavailable" style="font-size: 0.6rem; background-color: var(--danger); color: white; padding: 1px 4px; border-radius: 5px; margin-top: 2px;">Tidak Tersedia</span>' : '';
+                    
                     $menuGrid.append(`
-                        <div class="menu-card" data-id="${menu.id}">${adminActions}
-                            <div class="menu-image">${menu.image ? `<img src="${menu.image}" alt="${menu.name}" onerror="this.parentElement.innerHTML = '<i class=\\'fas fa-utensils\\'></i>';">` : `<i class="fas fa-utensils"></i>`}</div>
+                        <div class="menu-card" data-id="${menu.id}">
+                            ${adminActions}
+                            <div class="menu-image">
+                                ${menu.image ? 
+                                    `<img src="${menu.image}" alt="${menu.name}" onerror="this.parentElement.innerHTML = '<i class=\\'fas fa-utensils\\'></i>';">` : 
+                                    `<i class="fas fa-utensils"></i>`
+                                }
+                            </div>
                             <div class="menu-name">${menu.name}</div>
                             <div class="menu-price">${formatCurrency(menu.price)}</div>
                             <div class="menu-category">${menu.category}</div>
+                            ${availabilityBadge}
                         </div>`);
                 });
             }
@@ -2685,14 +3335,18 @@
         
         function loadCategoriesForSelect() {
             const $select = $('#menuCategory').empty();
-            if (categories.length === 0) $select.append('<option value="" disabled selected>Tidak ada kategori</option>');
-            else categories.forEach(category => $select.append(`<option value="${category.name}">${category.name}</option>`));
+            if (categories.length === 0) {
+                $select.append('<option value="" disabled selected>Tidak ada kategori</option>');
+            } else {
+                categories.forEach(category => $select.append(`<option value="${category.name}">${category.name}</option>`));
+            }
         }
         
         function loadCategoriesForManagement() {
             const $list = $('#categoriesList').empty();
-            if (categories.length === 0) $list.html('<div class="empty-state"><i class="fas fa-tags"></i><p>Tidak ada kategori</p></div>');
-            else {
+            if (categories.length === 0) {
+                $list.html('<div class="empty-state"><i class="fas fa-tags"></i><p>Tidak ada kategori</p></div>');
+            } else {
                 categories.forEach(category => {
                     const menuCount = menus.filter(m => m.category === category.name).length;
                     $list.append(`
@@ -2701,16 +3355,20 @@
                                 <div class="order-item-name">${category.name}</div>
                                 <div class="order-item-price">${menuCount} menu</div>
                             </div>
-                            <div class="order-item-qty"><i class="fas fa-trash remove-item remove-category" data-id="${category.id}" style="cursor:pointer; color: var(--danger);"></i></div>
+                            <div class="order-item-qty">
+                                <i class="fas fa-trash remove-item remove-category" data-id="${category.id}" style="cursor:pointer; color: var(--danger);"></i>
+                            </div>
                         </div>`);
                 });
             }
         }
 
         function resetMemberForm() {
-            $('#memberForm')[0].reset(); $('#memberIdInput').val('');
+            $('#memberForm')[0].reset(); 
+            $('#memberIdInput').val('');
             $('#memberFormTitle').text('Tambah Member Baru');
-            $('#saveMemberBtn').text('Tambah Member'); $('#deleteMemberBtn').hide();
+            $('#saveMemberBtn').text('Tambah Member'); 
+            $('#deleteMemberBtn').hide();
         }
 
         function generateMemberId() {
@@ -2795,8 +3453,9 @@
             }
             $('#orderDiscount').text(`-${formatCurrency(currentOrder.discount)}`);
             
-            if (currentOrder.items.length === 0) $orderItems.html('<div class="empty-state"><i class="fas fa-shopping-basket"></i><p>Pesanan kosong</p></div>');
-            else {
+            if (currentOrder.items.length === 0) {
+                $orderItems.html('<div class="empty-state"><i class="fas fa-shopping-basket"></i><p>Pesanan kosong</p></div>');
+            } else {
                 currentOrder.items.forEach(item => {
                     $orderItems.append(`
                         <div class="order-item">
@@ -2824,11 +3483,30 @@
                 discountText = `Diskon (${percent}%):`;
             }
 
-            const summaryHTML = currentOrder.items.map(item => `<div class="summary-row"><span>${item.menu.name} (${item.quantity}x)</span><span>${formatCurrency(item.menu.price * item.quantity)}</span></div>`).join('') +
-                `<div class="summary-row" style="border-top: 1px dashed #ddd; margin-top: 8px; padding-top: 8px;"><span>Subtotal:</span><span>${formatCurrency(currentOrder.subtotal)}</span></div>` +
-                (currentOrder.donation > 0 ? `<div class="summary-row"><span>Donasi:</span><span>${formatCurrency(currentOrder.donation)}</span></div>` : '') +
-                (currentOrder.discount > 0 ? `<div class="summary-row"><span>${discountText}</span><span>-${formatCurrency(currentOrder.discount)}</span></div>` : '') +
-                `<div class="summary-row total-row"><span>Total:</span><span>${formatCurrency(currentOrder.total)}</span></div>`;
+            const summaryHTML = currentOrder.items.map(item => `
+                <div class="summary-row">
+                    <span>${item.menu.name} (${item.quantity}x)</span>
+                    <span>${formatCurrency(item.menu.price * item.quantity)}</span>
+                </div>`).join('') +
+                `<div class="summary-row" style="border-top: 1px dashed #ddd; margin-top: 8px; padding-top: 8px;">
+                    <span>Subtotal:</span>
+                    <span>${formatCurrency(currentOrder.subtotal)}</span>
+                </div>` +
+                (currentOrder.donation > 0 ? `
+                <div class="summary-row">
+                    <span>Donasi:</span>
+                    <span>${formatCurrency(currentOrder.donation)}</span>
+                </div>` : '') +
+                (currentOrder.discount > 0 ? `
+                <div class="summary-row">
+                    <span>${discountText}</span>
+                    <span>-${formatCurrency(currentOrder.discount)}</span>
+                </div>` : '') +
+                `<div class="summary-row total-row">
+                    <span>Total:</span>
+                    <span>${formatCurrency(currentOrder.total)}</span>
+                </div>`;
+                
             $('#orderSummary').html(summaryHTML);
         }
         
@@ -2877,12 +3555,24 @@
         }
 
         function resetOrder() {
-            currentOrder = { items: [], subtotal: 0, total: 0, discount: 0, donation: 0, type: 'dinein', tableNumber: '1', note: '', memberId: null };
+            currentOrder = { 
+                items: [], 
+                subtotal: 0, 
+                total: 0, 
+                discount: 0, 
+                donation: 0, 
+                type: 'dinein', 
+                tableNumber: '1', 
+                note: '', 
+                memberId: null 
+            };
             localStorage.setItem(STORAGE_KEYS.CURRENT_ORDER, JSON.stringify(currentOrder));
             updateOrder();
-            $('.order-type-btn').removeClass('active'); $('[data-type="dinein"]').addClass('active');
+            $('.order-type-btn').removeClass('active'); 
+            $('[data-type="dinein"]').addClass('active');
             $('#orderNote, #memberSearchInput').val('');
-            $('#donationAmount').val('0'); $('#tableNumberContainer').show();
+            $('#donationAmount').val('0'); 
+            $('#tableNumberContainer').show();
         }
 
         function generateReceiptHTML(order) {
@@ -2902,10 +3592,9 @@
             return `
             <div id="receiptContent">
                 <div class="receipt-header">
-                    <img src="https://raw.githubusercontent.com/anekamarket/tester/refs/heads/main/logo-cafe.png" alt="Logo" style="width: 80px; margin-bottom: 5px;">
-                    <div class="receipt-title">${settings.storeName}</div>
-                    <div>${settings.storeAddress}</div>
-                    <div>Telp: ${settings.storePhone}</div>
+                    <div class="receipt-title">${settings.storeName || 'CAFE & RESTO PREMIUM'}</div>
+                    <div>${settings.storeAddress || ''}</div>
+                    <div>Telp: ${settings.storePhone || ''}</div>
                 </div>
                 <div class="receipt-info">
                     <div><span>Tanggal:</span> <span>${moment(order.date).format('DD/MM/YY HH:mm')}</span></div>
@@ -2930,7 +3619,7 @@
                     <div id="receiptQrcode" style="display: flex; justify-content: center; margin: 10px 0;"></div>
                     <p style="margin-top: 10px; border-top: 1px dashed #000; padding-top: 5px;">
                         AppWeb Lentera Karya Situbondo &copy; 2025<br>
-                        www.anekamarket.my.id | WA: 087865614222
+                        VERSI PREMIUM - TANPA BATASAN
                     </p>
                 </div>
             </div>`;
@@ -2973,7 +3662,11 @@
                 useCORS: true 
             }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
+                const pdf = new jsPDF({ 
+                    orientation: 'portrait', 
+                    unit: 'px', 
+                    format: [canvas.width, canvas.height] 
+                });
                 pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
                 pdf.save(filename);
             }).catch(err => {
@@ -3029,7 +3722,11 @@
                 allowTaint: true
             }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
+                const pdf = new jsPDF({ 
+                    orientation: 'portrait', 
+                    unit: 'px', 
+                    format: [canvas.width, canvas.height] 
+                });
                 pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
                 pdf.save(filename);
             }).catch(err => {
@@ -3062,14 +3759,21 @@
         function loadKitchenOrders() {
             const kitchenOrders = orders.filter(o => o.type === 'dinein' && o.status !== 'completed');
             const $kitchenOrders = $('#kitchenOrders').empty();
-            if (kitchenOrders.length === 0) $kitchenOrders.html('<div class="empty-state"><i class="fas fa-check-circle"></i><p>Tidak ada pesanan aktif</p></div>');
-            else {
+            if (kitchenOrders.length === 0) {
+                $kitchenOrders.html('<div class="empty-state"><i class="fas fa-check-circle"></i><p>Tidak ada pesanan aktif</p></div>');
+            } else {
                 kitchenOrders.forEach(order => {
-                    const statusClass = order.status === 'ready' ? (order.statusLocked ? 'status-locked' : 'status-ready') : 'status-preparing';
-                    const itemsSummary = order.items.slice(0, 2).map(item => `${item.menu.name} (${item.quantity}x)`).join(', ') + (order.items.length > 2 ? ` + ${order.items.length - 2} lainnya` : '');
+                    const statusClass = order.status === 'ready' ? 
+                        (order.statusLocked ? 'status-locked' : 'status-ready') : 
+                        'status-preparing';
+                    const itemsSummary = order.items.slice(0, 2).map(item => `${item.menu.name} (${item.quantity}x)`).join(', ') + 
+                        (order.items.length > 2 ? ` + ${order.items.length - 2} lainnya` : '');
                     $kitchenOrders.append(`
                         <div class="status-item ${statusClass}" data-id="${order.id}">
-                            <div><strong>${order.id} (Meja ${order.tableNumber})</strong><div style="font-size:0.8rem;">${itemsSummary}</div></div>
+                            <div>
+                                <strong>${order.id} (Meja ${order.tableNumber})</strong>
+                                <div style="font-size:0.8rem;">${itemsSummary}</div>
+                            </div>
                             <div style="font-weight:600;">${order.status === 'ready' ? 'Siap' : 'Proses'}</div>
                         </div>`);
                 });
@@ -3096,7 +3800,9 @@
                             </div>
                         </div>
                         <div class="order-item-qty">
-                            <button class="btn btn-sm btn-info reprint-receipt" data-id="${order.id}"><i class="fas fa-print"></i> Cetak Ulang</button>
+                            <button class="btn btn-sm btn-info reprint-receipt" data-id="${order.id}">
+                                <i class="fas fa-print"></i> Cetak Ulang
+                            </button>
                         </div>
                     </div>
                 `);
@@ -3116,7 +3822,11 @@
                 windowHeight: element.scrollHeight
             }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+                const pdf = new jsPDF({ 
+                    orientation: 'p', 
+                    unit: 'mm', 
+                    format: 'a4' 
+                });
                 
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = pdf.internal.pageSize.getHeight();
@@ -3154,13 +3864,21 @@
         function generateReport() {
             let startDate, endDate;
             const period = $('#reportPeriod').val();
-            if (period === 'today') { startDate = moment().startOf('day'); endDate = moment().endOf('day'); }
-            else if (period === 'week') { startDate = moment().startOf('week'); endDate = moment().endOf('week'); }
-            else if (period === 'month') { startDate = moment().startOf('month'); endDate = moment().endOf('month'); }
-            else if (period === 'custom') {
+            if (period === 'today') { 
+                startDate = moment().startOf('day'); 
+                endDate = moment().endOf('day'); 
+            } else if (period === 'week') { 
+                startDate = moment().startOf('week'); 
+                endDate = moment().endOf('week'); 
+            } else if (period === 'month') { 
+                startDate = moment().startOf('month'); 
+                endDate = moment().endOf('month'); 
+            } else if (period === 'custom') {
                 startDate = moment($('#reportStartDate').val());
                 endDate = moment($('#reportEndDate').val()).endOf('day');
-                if (!startDate.isValid() || !endDate.isValid() || endDate.isBefore(startDate)) { return showToast('Rentang tanggal tidak valid', 'error'); }
+                if (!startDate.isValid() || !endDate.isValid() || endDate.isBefore(startDate)) { 
+                    return showToast('Rentang tanggal tidak valid', 'error'); 
+                }
             }
             
             const activeTab = $('#reportsModal .tabs .tab.active').data('tab');
@@ -3177,26 +3895,51 @@
             const $resultsContainer = $('#reportResults');
             if (filteredOrders.length === 0) {
                 $resultsContainer.html('<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Tidak ada data penjualan</p></div>');
-                $('#printReportBtn, #downloadReportBtn').hide(); return;
+                $('#printReportBtn, #downloadReportBtn').hide(); 
+                return;
             }
+            
             const totalRevenue = filteredOrders.reduce((sum, o) => sum + (o.total - o.donation), 0);
             const totalItemsSold = filteredOrders.reduce((sum, o) => sum + o.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0);
             const menuSales = {};
+            
             filteredOrders.forEach(o => o.items.forEach(item => {
-                menuSales[item.menu.id] = menuSales[item.menu.id] || { name: item.menu.name, quantity: 0, total: 0 };
+                menuSales[item.menu.id] = menuSales[item.menu.id] || { 
+                    name: item.menu.name, 
+                    quantity: 0, 
+                    total: 0 
+                };
                 menuSales[item.menu.id].quantity += item.quantity;
                 menuSales[item.menu.id].total += item.quantity * item.menu.price;
             }));
+            
             const topMenus = Object.values(menuSales).sort((a, b) => b.quantity - a.quantity).slice(0, 5);
+            
             $resultsContainer.html(`
-                <div class="panel"><h4>Ringkasan Penjualan (${startDate.format('DD/MM/YY')} - ${endDate.format('DD/MM/YY')})</h4>
-                    <div class="summary-row"><span>Total Transaksi:</span> <span>${filteredOrders.length}</span></div>
-                    <div class="summary-row"><span>Total Pendapatan (Laba):</span> <span>${formatCurrency(totalRevenue)}</span></div>
-                    <div class="summary-row"><span>Total Item Terjual:</span> <span>${totalItemsSold}</span></div>
+                <div class="panel">
+                    <h4>Ringkasan Penjualan (${startDate.format('DD/MM/YY')} - ${endDate.format('DD/MM/YY')})</h4>
+                    <div class="summary-row">
+                        <span>Total Transaksi:</span> 
+                        <span>${filteredOrders.length}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Total Pendapatan (Laba):</span> 
+                        <span>${formatCurrency(totalRevenue)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Total Item Terjual:</span> 
+                        <span>${totalItemsSold}</span>
+                    </div>
                 </div>
-                <div class="panel mt-3"><h4>Menu Terlaris</h4>
-                    ${topMenus.map(menu => `<div class="summary-row"><span>${menu.name}:</span> <span>${menu.quantity} terjual</span></div>`).join('')}
+                <div class="panel mt-3">
+                    <h4>Menu Terlaris</h4>
+                    ${topMenus.map(menu => `
+                        <div class="summary-row">
+                            <span>${menu.name}:</span> 
+                            <span>${menu.quantity} terjual</span>
+                        </div>`).join('')}
                 </div>`);
+                
             $('#printReportBtn, #downloadReportBtn').show();
         }
         
@@ -3206,20 +3949,34 @@
 
             if (donationOrders.length === 0) {
                 $resultsContainer.html('<div class="empty-state"><i class="fas fa-hand-holding-heart"></i><p>Tidak ada data donasi</p></div>');
-                $('#printReportBtn, #downloadReportBtn').hide(); return;
+                $('#printReportBtn, #downloadReportBtn').hide(); 
+                return;
             }
             
             const totalDonation = donationOrders.reduce((sum, o) => sum + o.donation, 0);
             
-            let tableHTML = `<table class="data-table"><thead><tr><th>Kode Transaksi</th><th>Tanggal</th><th>Nama Pelanggan</th><th>Jumlah Donasi</th></tr></thead><tbody>`;
+            let tableHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Kode Transaksi</th>
+                            <th>Tanggal</th>
+                            <th>Nama Pelanggan</th>
+                            <th>Jumlah Donasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
             donationOrders.forEach(order => {
-                tableHTML += `<tr>
-                    <td>${order.id}</td>
-                    <td>${moment(order.date).format('DD/MM/YY HH:mm')}</td>
-                    <td>${order.customerName}</td>
-                    <td>${formatCurrency(order.donation)}</td>
-                </tr>`;
+                tableHTML += `
+                    <tr>
+                        <td>${order.id}</td>
+                        <td>${moment(order.date).format('DD/MM/YY HH:mm')}</td>
+                        <td>${order.customerName}</td>
+                        <td>${formatCurrency(order.donation)}</td>
+                    </tr>`;
             });
+            
             tableHTML += `</tbody></table>`;
             
             $resultsContainer.html(`
@@ -3232,7 +3989,8 @@
                 </div>
                 <div class="panel mt-3">${tableHTML}</div>
             `);
-             $('#printReportBtn, #downloadReportBtn').show();
+            
+            $('#printReportBtn, #downloadReportBtn').show();
         }
 
         function printReport() {
@@ -3248,9 +4006,16 @@
             
             showToast(`Mengunduh PDF Laporan ${reportType}...`, 'info');
 
-            html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+            html2canvas(element, { 
+                scale: 2, 
+                useCORS: true 
+            }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+                const pdf = new jsPDF({ 
+                    orientation: 'p', 
+                    unit: 'mm', 
+                    format: 'a4' 
+                });
                 const imgProps= pdf.getImageProperties(imgData);
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
@@ -3261,67 +4026,109 @@
             });
         }
 
-
         function saveStoreInfo() {
-            settings = { ...settings,
+            settings = { 
+                ...settings,
                 storeName: $('#storeName').val().trim(),
                 storeAddress: $('#storeAddress').val().trim(),
                 storePhone: $('#storePhone').val().trim(),
                 storeEmail: $('#storeEmail').val().trim(),
                 tableCount: parseInt($('#tableCount').val()) || 5
             };
-            if (!settings.storeName || !settings.storeAddress || !settings.storePhone) { return showToast('Info dasar harus diisi', 'error'); }
-            saveSettings(); updateStoreInfo(); updateTableNumbers();
-            $('#manageStoreInfoModal').hide(); showToast('Info restoran diperbarui', 'success');
+            
+            if (!settings.storeName || !settings.storeAddress || !settings.storePhone) { 
+                return showToast('Info dasar harus diisi', 'error'); 
+            }
+            
+            saveSettings(); 
+            updateStoreInfo(); 
+            updateTableNumbers();
+            $('#manageStoreInfoModal').hide(); 
+            showToast('Info restoran diperbarui', 'success');
         }
 
         function loadStoreInfo() {
-            $('#storeName').val(settings.storeName); $('#storeAddress').val(settings.storeAddress);
-            $('#storePhone').val(settings.storePhone); $('#storeEmail').val(settings.storeEmail || '');
+            $('#storeName').val(settings.storeName); 
+            $('#storeAddress').val(settings.storeAddress);
+            $('#storePhone').val(settings.storePhone); 
+            $('#storeEmail').val(settings.storeEmail || '');
             $('#tableCount').val(settings.tableCount || 5);
         }
         
         function updateStoreInfo() {
             $('#storeNameHeader').text(settings.storeName);
-            document.title = settings.storeName || 'CAFE & RESTO';
+            document.title = settings.storeName || 'CAFE & RESTO PREMIUM';
         }
         
         function updateTableNumbers() {
             const $tableSelect = $('#tableNumber').empty();
-            for (let i = 1; i <= settings.tableCount; i++) $tableSelect.append(`<option value="${i}">Meja ${i}</option>`);
-            if (currentOrder.tableNumber) $tableSelect.val(currentOrder.tableNumber);
+            for (let i = 1; i <= settings.tableCount; i++) {
+                $tableSelect.append(`<option value="${i}">Meja ${i}</option>`);
+            }
+            if (currentOrder.tableNumber) {
+                $tableSelect.val(currentOrder.tableNumber);
+            }
         }
         
-        function formatCurrency(amount) { return 'Rp ' + (amount || 0).toLocaleString('id-ID'); }
+        function formatCurrency(amount) { 
+            return 'Rp ' + (amount || 0).toLocaleString('id-ID'); 
+        }
         
         function showToast(message, type = 'info', duration = 3000) {
             const $toast = $('#toast');
             $toast.removeClass('success error warning info').addClass(type);
-            $('#toast-message').text(message); $toast.addClass('show');
+            $('#toast-message').text(message); 
+            $toast.addClass('show');
             setTimeout(() => $toast.removeClass('show'), duration);
         }
 
         function setButtonLoading($button, isLoading, originalText = 'Login') {
-            if (isLoading) $button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Memproses...');
-            else $button.prop('disabled', false).html(originalText);
+            if (isLoading) {
+                $button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Memproses...');
+            } else {
+                $button.prop('disabled', false).html(originalText);
+            }
         }
         
         function showConfirmation(title, message, onConfirm, type = 'success') {
-            $('#confirmTitle').text(title); $('#confirmMessage').text(message);
+            $('#confirmTitle').text(title); 
+            $('#confirmMessage').text(message);
             const $confirmBtn = $('#confirmAction');
-            $confirmBtn.off('click').on('click', () => { onConfirm(); $('#confirmationModal').hide(); });
+            $confirmBtn.off('click').on('click', () => { 
+                onConfirm(); 
+                $('#confirmationModal').hide(); 
+            });
             $confirmBtn.removeClass('btn-success btn-danger').addClass(type === 'danger' ? 'btn-danger' : 'btn-success');
             $('#confirmationModal').css('display', 'flex');
         }
 
-        function updateCurrentDate() { $('#currentDate').text(moment().format('dddd, D MMMM YYYY, HH:mm')); }
+        function updateCurrentDate() { 
+            $('#currentDate').text(moment().format('dddd, D MMMM YYYY, HH:mm')); 
+        }
 
-        function saveMenus() { localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(menus)); }
-        function saveCategories() { localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories)); }
-        function saveOrders() { localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders)); }
-        function saveSettings() { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); }
-        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); }
-        function saveMembers() { localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(members)); }
+        function saveMenus() { 
+            localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(menus)); 
+        }
+        
+        function saveCategories() { 
+            localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories)); 
+        }
+        
+        function saveOrders() { 
+            localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders)); 
+        }
+        
+        function saveSettings() { 
+            localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); 
+        }
+        
+        function saveUsers() { 
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); 
+        }
+        
+        function saveMembers() { 
+            localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(members)); 
+        }
 
         function generateCaptcha() {
             const canvas = document.getElementById('captchaCanvas');
@@ -3329,6 +4136,7 @@
             const ctx = canvas.getContext('2d');
             const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
             captchaText = '';
+            
             for (let i = 0; i < 6; i++) {
                 captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
             }
