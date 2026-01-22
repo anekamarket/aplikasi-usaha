@@ -84,7 +84,15 @@
             border: 1px solid #e9ecef;
         }
 
-        .order-item-select {
+        .order-category-select {
+            flex: 2;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .order-item-input {
             flex: 3;
             padding: 10px;
             border: 1px solid #ddd;
@@ -242,7 +250,8 @@
                 gap: 10px;
             }
             
-            .order-item-select,
+            .order-category-select,
+            .order-item-input,
             .order-item-qty-input {
                 width: 100%;
             }
@@ -251,7 +260,7 @@
 </head>
 <body>
     <div class="container">
-        <a href="https://www.aplikasiusaha.com" class="back-btn">
+        <a href="index.html" class="back-btn">
             <i class="fas fa-arrow-left"></i> Kembali ke Aplikasi Utama
         </a>
         
@@ -292,19 +301,14 @@
                 <div id="orderItemsContainer">
                     <!-- Item pesanan akan ditambahkan di sini -->
                     <div class="order-item-row" data-index="0">
-                        <select class="order-item-select" onchange="updatePrice(this, 0)" required>
-                            <option value="">Pilih Menu</option>
-                            <option value="Nasi Goreng|15000">Nasi Goreng - Rp 15.000</option>
-                            <option value="Mie Goreng|12000">Mie Goreng - Rp 12.000</option>
-                            <option value="Ayam Goreng|18000">Ayam Goreng - Rp 18.000</option>
-                            <option value="Es Teh|5000">Es Teh - Rp 5.000</option>
-                            <option value="Es Jeruk|7000">Es Jeruk - Rp 7.000</option>
-                            <option value="Kentang Goreng|10000">Kentang Goreng - Rp 10.000</option>
-                            <option value="Singkong Keju|12000">Singkong Keju - Rp 12.000</option>
-                            <option value="Teh Hangat|4000">Teh Hangat - Rp 4.000</option>
-                            <option value="Kopi|8000">Kopi - Rp 8.000</option>
+                        <select class="order-category-select" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="Makanan">Makanan</option>
+                            <option value="Minuman">Minuman</option>
+                            <option value="Snack">Snack</option>
                         </select>
-                        <input type="number" class="order-item-qty-input" min="1" value="1" onchange="updateTotal()" oninput="updateTotal()">
+                        <input type="text" class="order-item-input" placeholder="Nama item pesanan" required>
+                        <input type="number" class="order-item-qty-input" min="1" value="1">
                         <button type="button" class="btn btn-danger" onclick="removeItem(0)" style="display: none;">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -341,8 +345,8 @@
                         <span id="totalItems">0</span>
                     </div>
                     <div class="summary-row">
-                        <span>Total Harga:</span>
-                        <span id="totalPrice">Rp 0</span>
+                        <span>Jenis Pesanan:</span>
+                        <span id="orderTypes">-</span>
                     </div>
                 </div>
             </div>
@@ -362,7 +366,7 @@
     <script>
         let itemCount = 1;
         let orderItems = [
-            { menu: '', price: 0, quantity: 1 }
+            { category: '', itemName: '', quantity: 1 }
         ];
 
         // Fungsi untuk menambahkan item pesanan baru
@@ -373,27 +377,21 @@
             newItem.setAttribute('data-index', itemCount);
             
             newItem.innerHTML = `
-                <select class="order-item-select" onchange="updatePrice(this, ${itemCount})" required>
-                    <option value="">Pilih Menu</option>
-                    <option value="Nasi Goreng|15000">Nasi Goreng - Rp 15.000</option>
-                    <option value="Mie Goreng|12000">Mie Goreng - Rp 12.000</option>
-                    <option value="Ayam Goreng|18000">Ayam Goreng - Rp 18.000</option>
-                    <option value="Es Teh|5000">Es Teh - Rp 5.000</option>
-                    <option value="Es Jeruk|7000">Es Jeruk - Rp 7.000</option>
-                    <option value="Kentang Goreng|10000">Kentang Goreng - Rp 10.000</option>
-                    <option value="Singkong Keju|12000">Singkong Keju - Rp 12.000</option>
-                    <option value="Teh Hangat|4000">Teh Hangat - Rp 4.000</option>
-                    <option value="Kopi|8000">Kopi - Rp 8.000</option>
+                <select class="order-category-select" required>
+                    <option value="">Pilih Kategori</option>
+                    <option value="Makanan">Makanan</option>
+                    <option value="Minuman">Minuman</option>
+                    <option value="Snack">Snack</option>
                 </select>
-                <input type="number" class="order-item-qty-input" min="1" value="1" 
-                       onchange="updateTotal()" oninput="updateTotal()">
+                <input type="text" class="order-item-input" placeholder="Nama item pesanan" required>
+                <input type="number" class="order-item-qty-input" min="1" value="1">
                 <button type="button" class="btn btn-danger" onclick="removeItem(${itemCount})">
                     <i class="fas fa-trash"></i>
                 </button>
             `;
             
             container.appendChild(newItem);
-            orderItems.push({ menu: '', price: 0, quantity: 1 });
+            orderItems.push({ category: '', itemName: '', quantity: 1 });
             itemCount++;
             
             // Tampilkan tombol hapus pada item pertama
@@ -403,7 +401,16 @@
                 deleteBtn.style.display = 'block';
             }
             
-            updateTotal();
+            updateSummary();
+            
+            // Tambahkan event listeners untuk item baru
+            const categorySelect = newItem.querySelector('.order-category-select');
+            const itemInput = newItem.querySelector('.order-item-input');
+            const qtyInput = newItem.querySelector('.order-item-qty-input');
+            
+            categorySelect.addEventListener('change', updateSummary);
+            itemInput.addEventListener('input', updateSummary);
+            qtyInput.addEventListener('input', updateSummary);
         }
 
         // Fungsi untuk menghapus item pesanan
@@ -417,13 +424,8 @@
                 const remainingItems = document.querySelectorAll('.order-item-row');
                 remainingItems.forEach((item, newIndex) => {
                     item.setAttribute('data-index', newIndex);
-                    const select = item.querySelector('select');
-                    const quantityInput = item.querySelector('input[type="number"]');
                     const deleteBtn = item.querySelector('.btn-danger');
                     
-                    select.setAttribute('onchange', `updatePrice(this, ${newIndex})`);
-                    quantityInput.setAttribute('onchange', 'updateTotal()');
-                    quantityInput.setAttribute('oninput', 'updateTotal()');
                     deleteBtn.setAttribute('onclick', `removeItem(${newIndex})`);
                     
                     // Sembunyikan tombol hapus jika hanya ada satu item
@@ -435,54 +437,56 @@
                 // Update array orderItems
                 orderItems = orderItems.filter((item, i) => item !== null && i !== index);
                 itemCount = remainingItems.length;
-                updateTotal();
+                updateSummary();
             }
         }
 
-        // Fungsi untuk mengupdate harga saat menu dipilih
-        function updatePrice(selectElement, index) {
-            const value = selectElement.value;
-            if (value) {
-                const [menuName, price] = value.split('|');
-                orderItems[index] = {
-                    menu: menuName,
-                    price: parseInt(price),
-                    quantity: parseInt(document.querySelector(`.order-item-row[data-index="${index}"] .order-item-qty-input`).value) || 1
-                };
-            } else {
-                orderItems[index] = { menu: '', price: 0, quantity: 1 };
-            }
-            updateTotal();
-        }
-
-        // Fungsi untuk mengupdate total pesanan
-        function updateTotal() {
+        // Fungsi untuk mengupdate ringkasan pesanan
+        function updateSummary() {
             let totalItems = 0;
-            let totalPrice = 0;
+            const categories = new Set();
+            
+            // Reset orderItems array
+            orderItems = [];
             
             // Hitung total dari semua item
             document.querySelectorAll('.order-item-row').forEach((row, index) => {
-                const select = row.querySelector('select');
-                const quantityInput = row.querySelector('input[type="number"]');
+                const categorySelect = row.querySelector('.order-category-select');
+                const itemInput = row.querySelector('.order-item-input');
+                const quantityInput = row.querySelector('.order-item-qty-input');
                 
-                if (select.value) {
-                    const [menuName, price] = select.value.split('|');
-                    const quantity = parseInt(quantityInput.value) || 1;
-                    
-                    orderItems[index] = {
-                        menu: menuName,
-                        price: parseInt(price),
-                        quantity: quantity
-                    };
-                    
+                const category = categorySelect.value;
+                const itemName = itemInput.value.trim();
+                const quantity = parseInt(quantityInput.value) || 1;
+                
+                // Simpan ke array orderItems
+                orderItems[index] = {
+                    category: category,
+                    itemName: itemName,
+                    quantity: quantity
+                };
+                
+                // Hitung total item
+                if (itemName) {
                     totalItems += quantity;
-                    totalPrice += parseInt(price) * quantity;
+                }
+                
+                // Tambahkan kategori ke Set jika ada
+                if (category) {
+                    categories.add(category);
                 }
             });
             
             // Update tampilan ringkasan
             document.getElementById('totalItems').textContent = totalItems;
-            document.getElementById('totalPrice').textContent = formatCurrency(totalPrice);
+            
+            // Tampilkan jenis pesanan
+            const orderTypesElement = document.getElementById('orderTypes');
+            if (categories.size > 0) {
+                orderTypesElement.textContent = Array.from(categories).join(', ');
+            } else {
+                orderTypesElement.textContent = '-';
+            }
         }
 
         // Fungsi untuk mengirim pesanan ke WhatsApp
@@ -509,14 +513,17 @@
                 return;
             }
             
-            // Validasi apakah ada item yang dipilih
-            let hasSelectedItems = false;
-            document.querySelectorAll('.order-item-select').forEach(select => {
-                if (select.value) hasSelectedItems = true;
+            // Validasi apakah ada item yang diisi
+            let hasValidItems = false;
+            document.querySelectorAll('.order-item-row').forEach(row => {
+                const itemInput = row.querySelector('.order-item-input');
+                if (itemInput.value.trim()) {
+                    hasValidItems = true;
+                }
             });
             
-            if (!hasSelectedItems) {
-                showNotification('Pilih minimal satu item pesanan', 'error');
+            if (!hasValidItems) {
+                showNotification('Isi minimal satu item pesanan', 'error');
                 return;
             }
             
@@ -538,22 +545,23 @@
             
             message += `\n*DETAIL PESANAN:*\n`;
             
-            let totalPrice = 0;
-            document.querySelectorAll('.order-item-row').forEach((row, index) => {
-                const select = row.querySelector('select');
-                const quantityInput = row.querySelector('input[type="number"]');
+            let totalQuantity = 0;
+            document.querySelectorAll('.order-item-row').forEach((row) => {
+                const categorySelect = row.querySelector('.order-category-select');
+                const itemInput = row.querySelector('.order-item-input');
+                const quantityInput = row.querySelector('.order-item-qty-input');
                 
-                if (select.value) {
-                    const [menuName, price] = select.value.split('|');
-                    const quantity = parseInt(quantityInput.value) || 1;
-                    const itemTotal = parseInt(price) * quantity;
-                    
-                    message += `• ${menuName} (${quantity}x) = ${formatCurrency(itemTotal)}\n`;
-                    totalPrice += itemTotal;
+                const category = categorySelect.value || 'Tanpa Kategori';
+                const itemName = itemInput.value.trim();
+                const quantity = parseInt(quantityInput.value) || 1;
+                
+                if (itemName) {
+                    message += `• ${category}: ${itemName} (${quantity}x)\n`;
+                    totalQuantity += quantity;
                 }
             });
             
-            message += `\n*TOTAL PEMBAYARAN:* ${formatCurrency(totalPrice)}\n`;
+            message += `\n*TOTAL ITEM:* ${totalQuantity} item\n`;
             
             if (orderNotes) {
                 message += `\n*CATATAN:* ${orderNotes}\n`;
@@ -579,27 +587,32 @@
                 document.getElementById('orderForm').reset();
                 document.getElementById('orderItemsContainer').innerHTML = `
                     <div class="order-item-row" data-index="0">
-                        <select class="order-item-select" onchange="updatePrice(this, 0)" required>
-                            <option value="">Pilih Menu</option>
-                            <option value="Nasi Goreng|15000">Nasi Goreng - Rp 15.000</option>
-                            <option value="Mie Goreng|12000">Mie Goreng - Rp 12.000</option>
-                            <option value="Ayam Goreng|18000">Ayam Goreng - Rp 18.000</option>
-                            <option value="Es Teh|5000">Es Teh - Rp 5.000</option>
-                            <option value="Es Jeruk|7000">Es Jeruk - Rp 7.000</option>
-                            <option value="Kentang Goreng|10000">Kentang Goreng - Rp 10.000</option>
-                            <option value="Singkong Keju|12000">Singkong Keju - Rp 12.000</option>
-                            <option value="Teh Hangat|4000">Teh Hangat - Rp 4.000</option>
-                            <option value="Kopi|8000">Kopi - Rp 8.000</option>
+                        <select class="order-category-select" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="Makanan">Makanan</option>
+                            <option value="Minuman">Minuman</option>
+                            <option value="Snack">Snack</option>
                         </select>
-                        <input type="number" class="order-item-qty-input" min="1" value="1" onchange="updateTotal()" oninput="updateTotal()">
+                        <input type="text" class="order-item-input" placeholder="Nama item pesanan" required>
+                        <input type="number" class="order-item-qty-input" min="1" value="1">
                         <button type="button" class="btn btn-danger" onclick="removeItem(0)" style="display: none;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 `;
-                orderItems = [{ menu: '', price: 0, quantity: 1 }];
+                orderItems = [{ category: '', itemName: '', quantity: 1 }];
                 itemCount = 1;
-                updateTotal();
+                updateSummary();
+                
+                // Tambahkan event listeners untuk item pertama
+                const firstRow = document.querySelector('.order-item-row[data-index="0"]');
+                const categorySelect = firstRow.querySelector('.order-category-select');
+                const itemInput = firstRow.querySelector('.order-item-input');
+                const qtyInput = firstRow.querySelector('.order-item-qty-input');
+                
+                categorySelect.addEventListener('change', updateSummary);
+                itemInput.addEventListener('input', updateSummary);
+                qtyInput.addEventListener('input', updateSummary);
             }, 2000);
         }
 
@@ -615,28 +628,19 @@
             }, 5000);
         }
 
-        // Fungsi untuk format mata uang
-        function formatCurrency(amount) {
-            return 'Rp ' + amount.toLocaleString('id-ID');
-        }
-
-        // Inisialisasi total saat halaman dimuat
+        // Inisialisasi summary saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
-            updateTotal();
+            updateSummary();
             
-            // Event listener untuk input quantity
-            document.addEventListener('input', function(e) {
-                if (e.target.classList.contains('order-item-qty-input')) {
-                    updateTotal();
-                }
-            });
+            // Tambahkan event listeners untuk item pertama
+            const firstRow = document.querySelector('.order-item-row[data-index="0"]');
+            const categorySelect = firstRow.querySelector('.order-category-select');
+            const itemInput = firstRow.querySelector('.order-item-input');
+            const qtyInput = firstRow.querySelector('.order-item-qty-input');
             
-            // Event listener untuk select menu
-            document.addEventListener('change', function(e) {
-                if (e.target.classList.contains('order-item-select')) {
-                    updateTotal();
-                }
-            });
+            categorySelect.addEventListener('change', updateSummary);
+            itemInput.addEventListener('input', updateSummary);
+            qtyInput.addEventListener('input', updateSummary);
         });
     </script>
 </body>
