@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pemesanan - Cafe & Resto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #212529;
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #28a745;
+        }
+
+        .header h1 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6c757d;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #343a40;
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #28a745;
+            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+        }
+
+        .order-item-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .order-item-select {
+            flex: 3;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .order-item-qty-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        .add-item-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .order-summary {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #e9ecef;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #28a745;
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .phone-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .phone-input-group input {
+            flex: 1;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #28a745;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+        .notification {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .notification.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .notification.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .order-item-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .order-item-select,
+            .order-item-qty-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Kembali ke Aplikasi Utama
+        </a>
+        
+        <div class="header">
+            <h1><i class="fas fa-shopping-cart"></i> Form Pemesanan Pelanggan</h1>
+            <p>Silakan isi form di bawah ini untuk memesan makanan dan minuman</p>
+        </div>
+
+        <div id="notification" class="notification"></div>
+
+        <form id="orderForm">
+            <div class="form-group">
+                <label for="customerName" class="form-label">
+                    <i class="fas fa-user"></i> Nama Pemesan
+                </label>
+                <input type="text" id="customerName" class="form-control" placeholder="Masukkan nama lengkap" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customerPhone" class="form-label">
+                    <i class="fas fa-phone"></i> Nomor WhatsApp
+                </label>
+                <input type="tel" id="customerPhone" class="form-control" placeholder="Contoh: 081234567890" required>
+            </div>
+
+            <div class="form-group">
+                <label for="deliveryAddress" class="form-label">
+                    <i class="fas fa-map-marker-alt"></i> Alamat Pengiriman (Opsional)
+                </label>
+                <textarea id="deliveryAddress" class="form-control" placeholder="Masukkan alamat lengkap jika ingin delivery" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-utensils"></i> Daftar Pesanan
+                </label>
+                
+                <div id="orderItemsContainer">
+                    <!-- Item pesanan akan ditambahkan di sini -->
+                    <div class="order-item-row" data-index="0">
+                        <select class="order-item-select" onchange="updatePrice(this, 0)" required>
+                            <option value="">Pilih Menu</option>
+                            <option value="Nasi Goreng|15000">Nasi Goreng - Rp 15.000</option>
+                            <option value="Mie Goreng|12000">Mie Goreng - Rp 12.000</option>
+                            <option value="Ayam Goreng|18000">Ayam Goreng - Rp 18.000</option>
+                            <option value="Es Teh|5000">Es Teh - Rp 5.000</option>
+                            <option value="Es Jeruk|7000">Es Jeruk - Rp 7.000</option>
+                            <option value="Kentang Goreng|10000">Kentang Goreng - Rp 10.000</option>
+                            <option value="Singkong Keju|12000">Singkong Keju - Rp 12.000</option>
+                            <option value="Teh Hangat|4000">Teh Hangat - Rp 4.000</option>
+                            <option value="Kopi|8000">Kopi - Rp 8.000</option>
+                        </select>
+                        <input type="number" class="order-item-qty-input" min="1" value="1" onchange="updateTotal()" oninput="updateTotal()">
+                        <button type="button" class="btn btn-danger" onclick="removeItem(0)" style="display: none;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-info add-item-btn" onclick="addOrderItem()">
+                    <i class="fas fa-plus"></i> Tambah Item Pesanan
+                </button>
+            </div>
+
+            <div class="form-group">
+                <label for="orderNotes" class="form-label">
+                    <i class="fas fa-sticky-note"></i> Catatan Tambahan (Opsional)
+                </label>
+                <textarea id="orderNotes" class="form-control" placeholder="Contoh: Pedas, tanpa bawang, tambah es, dll." rows="3"></textarea>
+            </div>
+
+            <div class="form-group phone-input-group">
+                <label for="whatsappNumber" class="form-label">
+                    <i class="fab fa-whatsapp"></i> Nomor WhatsApp Tujuan
+                </label>
+                <input type="tel" id="whatsappNumber" class="form-control" placeholder="Masukkan nomor WhatsApp tujuan" required>
+                <button type="button" class="btn btn-primary" onclick="sendToWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> Kirim ke WhatsApp
+                </button>
+            </div>
+
+            <div class="order-summary">
+                <h3 style="margin-bottom: 15px; color: #28a745;">Ringkasan Pesanan</h3>
+                <div id="orderSummary">
+                    <div class="summary-row">
+                        <span>Total Item:</span>
+                        <span id="totalItems">0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Total Harga:</span>
+                        <span id="totalPrice">Rp 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="whatsapp-btn" onclick="sendToWhatsApp()">
+                <i class="fab fa-whatsapp"></i> KIRIM PESANAN KE WHATSAPP
+            </button>
+        </form>
+
+        <div class="mt-4 text-center">
+            <p style="color: #6c757d; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> Pesanan akan dikirim ke nomor WhatsApp yang Anda tentukan
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let itemCount = 1;
+        let orderItems = [
+            { menu: '', price: 0, quantity: 1 }
+        ];
+
+        // Fungsi untuk menambahkan item pesanan baru
+        function addOrderItem() {
+            const container = document.getElementById('orderItemsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'order-item-row';
+            newItem.setAttribute('data-index', itemCount);
+            
+            newItem.innerHTML = `
+                <select class="order-item-select" onchange="updatePrice(this, ${itemCount})" required>
+                    <option value="">Pilih Menu</option>
+                    <option value="Nasi Goreng|15000">Nasi Goreng - Rp 15.000</option>
+                    <option value="Mie Goreng|12000">Mie Goreng - Rp 12.000</option>
+                    <option value="Ayam Goreng|18000">Ayam Goreng - Rp 18.000</option>
+                    <option value="Es Teh|5000">Es Teh - Rp 5.000</option>
+                    <option value="Es Jeruk|7000">Es Jeruk - Rp 7.000</option>
+                    <option value="Kentang Goreng|10000">Kentang Goreng - Rp 10.000</option>
+                    <option value="Singkong Keju|12000">Singkong Keju - Rp 12.000</option>
+                    <option value="Teh Hangat|4000">Teh Hangat - Rp 4.000</option>
+                    <option value="Kopi|8000">Kopi - Rp 8.000</option>
+                </select>
+                <input type="number" class="order-item-qty-input" min="1" value="1" 
+                       onchange="updateTotal()" oninput="updateTotal()">
+                <button type="button" class="btn btn-danger" onclick="removeItem(${itemCount})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            
+            container.appendChild(newItem);
+            orderItems.push({ menu: '', price: 0, quantity: 1 });
+            itemCount++;
+            
+            // Tampilkan tombol hapus pada item pertama
+            if (itemCount === 2) {
+                const firstRow = document.querySelector('.order-item-row[data-index="0"]');
+                const deleteBtn = firstRow.querySelector('.btn-danger');
+                deleteBtn.style.display = 'block';
+            }
+            
+            updateTotal();
+        }
+
+        // Fungsi untuk menghapus item pesanan
+        function removeItem(index) {
+            const item = document.querySelector(`.order-item-row[data-index="${index}"]`);
+            if (item) {
+                item.remove();
+                orderItems[index] = null;
+                
+                // Update indeks item yang tersisa
+                const remainingItems = document.querySelectorAll('.order-item-row');
+                remainingItems.forEach((item, newIndex) => {
+                    item.setAttribute('data-index', newIndex);
+                    const select = item.querySelector('select');
+                    const quantityInput = item.querySelector('input[type="number"]');
+                    const deleteBtn = item.querySelector('.btn-danger');
+                    
+                    select.setAttribute('onchange', `updatePrice(this, ${newIndex})`);
+                    quantityInput.setAttribute('onchange', 'updateTotal()');
+                    quantityInput.setAttribute('oninput', 'updateTotal()');
+                    deleteBtn.setAttribute('onclick', `removeItem(${newIndex})`);
+                    
+                    // Sembunyikan tombol hapus jika hanya ada satu item
+                    if (remainingItems.length === 1) {
+                        deleteBtn.style.display = 'none';
+                    }
+                });
+                
+                // Update array orderItems
+                orderItems = orderItems.filter((item, i) => item !== null && i !== index);
+                itemCount = remainingItems.length;
+                updateTotal();
+            }
+        }
+
+        // Fungsi untuk mengupdate harga saat menu dipilih
+        function updatePrice(selectElement, index) {
+            const value = selectElement.value;
+            if (value) {
+                const [menuName, price] = value.split('|');
+                orderItems[index] = {
+                    menu: menuName,
+                    price: parseInt(price),
+                    quantity: parseInt(document.querySelector(`.order-item-row[data-index="${index}"] .order-item-qty-input`).value) || 1
+                };
+            } else {
+                orderItems[index] = { menu: '', price: 0, quantity: 1 };
+            }
+            updateTotal();
+        }
+
+        // Fungsi untuk mengupdate total pesanan
+        function updateTotal() {
+            let totalItems = 0;
+            let totalPrice = 0;
+            
+            // Hitung total dari semua item
+            document.querySelectorAll('.order-item-row').forEach((row, index) => {
+                const select = row.querySelector('select');
+                const quantityInput = row.querySelector('input[type="number"]');
+                
+                if (select.value) {
+                    const [menuName, price] = select.value.split('|');
+                    const quantity = parseInt(quantityInput.value) || 1;
+                    
+                    orderItems[index] = {
+                        menu: menuName,
+                        price: parseInt(price),
+                        quantity: quantity
+                    };
+                    
+                    totalItems += quantity;
+                    totalPrice += parseInt(price) * quantity;
+                }
+            });
+            
+            // Update tampilan ringkasan
+            document.getElementById('totalItems').textContent = totalItems;
+            document.getElementById('totalPrice').textContent = formatCurrency(totalPrice);
+        }
+
+        // Fungsi untuk mengirim pesanan ke WhatsApp
+        function sendToWhatsApp() {
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
+            const deliveryAddress = document.getElementById('deliveryAddress').value.trim();
+            const orderNotes = document.getElementById('orderNotes').value.trim();
+            const whatsappNumber = document.getElementById('whatsappNumber').value.trim();
+            
+            // Validasi form
+            if (!customerName) {
+                showNotification('Nama pemesan harus diisi', 'error');
+                return;
+            }
+            
+            if (!customerPhone) {
+                showNotification('Nomor WhatsApp pemesan harus diisi', 'error');
+                return;
+            }
+            
+            if (!whatsappNumber) {
+                showNotification('Nomor WhatsApp tujuan harus diisi', 'error');
+                return;
+            }
+            
+            // Validasi apakah ada item yang dipilih
+            let hasSelectedItems = false;
+            document.querySelectorAll('.order-item-select').forEach(select => {
+                if (select.value) hasSelectedItems = true;
+            });
+            
+            if (!hasSelectedItems) {
+                showNotification('Pilih minimal satu item pesanan', 'error');
+                return;
+            }
+            
+            // Format nomor WhatsApp (hilangkan karakter selain angka)
+            const formatPhoneNumber = (phone) => {
+                return phone.replace(/[^0-9]/g, '');
+            };
+            
+            const formattedWhatsAppNumber = formatPhoneNumber(whatsappNumber);
+            
+            // Buat pesan WhatsApp
+            let message = `*PESANAN BARU - CAFE & RESTO*\n\n`;
+            message += `*Nama Pemesan:* ${customerName}\n`;
+            message += `*No. HP Pemesan:* ${customerPhone}\n`;
+            
+            if (deliveryAddress) {
+                message += `*Alamat Pengiriman:* ${deliveryAddress}\n`;
+            }
+            
+            message += `\n*DETAIL PESANAN:*\n`;
+            
+            let totalPrice = 0;
+            document.querySelectorAll('.order-item-row').forEach((row, index) => {
+                const select = row.querySelector('select');
+                const quantityInput = row.querySelector('input[type="number"]');
+                
+                if (select.value) {
+                    const [menuName, price] = select.value.split('|');
+                    const quantity = parseInt(quantityInput.value) || 1;
+                    const itemTotal = parseInt(price) * quantity;
+                    
+                    message += `• ${menuName} (${quantity}x) = ${formatCurrency(itemTotal)}\n`;
+                    totalPrice += itemTotal;
+                }
+            });
+            
+            message += `\n*TOTAL PEMBAYARAN:* ${formatCurrency(totalPrice)}\n`;
+            
+            if (orderNotes) {
+                message += `\n*CATATAN:* ${orderNotes}\n`;
+            }
+            
+            message += `\n*WAKTU PEMESANAN:* ${new Date().toLocaleString('id-ID')}\n`;
+            message += `\n---\n_Pesan ini dikirim melalui Form Pemesanan Online_`;
+            
+            // Encode pesan untuk URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Buat URL WhatsApp
+            const whatsappUrl = `https://wa.me/${formattedWhatsAppNumber}?text=${encodedMessage}`;
+            
+            // Buka WhatsApp
+            window.open(whatsappUrl, '_blank');
+            
+            // Tampilkan notifikasi sukses
+            showNotification('Pesanan berhasil dikirim ke WhatsApp!', 'success');
+            
+            // Reset form (opsional)
+            setTimeout(() => {
+                document.getElementById('orderForm').reset();
+                document.getElementById('orderItemsContainer').innerHTML = `
+                    <div class="order-item-row" data-index="0">
+                        <select class="order-item-select" onchange="updatePrice(this, 0)" required>
+                            <option value="">Pilih Menu</option>
+                            <option value="Nasi Goreng|15000">Nasi Goreng - Rp 15.000</option>
+                            <option value="Mie Goreng|12000">Mie Goreng - Rp 12.000</option>
+                            <option value="Ayam Goreng|18000">Ayam Goreng - Rp 18.000</option>
+                            <option value="Es Teh|5000">Es Teh - Rp 5.000</option>
+                            <option value="Es Jeruk|7000">Es Jeruk - Rp 7.000</option>
+                            <option value="Kentang Goreng|10000">Kentang Goreng - Rp 10.000</option>
+                            <option value="Singkong Keju|12000">Singkong Keju - Rp 12.000</option>
+                            <option value="Teh Hangat|4000">Teh Hangat - Rp 4.000</option>
+                            <option value="Kopi|8000">Kopi - Rp 8.000</option>
+                        </select>
+                        <input type="number" class="order-item-qty-input" min="1" value="1" onchange="updateTotal()" oninput="updateTotal()">
+                        <button type="button" class="btn btn-danger" onclick="removeItem(0)" style="display: none;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                orderItems = [{ menu: '', price: 0, quantity: 1 }];
+                itemCount = 1;
+                updateTotal();
+            }, 2000);
+        }
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        // Fungsi untuk format mata uang
+        function formatCurrency(amount) {
+            return 'Rp ' + amount.toLocaleString('id-ID');
+        }
+
+        // Inisialisasi total saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTotal();
+            
+            // Event listener untuk input quantity
+            document.addEventListener('input', function(e) {
+                if (e.target.classList.contains('order-item-qty-input')) {
+                    updateTotal();
+                }
+            });
+            
+            // Event listener untuk select menu
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('order-item-select')) {
+                    updateTotal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
