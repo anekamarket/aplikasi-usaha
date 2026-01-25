@@ -875,6 +875,33 @@
             gap: 8px;
             margin: 16px 0;
         }
+        
+        /* QRIS Container */
+        .qris-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--light);
+            border-radius: var(--rounded);
+            border: 1px solid #ddd;
+        }
+        
+        .qris-image-placeholder {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--rounded-sm);
+            border: 2px dashed var(--primary);
+        }
+        
+        .qris-image-placeholder i {
+            font-size: 3rem;
+            color: var(--primary);
+        }
 
         /* Member Badge */
         .member-badge {
@@ -1260,23 +1287,40 @@
                         <label class="form-label">Metode Pembayaran</label>
                         <select id="paymentMethod" class="form-control">
                             <option value="cash">Tunai</option>
+                            <option value="qris">QRIS</option>
                             <option value="transfer">Transfer Bank</option>
                             <option value="ewallet">E-Wallet</option>
                         </select>
                     </div>
 
-                    <div class="quick-cash-buttons" id="quickCashButtons">
+                    <!-- Container for QRIS -->
+                    <div id="qrisContainer" class="qris-container" style="display: none;">
+                        <h4><i class="fas fa-qrcode"></i> Pembayaran QRIS</h4>
+                        <p>Scan QR Code berikut untuk pembayaran:</p>
+                        <div class="qris-image-placeholder">
+                            <i class="fas fa-qrcode"></i>
                         </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Jumlah Pembayaran</label>
-                        <input type="number" id="paymentAmount" class="form-control" placeholder="Masukkan jumlah" min="0">
+                        <p class="mt-2">Total: <strong id="qrisTotal">Rp 0</strong></p>
+                        <p class="text-center" style="font-size: 0.8rem; color: var(--gray);">
+                            <i class="fas fa-info-circle"></i> QR Code akan otomatis terisi dengan total pembayaran
+                        </p>
                     </div>
 
-                    <div id="changeContainer" style="display: none;">
-                        <div class="summary-row total-row" style="border-top: 1px solid #ddd;">
-                            <span>Kembalian:</span>
-                            <span id="paymentChange">Rp 0</span>
+                    <!-- Container for Cash Payment -->
+                    <div id="cashPaymentContainer">
+                        <div class="quick-cash-buttons" id="quickCashButtons">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Jumlah Pembayaran</label>
+                            <input type="number" id="paymentAmount" class="form-control" placeholder="Masukkan jumlah" min="0">
+                        </div>
+
+                        <div id="changeContainer" style="display: none;">
+                            <div class="summary-row total-row" style="border-top: 1px solid #ddd;">
+                                <span>Kembalian:</span>
+                                <span id="paymentChange">Rp 0</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1299,6 +1343,7 @@
         </div>
     </div>
 
+    <!-- Modals lainnya tetap sama seperti sebelumnya -->
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -2249,13 +2294,36 @@
             });
             
             $('.modal-body .tabs .tab').click(function() { switchPaymentModalTab($(this).data('tab')); });
+            
+            // Handle payment method change
+            $('#paymentMethod').change(function() {
+                togglePaymentMethod();
+                if ($(this).val() === 'cash') {
+                    generateQuickCashButtons(currentOrder.total);
+                }
+            });
+            
             $('#paymentAmount').on('input', calculateChange);
-            $(document).on('click', '.quick-cash-btn', function() { $('#paymentAmount').val($(this).data('amount')).trigger('input'); });
+            $(document).on('click', '.quick-cash-btn', function() { 
+                $('#paymentAmount').val($(this).data('amount')).trigger('input'); 
+            });
             
             $('#completePaymentBtn').click(function() {
                 if ($(this).prop('disabled')) return;
-                const paymentAmount = parseFloat($('#paymentAmount').val()) || 0;
-                if (paymentAmount < currentOrder.total) { showToast('Jumlah pembayaran kurang', 'error'); return; }
+                
+                const paymentMethod = $('#paymentMethod').val();
+                let paymentAmount;
+                
+                if (paymentMethod === 'qris') {
+                    // Untuk QRIS, payment amount sama dengan total
+                    paymentAmount = currentOrder.total;
+                } else {
+                    paymentAmount = parseFloat($('#paymentAmount').val()) || 0;
+                    if (paymentAmount < currentOrder.total) { 
+                        showToast('Jumlah pembayaran kurang', 'error'); 
+                        return; 
+                    }
+                }
                 
                 const $btn = $(this), originalText = $btn.html();
                 setButtonLoading($btn, true);
@@ -2263,17 +2331,30 @@
                 setTimeout(() => {
                     try {
                         const order = {
-                            id: 'ORD' + moment().format('YYYYMMDDHHmmss'), date: new Date(), ...currentOrder, paymentMethod: $('#paymentMethod').val(), paymentAmount,
-                            change: paymentAmount - currentOrder.total, cashier: currentUser, customerName: $('#customerName').val().trim() || 'Pelanggan',
-                            status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', statusLocked: false
+                            id: 'ORD' + moment().format('YYYYMMDDHHmmss'), 
+                            date: new Date(), 
+                            ...currentOrder, 
+                            paymentMethod: paymentMethod,
+                            paymentAmount: paymentAmount,
+                            change: paymentMethod === 'qris' ? 0 : paymentAmount - currentOrder.total, 
+                            cashier: currentUser, 
+                            customerName: $('#customerName').val().trim() || 'Pelanggan',
+                            status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', 
+                            statusLocked: false
                         };
-                        orders.unshift(order); saveOrders();
+                        orders.unshift(order); 
+                        saveOrders();
                         
                         if (order.memberId) {
                             const member = members.find(m => m.id === order.memberId);
-                            if (member) { member.transactions = (member.transactions || 0) + 1; member.totalSpent = (member.totalSpent || 0) + order.total; saveMembers(); }
+                            if (member) { 
+                                member.transactions = (member.transactions || 0) + 1; 
+                                member.totalSpent = (member.totalSpent || 0) + order.total; 
+                                saveMembers(); 
+                            }
                         }
-                        showReceiptModal(order); resetOrder();
+                        showReceiptModal(order); 
+                        resetOrder();
                         $('#processOrderModal').hide();
                         showToast('Pesanan berhasil diproses', 'success');
                     } finally {
@@ -2282,7 +2363,11 @@
                 }, 500);
             });
             
-            $(document).on('click', '.filter-chip', function() { $('.filter-chip').removeClass('active'); $(this).addClass('active'); loadMenus($('#menuSearch').val(), $(this).data('category')); });
+            $(document).on('click', '.filter-chip', function() { 
+                $('.filter-chip').removeClass('active'); 
+                $(this).addClass('active'); 
+                loadMenus($('#menuSearch').val(), $(this).data('category')); 
+            });
             
             // Cek permission untuk add menu
             $('#addMenuBtn').click(() => { 
@@ -2929,7 +3014,7 @@
         
         function loadMembersForManagement(searchTerm = '') {
             const $list = $('#membersList').empty(), lowerSearchTerm = searchTerm.toLowerCase();
-            const filteredMembers = members.filter(m => !searchTerm || m.name.toLowerCase().includes(lowerSearchTerm) || m.id.toLowerCase().includes(lowerSearchTerm) || m.phone.includes(lowerSearchTerm));
+            const filteredMembers = members.filter(m => !searchTerm || m.name.toLowerCase().includes(lowerSearchTerm) || m.id.toLowerCase().includes(lowerSearchTerm) || m.phone.includes(searchTerm));
             if (filteredMembers.length === 0) { $list.html('<div class="empty-state"><i class="fas fa-users"></i><p>Member tidak ditemukan</p></div>'); }
             else {
                 filteredMembers.forEach(member => {
@@ -2960,24 +3045,89 @@
         
         function updateOrderSummary() {
             let discountText = '';
-            if (currentOrder.discount > 0) { let percent = currentOrder.memberId ? (settings.memberDiscountPercent ?? 2) : (settings.nonMemberDiscountPercent ?? 0); discountText = `Diskon (${percent}%):`; }
+            if (currentOrder.discount > 0) { 
+                let percent = currentOrder.memberId ? (settings.memberDiscountPercent ?? 2) : (settings.nonMemberDiscountPercent ?? 0); 
+                discountText = `Diskon (${percent}%):`; 
+            }
             $('#orderSummary').html(currentOrder.items.map(item => `<div class="summary-row"><span>${item.menu.name} (${item.quantity}x)</span><span>${formatCurrency(item.menu.price * item.quantity)}</span></div>`).join('') + `<div class="summary-row" style="border-top: 1px dashed #ddd; margin-top: 8px; padding-top: 8px;"><span>Subtotal:</span><span>${formatCurrency(currentOrder.subtotal)}</span></div>` + (currentOrder.discount > 0 ? `<div class="summary-row"><span>${discountText}</span><span>-${formatCurrency(currentOrder.discount)}</span></div>` : '') + `<div class="summary-row total-row"><span>Total:</span><span>${formatCurrency(currentOrder.total)}</span></div>`);
         }
         
         function updatePaymentTab() {
             $('#paymentTotal').text(formatCurrency(currentOrder.total));
             $('#paymentAmount').val('').trigger('input');
-            const $quickCash = $('#quickCashButtons').empty(), total = currentOrder.total;
-            if (total > 0) {
-                const denominations = [total, Math.ceil(total / 10000) * 10000, 50000, 100000].filter(d => d >= total);
-                [...new Set(denominations)].sort((a,b) => a-b).slice(0,3).forEach(amount => {
-                    $quickCash.append(`<button class="btn btn-sm btn-outline-primary quick-cash-btn" data-amount="${amount}">${amount === total ? 'Uang Pas' : formatCurrency(amount)}</button>`);
-                });
+            $('#qrisTotal').text(formatCurrency(currentOrder.total));
+            
+            // Generate quick cash buttons untuk tunai
+            generateQuickCashButtons(currentOrder.total);
+            
+            // Tampilkan metode pembayaran yang sesuai
+            togglePaymentMethod();
+        }
+        
+        function togglePaymentMethod() {
+            const method = $('#paymentMethod').val();
+            const isCash = method === 'cash';
+            const isQris = method === 'qris';
+            
+            if (isCash) {
+                $('#cashPaymentContainer').show();
+                $('#qrisContainer').hide();
+                $('#paymentAmount').prop('disabled', false).val('').trigger('input');
+                generateQuickCashButtons(currentOrder.total);
+            } else if (isQris) {
+                $('#cashPaymentContainer').hide();
+                $('#qrisContainer').show();
+                $('#paymentAmount').val(currentOrder.total).prop('disabled', true);
+                $('#changeContainer').hide();
+            } else {
+                $('#cashPaymentContainer').show();
+                $('#qrisContainer').hide();
+                $('#quickCashButtons').hide();
+                $('#paymentAmount').prop('disabled', false).val('').trigger('input');
             }
+            
+            // Hitung kembalian untuk metode yang memerlukan
+            calculateChange();
+        }
+        
+        function generateQuickCashButtons(total) {
+            const $quickCash = $('#quickCashButtons').empty();
+            let buttons = [];
+            
+            // Logika tombol cerdas sesuai permintaan
+            if (total <= 12000) {
+                buttons = [15000, 20000, 50000, 100000];
+            } else if (total <= 15000) {
+                buttons = [15000, 20000, 50000, 100000];
+            } else if (total <= 20000) {
+                buttons = [20000, 50000, 100000];
+            } else if (total <= 25000) {
+                buttons = [25000, 30000, 50000, 100000];
+            } else {
+                // Untuk total di atas 25000, buat tombol dengan nilai yang logis
+                const next = Math.ceil(total / 5000) * 5000;
+                buttons = [next, next + 5000, next + 10000, next + 20000];
+            }
+            
+            // Hapus duplikat dan urutkan
+            buttons = [...new Set(buttons)].sort((a, b) => a - b);
+            
+            // Batasi hanya 4 tombol
+            buttons.slice(0, 4).forEach(amount => {
+                $quickCash.append(`<button class="btn btn-sm btn-outline-primary quick-cash-btn" data-amount="${amount}">${formatCurrency(amount)}</button>`);
+            });
         }
         
         function calculateChange() { 
-            const amount = parseFloat($('#paymentAmount').val()) || 0, change = amount - currentOrder.total; 
+            const method = $('#paymentMethod').val();
+            if (method === 'qris') {
+                // Untuk QRIS, tidak perlu menghitung kembalian
+                $('#changeContainer').hide();
+                return;
+            }
+            
+            const amount = parseFloat($('#paymentAmount').val()) || 0; 
+            const change = amount - currentOrder.total; 
             $('#changeContainer').toggle(change >= 0); 
             $('#paymentChange').text(formatCurrency(change)); 
         }
@@ -3023,6 +3173,7 @@
                     <div><span>Pelanggan:</span> <span>${order.customerName}</span></div>
                     ${member ? `<div><span>Member:</span> <span>${member.name} (${member.id})</span></div>` : ''}
                     <div><span>Tipe:</span> <span>${order.type === 'dinein' ? `Makan di Tempat (Meja ${order.tableNumber})` : 'Bungkus'}</span></div>
+                    <div><span>Metode:</span> <span>${order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'transfer' ? 'Transfer Bank' : 'E-Wallet'}</span></div>
                 </div>
                 <div id="receiptItemsContainer">
                     ${order.items.map(item => `<div class="receipt-item"><div class="receipt-item-details"><div class="item-name">${item.menu.name}</div><div class="item-price-calc">${item.quantity} x ${formatCurrency(item.menu.price)}</div></div><span>${formatCurrency(item.menu.price * item.quantity)}</span></div>`).join('')}
@@ -3032,8 +3183,8 @@
                     <div class="receipt-item"><span>Subtotal</span> <span>${formatCurrency(order.subtotal)}</span></div>
                     ${order.discount > 0 ? `<div class="receipt-item"><span>Diskon</span> <span>-${formatCurrency(order.discount)}</span></div>` : ''}
                     <div class="receipt-item" style="font-weight:bold; font-size: 14px;"><span>TOTAL</span> <span>${formatCurrency(order.total)}</span></div>
-                    <div class="receipt-item"><span>${{ cash: 'Tunai', transfer: 'Transfer', ewallet: 'E-Wallet' }[order.paymentMethod]}</span> <span>${formatCurrency(order.paymentAmount)}</span></div>
-                    <div class="receipt-item"><span>Kembali</span> <span>${formatCurrency(order.change)}</span></div>
+                    <div class="receipt-item"><span>${order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'transfer' ? 'Transfer' : 'E-Wallet'}</span> <span>${formatCurrency(order.paymentAmount)}</span></div>
+                    ${order.paymentMethod === 'cash' ? `<div class="receipt-item"><span>Kembali</span> <span>${formatCurrency(order.change)}</span></div>` : ''}
                 </div>
                 <div class="receipt-footer">
                     <p>Terima kasih telah berkunjung</p>
