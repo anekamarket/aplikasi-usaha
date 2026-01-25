@@ -7,350 +7,10 @@
     <title>UMKM CASH - Aplikasi Kasir Digital Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <style>
-        /* PERBAIKAN: CSS tambahan untuk posisi welcome toast di tengah pada mobile */
-        @media (max-width: 768px) {
-            .welcome-toast {
-                position: fixed !important;
-                top: 50% !important;
-                left: 50% !important;
-                transform: translate(-50%, -50%) !important;
-                width: 90% !important;
-                max-width: 400px !important;
-                margin: 0 !important;
-                z-index: 9999 !important;
-                animation: mobileToastIn 0.5s ease-out !important;
-            }
-            
-            .welcome-toast.show {
-                display: flex !important;
-            }
-            
-            @keyframes mobileToastIn {
-                from {
-                    opacity: 0;
-                    transform: translate(-50%, -60%) scale(0.9);
-                }
-                to {
-                    opacity: 1;
-                    transform: translate(-50%, -50%) scale(1);
-                }
-            }
-        }
-        
-        /* PERBAIKAN: Untuk desktop tetap menggunakan posisi yang ada, tapi tambahkan centering jika diperlukan */
-        @media (min-width: 769px) {
-            .welcome-toast {
-                position: fixed !important;
-                top: 50% !important;
-                left: 50% !important;
-                transform: translate(-50%, -50%) !important;
-                z-index: 9999 !important;
-                animation: desktopToastIn 0.5s ease-out !important;
-            }
-            
-            @keyframes desktopToastIn {
-                from {
-                    opacity: 0;
-                    transform: translate(-50%, -60%);
-                }
-                to {
-                    opacity: 1;
-                    transform: translate(-50%, -50%);
-                }
-            }
-        }
-        
-        /* PERBAIKAN: Tambahkan backdrop untuk welcome toast */
-        .welcome-toast-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9998;
-            display: none;
-        }
-        
-        .welcome-toast-backdrop.show {
-            display: block;
-        }
-        
-        /* PERBAIKAN UTAMA: Aplikasi berada tepat di tengah pada smartphone */
-        @media (max-width: 768px) {
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                margin: 0;
-                padding: 10px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            }
-            
-            #mainApp {
-                width: 100%;
-                max-width: 500px;
-                max-height: 90vh;
-                overflow: hidden;
-                border-radius: 20px;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                position: relative;
-                animation: appSlideIn 0.5s ease-out;
-            }
-            
-            @keyframes appSlideIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px) scale(0.95);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0) scale(1);
-                }
-            }
-            
-            .app-header {
-                border-radius: 20px 20px 0 0;
-            }
-            
-            .app-footer {
-                border-radius: 0 0 20px 20px;
-            }
-            
-            /* PERBAIKAN: Kontainer modal juga di tengah */
-            .modal {
-                align-items: center;
-                justify-content: center;
-                padding: 10px;
-            }
-            
-            .modal-content {
-                max-height: 85vh;
-                overflow-y: auto;
-                width: 95%;
-                max-width: 500px;
-                animation: modalSlideIn 0.3s ease-out;
-            }
-            
-            @keyframes modalSlideIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        }
-        
-        /* PERBAIKAN PROFESIONAL: Notifikasi Loading yang Lebih Profesional */
-        .professional-toast {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 24px;
-            z-index: 10000;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 300px;
-            width: 90%;
-            animation: professionalToastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .professional-toast.show {
-            display: flex;
-        }
-        
-        @keyframes professionalToastIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-        
-        .professional-toast-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            font-size: 24px;
-            color: white;
-        }
-        
-        .professional-toast.loading .professional-toast-icon {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .professional-toast.success .professional-toast-icon {
-            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-        }
-        
-        .professional-toast.error .professional-toast-icon {
-            background: linear-gradient(135deg, #f44336 0%, #c62828 100%);
-        }
-        
-        .professional-toast.info .professional-toast-icon {
-            background: linear-gradient(135deg, #2196F3 0%, #1565C0 100%);
-        }
-        
-        .professional-toast.warning .professional-toast-icon {
-            background: linear-gradient(135deg, #ff9800 0%, #ef6c00 100%);
-        }
-        
-        .professional-toast-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        
-        .professional-toast-message {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 16px;
-        }
-        
-        .professional-toast-progress {
-            width: 100%;
-            height: 4px;
-            background: #f0f0f0;
-            border-radius: 2px;
-            overflow: hidden;
-            margin-top: 16px;
-        }
-        
-        .professional-toast-progress-bar {
-            height: 100%;
-            background: linear-gradient(to right, #667eea, #764ba2);
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 2px;
-        }
-        
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* PERBAIKAN: Toast biasa yang lebih profesional */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 16px 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            z-index: 9999;
-            max-width: 350px;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-left: 4px solid #667eea;
-        }
-        
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .toast i {
-            font-size: 20px;
-            margin-right: 12px;
-        }
-        
-        .toast.success {
-            border-left-color: #4CAF50;
-        }
-        
-        .toast.success i {
-            color: #4CAF50;
-        }
-        
-        .toast.error {
-            border-left-color: #f44336;
-        }
-        
-        .toast.error i {
-            color: #f44336;
-        }
-        
-        .toast.warning {
-            border-left-color: #ff9800;
-        }
-        
-        .toast.warning i {
-            color: #ff9800;
-        }
-        
-        .toast.info {
-            border-left-color: #2196F3;
-        }
-        
-        .toast.info i {
-            color: #2196F3;
-        }
-        
-        #toast-message {
-            font-size: 14px;
-            color: #333;
-            font-weight: 500;
-            flex: 1;
-        }
-        
-        /* PERBAIKAN: Untuk mobile, toast di tengah bawah */
-        @media (max-width: 768px) {
-            .toast {
-                left: 20px;
-                right: 20px;
-                bottom: 20px;
-                max-width: none;
-            }
-            
-            .professional-toast {
-                width: 85%;
-                padding: 20px;
-            }
-        }
-    </style>
        
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- PERBAIKAN: Tambahkan backdrop untuk welcome toast -->
-    <div id="welcomeToastBackdrop" class="welcome-toast-backdrop"></div>
-
     <!-- Welcome Toast Modal -->
     <!-- PERBAIKAN: Tambahkan tombol close dan perbaikan struktur -->
     <div id="welcomeToast" class="welcome-toast">
@@ -365,18 +25,6 @@
         </div>
         <div class="welcome-submessage">
             <i class="fas fa-clock"></i> Notifikasi ini akan hilang dalam <span id="countdown">15</span> detik
-        </div>
-    </div>
-
-    <!-- PERBAIKAN: Notifikasi Profesional -->
-    <div id="professionalToast" class="professional-toast">
-        <div class="professional-toast-icon">
-            <div class="loading-spinner"></div>
-        </div>
-        <div class="professional-toast-title" id="professionalToastTitle">Memproses...</div>
-        <div class="professional-toast-message" id="professionalToastMessage">Sedang memproses permintaan Anda</div>
-        <div class="professional-toast-progress">
-            <div class="professional-toast-progress-bar" id="professionalToastProgress"></div>
         </div>
     </div>
 
@@ -1630,74 +1278,6 @@
         let countdownInterval = null;
         let currentShift = null;
         
-        // PERBAIKAN UTAMA: Fungsi untuk menampilkan notifikasi loading profesional
-        function showProfessionalToast(type, title, message, duration = 3000) {
-            const $toast = $('#professionalToast');
-            $toast.removeClass('loading success error info warning').addClass(type);
-            
-            $('#professionalToastTitle').text(title);
-            $('#professionalToastMessage').text(message);
-            
-            // Reset progress bar
-            $('#professionalToastProgress').css('width', '0%');
-            
-            $toast.addClass('show');
-            
-            // Animate progress bar
-            if (duration > 0) {
-                setTimeout(() => {
-                    $('#professionalToastProgress').css('width', '100%');
-                }, 100);
-                
-                setTimeout(() => {
-                    hideProfessionalToast();
-                }, duration);
-            }
-        }
-        
-        // PERBAIKAN UTAMA: Fungsi untuk menyembunyikan notifikasi loading profesional
-        function hideProfessionalToast() {
-            $('#professionalToast').removeClass('show');
-            setTimeout(() => {
-                $('#professionalToastProgress').css('width', '0%');
-            }, 300);
-        }
-        
-        // PERBAIKAN UTAMA: Fungsi untuk menampilkan notifikasi loading dengan progress
-        function showLoadingWithProgress(title, message) {
-            showProfessionalToast('loading', title, message, 0);
-            
-            // Simulasi progress
-            let progress = 0;
-            const progressInterval = setInterval(() => {
-                progress += 5;
-                $('#professionalToastProgress').css('width', progress + '%');
-                
-                if (progress >= 95) {
-                    clearInterval(progressInterval);
-                }
-            }, 100);
-            
-            return {
-                updateProgress: function(value) {
-                    $('#professionalToastProgress').css('width', value + '%');
-                },
-                complete: function(success = true, finalMessage = 'Proses selesai') {
-                    clearInterval(progressInterval);
-                    $('#professionalToastProgress').css('width', '100%');
-                    
-                    setTimeout(() => {
-                        hideProfessionalToast();
-                        if (success) {
-                            showProfessionalToast('success', 'Berhasil', finalMessage, 2000);
-                        } else {
-                            showProfessionalToast('error', 'Gagal', finalMessage, 2000);
-                        }
-                    }, 500);
-                }
-            };
-        }
-        
         // PERBAIKAN: Fungsi untuk mendeteksi perangkat mobile
         function isMobileDevice() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
@@ -1857,17 +1437,16 @@
                 e.preventDefault();
                 const $loginBtn = $(this).find('button[type="submit"]');
                 const originalText = $loginBtn.html();
-                
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Memproses Login', 'Verifikasi data pengguna...');
-                
+                setButtonLoading($loginBtn, true);
+
                 setTimeout(() => {
                     try {
                         const enteredCaptcha = $('#captchaInput').val().trim();
                         if (enteredCaptcha.toLowerCase() !== captchaText.toLowerCase()) {
-                            loading.complete(false, 'Kode verifikasi (CAPTCHA) salah.');
+                            showToast('Kode verifikasi (CAPTCHA) salah.', 'error');
                             generateCaptcha();
                             $('#captchaInput').val('');
+                            setButtonLoading($loginBtn, false, originalText);
                             return; 
                         }
                         
@@ -1889,15 +1468,12 @@
                             $('#loggedInUser').text(currentUser.name);
                             $('#loginModal').hide();
                             
-                            loading.updateProgress(80);
-                            
                             // PERBAIKAN: Logika baru - Admin boleh mengabaikan shift
                             if (currentUser.role === 'admin') {
                                 // Admin langsung bisa masuk tanpa harus buka shift
                                 $('#mainApp').fadeIn();
                                 initializeApp();
                                 setTimeout(showWelcomeToast, 300);
-                                loading.complete(true, 'Login berhasil sebagai Admin');
                             } else {
                                 // Untuk kasir/non-admin, cek apakah shift sudah dibuka
                                 currentShift = shiftData.currentShift;
@@ -1905,29 +1481,30 @@
                                 if (!currentShift && checkPermission('shift_management')) {
                                     // Tampilkan modal input uang kas awal
                                     showCashStartModal();
-                                    loading.complete(true, 'Login berhasil. Silakan buka shift.');
                                 } else if (currentShift) {
                                     // Tampilkan aplikasi utama
                                     $('#mainApp').fadeIn();
                                     initializeApp();
                                     setTimeout(showWelcomeToast, 300);
-                                    loading.complete(true, 'Login berhasil. Shift aktif.');
                                 } else {
                                     // User tidak punya permission untuk shift management, langsung tampilkan app
                                     $('#mainApp').fadeIn();
                                     initializeApp();
                                     setTimeout(showWelcomeToast, 300);
-                                    loading.complete(true, 'Login berhasil');
                                 }
                             }
                         } else {
-                            loading.complete(false, 'Username atau password salah');
+                            showToast('Username atau password salah', 'error');
                             generateCaptcha();
                             $('#captchaInput').val('');
                         }
                     } catch (err) {
-                        loading.complete(false, 'Error: Gagal memuat library penting. Cek koneksi internet.');
+                        showToast('Error: Gagal memuat library penting. Cek koneksi internet.', 'error');
                         console.error("Login error:", err);
+                    } finally {
+                        if ($loginBtn.prop('disabled')) {
+                           setButtonLoading($loginBtn, false, originalText);
+                        }
                     }
                 }, 500);
             });
@@ -1950,41 +1527,36 @@
                     return;
                 }
                 
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Membuka Shift', 'Menyiapkan sistem shift...');
+                // Buat shift baru
+                currentShift = {
+                    id: 'SHIFT' + moment().format('YYYYMMDDHHmmss'),
+                    startTime: new Date(),
+                    cashier: {
+                        id: currentUser.id,
+                        name: currentUser.name,
+                        username: currentUser.username
+                    },
+                    initialCash: initialCash,
+                    initialNote: cashNote,
+                    status: 'open',
+                    orders: [],
+                    totalSales: 0,
+                    totalTransactions: 0
+                };
                 
-                setTimeout(() => {
-                    // Buat shift baru
-                    currentShift = {
-                        id: 'SHIFT' + moment().format('YYYYMMDDHHmmss'),
-                        startTime: new Date(),
-                        cashier: {
-                            id: currentUser.id,
-                            name: currentUser.name,
-                            username: currentUser.username
-                        },
-                        initialCash: initialCash,
-                        initialNote: cashNote,
-                        status: 'open',
-                        orders: [],
-                        totalSales: 0,
-                        totalTransactions: 0
-                    };
-                    
-                    // Simpan shift data
-                    shiftData.currentShift = currentShift;
-                    localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
-                    
-                    // Update UI
-                    $('#shiftStatus').text('Aktif').removeClass('shift-closed').addClass('shift-open');
-                    
-                    // Tampilkan aplikasi utama
-                    $('#cashStartModal').hide();
-                    $('#mainApp').fadeIn();
-                    initializeApp();
-                    
-                    loading.complete(true, 'Shift berhasil dimulai dengan uang kas awal: ' + formatCurrency(initialCash));
-                }, 800);
+                // Simpan shift data
+                shiftData.currentShift = currentShift;
+                localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
+                
+                // Update UI
+                $('#shiftStatus').text('Aktif').removeClass('shift-closed').addClass('shift-open');
+                
+                // Tampilkan aplikasi utama
+                $('#cashStartModal').hide();
+                $('#mainApp').fadeIn();
+                initializeApp();
+                
+                showToast('Shift berhasil dimulai dengan uang kas awal: ' + formatCurrency(initialCash), 'success');
             });
             
             $('#cancelShiftBtn').click(function() {
@@ -2098,47 +1670,42 @@
                     return;
                 }
                 
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Menutup Shift', 'Memproses penutupan shift...');
+                // Hitung expected cash
+                const initialCash = currentShift.initialCash || 0;
+                const totalSales = currentShift.totalSales || 0;
+                const expectedCash = initialCash + totalSales - expenses + otherIncome;
+                const difference = actualCash - expectedCash;
                 
-                setTimeout(() => {
-                    // Hitung expected cash
-                    const initialCash = currentShift.initialCash || 0;
-                    const totalSales = currentShift.totalSales || 0;
-                    const expectedCash = initialCash + totalSales - expenses + otherIncome;
-                    const difference = actualCash - expectedCash;
-                    
-                    // Tutup shift
-                    currentShift.endTime = new Date();
-                    currentShift.status = 'closed';
-                    currentShift.actualCash = actualCash;
-                    currentShift.expenses = expenses;
-                    currentShift.otherIncome = otherIncome;
-                    currentShift.cashDifference = difference;
-                    currentShift.closeNote = closeNote;
-                    
-                    // Tambahkan ke history
-                    if (!shiftData.shiftHistory) {
-                        shiftData.shiftHistory = [];
-                    }
-                    shiftData.shiftHistory.unshift(currentShift);
-                    
-                    // Reset current shift
-                    shiftData.currentShift = null;
-                    currentShift = null;
-                    
-                    // Simpan data
-                    localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
-                    
-                    // Update UI
-                    $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
-                    $('#closeShiftModal').hide();
-                    
-                    // Tampilkan laporan shift
-                    generateShiftReport(currentShift);
-                    
-                    loading.complete(true, 'Shift berhasil ditutup');
-                }, 1000);
+                // Tutup shift
+                currentShift.endTime = new Date();
+                currentShift.status = 'closed';
+                currentShift.actualCash = actualCash;
+                currentShift.expenses = expenses;
+                currentShift.otherIncome = otherIncome;
+                currentShift.cashDifference = difference;
+                currentShift.closeNote = closeNote;
+                
+                // Tambahkan ke history
+                if (!shiftData.shiftHistory) {
+                    shiftData.shiftHistory = [];
+                }
+                shiftData.shiftHistory.unshift(currentShift);
+                
+                // Reset current shift
+                shiftData.currentShift = null;
+                currentShift = null;
+                
+                // Simpan data
+                localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
+                
+                // Update UI
+                $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
+                $('#closeShiftModal').hide();
+                
+                // Tampilkan laporan shift
+                generateShiftReport(currentShift);
+                
+                showToast('Shift berhasil ditutup', 'success');
             });
             
             // Event handler untuk fitur perhitungan laba
@@ -2158,13 +1725,7 @@
             });
             
             $('#calculateProfitBtn').click(function() {
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Menghitung Laba', 'Menganalisis data penjualan...');
-                
-                setTimeout(() => {
-                    calculateProfit();
-                    loading.complete(true, 'Perhitungan laba selesai');
-                }, 800);
+                calculateProfit();
             });
             
             $('#profitPeriod').change(function() {
@@ -2234,22 +1795,16 @@
             });
             
             function performLogout() {
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Logout', 'Menyimpan data dan keluar...');
-                
-                setTimeout(() => {
-                    currentUser = null;
-                    localStorage.removeItem(STORAGE_KEYS.USER);
-                    $('#mainApp').fadeOut(() => {
-                        $('#loginModal').css('display', 'flex');
-                        $('#username').val('');
-                        $('#password').val('');
-                        $('#captchaInput').val('');
-                        generateCaptcha();
-                    });
-                    
-                    loading.complete(true, 'Anda telah logout');
-                }, 800);
+                currentUser = null;
+                localStorage.removeItem(STORAGE_KEYS.USER);
+                $('#mainApp').fadeOut(() => {
+                    $('#loginModal').css('display', 'flex');
+                    $('#username').val('');
+                    $('#password').val('');
+                    $('#captchaInput').val('');
+                    generateCaptcha();
+                });
+                showToast('Anda telah logout', 'info');
             }
             
             $('#menuSearch').on('input', function() { loadMenus($(this).val(), $('.filter-chip.active').data('category')); });
@@ -2405,9 +1960,9 @@
                     }
                 }
                 
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Memproses Pembayaran', 'Menyimpan transaksi...');
-                
+                const $btn = $(this), originalText = $btn.html();
+                setButtonLoading($btn, true);
+
                 setTimeout(() => {
                     try {
                         const order = {
@@ -2437,12 +1992,14 @@
                         showReceiptModal(order); 
                         resetOrder();
                         $('#processOrderModal').hide();
-                        loading.complete(true, 'Pesanan berhasil diproses');
+                        showToast('Pesanan berhasil diproses', 'success');
                     } catch(error) {
                         console.error("Error processing order:", error);
-                        loading.complete(false, 'Terjadi kesalahan saat memproses pesanan');
+                        showToast('Terjadi kesalahan saat memproses pesanan', 'error');
+                    } finally {
+                        setButtonLoading($btn, false, originalText);
                     }
-                }, 800);
+                }, 500);
             });
             
             $(document).on('click', '.filter-chip', function() { 
@@ -2593,13 +2150,10 @@
                     return;
                 }
                 
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Menyiapkan Daftar Menu', 'Mengumpulkan data menu...');
-                
+                showToast('Mempersiapkan daftar menu...', 'info');
                 setTimeout(() => {
                     generateMenuPdfPreview();
-                    loading.complete(true, 'Preview daftar menu berhasil dibuat');
-                }, 1000);
+                }, 500);
             });
             
             $('#downloadMenuPdfBtn').click(function() {
@@ -2610,35 +2164,25 @@
                 const id = $('#menuId').val(), name = $('#menuName').val().trim(), category = $('#menuCategory').val(), price = parseFloat($('#menuPrice').val()) || 0, image = $('#menuImage').val().trim(), description = $('#menuDescription').val().trim();
                 if (!name || !category || price <= 0) { showToast('Nama, kategori, dan harga harus valid', 'error'); return; }
                 const action = () => {
-                    // PERBAIKAN: Gunakan notifikasi loading profesional
-                    const loading = showLoadingWithProgress('Menyimpan Menu', 'Menyimpan data menu...');
-                    
-                    setTimeout(() => {
-                        try {
-                            if (id) {
-                                // Cek permission untuk edit menu
-                                if (!checkPermission('edit_menu')) {
-                                    loading.complete(false, 'Anda tidak memiliki izin untuk mengedit menu');
-                                    return;
-                                }
-                                
-                                const menuIndex = menus.findIndex(m => m.id === id);
-                                if (menuIndex > -1) menus[menuIndex] = { ...menus[menuIndex], name, category, price, image, description };
-                            } else {
-                                // Cek permission untuk add menu
-                                if (!checkPermission('add_menu')) {
-                                    loading.complete(false, 'Anda tidak memiliki izin untuk menambah menu');
-                                    return;
-                                }
-                                
-                                menus.unshift({ id: 'M' + moment().format('x'), name, category, price, image, description });
-                            }
-                            saveMenus(); loadMenus(); $('#menuModal').hide();
-                            loading.complete(true, `Menu ${id ? 'diperbarui' : 'disimpan'} berhasil`);
-                        } catch (error) {
-                            loading.complete(false, 'Gagal menyimpan menu');
+                    if (id) {
+                        // Cek permission untuk edit menu
+                        if (!checkPermission('edit_menu')) {
+                            showToast('Anda tidak memiliki izin untuk mengedit menu', 'error');
+                            return;
                         }
-                    }, 800);
+                        
+                        const menuIndex = menus.findIndex(m => m.id === id);
+                        if (menuIndex > -1) menus[menuIndex] = { ...menus[menuIndex], name, category, price, image, description };
+                    } else {
+                        // Cek permission untuk add menu
+                        if (!checkPermission('add_menu')) {
+                            showToast('Anda tidak memiliki izin untuk menambah menu', 'error');
+                            return;
+                        }
+                        
+                        menus.unshift({ id: 'M' + moment().format('x'), name, category, price, image, description });
+                    }
+                    saveMenus(); loadMenus(); $('#menuModal').hide(); showToast(`Menu ${id ? 'diperbarui' : 'disimpan'}`, 'success');
                 };
                 if (id) promptForPassword('item', action); else action();
             });
@@ -2647,29 +2191,16 @@
                 const name = $('#newCategoryName').val().trim();
                 if (!name) return showToast('Nama kategori harus diisi', 'error');
                 if (categories.some(c => c.name.toLowerCase() === name.toLowerCase())) return showToast('Kategori sudah ada', 'error');
-                
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Menambahkan Kategori', 'Menyimpan kategori baru...');
-                
-                setTimeout(() => {
-                    categories.unshift({ id: 'C' + moment().format('x'), name });
-                    saveCategories(); loadCategories(); loadCategoriesForManagement(); $('#newCategoryName').val('');
-                    loading.complete(true, 'Kategori berhasil ditambahkan');
-                }, 500);
+                categories.unshift({ id: 'C' + moment().format('x'), name });
+                saveCategories(); loadCategories(); loadCategoriesForManagement(); $('#newCategoryName').val(''); showToast('Kategori ditambahkan', 'success');
             });
             
             $(document).on('click', '.remove-category', function() {
                 const categoryId = $(this).data('id'), category = categories.find(c => c.id === categoryId);
                 if (menus.some(m => m.category === category.name)) return showToast('Kategori sedang digunakan', 'error');
                 promptForPassword('item', () => {
-                    // PERBAIKAN: Gunakan notifikasi loading profesional
-                    const loading = showLoadingWithProgress('Menghapus Kategori', 'Menghapus kategori...');
-                    
-                    setTimeout(() => {
-                        categories = categories.filter(c => c.id !== categoryId);
-                        saveCategories(); loadCategories(); loadCategoriesForManagement();
-                        loading.complete(true, 'Kategori berhasil dihapus');
-                    }, 500);
+                    categories = categories.filter(c => c.id !== categoryId);
+                    saveCategories(); loadCategories(); loadCategoriesForManagement(); showToast('Kategori dihapus', 'success');
                 });
             });
             
@@ -2680,24 +2211,13 @@
                 e.preventDefault();
                 const id = $('#memberIdInput').val(), name = $('#memberName').val().trim(), phone = $('#memberPhone').val().trim(), address = $('#memberAddress').val().trim();
                 if (!name || !phone) return showToast('Nama dan nomor telepon harus diisi', 'error');
-                
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Menyimpan Member', 'Menyimpan data member...');
-                
-                setTimeout(() => {
-                    try {
-                        if (id) {
-                            const memberIndex = members.findIndex(m => m.id === id);
-                            if (memberIndex > -1) members[memberIndex] = { ...members[memberIndex], name, phone, address };
-                        } else {
-                            members.unshift({ id: generateMemberId(), name, phone, address, joinDate: new Date().toISOString(), transactions: 0, totalSpent: 0 });
-                        }
-                        saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm);
-                        loading.complete(true, `Member ${id ? 'diperbarui' : 'ditambahkan'} berhasil`);
-                    } catch (error) {
-                        loading.complete(false, 'Gagal menyimpan member');
-                    }
-                }, 500);
+                if (id) {
+                    const memberIndex = members.findIndex(m => m.id === id);
+                    if (memberIndex > -1) members[memberIndex] = { ...members[memberIndex], name, phone, address };
+                } else {
+                    members.unshift({ id: generateMemberId(), name, phone, address, joinDate: new Date().toISOString(), transactions: 0, totalSpent: 0 });
+                }
+                saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm); showToast(`Member ${id ? 'diperbarui' : 'ditambahkan'}`, 'success');
             });
             
             $(document).on('click', '.edit-member', function() {
@@ -2709,14 +2229,8 @@
             $('#deleteMemberBtn').click(function() {
                 const memberId = $(this).data('id');
                 promptForPassword('item', () => showConfirmation('Hapus Member', 'Yakin ingin menghapus member ini?', () => {
-                    // PERBAIKAN: Gunakan notifikasi loading profesional
-                    const loading = showLoadingWithProgress('Menghapus Member', 'Menghapus data member...');
-                    
-                    setTimeout(() => {
-                        members = members.filter(m => m.id !== memberId);
-                        saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm);
-                        loading.complete(true, 'Member berhasil dihapus');
-                    }, 500);
+                    members = members.filter(m => m.id !== memberId);
+                    saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm); showToast('Member dihapus', 'success');
                 }, 'danger'));
             });
             
@@ -2725,13 +2239,7 @@
             
             // PERBAIKAN: Event handler untuk tombol Generate Laporan yang diperbaiki
             $('#generateReportBtn').click(function() {
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Membuat Laporan', 'Menganalisis data penjualan...');
-                
-                setTimeout(() => {
-                    generateReport();
-                    loading.complete(true, 'Laporan berhasil dibuat');
-                }, 800);
+                generateReport();
             });
             
             $('#printReportBtn').click(printReport);
@@ -2761,14 +2269,8 @@
                 if (users.length <= 1) return showToast('Tidak dapat menghapus satu-satunya pengguna.', 'error');
                 if (userId === currentUser.id) return showToast('Anda tidak dapat menghapus akun Anda sendiri.', 'error');
                 showConfirmation('Hapus Pengguna', 'Yakin ingin menghapus pengguna ini?', () => {
-                    // PERBAIKAN: Gunakan notifikasi loading profesional
-                    const loading = showLoadingWithProgress('Menghapus Pengguna', 'Menghapus data pengguna...');
-                    
-                    setTimeout(() => {
-                        users = users.filter(u => u.id !== userId);
-                        saveUsers(); loadUsersForManagement();
-                        loading.complete(true, 'Pengguna berhasil dihapus');
-                    }, 500);
+                    users = users.filter(u => u.id !== userId);
+                    saveUsers(); loadUsersForManagement(); showToast('Pengguna dihapus', 'success');
                 }, 'danger');
             });
             
@@ -2867,15 +2369,9 @@
             $('#liveClock').text(timeString);
         }
 
-        // PERBAIKAN UTAMA: Fungsi untuk menampilkan welcome toast setelah login dengan posisi di tengah
+        // Fungsi untuk menampilkan welcome toast setelah login
         function showWelcomeToast() {
             const $welcomeToast = $('#welcomeToast');
-            const $welcomeBackdrop = $('#welcomeToastBackdrop');
-            
-            // Tampilkan backdrop
-            $welcomeBackdrop.addClass('show');
-            
-            // Tampilkan toast dengan animation
             $welcomeToast.addClass('show');
             
             // Reset countdown
@@ -2904,16 +2400,10 @@
             showToast(`Selamat datang ${currentUser.name}! di UMKM CASH - Aplikasi Kasir Terbaik untuk UMKM Anda. Mari wujudkan usaha mandiri yang tangguh dan berdaya saing!`, 'success');
         }
         
-        // PERBAIKAN UTAMA: Fungsi untuk menyembunyikan welcome toast
+        // Fungsi untuk menyembunyikan welcome toast
         function hideWelcomeToast() {
             const $welcomeToast = $('#welcomeToast');
-            const $welcomeBackdrop = $('#welcomeToastBackdrop');
-            
-            // Sembunyikan toast
             $welcomeToast.removeClass('show');
-            
-            // Sembunyikan backdrop
-            $welcomeBackdrop.removeClass('show');
             
             // Clear intervals/timeouts
             if (countdownInterval) {
@@ -3343,6 +2833,8 @@
                 netProfitMargin: netProfitMargin,
                 defaultCOGS: defaultCOGS
             });
+            
+            showToast('Perhitungan laba selesai', 'success');
         }
         
         // PERBAIKAN: Fungsi untuk generate laporan yang diperbaiki
@@ -3582,8 +3074,7 @@
             const reportData = $('#downloadProfitReportBtn').data('reportData');
             if (!reportData) return;
             
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Menyiapkan Laporan Laba', 'Membuat file PDF...');
+            showToast('Menyiapkan laporan laba PDF...', 'info');
             
             // Buat HTML untuk PDF
             const periodText = reportData.period === 'today' ? 'Hari Ini' : 
@@ -3735,19 +3226,18 @@
                     pdf.save(`Laporan_Laba_${settings.umkmName || 'UMKM'}_${moment().format('YYYYMMDD_HHmm')}.pdf`);
                     
                     document.body.removeChild(tempElement);
-                    loading.complete(true, 'Laporan laba berhasil diunduh');
+                    showToast('Laporan laba berhasil diunduh', 'success');
                 }).catch(err => {
                     console.error('Error generating PDF:', err);
                     document.body.removeChild(tempElement);
-                    loading.complete(false, 'Gagal membuat PDF');
+                    showToast('Gagal membuat PDF', 'error');
                 });
             }, 1000);
         }
         
         // Fungsi untuk download laporan shift sebagai PDF
         function downloadShiftReportAsPdf(shift) {
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Menyiapkan Laporan Shift', 'Membuat file PDF...');
+            showToast('Menyiapkan laporan shift PDF...', 'info');
             
             // Generate HTML untuk laporan shift (sama seperti di generateShiftReport)
             const shiftDuration = moment.duration(moment(shift.endTime).diff(moment(shift.startTime)));
@@ -3778,11 +3268,11 @@
                     pdf.save(`Laporan_Shift_${shift.id}_${moment(shift.endTime).format('YYYYMMDD')}.pdf`);
                     
                     document.body.removeChild(tempElement);
-                    loading.complete(true, 'Laporan shift berhasil diunduh');
+                    showToast('Laporan shift berhasil diunduh', 'success');
                 }).catch(err => {
                     console.error('Error generating PDF:', err);
                     document.body.removeChild(tempElement);
-                    loading.complete(false, 'Gagal membuat PDF');
+                    showToast('Gagal membuat PDF', 'error');
                 });
             }, 1000);
         }
@@ -4078,12 +3568,12 @@
             
             // Tampilkan modal
             $('#menuPdfModal').css('display', 'flex');
+            showToast('Preview daftar menu berhasil dibuat', 'success');
         }
         
         // PERBAIKAN UTAMA: Download Menu PDF dengan layout 4x4
         function downloadMenuPdf() {
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Menyiapkan PDF Menu', 'Membuat file PDF...');
+            showToast('Menyiapkan PDF untuk diunduh...', 'info');
             
             const element = document.getElementById('menuPdfContainer');
             
@@ -4095,7 +3585,7 @@
                 const totalImages = images.length;
                 
                 if (totalImages === 0) {
-                    generatePdfFromElement(element, loading);
+                    generatePdfFromElement(element);
                     return;
                 }
                 
@@ -4107,13 +3597,13 @@
                         img.onload = () => {
                             loadedImages++;
                             if (loadedImages === totalImages) {
-                                generatePdfFromElement(element, loading);
+                                generatePdfFromElement(element);
                             }
                         };
                         img.onerror = () => {
                             loadedImages++;
                             if (loadedImages === totalImages) {
-                                generatePdfFromElement(element, loading);
+                                generatePdfFromElement(element);
                             }
                         };
                     }
@@ -4121,18 +3611,18 @@
                 
                 // Jika semua gambar sudah dimuat
                 if (loadedImages === totalImages) {
-                    generatePdfFromElement(element, loading);
+                    generatePdfFromElement(element);
                 } else {
                     // Timeout untuk kasus gambar gagal dimuat
                     setTimeout(() => {
-                        generatePdfFromElement(element, loading);
+                        generatePdfFromElement(element);
                     }, 2000);
                 }
             }, 1000);
         }
         
         // Fungsi bantu untuk generate PDF dari element dengan layout 4x4
-        function generatePdfFromElement(element, loading) {
+        function generatePdfFromElement(element) {
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
@@ -4189,10 +3679,10 @@
                 // Simpan PDF
                 const fileName = `Daftar_Menu_${settings.umkmName || 'UMKM'}_${moment().format('YYYYMMDD_HHmm')}.pdf`;
                 pdf.save(fileName);
-                loading.complete(true, `PDF berhasil diunduh: ${fileName} (${pageCount} halaman)`);
+                showToast(`PDF berhasil diunduh: ${fileName} (${pageCount} halaman)`, 'success');
             }).catch(error => {
                 console.error('Error generating PDF:', error);
-                loading.complete(false, 'Gagal membuat PDF');
+                showToast('Gagal membuat PDF', 'error');
             });
         }
         
@@ -4349,83 +3839,55 @@
             e.preventDefault();
             const id = $('#userIdInput').val(), name = $('#userName').val().trim(), username = $('#userUsername').val().trim(), password = $('#userPassword').val(), role = $('#userRole').val();
             if (!name || !username) { showToast('Nama dan username harus diisi.', 'error'); return; }
-            
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Menyimpan Pengguna', 'Menyimpan data pengguna...');
-            
-            setTimeout(() => {
-                try {
-                    if (id) {
-                        const userIndex = users.findIndex(u => u.id === id);
-                        if (userIndex !== -1) { 
-                            users[userIndex].name = name; 
-                            users[userIndex].role = role; 
-                            if (password) users[userIndex].password = CryptoJS.SHA256(password).toString(); 
-                            
-                            // Reset permissions jika role berubah
-                            if (role !== users[userIndex].role) {
-                                users[userIndex].permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
-                            }
-                        }
-                    } else {
-                        if (!password) { 
-                            loading.complete(false, 'Password harus diisi untuk pengguna baru.');
-                            return; 
-                        }
-                        if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) { 
-                            loading.complete(false, 'Username sudah digunakan.');
-                            return; 
-                        }
-                        
-                        // Set default permissions berdasarkan role
-                        const permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
-                        
-                        users.push({ 
-                            id: 'U' + moment().format('x'), 
-                            name, 
-                            username, 
-                            password: CryptoJS.SHA256(password).toString(), 
-                            role,
-                            permissions
-                        });
+            if (id) {
+                const userIndex = users.findIndex(u => u.id === id);
+                if (userIndex !== -1) { 
+                    users[userIndex].name = name; 
+                    users[userIndex].role = role; 
+                    if (password) users[userIndex].password = CryptoJS.SHA256(password).toString(); 
+                    
+                    // Reset permissions jika role berubah
+                    if (role !== users[userIndex].role) {
+                        users[userIndex].permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
                     }
-                    saveUsers(); 
-                    loadUsersForManagement(); 
-                    loadPermissionsUserSelect();
-                    $('#userFormContainer').slideUp(resetUserForm);
-                    loading.complete(true, `Pengguna berhasil ${id ? 'diperbarui' : 'ditambahkan'}.`);
-                } catch (error) {
-                    loading.complete(false, 'Gagal menyimpan pengguna');
                 }
-            }, 500);
+            } else {
+                if (!password) { showToast('Password harus diisi untuk pengguna baru.', 'error'); return; }
+                if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) { showToast('Username sudah digunakan.', 'error'); return; }
+                
+                // Set default permissions berdasarkan role
+                const permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
+                
+                users.push({ 
+                    id: 'U' + moment().format('x'), 
+                    name, 
+                    username, 
+                    password: CryptoJS.SHA256(password).toString(), 
+                    role,
+                    permissions
+                });
+            }
+            saveUsers(); 
+            loadUsersForManagement(); 
+            loadPermissionsUserSelect();
+            $('#userFormContainer').slideUp(resetUserForm);
+            showToast(`Pengguna berhasil ${id ? 'diperbarui' : 'ditambahkan'}.`, 'success');
         }
         
         function backupData() {
             try {
-                // PERBAIKAN: Gunakan notifikasi loading profesional
-                const loading = showLoadingWithProgress('Membuat Backup', 'Mengenkripsi data...');
-                
-                setTimeout(() => {
-                    const backup = { menus, categories, orders, settings, users, members, shiftData, profitSettings, backupDate: new Date().toISOString() };
-                    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
-                    const linkElement = document.createElement('a');
-                    linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
-                    linkElement.download = `backup_umkm_cash_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
-                    linkElement.click();
-                    loading.complete(true, 'Backup data terenkripsi berhasil');
-                }, 800);
-            } catch (err) { 
-                showToast('Gagal membuat backup terenkripsi', 'error'); 
-                console.error("Backup encryption error:", err); 
-            }
+                const backup = { menus, categories, orders, settings, users, members, shiftData, profitSettings, backupDate: new Date().toISOString() };
+                const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
+                const linkElement = document.createElement('a');
+                linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
+                linkElement.download = `backup_umkm_cash_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
+                linkElement.click();
+                showToast('Backup data terenkripsi berhasil', 'success');
+            } catch (err) { showToast('Gagal membuat backup terenkripsi', 'error'); console.error("Backup encryption error:", err); }
         }
         
         function restoreFromFile(file) {
             if (!file) return;
-            
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Restore Data', 'Membaca file backup...');
-            
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
@@ -4433,19 +3895,14 @@
                     if (!decryptedString) throw new Error("Decryption failed.");
                     const data = JSON.parse(decryptedString);
                     if (data.menus && data.categories && data.orders && data.settings && data.users && data.members) {
-                        showConfirmation('Restore Data', 'Data saat ini akan diganti oleh file backup. Lanjutkan?', () => restoreData(data, loading));
-                    } else { 
-                        loading.complete(false, 'File backup tidak valid atau rusak.');
-                    }
-                } catch (err) { 
-                    loading.complete(false, 'Gagal memproses file backup. File mungkin rusak atau bukan file backup yang valid.');
-                    console.error("Restore error:", err); 
-                }
+                        showConfirmation('Restore Data', 'Data saat ini akan diganti oleh file backup. Lanjutkan?', () => restoreData(data));
+                    } else { showToast('File backup tidak valid atau rusak.', 'error'); }
+                } catch (err) { showToast('Gagal memproses file backup. File mungkin rusak atau bukan file backup yang valid.', 'error'); console.error("Restore error:", err); }
             };
             reader.readAsText(file);
         }
         
-        function restoreData(data, loading) { 
+        function restoreData(data) { 
             try { 
                 Object.keys(STORAGE_KEYS).forEach(key => {
                     const dataKey = key.toLowerCase().slice(0, -1) + 's';
@@ -4453,33 +3910,18 @@
                         localStorage.setItem(STORAGE_KEYS[key], JSON.stringify(data[dataKey]));
                     }
                 }); 
-                loading.complete(true, 'Restore data berhasil. Halaman akan dimuat ulang.');
-                setTimeout(() => {
-                    location.reload(); 
-                }, 1500);
+                location.reload(); 
             } catch (e) { 
-                loading.complete(false, 'Gagal melakukan restore data');
+                showToast('Gagal melakukan restore data', 'error'); 
                 console.error("Restore error:", e);
             } 
         }
         
         function resetAllData() { 
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Reset Data', 'Menghapus semua data...');
-            
-            setTimeout(() => {
-                try {
-                    Object.values(STORAGE_KEYS).forEach(key => { 
-                        if (key !== STORAGE_KEYS.USER) localStorage.removeItem(key); 
-                    }); 
-                    loading.complete(true, 'Reset data berhasil. Halaman akan dimuat ulang.');
-                    setTimeout(() => {
-                        location.reload(); 
-                    }, 1500);
-                } catch (error) {
-                    loading.complete(false, 'Gagal melakukan reset data');
-                }
-            }, 800);
+            Object.values(STORAGE_KEYS).forEach(key => { 
+                if (key !== STORAGE_KEYS.USER) localStorage.removeItem(key); 
+            }); 
+            location.reload(); 
         }
         
         function openEditMenuModal(menu) {
@@ -4730,7 +4172,7 @@
             const member = members.find(m => m.id === order.memberId);
             return `<div id="receiptContent">
                 <div class="receipt-header">
-                    <img src="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/umkmcash/umkmcash.png" alt="Logo" style="width: 80px; margin-bottom: 5px;">
+                    <img src="https://raw.githubusercontent.com/anekamarket/tester/refs/heads/main/logo-cafe.png" alt="Logo" style="width: 80px; margin-bottom: 5px;">
                     <div class="receipt-title">${settings.umkmName} <span class="premium-badge">PREMIUM</span></div>
                     <div>${settings.storeAddress}</div>
                     <div>Telp: ${settings.storePhone}</div>
@@ -4769,82 +4211,50 @@
         }
         
         function showReceiptModal(order) {
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Membuat Struk', 'Menyiapkan struk pembayaran...');
-            
-            setTimeout(() => {
-                $('#receiptModalBody').html(generateReceiptHTML(order));
-                const qrCodeData = JSON.stringify({ trxId: order.id, store: settings.umkmName, date: moment(order.date).toISOString(), total: order.total });
-                $('#receiptQrcode').empty();
-                new QRCode(document.getElementById("receiptQrcode"), { text: qrCodeData, width: 80, height: 80, correctLevel: QRCode.CorrectLevel.M });
-                $('#downloadReceiptPdfBtn').data('order', order);
-                $('#receiptModal').css('display', 'flex');
-                loading.complete(true, 'Struk berhasil dibuat');
-            }, 500);
+            showToast('Membuat struk...', 'info');
+            $('#receiptModalBody').html(generateReceiptHTML(order));
+            const qrCodeData = JSON.stringify({ trxId: order.id, store: settings.umkmName, date: moment(order.date).toISOString(), total: order.total });
+            $('#receiptQrcode').empty();
+            new QRCode(document.getElementById("receiptQrcode"), { text: qrCodeData, width: 80, height: 80, correctLevel: QRCode.CorrectLevel.M });
+            $('#downloadReceiptPdfBtn').data('order', order);
+            $('#receiptModal').css('display', 'flex');
         }
         
         function downloadReceiptAsPdf() {
             const order = $('#downloadReceiptPdfBtn').data('order');
             if (!order) return;
-            
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Mengunduh Struk PDF', 'Membuat file PDF...');
-            
             const element = document.getElementById('receiptModalBody').querySelector('#receiptContent');
-            
-            setTimeout(() => {
-                html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
-                    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
-                    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
-                    pdf.save(`Struk-${order.id}-${moment(order.date).format('DD-MM-YYYY')}.pdf`);
-                    loading.complete(true, 'Struk PDF berhasil diunduh');
-                }).catch(err => { 
-                    loading.complete(false, 'Gagal mengunduh PDF');
-                    console.error("PDF download error:", err); 
-                });
-            }, 500);
+            showToast('Mengunduh PDF...', 'info');
+            html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
+                pdf.save(`Struk-${order.id}-${moment(order.date).format('DD-MM-YYYY')}.pdf`);
+            }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF download error:", err); });
         }
         
         function openKtaModal(memberId) {
             const member = members.find(m => m.id === memberId); if (!member) return;
-            
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Membuat Kartu Member', 'Menyiapkan kartu tanda anggota...');
-            
             $('#ktaStoreName').text(settings.umkmName);
             $('#ktaStoreContact').text(`${settings.storeAddress} • ${settings.storePhone}`);
             $('#ktaMemberName').text(member.name); $('#ktaMemberId').text(`ID: ${member.id}`);
-            
-            setTimeout(() => {
-                const qrContainer = document.getElementById("ktaQrcodeImg");
-                $(qrContainer).empty();
-                const qrCodeData = JSON.stringify({ memberId: member.id, name: member.name, phone: member.phone, store: settings.umkmName, joinDate: member.joinDate });
-                new QRCode(qrContainer, { text: qrCodeData, width: 160, height: 160, correctLevel : QRCode.CorrectLevel.H });
-                $('#downloadKtaPdfBtn').data('member', member);
-                $('#ktaModal').css('display', 'flex');
-                loading.complete(true, 'Kartu member berhasil dibuat');
-            }, 500);
+            showToast('Membuat kartu...', 'info');
+            const qrContainer = document.getElementById("ktaQrcodeImg");
+            $(qrContainer).empty();
+            const qrCodeData = JSON.stringify({ memberId: member.id, name: member.name, phone: member.phone, store: settings.umkmName, joinDate: member.joinDate });
+            new QRCode(qrContainer, { text: qrCodeData, width: 160, height: 160, correctLevel : QRCode.CorrectLevel.H });
+            $('#downloadKtaPdfBtn').data('member', member);
+            $('#ktaModal').css('display', 'flex');
         }
         
         function downloadKtaAsPdf() {
             const member = $('#downloadKtaPdfBtn').data('member'); if (!member) return;
-            
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Mengunduh Kartu PDF', 'Membuat file PDF...');
-            
             const element = document.getElementById('ktaCard');
-            
-            setTimeout(() => {
-                html2canvas(element, { scale: 2, useCORS: true, allowTaint: true }).then(canvas => {
-                    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
-                    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
-                    pdf.save(`KTA-${member.name.replace(/\s/g, '_')}-${member.id}.pdf`);
-                    loading.complete(true, 'Kartu PDF berhasil diunduh');
-                }).catch(err => { 
-                    loading.complete(false, 'Gagal mengunduh PDF KTA');
-                    console.error("KTA PDF error:", err); 
-                });
-            }, 500);
+            showToast('Mempersiapkan PDF...', 'info');
+            html2canvas(element, { scale: 2, useCORS: true, allowTaint: true }).then(canvas => {
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
+                pdf.save(`KTA-${member.name.replace(/\s/g, '_')}-${member.id}.pdf`);
+            }).catch(err => { showToast('Gagal mengunduh PDF KTA', 'error'); console.error("KTA PDF error:", err); });
         }
         
         function printElement(selector) {
@@ -4874,26 +4284,18 @@
         }
         
         function downloadHistoryAsPdf() {
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Mengunduh Histori PDF', 'Membuat file PDF...');
-            
             const element = document.getElementById('historyResults');
-            
-            setTimeout(() => {
-                html2canvas(element, { scale: 2, useCORS: true, windowWidth: element.scrollWidth, windowHeight: element.scrollHeight }).then(canvas => {
-                    const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-                    const pdfWidth = pdf.internal.pageSize.getWidth(), pdfHeight = pdf.internal.pageSize.getHeight(), canvasAspectRatio = canvas.width / canvas.height, scaledHeight = pdfWidth / canvasAspectRatio;
-                    let heightLeft = scaledHeight, position = 10;
-                    pdf.setFontSize(18); pdf.text("Histori Transaksi UMKM CASH", pdfWidth / 2, position, { align: 'center' }); position += 10;
-                    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, position, pdfWidth - 20, scaledHeight);
-                    for (heightLeft -= (pdfHeight - position - 10); heightLeft > 0; heightLeft -= pdfHeight) { position = -heightLeft; pdf.addPage(); pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, position, pdfWidth - 20, scaledHeight); }
-                    pdf.save(`Histori_Transaksi_UMKM_CASH_${moment().format('YYYY-MM-DD')}.pdf`);
-                    loading.complete(true, 'Histori PDF berhasil diunduh');
-                }).catch(err => { 
-                    loading.complete(false, 'Gagal mengunduh PDF');
-                    console.error("PDF history download error:", err); 
-                });
-            }, 500);
+            showToast('Mengunduh PDF Histori...', 'info');
+            html2canvas(element, { scale: 2, useCORS: true, windowWidth: element.scrollWidth, windowHeight: element.scrollHeight }).then(canvas => {
+                const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+                const pdfWidth = pdf.internal.pageSize.getWidth(), pdfHeight = pdf.internal.pageSize.getHeight(), canvasAspectRatio = canvas.width / canvas.height, scaledHeight = pdfWidth / canvasAspectRatio;
+                let heightLeft = scaledHeight, position = 10;
+                pdf.setFontSize(18); pdf.text("Histori Transaksi UMKM CASH", pdfWidth / 2, position, { align: 'center' }); position += 10;
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, position, pdfWidth - 20, scaledHeight);
+                for (heightLeft -= (pdfHeight - position - 10); heightLeft > 0; heightLeft -= pdfHeight) { position = -heightLeft; pdf.addPage(); pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, position, pdfWidth - 20, scaledHeight); }
+                pdf.save(`Histori_Transaksi_UMKM_CASH_${moment().format('YYYY-MM-DD')}.pdf`);
+                showToast('PDF berhasil diunduh.', 'success');
+            }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF history download error:", err); });
         }
         
         function printReport() {
@@ -4908,29 +4310,26 @@
                 return;
             }
             
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Mengunduh Laporan PDF', 'Membuat file PDF...');
+            showToast('Mengunduh Laporan PDF Profesional...', 'info');
             
-            setTimeout(() => {
-                html2canvas(element, { 
-                    scale: 2, 
-                    useCORS: true,
-                    logging: false,
-                    backgroundColor: '#ffffff'
-                }).then(canvas => {
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-                    const imgData = canvas.toDataURL('image/png', 1.0);
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                    
-                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                    pdf.save(`Laporan_Penjualan_Profesional_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
-                    loading.complete(true, 'Laporan PDF berhasil diunduh');
-                }).catch(err => { 
-                    loading.complete(false, 'Gagal mengunduh PDF');
-                    console.error("PDF report download error:", err); 
-                });
-            }, 500);
+            html2canvas(element, { 
+                scale: 2, 
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png', 1.0);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`Laporan_Penjualan_Profesional_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
+                showToast('Laporan PDF berhasil diunduh', 'success');
+            }).catch(err => { 
+                showToast('Gagal mengunduh PDF', 'error'); 
+                console.error("PDF report download error:", err); 
+            });
         }
         
         function updateStoreInfo() { 
@@ -4949,23 +4348,14 @@
         
         function saveStoreInfo(e) {
             e.preventDefault();
-            // PERBAIKAN: Gunakan notifikasi loading profesional
-            const loading = showLoadingWithProgress('Menyimpan Info Restoran', 'Menyimpan data restoran...');
-            
-            setTimeout(() => {
-                try {
-                    settings.umkmName = $('#umkmName').val().trim();
-                    settings.storeAddress = $('#storeAddress').val().trim();
-                    settings.storePhone = $('#storePhone').val().trim();
-                    settings.storeEmail = $('#storeEmail').val().trim();
-                    settings.tableCount = parseInt($('#tableCount').val()) || 5;
-                    saveSettings(); updateStoreInfo(); updateTableNumbers();
-                    $('#manageStoreInfoModal').hide();
-                    loading.complete(true, 'Info restoran berhasil disimpan');
-                } catch (error) {
-                    loading.complete(false, 'Gagal menyimpan info restoran');
-                }
-            }, 500);
+            settings.umkmName = $('#umkmName').val().trim();
+            settings.storeAddress = $('#storeAddress').val().trim();
+            settings.storePhone = $('#storePhone').val().trim();
+            settings.storeEmail = $('#storeEmail').val().trim();
+            settings.tableCount = parseInt($('#tableCount').val()) || 5;
+            saveSettings(); updateStoreInfo(); updateTableNumbers();
+            $('#manageStoreInfoModal').hide();
+            showToast('Info restoran berhasil disimpan', 'success');
         }
         
         function updateTableNumbers() {
@@ -4978,17 +4368,8 @@
         }
         
         function showToast(message, type = 'info') {
-            const $toast = $('#toast').removeClass('success error warning info').addClass(type);
+            const $toast = $('#toast').removeClass('success error warning').addClass(type);
             $('#toast-message').text(message);
-            
-            // Set icon berdasarkan type
-            let iconClass = 'fa-info-circle';
-            if (type === 'success') iconClass = 'fa-check-circle';
-            else if (type === 'error') iconClass = 'fa-exclamation-circle';
-            else if (type === 'warning') iconClass = 'fa-exclamation-triangle';
-            
-            $toast.find('i').removeClass().addClass('fas ' + iconClass);
-            
             $toast.addClass('show');
             setTimeout(() => $toast.removeClass('show'), 3000);
         }
