@@ -690,7 +690,7 @@
             resize: vertical;
         }
 
-        /* DESAIN LOGIN */
+        /* PERBAIKAN UTAMA: Desain Login Responsif untuk Semua Device */
         #loginModal {
             background: linear-gradient(45deg, #f0f2f5, #e6e9ed);
             display: flex;
@@ -699,11 +699,20 @@
             padding: 20px;
             overflow-y: auto;
             position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            /* PERBAIKAN: Pastikan modal login selalu fullscreen */
+            width: 100%;
+            height: 100%;
         }
 
         .login-container {
             width: 100%;
             max-width: 400px;
+            min-width: 300px;
             margin: 0;
             background: var(--white);
             border-radius: var(--rounded-lg);
@@ -711,6 +720,9 @@
             box-shadow: var(--shadow);
             border-top: 5px solid var(--primary);
             animation: fadeIn 0.4s;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .login-header {
@@ -730,10 +742,44 @@
             color: var(--dark);
             font-weight: 700;
             letter-spacing: 1px;
+            /* PERBAIKAN: Responsif untuk judul */
+            font-size: clamp(1.5rem, 4vw, 2rem);
         }
         
         .login-header p {
             color: var(--gray);
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        /* PERBAIKAN: Media query untuk login */
+        @media (max-height: 600px) {
+            .login-container {
+                padding: 20px;
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+            
+            .login-logo {
+                font-size: 2.5rem;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .login-container {
+                padding: 20px;
+            }
+            
+            .login-logo {
+                font-size: 2.5rem;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
         }
 
         /* Welcome Toast dengan animasi khusus */
@@ -1159,6 +1205,11 @@
                 flex: 1;
                 min-width: 0;
             }
+            
+            /* PERBAIKAN: Admin grid untuk tablet */
+            .admin-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         /* Penyesuaian untuk layar sangat kecil */
@@ -1211,6 +1262,10 @@
             .menu-grid {
                 grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             }
+            
+            .admin-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         /* PERBAIKAN: Penyesuaian untuk landscape mobile */
@@ -1227,6 +1282,16 @@
             .menu-panel, .order-panel {
                 max-height: 50vh;
                 overflow-y: auto;
+            }
+            
+            /* PERBAIKAN: Login modal untuk landscape */
+            #loginModal {
+                padding: 10px;
+            }
+            
+            .login-container {
+                padding: 20px;
+                max-height: 95vh;
             }
         }
 
@@ -1879,6 +1944,282 @@
                 overflow-y: auto;
             }
         }
+
+        /* PERBAIKAN BARU: Styling untuk PDF Laporan yang Lebih Profesional */
+        .professional-pdf {
+            font-family: 'Poppins', sans-serif;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: white;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        .pdf-report-header {
+            text-align: center;
+            border-bottom: 3px double var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-report-header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .pdf-report-header h2 {
+            color: var(--secondary);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .pdf-report-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: var(--rounded-sm);
+            border: 1px solid #eee;
+        }
+
+        .pdf-report-info div {
+            font-size: 11px;
+        }
+
+        .pdf-report-info strong {
+            color: var(--dark);
+        }
+
+        .pdf-report-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-summary-card {
+            background: linear-gradient(135deg, var(--primary-light), #c3e6cb);
+            padding: 15px;
+            border-radius: var(--rounded);
+            text-align: center;
+            border: 1px solid var(--primary);
+        }
+
+        .pdf-summary-card h3 {
+            font-size: 12px;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .pdf-summary-card p {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .pdf-table-container {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        .pdf-table th {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #ddd;
+        }
+
+        .pdf-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .pdf-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .pdf-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .pdf-chart-container {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: var(--rounded);
+            background: #f8f9fa;
+        }
+
+        .pdf-footer-signature {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--primary);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .pdf-signature-box {
+            text-align: center;
+        }
+
+        .pdf-signature-line {
+            margin-top: 60px;
+            border-top: 1px solid #333;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* PERBAIKAN BARU: Styling untuk Modal Cash Management dan Profit Calculation */
+        .cash-management-container {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: var(--rounded);
+            margin-bottom: 20px;
+        }
+
+        .cash-summary-card {
+            background: white;
+            padding: 15px;
+            border-radius: var(--rounded);
+            border: 2px solid var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .cash-summary-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .cash-summary-card p {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .shift-status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .shift-open {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .shift-closed {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .profit-calculation-container {
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: var(--rounded);
+            border: 1px solid #dee2e6;
+        }
+
+        .profit-input-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profit-result-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--rounded);
+            border: 2px solid var(--success);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profit-result-card h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .profit-result-card p {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .profit-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .breakdown-item {
+            background: white;
+            padding: 10px;
+            border-radius: var(--rounded-sm);
+            border: 1px solid #dee2e6;
+        }
+
+        .breakdown-item label {
+            font-size: 12px;
+            color: var(--gray);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .breakdown-item span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* PERBAIKAN: Tombol di admin panel untuk fitur baru */
+        .btn-shift {
+            background: linear-gradient(90deg, var(--success), #218838);
+            color: white;
+        }
+
+        .btn-shift:hover {
+            background: linear-gradient(90deg, #218838, #1e7e34);
+        }
+
+        .btn-profit {
+            background: linear-gradient(90deg, var(--warning), #e0a800);
+            color: #000;
+        }
+
+        .btn-profit:hover {
+            background: linear-gradient(90deg, #e0a800, #d39e00);
+        }
     </style>
 </head>
 <body>
@@ -1902,6 +2243,181 @@
     <div id="toast" class="toast">
         <i class="fas fa-info-circle"></i>
         <span id="toast-message">Notification message</span>
+    </div>
+
+    <!-- Modal untuk Input Uang Kas Awal -->
+    <div id="cashStartModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Input Uang Kas Awal Shift</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="cash-management-container">
+                    <p>Silakan input jumlah uang kas yang tersedia untuk memulai shift penjualan hari ini.</p>
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Uang Kas Awal (Rp)</label>
+                        <input type="number" id="initialCashAmount" class="form-control" placeholder="Masukkan jumlah uang kas" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Catatan (Opsional)</label>
+                        <textarea id="cashNote" class="form-control" placeholder="Contoh: Uang kas dari shift sebelumnya" rows="3"></textarea>
+                    </div>
+                    <div class="cash-summary-card">
+                        <h3>Shift yang akan dimulai</h3>
+                        <p id="shiftDateDisplay"></p>
+                        <p>Kasir: <strong id="shiftCashierName"></strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn" id="cancelShiftBtn">Batal</button>
+                <button class="btn btn-success" id="startShiftBtn">Mulai Shift</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Tutup Shift -->
+    <div id="closeShiftModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Tutup Shift Penjualan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="cash-management-container">
+                    <div class="shift-status-badge shift-open">SHIFT AKTIF</div>
+                    
+                    <div class="cash-summary-card">
+                        <h3>Uang Kas Awal</h3>
+                        <p id="initialCashDisplay">Rp 0</p>
+                    </div>
+                    
+                    <div class="profit-calculation-container">
+                        <h4 class="panel-title">Rincian Penjualan Shift</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Total Penjualan Kotor</label>
+                            <input type="number" id="totalSalesAmount" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="profit-input-group">
+                            <div class="form-group">
+                                <label class="form-label">Pengeluaran Hari Ini (Rp)</label>
+                                <input type="number" id="dailyExpenses" class="form-control" placeholder="Total pengeluaran" min="0" value="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Pendapatan Lainnya (Rp)</label>
+                                <input type="number" id="otherIncome" class="form-control" placeholder="Pendapatan tambahan" min="0" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Uang Kas Fisik yang Terhitung (Rp)</label>
+                            <input type="number" id="actualCashCount" class="form-control" placeholder="Jumlah uang kas fisik" min="0" required>
+                        </div>
+                        
+                        <div class="profit-result-card">
+                            <h4>Selisih Kas</h4>
+                            <p id="cashDifference">Rp 0</p>
+                        </div>
+                        
+                        <div class="profit-breakdown">
+                            <div class="breakdown-item">
+                                <label>Uang Kas Seharusnya</label>
+                                <span id="expectedCash">Rp 0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Uang Kas Aktual</label>
+                                <span id="actualCash">Rp 0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Catatan Penutupan Shift</label>
+                        <textarea id="shiftCloseNote" class="form-control" placeholder="Catatan penting untuk shift ini" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Batal</button>
+                <button class="btn btn-success" id="confirmCloseShiftBtn">Tutup Shift</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Perhitungan Laba -->
+    <div id="profitCalculationModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Perhitungan Laba</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab active" data-tab="profitReport"><i class="fas fa-chart-line"></i> Laporan Laba</div>
+                    <div class="tab" data-tab="profitSettings"><i class="fas fa-cog"></i> Pengaturan</div>
+                </div>
+                
+                <div class="tab-content active" id="profitReportTab">
+                    <div class="form-group mt-3">
+                        <label class="form-label">Periode Perhitungan</label>
+                        <select id="profitPeriod" class="form-control">
+                            <option value="today">Hari Ini</option>
+                            <option value="week">Minggu Ini</option>
+                            <option value="month">Bulan Ini</option>
+                            <option value="custom">Rentang Tanggal</option>
+                        </select>
+                    </div>
+                    
+                    <div id="profitCustomDateRange" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Dari Tanggal</label>
+                            <input type="date" id="profitStartDate" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sampai Tanggal</label>
+                            <input type="date" id="profitEndDate" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-success mt-2" id="calculateProfitBtn">Hitung Laba</button>
+                    
+                    <div id="profitResults" class="mt-3"></div>
+                </div>
+                
+                <div class="tab-content" id="profitSettingsTab">
+                    <div class="cash-management-container">
+                        <h4 class="panel-title">Pengaturan Perhitungan Laba</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Persentase HPP (Harga Pokok Penjualan) Default (%)</label>
+                            <input type="number" id="defaultCOGS" class="form-control" min="0" max="100" value="60">
+                            <small class="form-text text-muted">Persentase default untuk menghitung HPP dari total penjualan</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Biaya Operasional Tetap Bulanan (Rp)</label>
+                            <input type="number" id="monthlyFixedCost" class="form-control" min="0" value="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Kode Keamanan Akses Laba</label>
+                            <input type="password" id="profitSecurityCode" class="form-control" placeholder="Masukkan kode keamanan">
+                            <small class="form-text text-muted">Kode ini diperlukan untuk mengakses fitur perhitungan laba</small>
+                        </div>
+                        
+                        <button class="btn btn-success" id="saveProfitSettingsBtn">Simpan Pengaturan</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-info" id="downloadProfitReportBtn" style="display: none;"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+            </div>
+        </div>
     </div>
 
     <div id="loginModal" class="modal" style="display: flex;">
@@ -1958,6 +2474,7 @@
             </div>
             <div class="header-info">
                 <p>Kasir: <span id="loggedInUser">Admin</span></p>
+                <p>Shift: <span id="shiftStatus" class="shift-status-badge shift-open">Aktif</span></p>
                 <p><a href="#" id="logoutBtn" style="color: white;">Logout</a></p>
             </div>
         </header>
@@ -1994,6 +2511,9 @@
                         <button id="controlPanelBtn" class="btn btn-sm btn-warning">Kontrol Panel</button>
                         <!-- TOMBOL BARU: Generate Daftar Menu PDF -->
                         <button id="generateMenuPdfBtn" class="btn btn-sm btn-info">Generate Daftar Menu PDF</button>
+                        <!-- TOMBOL BARU: Fitur Shift dan Laba -->
+                        <button id="closeShiftBtn" class="btn btn-sm btn-shift">Tutup Shift</button>
+                        <button id="profitCalculationBtn" class="btn btn-sm btn-profit">Hitung Laba</button>
                     </div>
                     
                     <div class="mt-3">
@@ -2431,6 +2951,7 @@
                     <div class="tab active" data-tab="users"><i class="fas fa-users-cog"></i> Pengguna</div>
                     <div class="tab" data-tab="security"><i class="fas fa-shield-alt"></i> Keamanan</div>
                     <div class="tab" data-tab="permissions"><i class="fas fa-key"></i> Hak Akses</div>
+                    <div class="tab" data-tab="shiftSettings"><i class="fas fa-cash-register"></i> Pengaturan Shift & Laba</div>
                 </div>
 
                 <div class="tab-content active" id="usersTab">
@@ -2659,11 +3180,80 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- PERBAIKAN: Tambah permission untuk fitur baru -->
+                        <div class="permission-group">
+                            <h5>Fitur Baru</h5>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Manajemen Shift</div>
+                                    <div class="permission-description">Akses untuk membuka dan menutup shift</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="shift_management" id="perm_shift_management">
+                                    <label for="perm_shift_management"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Perhitungan Laba</div>
+                                    <div class="permission-description">Akses untuk menghitung dan melihat laporan laba</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="profit_calculation" id="perm_profit_calculation">
+                                    <label for="perm_profit_calculation"></label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div id="permissionsActions" class="d-flex gap-2 mt-3" style="display: none;">
                         <button type="button" class="btn btn-sm btn-warning" id="resetPermissionsBtn">Reset ke Default</button>
                         <button type="button" class="btn btn-sm btn-success" id="savePermissionsBtn">Simpan Hak Akses</button>
+                    </div>
+                </div>
+                
+                <!-- PERBAIKAN: Tab baru untuk pengaturan shift dan laba -->
+                <div class="tab-content" id="shiftSettingsTab">
+                    <h4 class="mt-3">Pengaturan Shift & Perhitungan Laba</h4>
+                    
+                    <div class="cash-management-container">
+                        <h5 class="panel-title">Pengaturan Shift</h5>
+                        <div class="form-group">
+                            <label class="form-label">Waktu Shift Default (Jam)</label>
+                            <input type="number" id="defaultShiftHours" class="form-control" min="1" max="24" value="8">
+                            <small class="form-text text-muted">Durasi default shift penjualan dalam jam</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Auto Close Shift</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="autoCloseShift" class="form-check-input">
+                                <label class="form-check-label" for="autoCloseShift">Otomatis tutup shift setelah waktu tertentu</label>
+                            </div>
+                        </div>
+                        
+                        <hr class="mt-3 mb-3">
+                        
+                        <h5 class="panel-title">Pengaturan Perhitungan Laba</h5>
+                        <div class="form-group">
+                            <label class="form-label">Kode Keamanan Akses Laba</label>
+                            <input type="password" id="profitAccessCode" class="form-control" placeholder="Masukkan kode keamanan">
+                            <small class="form-text text-muted">Kode ini diperlukan untuk mengakses fitur perhitungan laba</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Konfirmasi Kode Keamanan</label>
+                            <input type="password" id="profitAccessCodeConfirm" class="form-control" placeholder="Konfirmasi kode keamanan">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Persentase HPP Default (%)</label>
+                            <input type="number" id="defaultProfitCOGS" class="form-control" min="0" max="100" value="60">
+                            <small class="form-text text-muted">Persentase default Harga Pokok Penjualan</small>
+                        </div>
+                        
+                        <button class="btn btn-success" id="saveShiftProfitSettingsBtn">Simpan Pengaturan</button>
                     </div>
                 </div>
             </div>
@@ -2783,7 +3373,9 @@
             CURRENT_ORDER: 'warungmakan_current_order',
             SETTINGS: 'warungmakan_settings',
             USERS: 'warungmakan_users',
-            MEMBERS: 'warungmakan_members'
+            MEMBERS: 'warungmakan_members',
+            SHIFT_DATA: 'warungmakan_shift_data',
+            PROFIT_SETTINGS: 'warungmakan_profit_settings'
         };
 
         // Kunci rahasia untuk enkripsi dan dekripsi file backup.
@@ -2807,7 +3399,9 @@
                 kitchen_display: true,
                 control_panel: true,
                 backup_restore: true,
-                reset_data: true
+                reset_data: true,
+                shift_management: true,
+                profit_calculation: true
             }
         };
         
@@ -2829,7 +3423,9 @@
                 kitchen_display: true,
                 control_panel: false,
                 backup_restore: false,
-                reset_data: false
+                reset_data: false,
+                shift_management: true,
+                profit_calculation: false
             }
         };
         
@@ -2859,7 +3455,9 @@
                 kitchen_display: true,
                 control_panel: true,
                 backup_restore: true,
-                reset_data: true
+                reset_data: true,
+                shift_management: true,
+                profit_calculation: true
             },
             cashier: {
                 add_menu: false,
@@ -2873,16 +3471,20 @@
                 kitchen_display: true,
                 control_panel: false,
                 backup_restore: false,
-                reset_data: false
+                reset_data: false,
+                shift_management: true,
+                profit_calculation: false
             }
         };
 
         let menus, categories, orders, settings, users, members, currentUser, currentOrder;
+        let shiftData, profitSettings;
         let kitchenInterval;
         let passwordPromptCallback = null;
         let captchaText = '';
         let welcomeToastTimeout = null;
         let countdownInterval = null;
+        let currentShift = null;
         
         function initializeData() {
             let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
@@ -2925,7 +3527,25 @@
                     itemSecurityCode: CryptoJS.SHA256('01234567').toString(), 
                     panelSecurityCode: CryptoJS.SHA256('11223344').toString(), 
                     memberDiscountPercent: 2, 
-                    nonMemberDiscountPercent: 0
+                    nonMemberDiscountPercent: 0,
+                    profitAccessCode: CryptoJS.SHA256('labarugi2025').toString(),
+                    defaultCOGS: 60,
+                    defaultShiftHours: 8
+                }));
+            }
+            
+            if (!localStorage.getItem(STORAGE_KEYS.SHIFT_DATA)) {
+                localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify({
+                    currentShift: null,
+                    shiftHistory: []
+                }));
+            }
+            
+            if (!localStorage.getItem(STORAGE_KEYS.PROFIT_SETTINGS)) {
+                localStorage.setItem(STORAGE_KEYS.PROFIT_SETTINGS, JSON.stringify({
+                    defaultCOGS: 60,
+                    monthlyFixedCost: 0,
+                    profitAccessCode: CryptoJS.SHA256('labarugi2025').toString()
                 }));
             }
         }
@@ -2943,16 +3563,35 @@
             currentOrder = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_ORDER)) || {
                 items: [], subtotal: 0, total: 0, discount: 0, type: 'dinein', tableNumber: '1', note: '', memberId: null
             };
+            
+            shiftData = JSON.parse(localStorage.getItem(STORAGE_KEYS.SHIFT_DATA)) || { currentShift: null, shiftHistory: [] };
+            profitSettings = JSON.parse(localStorage.getItem(STORAGE_KEYS.PROFIT_SETTINGS)) || { defaultCOGS: 60, monthlyFixedCost: 0, profitAccessCode: CryptoJS.SHA256('labarugi2025').toString() };
 
             $('#currentYear').text(new Date().getFullYear());
+            
+            // PERBAIKAN: Cek apakah shift sudah dibuka
+            currentShift = shiftData.currentShift;
             
             if (currentUser) {
                 $('#loggedInUser').text(currentUser.name);
                 $('#loginModal').hide();
-                $('#mainApp').show();
-                initializeApp();
-                // Tampilkan welcome toast setelah login
-                setTimeout(showWelcomeToast, 500);
+                
+                // Cek apakah shift sudah dibuka
+                if (!currentShift && checkPermission('shift_management')) {
+                    // Tampilkan modal input uang kas awal
+                    showCashStartModal();
+                } else if (currentShift) {
+                    // Tampilkan aplikasi utama
+                    $('#mainApp').show();
+                    initializeApp();
+                    // Tampilkan welcome toast setelah login
+                    setTimeout(showWelcomeToast, 500);
+                } else {
+                    // User tidak punya permission untuk shift management, langsung tampilkan app
+                    $('#mainApp').show();
+                    initializeApp();
+                    setTimeout(showWelcomeToast, 500);
+                }
             } else {
                 generateCaptcha();
             }
@@ -2998,10 +3637,25 @@
                             localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
                             $('#loggedInUser').text(currentUser.name);
                             $('#loginModal').hide();
-                            $('#mainApp').fadeIn();
-                            initializeApp();
-                            // Tampilkan welcome toast
-                            setTimeout(showWelcomeToast, 300);
+                            
+                            // Cek apakah shift sudah dibuka
+                            currentShift = shiftData.currentShift;
+                            
+                            if (!currentShift && checkPermission('shift_management')) {
+                                // Tampilkan modal input uang kas awal
+                                showCashStartModal();
+                            } else if (currentShift) {
+                                // Tampilkan aplikasi utama
+                                $('#mainApp').fadeIn();
+                                initializeApp();
+                                // Tampilkan welcome toast
+                                setTimeout(showWelcomeToast, 300);
+                            } else {
+                                // User tidak punya permission untuk shift management, langsung tampilkan app
+                                $('#mainApp').fadeIn();
+                                initializeApp();
+                                setTimeout(showWelcomeToast, 300);
+                            }
                         } else {
                             showToast('Username atau password salah', 'error');
                             generateCaptcha();
@@ -3018,9 +3672,269 @@
                 }, 500);
             });
             
+            // Event handlers untuk fitur shift baru
+            $('#startShiftBtn').click(function() {
+                const initialCash = parseFloat($('#initialCashAmount').val()) || 0;
+                const cashNote = $('#cashNote').val().trim();
+                
+                if (initialCash <= 0) {
+                    showToast('Masukkan jumlah uang kas yang valid', 'error');
+                    return;
+                }
+                
+                // Buat shift baru
+                currentShift = {
+                    id: 'SHIFT' + moment().format('YYYYMMDDHHmmss'),
+                    startTime: new Date(),
+                    cashier: {
+                        id: currentUser.id,
+                        name: currentUser.name,
+                        username: currentUser.username
+                    },
+                    initialCash: initialCash,
+                    initialNote: cashNote,
+                    status: 'open',
+                    orders: [],
+                    totalSales: 0,
+                    totalTransactions: 0
+                };
+                
+                // Simpan shift data
+                shiftData.currentShift = currentShift;
+                localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
+                
+                // Update UI
+                $('#shiftStatus').text('Aktif').removeClass('shift-closed').addClass('shift-open');
+                
+                // Tampilkan aplikasi utama
+                $('#cashStartModal').hide();
+                $('#mainApp').fadeIn();
+                initializeApp();
+                
+                showToast('Shift berhasil dimulai dengan uang kas awal: ' + formatCurrency(initialCash), 'success');
+            });
+            
+            $('#cancelShiftBtn').click(function() {
+                $('#cashStartModal').hide();
+                $('#loginModal').css('display', 'flex');
+                showToast('Pembukaan shift dibatalkan', 'info');
+            });
+            
+            $('#closeShiftBtn').click(function() {
+                if (!checkPermission('shift_management')) {
+                    showToast('Anda tidak memiliki izin untuk menutup shift', 'error');
+                    return;
+                }
+                
+                if (!currentShift) {
+                    showToast('Tidak ada shift yang aktif', 'error');
+                    return;
+                }
+                
+                // Hitung total penjualan dari shift ini
+                const shiftStartTime = new Date(currentShift.startTime);
+                const shiftOrders = orders.filter(order => {
+                    const orderTime = new Date(order.date);
+                    return orderTime >= shiftStartTime;
+                });
+                
+                const totalSales = shiftOrders.reduce((sum, order) => sum + order.total, 0);
+                const totalTransactions = shiftOrders.length;
+                
+                // Update data shift
+                currentShift.orders = shiftOrders;
+                currentShift.totalSales = totalSales;
+                currentShift.totalTransactions = totalTransactions;
+                
+                // Update UI modal
+                $('#initialCashDisplay').text(formatCurrency(currentShift.initialCash));
+                $('#totalSalesAmount').val(totalSales);
+                $('#actualCashCount').val('');
+                $('#dailyExpenses').val(0);
+                $('#otherIncome').val(0);
+                $('#shiftCloseNote').val('');
+                
+                // Hitung expected cash
+                const expectedCash = currentShift.initialCash + totalSales;
+                $('#expectedCash').text(formatCurrency(expectedCash));
+                
+                // Tampilkan modal tutup shift
+                $('#closeShiftModal').css('display', 'flex');
+            });
+            
+            $('#actualCashCount').on('input', function() {
+                calculateCashDifference();
+            });
+            
+            $('#dailyExpenses').on('input', function() {
+                calculateCashDifference();
+            });
+            
+            $('#otherIncome').on('input', function() {
+                calculateCashDifference();
+            });
+            
+            function calculateCashDifference() {
+                const initialCash = currentShift.initialCash || 0;
+                const totalSales = currentShift.totalSales || 0;
+                const expenses = parseFloat($('#dailyExpenses').val()) || 0;
+                const otherIncome = parseFloat($('#otherIncome').val()) || 0;
+                const actualCash = parseFloat($('#actualCashCount').val()) || 0;
+                
+                const expectedCash = initialCash + totalSales - expenses + otherIncome;
+                const difference = actualCash - expectedCash;
+                
+                $('#expectedCash').text(formatCurrency(expectedCash));
+                $('#actualCash').text(formatCurrency(actualCash));
+                $('#cashDifference').text(formatCurrency(difference));
+                
+                // Warna berdasarkan selisih
+                const $differenceElement = $('#cashDifference');
+                if (difference > 0) {
+                    $differenceElement.css('color', 'var(--success)');
+                } else if (difference < 0) {
+                    $differenceElement.css('color', 'var(--danger)');
+                } else {
+                    $differenceElement.css('color', 'var(--dark)');
+                }
+            }
+            
+            $('#confirmCloseShiftBtn').click(function() {
+                const actualCash = parseFloat($('#actualCashCount').val()) || 0;
+                const expenses = parseFloat($('#dailyExpenses').val()) || 0;
+                const otherIncome = parseFloat($('#otherIncome').val()) || 0;
+                const closeNote = $('#shiftCloseNote').val().trim();
+                
+                if (actualCash <= 0) {
+                    showToast('Masukkan jumlah uang kas fisik yang valid', 'error');
+                    return;
+                }
+                
+                // Hitung expected cash
+                const initialCash = currentShift.initialCash || 0;
+                const totalSales = currentShift.totalSales || 0;
+                const expectedCash = initialCash + totalSales - expenses + otherIncome;
+                const difference = actualCash - expectedCash;
+                
+                // Tutup shift
+                currentShift.endTime = new Date();
+                currentShift.status = 'closed';
+                currentShift.actualCash = actualCash;
+                currentShift.expenses = expenses;
+                currentShift.otherIncome = otherIncome;
+                currentShift.cashDifference = difference;
+                currentShift.closeNote = closeNote;
+                
+                // Tambahkan ke history
+                if (!shiftData.shiftHistory) {
+                    shiftData.shiftHistory = [];
+                }
+                shiftData.shiftHistory.unshift(currentShift);
+                
+                // Reset current shift
+                shiftData.currentShift = null;
+                currentShift = null;
+                
+                // Simpan data
+                localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
+                
+                // Update UI
+                $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
+                $('#closeShiftModal').hide();
+                
+                // Tampilkan laporan shift
+                generateShiftReport(currentShift);
+                
+                showToast('Shift berhasil ditutup', 'success');
+            });
+            
+            // Event handler untuk fitur perhitungan laba
+            $('#profitCalculationBtn').click(function() {
+                if (!checkPermission('profit_calculation')) {
+                    showToast('Anda tidak memiliki izin untuk mengakses fitur perhitungan laba', 'error');
+                    return;
+                }
+                
+                // Minta kode keamanan
+                promptForProfitAccess(() => {
+                    $('#profitCalculationModal').css('display', 'flex');
+                    $('#profitPeriod').val('today');
+                    $('#profitResults').empty();
+                    $('#downloadProfitReportBtn').hide();
+                });
+            });
+            
+            $('#calculateProfitBtn').click(function() {
+                calculateProfit();
+            });
+            
+            $('#profitPeriod').change(function() {
+                $('#profitCustomDateRange').toggle($(this).val() === 'custom');
+            });
+            
+            $('#saveProfitSettingsBtn').click(function() {
+                const defaultCOGS = parseFloat($('#defaultCOGS').val()) || 60;
+                const monthlyFixedCost = parseFloat($('#monthlyFixedCost').val()) || 0;
+                const profitSecurityCode = $('#profitSecurityCode').val();
+                
+                if (profitSecurityCode) {
+                    profitSettings.profitAccessCode = CryptoJS.SHA256(profitSecurityCode).toString();
+                }
+                
+                profitSettings.defaultCOGS = defaultCOGS;
+                profitSettings.monthlyFixedCost = monthlyFixedCost;
+                
+                localStorage.setItem(STORAGE_KEYS.PROFIT_SETTINGS, JSON.stringify(profitSettings));
+                showToast('Pengaturan perhitungan laba berhasil disimpan', 'success');
+            });
+            
+            $('#downloadProfitReportBtn').click(function() {
+                downloadProfitReportAsPdf();
+            });
+            
+            // Pengaturan shift dan laba di kontrol panel
+            $('#saveShiftProfitSettingsBtn').click(function() {
+                const defaultShiftHours = parseFloat($('#defaultShiftHours').val()) || 8;
+                const autoCloseShift = $('#autoCloseShift').is(':checked');
+                const profitAccessCode = $('#profitAccessCode').val();
+                const profitAccessCodeConfirm = $('#profitAccessCodeConfirm').val();
+                const defaultProfitCOGS = parseFloat($('#defaultProfitCOGS').val()) || 60;
+                
+                if (profitAccessCode) {
+                    if (profitAccessCode !== profitAccessCodeConfirm) {
+                        showToast('Kode keamanan tidak cocok', 'error');
+                        return;
+                    }
+                    settings.profitAccessCode = CryptoJS.SHA256(profitAccessCode).toString();
+                    profitSettings.profitAccessCode = CryptoJS.SHA256(profitAccessCode).toString();
+                }
+                
+                settings.defaultShiftHours = defaultShiftHours;
+                settings.autoCloseShift = autoCloseShift;
+                settings.defaultCOGS = defaultProfitCOGS;
+                profitSettings.defaultCOGS = defaultProfitCOGS;
+                
+                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+                localStorage.setItem(STORAGE_KEYS.PROFIT_SETTINGS, JSON.stringify(profitSettings));
+                
+                showToast('Pengaturan shift dan laba berhasil disimpan', 'success');
+            });
+            
             $('#reloadCaptchaBtn').click(generateCaptcha);
             $('#logoutBtn').click(function(e) {
                 e.preventDefault();
+                
+                // Cek apakah shift masih terbuka
+                if (currentShift && currentShift.status === 'open') {
+                    showConfirmation('Shift Masih Aktif', 'Shift penjualan masih aktif. Apakah Anda yakin ingin logout?', () => {
+                        performLogout();
+                    });
+                } else {
+                    performLogout();
+                }
+            });
+            
+            function performLogout() {
                 currentUser = null;
                 localStorage.removeItem(STORAGE_KEYS.USER);
                 $('#mainApp').fadeOut(() => {
@@ -3031,7 +3945,7 @@
                     generateCaptcha();
                 });
                 showToast('Anda telah logout', 'info');
-            });
+            }
             
             $('#menuSearch').on('input', function() { loadMenus($(this).val(), $('.filter-chip.active').data('category')); });
             $(document).on('click', '.menu-card', function() {
@@ -3201,7 +4115,8 @@
                             cashier: currentUser, 
                             customerName: $('#customerName').val().trim() || 'Pelanggan',
                             status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', 
-                            statusLocked: false
+                            statusLocked: false,
+                            shiftId: currentShift ? currentShift.id : null
                         };
                         orders.unshift(order); 
                         saveOrders();
@@ -3325,6 +4240,12 @@
                     loadPermissionsUserSelect();
                     $('#memberDiscount').val(settings.memberDiscountPercent || 2);
                     $('#nonMemberDiscount').val(settings.nonMemberDiscountPercent || 0);
+                    
+                    // Load shift settings
+                    $('#defaultShiftHours').val(settings.defaultShiftHours || 8);
+                    $('#autoCloseShift').prop('checked', settings.autoCloseShift || false);
+                    $('#defaultProfitCOGS').val(settings.defaultCOGS || 60);
+                    
                     $('#controlPanelModal').css('display', 'flex');
                 });
             });
@@ -3521,6 +4442,10 @@
                 const modal = $(this).closest('.modal');
                 modal.hide();
                 if (modal.attr('id') === 'kitchenDisplayModal' && kitchenInterval) clearInterval(kitchenInterval);
+                if (modal.attr('id') === 'profitCalculationModal') {
+                    $('#profitResults').empty();
+                    $('#downloadProfitReportBtn').hide();
+                }
             });
             $('#reportPeriod').change(() => $('#customDateRange').toggle($('#reportPeriod').val() === 'custom'));
             $('#printReceiptBtn').on('click', () => printElement('#receiptModalBody #receiptContent'));
@@ -3534,6 +4459,15 @@
                 hideWelcomeToast();
             });
         });
+
+        // Fungsi untuk menampilkan modal input uang kas awal
+        function showCashStartModal() {
+            $('#shiftDateDisplay').text(moment().format('dddd, DD MMMM YYYY'));
+            $('#shiftCashierName').text(currentUser.name);
+            $('#initialCashAmount').val('');
+            $('#cashNote').val('');
+            $('#cashStartModal').css('display', 'flex');
+        }
 
         // Fungsi untuk menampilkan jam real-time
         function updateLiveClock() {
@@ -3597,15 +4531,33 @@
             updateStoreInfo(); 
             updateTableNumbers(); 
             
+            // Update shift status
+            if (currentShift) {
+                $('#shiftStatus').text('Aktif').removeClass('shift-closed').addClass('shift-open');
+            } else {
+                $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
+            }
+            
             // Tampilkan/hide admin panel berdasarkan permission
             const showAdminPanel = checkPermission('add_menu') || checkPermission('edit_menu') || 
                                   checkPermission('delete_menu') || checkPermission('manage_categories') ||
                                   checkPermission('manage_members') || checkPermission('manage_store_info') ||
                                   checkPermission('view_reports') || checkPermission('transaction_history') ||
                                   checkPermission('kitchen_display') || checkPermission('control_panel') ||
-                                  checkPermission('backup_restore') || checkPermission('reset_data');
+                                  checkPermission('backup_restore') || checkPermission('reset_data') ||
+                                  checkPermission('shift_management') || checkPermission('profit_calculation');
             
             $('#adminPanel').toggle(showAdminPanel);
+        }
+        
+        // Fungsi untuk meminta kode keamanan akses laba
+        function promptForProfitAccess(callback) {
+            const title = 'Kode Keamanan Akses Laba';
+            $('#passwordPromptTitle').text(title);
+            $('#passwordPromptMessage').text(`Masukkan kode keamanan untuk mengakses fitur perhitungan laba.`);
+            passwordPromptCallback = callback;
+            $('#passwordPromptInput').val('');
+            $('#passwordPromptModal').css('display', 'flex').find('input').focus();
         }
         
         function generateCaptcha() {
@@ -3656,6 +4608,644 @@
             }
             
             return currentUser.permissions[permission] === true;
+        }
+        
+        // Fungsi untuk menghasilkan laporan shift
+        function generateShiftReport(shift) {
+            const shiftDuration = moment.duration(moment(shift.endTime).diff(moment(shift.startTime)));
+            const hours = Math.floor(shiftDuration.asHours());
+            const minutes = Math.floor(shiftDuration.asMinutes()) - (hours * 60);
+            
+            let reportHtml = `
+                <div class="professional-pdf">
+                    <div class="pdf-report-header">
+                        <h1>LAPORAN PENUTUPAN SHIFT</h1>
+                        <h2>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h2>
+                    </div>
+                    
+                    <div class="pdf-report-info">
+                        <div><strong>ID Shift:</strong> ${shift.id}</div>
+                        <div><strong>Tanggal:</strong> ${moment(shift.startTime).format('DD/MM/YYYY')}</div>
+                        <div><strong>Kasir:</strong> ${shift.cashier.name}</div>
+                        <div><strong>Durasi Shift:</strong> ${hours} jam ${minutes} menit</div>
+                        <div><strong>Waktu Mulai:</strong> ${moment(shift.startTime).format('HH:mm')}</div>
+                        <div><strong>Waktu Selesai:</strong> ${moment(shift.endTime).format('HH:mm')}</div>
+                    </div>
+                    
+                    <div class="pdf-report-summary">
+                        <div class="pdf-summary-card">
+                            <h3>Uang Kas Awal</h3>
+                            <p>${formatCurrency(shift.initialCash)}</p>
+                        </div>
+                        <div class="pdf-summary-card">
+                            <h3>Total Penjualan</h3>
+                            <p>${formatCurrency(shift.totalSales)}</p>
+                        </div>
+                        <div class="pdf-summary-card">
+                            <h3>Total Transaksi</h3>
+                            <p>${shift.totalTransactions}</p>
+                        </div>
+                        <div class="pdf-summary-card">
+                            <h3>Uang Kas Aktual</h3>
+                            <p>${formatCurrency(shift.actualCash)}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-table-container">
+                        <h4>Rincian Transaksi</h4>
+                        <table class="pdf-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>ID Transaksi</th>
+                                    <th>Waktu</th>
+                                    <th>Total</th>
+                                    <th>Metode Bayar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            shift.orders.forEach((order, index) => {
+                reportHtml += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${order.id}</td>
+                        <td>${moment(order.date).format('HH:mm')}</td>
+                        <td>${formatCurrency(order.total)}</td>
+                        <td>${order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod}</td>
+                    </tr>
+                `;
+            });
+            
+            reportHtml += `
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pdf-chart-container">
+                        <h4>Ringkasan Keuangan</h4>
+                        <div class="profit-breakdown">
+                            <div class="breakdown-item">
+                                <label>Uang Kas Awal</label>
+                                <span>${formatCurrency(shift.initialCash)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Total Penjualan</label>
+                                <span>${formatCurrency(shift.totalSales)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Pengeluaran</label>
+                                <span>${formatCurrency(shift.expenses || 0)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Pendapatan Lain</label>
+                                <span>${formatCurrency(shift.otherIncome || 0)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Uang Kas Seharusnya</label>
+                                <span>${formatCurrency(shift.initialCash + shift.totalSales - (shift.expenses || 0) + (shift.otherIncome || 0))}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Uang Kas Aktual</label>
+                                <span>${formatCurrency(shift.actualCash)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Selisih Kas</label>
+                                <span style="color: ${shift.cashDifference > 0 ? 'var(--success)' : shift.cashDifference < 0 ? 'var(--danger)' : 'var(--dark)'}">
+                                    ${formatCurrency(shift.cashDifference)}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-footer-signature">
+                        <div class="pdf-signature-box">
+                            <p>Kasir</p>
+                            <div class="pdf-signature-line"></div>
+                            <p><strong>${shift.cashier.name}</strong></p>
+                        </div>
+                        <div class="pdf-signature-box">
+                            <p>Manager/Pemilik</p>
+                            <div class="pdf-signature-line"></div>
+                            <p><strong>____________________</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-footer">
+                        <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                        <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
+                    </div>
+                </div>
+            `;
+            
+            // Tampilkan report dalam modal
+            const modalContent = `
+                <div class="modal-content" style="max-width: 800px;">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Laporan Penutupan Shift</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        ${reportHtml}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-warning modal-close-btn">Tutup</button>
+                        <button class="btn btn-info" id="downloadShiftReportBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                        <button class="btn btn-primary" id="printShiftReportBtn"><i class="fas fa-print"></i> Cetak Laporan</button>
+                    </div>
+                </div>
+            `;
+            
+            // Buat modal sementara
+            const tempModal = $('<div class="modal" style="display: flex;">' + modalContent + '</div>');
+            $('body').append(tempModal);
+            
+            // Event handlers untuk tombol di modal
+            tempModal.find('.modal-close, .modal-close-btn').click(function() {
+                tempModal.remove();
+            });
+            
+            tempModal.find('#downloadShiftReportBtn').click(function() {
+                downloadShiftReportAsPdf(shift);
+                tempModal.remove();
+            });
+            
+            tempModal.find('#printShiftReportBtn').click(function() {
+                printElement(tempModal.find('.professional-pdf'));
+            });
+        }
+        
+        // Fungsi untuk menghitung laba
+        function calculateProfit() {
+            let startDate, endDate;
+            const period = $('#profitPeriod').val();
+            
+            if (period === 'today') { 
+                startDate = moment().startOf('day'); 
+                endDate = moment().endOf('day'); 
+            }
+            else if (period === 'week') { 
+                startDate = moment().startOf('week'); 
+                endDate = moment().endOf('week'); 
+            }
+            else if (period === 'month') { 
+                startDate = moment().startOf('month'); 
+                endDate = moment().endOf('month'); 
+            }
+            else if (period === 'custom') {
+                startDate = moment($('#profitStartDate').val()); 
+                endDate = moment($('#profitEndDate').val()).endOf('day');
+                if (!startDate.isValid() || !endDate.isValid() || endDate.isBefore(startDate)) {
+                    showToast('Rentang tanggal tidak valid', 'error');
+                    return;
+                }
+            }
+            
+            const filteredOrders = orders.filter(o => moment(o.date).isBetween(startDate, endDate));
+            
+            if (filteredOrders.length === 0) {
+                $('#profitResults').html('<div class="empty-state"><i class="fas fa-chart-line"></i><p>Tidak ada data penjualan pada periode ini</p></div>');
+                $('#downloadProfitReportBtn').hide();
+                return;
+            }
+            
+            // Hitung total penjualan
+            const totalSales = filteredOrders.reduce((sum, order) => sum + order.total, 0);
+            const totalTransactions = filteredOrders.length;
+            const totalItemsSold = filteredOrders.reduce((sum, order) => sum + order.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0);
+            
+            // Hitung HPP (Harga Pokok Penjualan)
+            const defaultCOGS = profitSettings.defaultCOGS || 60;
+            const cogsPercentage = defaultCOGS / 100;
+            const totalCOGS = totalSales * cogsPercentage;
+            
+            // Hitung laba kotor
+            const grossProfit = totalSales - totalCOGS;
+            const grossProfitMargin = totalSales > 0 ? (grossProfit / totalSales) * 100 : 0;
+            
+            // Hitung biaya operasional (estimasi dari fixed cost bulanan)
+            const monthlyFixedCost = profitSettings.monthlyFixedCost || 0;
+            const daysInMonth = moment().daysInMonth();
+            const dailyFixedCost = monthlyFixedCost / daysInMonth;
+            const periodDays = Math.ceil(moment.duration(endDate.diff(startDate)).asDays()) || 1;
+            const operationalCost = dailyFixedCost * periodDays;
+            
+            // Hitung laba bersih
+            const netProfit = grossProfit - operationalCost;
+            const netProfitMargin = totalSales > 0 ? (netProfit / totalSales) * 100 : 0;
+            
+            // Generate report HTML
+            let reportHtml = `
+                <div class="profit-calculation-container">
+                    <h4 class="panel-title">Laporan Laba ${period === 'today' ? 'Hari Ini' : period === 'week' ? 'Minggu Ini' : period === 'month' ? 'Bulan Ini' : 'Custom'}</h4>
+                    <p>Periode: ${startDate.format('DD/MM/YYYY')} - ${endDate.format('DD/MM/YYYY')}</p>
+                    
+                    <div class="profit-result-card" style="margin-top: 15px;">
+                        <h4>LABA BERSIH</h4>
+                        <p style="color: ${netProfit >= 0 ? 'var(--success)' : 'var(--danger)'};">
+                            ${formatCurrency(netProfit)}
+                        </p>
+                        <p>Margin: ${netProfitMargin.toFixed(2)}%</p>
+                    </div>
+                    
+                    <div class="profit-breakdown" style="grid-template-columns: repeat(3, 1fr); margin-top: 20px;">
+                        <div class="breakdown-item">
+                            <label>Total Penjualan</label>
+                            <span>${formatCurrency(totalSales)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Total Transaksi</label>
+                            <span>${totalTransactions}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Total Item Terjual</label>
+                            <span>${totalItemsSold}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>HPP (${defaultCOGS}%)</label>
+                            <span>${formatCurrency(totalCOGS)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Laba Kotor</label>
+                            <span style="color: ${grossProfit >= 0 ? 'var(--success)' : 'var(--danger)'}">
+                                ${formatCurrency(grossProfit)}
+                            </span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Margin Laba Kotor</label>
+                            <span>${grossProfitMargin.toFixed(2)}%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Biaya Operasional</label>
+                            <span>${formatCurrency(operationalCost)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Laba Bersih</label>
+                            <span style="color: ${netProfit >= 0 ? 'var(--success)' : 'var(--danger)'}">
+                                ${formatCurrency(netProfit)}
+                            </span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Margin Laba Bersih</label>
+                            <span>${netProfitMargin.toFixed(2)}%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3" style="background: #f8f9fa; padding: 15px; border-radius: var(--rounded);">
+                        <h5>Analisis Profitabilitas</h5>
+                        <p>Rata-rata transaksi: ${formatCurrency(totalSales / (totalTransactions || 1))}</p>
+                        <p>Rata-rata item per transaksi: ${(totalItemsSold / (totalTransactions || 1)).toFixed(1)} item</p>
+                        <p>Persentase HPP: ${defaultCOGS}%</p>
+                        <p>Biaya operasional harian: ${formatCurrency(dailyFixedCost)}</p>
+                    </div>
+                </div>
+            `;
+            
+            $('#profitResults').html(reportHtml);
+            $('#downloadProfitReportBtn').show().data('reportData', {
+                startDate: startDate,
+                endDate: endDate,
+                period: period,
+                totalSales: totalSales,
+                totalTransactions: totalTransactions,
+                totalItemsSold: totalItemsSold,
+                totalCOGS: totalCOGS,
+                grossProfit: grossProfit,
+                grossProfitMargin: grossProfitMargin,
+                operationalCost: operationalCost,
+                netProfit: netProfit,
+                netProfitMargin: netProfitMargin,
+                defaultCOGS: defaultCOGS
+            });
+            
+            showToast('Perhitungan laba selesai', 'success');
+        }
+        
+        // Fungsi untuk download laporan laba sebagai PDF
+        function downloadProfitReportAsPdf() {
+            const reportData = $('#downloadProfitReportBtn').data('reportData');
+            if (!reportData) return;
+            
+            showToast('Menyiapkan laporan laba PDF...', 'info');
+            
+            // Buat HTML untuk PDF
+            const periodText = reportData.period === 'today' ? 'Hari Ini' : 
+                             reportData.period === 'week' ? 'Minggu Ini' : 
+                             reportData.period === 'month' ? 'Bulan Ini' : 'Custom';
+            
+            const htmlContent = `
+                <div class="professional-pdf">
+                    <div class="pdf-report-header">
+                        <h1>LAPORAN PERHITUNGAN LABA</h1>
+                        <h2>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h2>
+                    </div>
+                    
+                    <div class="pdf-report-info">
+                        <div><strong>Periode:</strong> ${periodText}</div>
+                        <div><strong>Tanggal:</strong> ${reportData.startDate.format('DD/MM/YYYY')} - ${reportData.endDate.format('DD/MM/YYYY')}</div>
+                        <div><strong>Kasir:</strong> ${currentUser.name}</div>
+                        <div><strong>Tanggal Cetak:</strong> ${moment().format('DD/MM/YYYY HH:mm')}</div>
+                    </div>
+                    
+                    <div class="pdf-report-summary">
+                        <div class="pdf-summary-card">
+                            <h3>Total Penjualan</h3>
+                            <p>${formatCurrency(reportData.totalSales)}</p>
+                        </div>
+                        <div class="pdf-summary-card">
+                            <h3>Total Transaksi</h3>
+                            <p>${reportData.totalTransactions}</p>
+                        </div>
+                        <div class="pdf-summary-card">
+                            <h3>Laba Kotor</h3>
+                            <p style="color: ${reportData.grossProfit >= 0 ? '#28a745' : '#dc3545'}">
+                                ${formatCurrency(reportData.grossProfit)}
+                            </p>
+                        </div>
+                        <div class="pdf-summary-card">
+                            <h3>Laba Bersih</h3>
+                            <p style="color: ${reportData.netProfit >= 0 ? '#28a745' : '#dc3545'}">
+                                ${formatCurrency(reportData.netProfit)}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-chart-container">
+                        <h4>Rincian Perhitungan Laba</h4>
+                        <table class="pdf-table">
+                            <thead>
+                                <tr>
+                                    <th>Keterangan</th>
+                                    <th>Jumlah</th>
+                                    <th>Persentase</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Penjualan</td>
+                                    <td>${formatCurrency(reportData.totalSales)}</td>
+                                    <td>100%</td>
+                                </tr>
+                                <tr>
+                                    <td>HPP (${reportData.defaultCOGS}%)</td>
+                                    <td>${formatCurrency(reportData.totalCOGS)}</td>
+                                    <td>${reportData.defaultCOGS}%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Laba Kotor</strong></td>
+                                    <td style="color: ${reportData.grossProfit >= 0 ? '#28a745' : '#dc3545'}">
+                                        ${formatCurrency(reportData.grossProfit)}
+                                    </td>
+                                    <td>${reportData.grossProfitMargin.toFixed(2)}%</td>
+                                </tr>
+                                <tr>
+                                    <td>Biaya Operasional</td>
+                                    <td>${formatCurrency(reportData.operationalCost)}</td>
+                                    <td>${(reportData.operationalCost / reportData.totalSales * 100).toFixed(2)}%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Laba Bersih</strong></td>
+                                    <td style="color: ${reportData.netProfit >= 0 ? '#28a745' : '#dc3545'}">
+                                        ${formatCurrency(reportData.netProfit)}
+                                    </td>
+                                    <td>${reportData.netProfitMargin.toFixed(2)}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pdf-chart-container">
+                        <h4>Statistik Tambahan</h4>
+                        <div class="profit-breakdown">
+                            <div class="breakdown-item">
+                                <label>Total Item Terjual</label>
+                                <span>${reportData.totalItemsSold}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Rata-rata Transaksi</label>
+                                <span>${formatCurrency(reportData.totalSales / (reportData.totalTransactions || 1))}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Rata-rata Item/Transaksi</label>
+                                <span>${(reportData.totalItemsSold / (reportData.totalTransactions || 1)).toFixed(1)}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Persentase HPP</label>
+                                <span>${reportData.defaultCOGS}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-footer-signature">
+                        <div class="pdf-signature-box">
+                            <p>Dibuat Oleh</p>
+                            <div class="pdf-signature-line"></div>
+                            <p><strong>${currentUser.name}</strong></p>
+                        </div>
+                        <div class="pdf-signature-box">
+                            <p>Disetujui Oleh</p>
+                            <div class="pdf-signature-line"></div>
+                            <p><strong>____________________</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-footer">
+                        <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                        <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
+                    </div>
+                </div>
+            `;
+            
+            // Buat elemen sementara untuk render PDF
+            const tempElement = document.createElement('div');
+            tempElement.innerHTML = htmlContent;
+            document.body.appendChild(tempElement);
+            
+            // Konversi ke PDF
+            setTimeout(() => {
+                html2canvas(tempElement.querySelector('.professional-pdf'), {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgData = canvas.toDataURL('image/png', 1.0);
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save(`Laporan_Laba_${settings.umkmName || 'UMKM'}_${moment().format('YYYYMMDD_HHmm')}.pdf`);
+                    
+                    document.body.removeChild(tempElement);
+                    showToast('Laporan laba berhasil diunduh', 'success');
+                }).catch(err => {
+                    console.error('Error generating PDF:', err);
+                    document.body.removeChild(tempElement);
+                    showToast('Gagal membuat PDF', 'error');
+                });
+            }, 1000);
+        }
+        
+        // Fungsi untuk download laporan shift sebagai PDF
+        function downloadShiftReportAsPdf(shift) {
+            showToast('Menyiapkan laporan shift PDF...', 'info');
+            
+            // Generate HTML untuk laporan shift (sama seperti di generateShiftReport)
+            const shiftDuration = moment.duration(moment(shift.endTime).diff(moment(shift.startTime)));
+            const hours = Math.floor(shiftDuration.asHours());
+            const minutes = Math.floor(shiftDuration.asMinutes()) - (hours * 60);
+            
+            const htmlContent = generateShiftReportHTML(shift, hours, minutes);
+            
+            // Buat elemen sementara untuk render PDF
+            const tempElement = document.createElement('div');
+            tempElement.innerHTML = `<div class="professional-pdf">${htmlContent}</div>`;
+            document.body.appendChild(tempElement);
+            
+            // Konversi ke PDF
+            setTimeout(() => {
+                html2canvas(tempElement.querySelector('.professional-pdf'), {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgData = canvas.toDataURL('image/png', 1.0);
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save(`Laporan_Shift_${shift.id}_${moment(shift.endTime).format('YYYYMMDD')}.pdf`);
+                    
+                    document.body.removeChild(tempElement);
+                    showToast('Laporan shift berhasil diunduh', 'success');
+                }).catch(err => {
+                    console.error('Error generating PDF:', err);
+                    document.body.removeChild(tempElement);
+                    showToast('Gagal membuat PDF', 'error');
+                });
+            }, 1000);
+        }
+        
+        // Helper function untuk generate HTML laporan shift
+        function generateShiftReportHTML(shift, hours, minutes) {
+            return `
+                <div class="pdf-report-header">
+                    <h1>LAPORAN PENUTUPAN SHIFT</h1>
+                    <h2>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h2>
+                </div>
+                
+                <div class="pdf-report-info">
+                    <div><strong>ID Shift:</strong> ${shift.id}</div>
+                    <div><strong>Tanggal:</strong> ${moment(shift.startTime).format('DD/MM/YYYY')}</div>
+                    <div><strong>Kasir:</strong> ${shift.cashier.name}</div>
+                    <div><strong>Durasi Shift:</strong> ${hours} jam ${minutes} menit</div>
+                    <div><strong>Waktu Mulai:</strong> ${moment(shift.startTime).format('HH:mm')}</div>
+                    <div><strong>Waktu Selesai:</strong> ${moment(shift.endTime).format('HH:mm')}</div>
+                </div>
+                
+                <div class="pdf-report-summary">
+                    <div class="pdf-summary-card">
+                        <h3>Uang Kas Awal</h3>
+                        <p>${formatCurrency(shift.initialCash)}</p>
+                    </div>
+                    <div class="pdf-summary-card">
+                        <h3>Total Penjualan</h3>
+                        <p>${formatCurrency(shift.totalSales)}</p>
+                    </div>
+                    <div class="pdf-summary-card">
+                        <h3>Total Transaksi</h3>
+                        <p>${shift.totalTransactions}</p>
+                    </div>
+                    <div class="pdf-summary-card">
+                        <h3>Uang Kas Aktual</h3>
+                        <p>${formatCurrency(shift.actualCash)}</p>
+                    </div>
+                </div>
+                
+                <div class="pdf-table-container">
+                    <h4>Rincian Transaksi (${shift.orders.length} transaksi)</h4>
+                    <table class="pdf-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>ID Transaksi</th>
+                                <th>Waktu</th>
+                                <th>Total</th>
+                                <th>Metode Bayar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${shift.orders.map((order, index) => `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${order.id}</td>
+                                    <td>${moment(order.date).format('HH:mm')}</td>
+                                    <td>${formatCurrency(order.total)}</td>
+                                    <td>${order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pdf-chart-container">
+                    <h4>Ringkasan Keuangan</h4>
+                    <div class="profit-breakdown">
+                        <div class="breakdown-item">
+                            <label>Uang Kas Awal</label>
+                            <span>${formatCurrency(shift.initialCash)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Total Penjualan</label>
+                            <span>${formatCurrency(shift.totalSales)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Pengeluaran</label>
+                            <span>${formatCurrency(shift.expenses || 0)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Pendapatan Lain</label>
+                            <span>${formatCurrency(shift.otherIncome || 0)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Uang Kas Seharusnya</label>
+                            <span>${formatCurrency(shift.initialCash + shift.totalSales - (shift.expenses || 0) + (shift.otherIncome || 0))}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Uang Kas Aktual</label>
+                            <span>${formatCurrency(shift.actualCash)}</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <label>Selisih Kas</label>
+                            <span style="color: ${shift.cashDifference > 0 ? '#28a745' : shift.cashDifference < 0 ? '#dc3545' : '#343a40'}">
+                                ${formatCurrency(shift.cashDifference)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pdf-footer-signature">
+                    <div class="pdf-signature-box">
+                        <p>Kasir</p>
+                        <div class="pdf-signature-line"></div>
+                        <p><strong>${shift.cashier.name}</strong></p>
+                    </div>
+                    <div class="pdf-signature-box">
+                        <p>Manager/Pemilik</p>
+                        <div class="pdf-signature-line"></div>
+                        <p><strong>____________________</strong></p>
+                    </div>
+                </div>
+                
+                <div class="pdf-footer">
+                    <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                    <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
+                </div>
+            `;
         }
         
         // PERBAIKAN UTAMA: Fungsi Generate Menu PDF Preview dengan layout 4x4
@@ -3959,13 +5549,25 @@
         }
         
         function submitPasswordPrompt() {
-            const password = $('#passwordPromptInput').val(), type = $('#passwordPromptTitle').text().includes('Kontrol Panel') ? 'panel' : 'item', correctHash = type === 'panel' ? settings.panelSecurityCode : settings.itemSecurityCode;
+            const password = $('#passwordPromptInput').val();
+            const type = $('#passwordPromptTitle').text().includes('Kontrol Panel') ? 'panel' : 
+                         $('#passwordPromptTitle').text().includes('Akses Laba') ? 'profit' : 'item';
+            
+            let correctHash;
+            if (type === 'panel') {
+                correctHash = settings.panelSecurityCode;
+            } else if (type === 'profit') {
+                correctHash = settings.profitAccessCode || profitSettings.profitAccessCode;
+            } else {
+                correctHash = settings.itemSecurityCode;
+            }
+            
             if (CryptoJS.SHA256(password).toString() === correctHash) {
                 $('#passwordPromptModal').hide();
                 if (passwordPromptCallback) passwordPromptCallback();
                 passwordPromptCallback = null;
             } else {
-                showToast('Password keamanan salah.', 'error');
+                showToast('Password/kode keamanan salah.', 'error');
             }
         }
         
@@ -4127,7 +5729,7 @@
         
         function backupData() {
             try {
-                const backup = { menus, categories, orders, settings, users, members, backupDate: new Date().toISOString() };
+                const backup = { menus, categories, orders, settings, users, members, shiftData, profitSettings, backupDate: new Date().toISOString() };
                 const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
                 const linkElement = document.createElement('a');
                 linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
@@ -4549,6 +6151,7 @@
             }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF history download error:", err); });
         }
         
+        // PERBAIKAN: Fungsi untuk generate laporan PDF yang lebih profesional
         function generateReport() {
             let startDate, endDate;
             const period = $('#reportPeriod').val();
@@ -4560,36 +6163,235 @@
                 if (!startDate.isValid() || !endDate.isValid() || endDate.isBefore(startDate)) return showToast('Rentang tanggal tidak valid', 'error');
             }
             const filteredOrders = orders.filter(o => moment(o.date).isBetween(startDate, endDate));
-            generateSalesReportHTML(filteredOrders, startDate, endDate);
+            
+            // Gunakan fungsi baru untuk generate laporan PDF yang profesional
+            generateProfessionalSalesReport(filteredOrders, startDate, endDate);
         }
         
-        function generateSalesReportHTML(filteredOrders, startDate, endDate) {
+        // FUNGSI BARU: Generate laporan PDF yang lebih profesional
+        function generateProfessionalSalesReport(filteredOrders, startDate, endDate) {
             const $resultsContainer = $('#reportResults');
-            if (filteredOrders.length === 0) { $resultsContainer.html('<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Tidak ada data penjualan</p></div>'); $('#printReportBtn, #downloadReportBtn').hide(); return; }
+            if (filteredOrders.length === 0) { 
+                $resultsContainer.html('<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Tidak ada data penjualan</p></div>'); 
+                $('#printReportBtn, #downloadReportBtn').hide(); 
+                return; 
+            }
+            
             const totalRevenue = filteredOrders.reduce((s, o) => s + (o.subtotal - o.discount), 0);
             const totalItemsSold = filteredOrders.reduce((s, o) => s + o.items.reduce((i, item) => i + item.quantity, 0), 0);
+            const totalTransactions = filteredOrders.length;
+            
+            // Hitung per metode pembayaran
+            const paymentMethods = {};
+            filteredOrders.forEach(o => {
+                const method = o.paymentMethod === 'cash' ? 'Tunai' : 
+                              o.paymentMethod === 'qris' ? 'QRIS' : 
+                              o.paymentMethod === 'transfer' ? 'Transfer Bank' : 'E-Wallet';
+                paymentMethods[method] = (paymentMethods[method] || 0) + o.total;
+            });
+            
+            // Hitung menu terlaris
             const menuSales = {};
-            filteredOrders.forEach(o => o.items.forEach(item => { menuSales[item.menu.id] = menuSales[item.menu.id] || { name: item.menu.name, quantity: 0, total: 0 }; menuSales[item.menu.id].quantity += item.quantity; menuSales[item.menu.id].total += item.quantity * item.menu.price; }));
-            const topMenus = Object.values(menuSales).sort((a, b) => b.quantity - a.quantity).slice(0, 5);
-            $resultsContainer.html(`<div class="panel"><h4>Ringkasan Penjualan UMKM CASH (${startDate.format('DD/MM/YY')} - ${endDate.format('DD/MM/YY')})</h4><div class="summary-row"><span>Total Transaksi:</span> <span>${filteredOrders.length}</span></div><div class="summary-row"><span>Total Pendapatan (Laba):</span> <span>${formatCurrency(totalRevenue)}</span></div><div class="summary-row"><span>Total Item Terjual:</span> <span>${totalItemsSold}</span></div></div><div class="panel mt-3"><h4>Menu Terlaris</h4>${topMenus.map(menu => `<div class="summary-row"><span>${menu.name}:</span> <span>${menu.quantity} terjual (${formatCurrency(menu.total)})</span></div>`).join('') || '<p>Tidak ada data.</p>'}</div>`);
+            filteredOrders.forEach(o => o.items.forEach(item => { 
+                menuSales[item.menu.id] = menuSales[item.menu.id] || { 
+                    name: item.menu.name, 
+                    quantity: 0, 
+                    total: 0 
+                }; 
+                menuSales[item.menu.id].quantity += item.quantity; 
+                menuSales[item.menu.id].total += item.quantity * item.menu.price; 
+            }));
+            const topMenus = Object.values(menuSales).sort((a, b) => b.quantity - a.quantity).slice(0, 10);
+            
+            // Generate HTML laporan profesional
+            let reportHtml = `
+                <div class="professional-pdf">
+                    <div class="pdf-report-header">
+                        <h1>LAPORAN PENJUALAN PROFESIONAL</h1>
+                        <h2>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h2>
+                    </div>
+                    
+                    <div class="pdf-report-info">
+                        <div><strong>Periode Laporan:</strong> ${period === 'today' ? 'Hari Ini' : period === 'week' ? 'Minggu Ini' : period === 'month' ? 'Bulan Ini' : 'Custom'}</div>
+                        <div><strong>Tanggal:</strong> ${startDate.format('DD/MM/YYYY')} - ${endDate.format('DD/MM/YYYY')}</div>
+                        <div><strong>Dibuat Oleh:</strong> ${currentUser.name}</div>
+                        <div><strong>Tanggal Cetak:</strong> ${moment().format('DD/MM/YYYY HH:mm')}</div>
+                        <div><strong>Total Transaksi:</strong> ${totalTransactions}</div>
+                        <div><strong>Total Pendapatan:</strong> ${formatCurrency(totalRevenue)}</div>
+                    </div>
+                    
+                    <div class="pdf-report-summary">
+                        <div class="pdf-summary-card">
+                            <h3>Total Pendapatan</h3>
+                            <p>${formatCurrency(totalRevenue)}</p>
+                        </div>
+                        <div class="pdf-summary-card">
+                            <h3>Total Transaksi</h3>
+                            <p>${totalTransactions}</p>
+                        </div>
+                        <div class="pdf-summary-card">
+                            <h3>Total Item Terjual</h3>
+                            <p>${totalItemsSold}</p>
+                        </div>
+                        <div class="pdf-summary-card">
+                            <h3>Rata-rata/Transaksi</h3>
+                            <p>${formatCurrency(totalRevenue / (totalTransactions || 1))}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-table-container">
+                        <h4>Distribusi Metode Pembayaran</h4>
+                        <table class="pdf-table">
+                            <thead>
+                                <tr>
+                                    <th>Metode Pembayaran</th>
+                                    <th>Jumlah Transaksi</th>
+                                    <th>Total Nilai</th>
+                                    <th>Persentase</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            // Tampilkan data metode pembayaran
+            Object.keys(paymentMethods).forEach(method => {
+                const methodOrders = filteredOrders.filter(o => {
+                    const oMethod = o.paymentMethod === 'cash' ? 'Tunai' : 
+                                   o.paymentMethod === 'qris' ? 'QRIS' : 
+                                   o.paymentMethod === 'transfer' ? 'Transfer Bank' : 'E-Wallet';
+                    return oMethod === method;
+                });
+                const methodCount = methodOrders.length;
+                const methodTotal = paymentMethods[method];
+                const methodPercentage = totalRevenue > 0 ? (methodTotal / totalRevenue * 100).toFixed(2) : 0;
+                
+                reportHtml += `
+                    <tr>
+                        <td>${method}</td>
+                        <td>${methodCount}</td>
+                        <td>${formatCurrency(methodTotal)}</td>
+                        <td>${methodPercentage}%</td>
+                    </tr>
+                `;
+            });
+            
+            reportHtml += `
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pdf-table-container">
+                        <h4>10 Menu Terlaris</h4>
+                        <table class="pdf-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Menu</th>
+                                    <th>Jumlah Terjual</th>
+                                    <th>Total Pendapatan</th>
+                                    <th>Persentase</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            // Tampilkan menu terlaris
+            topMenus.forEach((menu, index) => {
+                const menuPercentage = totalRevenue > 0 ? (menu.total / totalRevenue * 100).toFixed(2) : 0;
+                reportHtml += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${menu.name}</td>
+                        <td>${menu.quantity}</td>
+                        <td>${formatCurrency(menu.total)}</td>
+                        <td>${menuPercentage}%</td>
+                    </tr>
+                `;
+            });
+            
+            reportHtml += `
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pdf-chart-container">
+                        <h4>Analisis Performa Penjualan</h4>
+                        <div class="profit-breakdown">
+                            <div class="breakdown-item">
+                                <label>Rata-rata Item/Transaksi</label>
+                                <span>${(totalItemsSold / (totalTransactions || 1)).toFixed(1)} item</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Rata-rata Nilai/Transaksi</label>
+                                <span>${formatCurrency(totalRevenue / (totalTransactions || 1))}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Rata-rata Nilai/Item</label>
+                                <span>${formatCurrency(totalRevenue / (totalItemsSold || 1))}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <label>Periode Laporan</label>
+                                <span>${Math.ceil(moment.duration(endDate.diff(startDate)).asDays())} hari</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-footer-signature">
+                        <div class="pdf-signature-box">
+                            <p>Dibuat Oleh</p>
+                            <div class="pdf-signature-line"></div>
+                            <p><strong>${currentUser.name}</strong></p>
+                        </div>
+                        <div class="pdf-signature-box">
+                            <p>Disetujui Oleh</p>
+                            <div class="pdf-signature-line"></div>
+                            <p><strong>____________________</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-footer">
+                        <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                        <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
+                    </div>
+                </div>
+            `;
+            
+            $resultsContainer.html(reportHtml);
             $('#printReportBtn, #downloadReportBtn').show();
         }
         
         function printReport() {
-            printElement('#reportResults');
+            printElement('#reportResults .professional-pdf');
         }
         
+        // PERBAIKAN: Fungsi download report PDF yang lebih profesional
         function downloadReportAsPdf() {
-            const element = document.querySelector('#reportResults');
-            showToast('Mengunduh Laporan PDF...', 'info');
-            html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+            const element = document.querySelector('#reportResults .professional-pdf');
+            if (!element) {
+                showToast('Tidak ada laporan untuk diunduh', 'warning');
+                return;
+            }
+            
+            showToast('Mengunduh Laporan PDF Profesional...', 'info');
+            
+            html2canvas(element, { 
+                scale: 2, 
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
                 const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgData = canvas.toDataURL('image/png');
+                const imgData = canvas.toDataURL('image/png', 1.0);
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                
                 pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save(`Laporan_Penjualan_UMKM_CASH_${moment().format('YYYY-MM-DD')}.pdf`);
-            }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF report download error:", err); });
+                pdf.save(`Laporan_Penjualan_Profesional_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
+                showToast('Laporan PDF berhasil diunduh', 'success');
+            }).catch(err => { 
+                showToast('Gagal mengunduh PDF', 'error'); 
+                console.error("PDF report download error:", err); 
+            });
         }
         
         function updateStoreInfo() { 
@@ -4674,6 +6476,14 @@
         
         function saveMembers() { 
             localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(members)); 
+        }
+        
+        function saveShiftData() {
+            localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
+        }
+        
+        function saveProfitSettings() {
+            localStorage.setItem(STORAGE_KEYS.PROFIT_SETTINGS, JSON.stringify(profitSettings));
         }
     </script>
 </body>
