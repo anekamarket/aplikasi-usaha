@@ -1,0 +1,2211 @@
+        :root {
+            --primary: #28a745;
+            --primary-light: #d4edda;
+            --secondary: #218838;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --shadow-sm: 0 0.15rem 0.35rem rgba(0,0,0,0.1);
+            --shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            --rounded-sm: 0.35rem;
+            --rounded: 0.75rem;
+            --rounded-lg: 1rem;
+            --donation: #6f42c1;
+            --premium-gold: #ffd700;
+            --fishery-blue: #1e88e5;
+            --fishery-dark-blue: #0d47a1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* PERBAIKAN: Styling scrollbar agar lebih minimalis dan konsisten */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #aaa;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #212529;
+            line-height: 1.5;
+            /* PERBAIKAN: Ubah touch-action untuk mendukung zoom */
+            touch-action: pan-x pan-y;
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        /* PERBAIKAN: Tambahkan untuk responsif gambar */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 12px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 12px 16px;
+            border-radius: var(--rounded);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
+        }
+        
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-width: 0;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--white);
+            padding: 5px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
+        }
+
+        .app-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .app-subtitle {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 2px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* PERBAIKAN: Ganti badge dengan tampilan waktu yang lebih baik */
+        .time-badge {
+            background: linear-gradient(90deg, #1a237e, #283593);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .time-badge i {
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+
+        .header-info {
+            text-align: right;
+            font-size: 0.9rem;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
+        }
+
+        .header-info p {
+            margin: 2px 0;
+        }
+
+        /* Main Content Layout */
+        .app-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex: 1;
+        }
+
+        /* Panel Styles */
+        .panel {
+            background: var(--white);
+            border-radius: var(--rounded);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            grid-auto-rows: min-content;
+        }
+
+        .menu-card {
+            background: var(--white);
+            border-radius: var(--rounded-sm);
+            padding: 12px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+            border: 1px solid #eee;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-height: 180px;
+            height: 100%;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .menu-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            overflow: hidden;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
+        }
+
+        .menu-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            max-width: 100%;
+        }
+
+        .menu-image i {
+            font-size: 1.5rem;
+            color: var(--gray);
+        }
+
+        .menu-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .menu-price {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 4px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .menu-category {
+            font-size: 0.7rem;
+            color: var(--gray);
+            background-color: var(--light);
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-top: 4px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        /* Search and Filter */
+        .search-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 3vw, 1rem);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-chip {
+            padding: 8px 12px;
+            background: var(--light);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            cursor: pointer;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Order Styles */
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .order-item-info {
+            flex: 1;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-width: 0;
+        }
+
+        .order-item-name {
+            font-weight: 500;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            word-break: break-word;
+        }
+
+        .order-item-price {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .whatsapp-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .whatsapp-link:hover {
+            text-decoration: underline;
+        }
+
+        .order-item-qty {
+            display: flex;
+            align-items: center;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #ddd;
+            background: var(--light);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .qty-input {
+            width: 40px;
+            text-align: center;
+            margin: 0 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 6px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .remove-btn {
+            color: var(--danger);
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        /* Summary Styles */
+        .summary-container {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .total-row {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #ddd;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--rounded-sm);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.2s;
+            width: 100%;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            white-space: nowrap;
+        }
+        
+        .btn:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn:hover:not(:disabled) {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        .btn .fa-spinner {
+            margin-right: 8px;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            color: #000;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        
+        .btn-gray {
+            background-color: var(--gray);
+        }
+        .btn-gray:hover {
+            background-color: var(--dark);
+        }
+
+        .btn-info {
+            background-color: var(--info);
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        
+        .btn-outline-primary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-donation {
+            background-color: var(--donation);
+        }
+
+        .btn-donation:hover {
+            background-color: #5a32a3;
+        }
+
+        /* Tab Styles */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            text-align: center;
+            flex: 1;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-width: max-content;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            /* PERBAIKAN: Tambahkan untuk responsif dan zoom */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--rounded-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.3s;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            margin: auto;
+        }
+
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            word-break: break-word;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
+        }
+
+        .modal-body {
+            padding: 16px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 16px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 3vw, 1rem);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* PERBAIKAN UTAMA: Desain Login Responsif untuk Semua Device */
+        #loginModal {
+            background: linear-gradient(45deg, #f0f2f5, #e6e9ed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            /* PERBAIKAN: Pastikan modal login selalu fullscreen */
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            min-width: 300px;
+            margin: 0;
+            background: var(--white);
+            border-radius: var(--rounded-lg);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary);
+            animation: fadeIn 0.4s;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-logo {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            line-height: 1;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            color: var(--dark);
+            font-weight: 700;
+            letter-spacing: 1px;
+            /* PERBAIKAN: Responsif untuk judul */
+            font-size: clamp(1.5rem, 4vw, 2rem);
+        }
+        
+        .login-header p {
+            color: var(--gray);
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        /* PERBAIKAN: Media query untuk login */
+        @media (max-height: 600px) {
+            .login-container {
+                padding: 20px;
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+            
+            .login-logo {
+                font-size: 2.5rem;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .login-container {
+                padding: 20px;
+            }
+            
+            .login-logo {
+                font-size: 2.5rem;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Welcome Toast dengan animasi khusus */
+        .welcome-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--fishery-blue));
+            color: white;
+            padding: 30px 40px;
+            border-radius: var(--rounded-lg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            z-index: 2000;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .welcome-toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .welcome-message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .welcome-submessage {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* PERBAIKAN: Tombol close untuk welcome toast */
+        .welcome-toast-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .welcome-toast-close:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 16px;
+            background-color: var(--dark);
+            color: var(--white);
+            border-radius: var(--rounded-sm);
+            box-shadow: var(--shadow);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            transform: translateX(200%);
+            transition: transform 0.3s;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            max-width: 90%;
+            word-break: break-word;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background-color: var(--success);
+        }
+
+        .toast.error {
+            background-color: var(--danger);
+        }
+
+        .toast.warning {
+            background-color: var(--warning);
+            color: #000;
+        }
+
+        .toast i {
+            margin-right: 8px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 24px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 12px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            margin-top: 16px;
+            padding: 16px;
+            background-color: var(--light);
+            border-radius: var(--rounded);
+        }
+        
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            display: block;
+            overflow-x: auto;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            white-space: nowrap;
+        }
+
+        .data-table th {
+            background-color: var(--light);
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Menu Actions */
+        .menu-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: none;
+            gap: 4px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            z-index: 10;
+        }
+
+        .menu-card:hover .menu-actions {
+            display: flex;
+        }
+
+        .action-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.7rem;
+            color: white;
+        }
+
+        .edit-btn {
+            background-color: var(--info);
+        }
+
+        .delete-btn {
+            background-color: var(--danger);
+        }
+
+        /* Note Input */
+        .note-input {
+            margin-top: 12px;
+        }
+
+        .note-input textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        /* Table Number */
+        .table-number {
+            margin-bottom: 16px;
+        }
+
+        .table-number select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+        }
+
+        /* Order Type */
+        .order-type {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .order-type-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            text-align: center;
+            cursor: pointer;
+            background-color: var(--light);
+        }
+
+        .order-type-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Member Search */
+        .member-search-container {
+            position: relative;
+        }
+
+        .member-search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 var(--rounded-sm) var(--rounded-sm);
+            z-index: 100;
+            display: none;
+        }
+
+        .member-search-item {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .member-search-item:hover {
+            background-color: var(--light);
+        }
+
+        /* Kitchen Status */
+        .kitchen-status {
+            margin-top: 16px;
+            padding: 12px;
+            background-color: var(--light);
+            border-radius: var(--rounded-sm);
+        }
+
+        .kitchen-status h4 {
+            margin-bottom: 8px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-preparing {
+            color: var(--danger);
+            cursor: pointer;
+        }
+
+        .status-ready {
+            color: var(--success);
+        }
+
+        .status-locked {
+            color: var(--gray);
+            cursor: default;
+        }
+        
+        /* Payment Modal Enhancements */
+        .payment-total-display {
+            background: var(--primary-light);
+            border-radius: var(--rounded);
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .payment-total-display p {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin: 0;
+        }
+        
+        .payment-total-display h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin: 0;
+        }
+        
+        .quick-cash-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+        }
+        
+        /* QRIS Container */
+        .qris-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--light);
+            border-radius: var(--rounded);
+            border: 1px solid #ddd;
+        }
+        
+        .qris-image-placeholder {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--rounded-sm);
+            border: 2px dashed var(--primary);
+        }
+        
+        .qris-image-placeholder i {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        /* Member Badge */
+        .member-badge {
+            background-color: var(--info);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 6px;
+        }
+
+        /* Responsive Adjustments */
+        @media (min-width: 768px) {
+            .app-content {
+                flex-direction: row;
+            }
+            
+            .menu-panel {
+                flex: 2;
+                min-width: 0;
+            }
+            
+            .order-panel {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            /* PERBAIKAN: Admin grid untuk tablet */
+            .admin-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Penyesuaian untuk layar sangat kecil */
+        @media (max-width: 380px) {
+            .app-title {
+                font-size: 1.2rem;
+            }
+            .header-info {
+                font-size: 0.8rem;
+            }
+            .header-logo {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+            .panel-title {
+                font-size: 1.1rem;
+            }
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            }
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+            .welcome-message {
+                font-size: 1rem;
+            }
+        }
+
+        /* PERBAIKAN: Penyesuaian untuk tablet */
+        @media (max-width: 768px) {
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .header-info {
+                text-align: left;
+                width: 100%;
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            
+            .admin-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* PERBAIKAN: Penyesuaian untuk landscape mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .app-header {
+                position: relative;
+                top: auto;
+            }
+            
+            .app-content {
+                flex-direction: column;
+            }
+            
+            .menu-panel, .order-panel {
+                max-height: 50vh;
+                overflow-y: auto;
+            }
+            
+            /* PERBAIKAN: Login modal untuk landscape */
+            #loginModal {
+                padding: 10px;
+            }
+            
+            .login-container {
+                padding: 20px;
+                max-height: 95vh;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content {
+            animation: fadeIn 0.3s;
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+        .mt-2 { margin-top: 8px; }
+        .mt-3 { margin-top: 16px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-3 { margin-bottom: 16px; }
+        .d-flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .align-center { align-items: center; }
+        .gap-2 { gap: 8px; }
+        
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            color: var(--gray);
+            font-size: 0.8rem;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
+        }
+
+        .fishery-support {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--fishery-blue);
+            font-weight: 600;
+        }
+
+        /* KODE CETAK STRUK & HISTORI */
+        #receiptContent {
+            font-family: 'Courier New', Courier, monospace;
+            width: 300px;
+            margin: 0 auto;
+            padding: 15px;
+            font-size: 12px;
+            line-height: 1.3;
+            color: #000;
+            background: white;
+        }
+        .receipt-header { text-align: center; margin-bottom: 8px; }
+        .receipt-title { font-weight: bold; font-size: 14px; margin-bottom: 3px; }
+        .receipt-info { margin-bottom: 8px; font-size: 11px; border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 5px 0; }
+        .receipt-info div { display: flex; justify-content: space-between; }
+        .receipt-item { display: flex; justify-content: space-between; margin-bottom: 2px; }
+        .receipt-item-details { display: block; }
+        .receipt-item-details .item-name { font-weight: bold; }
+        .receipt-item-details .item-price-calc { font-size: 10px; padding-left: 5px; }
+        #receiptItemsContainer { padding: 8px 0; }
+        .receipt-total { font-weight: bold; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000; }
+        .receipt-footer { margin-top: 12px; font-size: 10px; text-align: center; }
+        
+        /* PERBAIKAN: Style untuk PDF A4 */
+        .pdf-a4-container {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        @media print {
+            html, body { 
+                width: 210mm;
+                height: 297mm;
+                margin: 0 !important; 
+                padding: 0 !important; 
+                overflow: visible !important; 
+                box-shadow: none;
+                background: white !important;
+            }
+            body * { visibility: hidden; }
+            #print-container, #print-container * { 
+                visibility: visible; 
+                box-sizing: border-box !important;
+            }
+            #print-container { 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 210mm !important;
+                height: 297mm !important;
+                margin: 0; 
+                padding: 0; 
+                display: block !important; 
+                background: white !important;
+            }
+            #print-container .printable-area, 
+            #print-container #receiptContent,
+            #print-container .pdf-a4-container { 
+                margin: 0 !important; 
+                padding: 20mm !important; 
+                box-shadow: none !important; 
+                border: none !important; 
+                display: block !important; 
+                color: #000 !important; 
+                background: #fff !important; 
+                width: 210mm !important; 
+                min-height: 297mm !important;
+                font-size: 11pt !important; 
+                page-break-inside: avoid;
+            }
+            #print-container #receiptContent { 
+                font-size: 10pt !important;
+                width: 100% !important;
+            }
+            #print-container #historyResultsContainer, 
+            #print-container #historyResults { 
+                max-height: none !important; 
+                overflow: visible !important; 
+                height: auto !important;
+            }
+            .no-print, .modal-footer, .modal-header, .app-header, .app-footer, .order-panel, .menu-panel, #loginModal, .welcome-toast { 
+                display: none !important; 
+            }
+            @page { 
+                size: A4;
+                margin: 20mm;
+            }
+        }
+
+        /* Backup Restore Styles */
+        .backup-actions { display: flex; gap: 8px; margin-top: 16px; }
+        .backup-btn { flex: 1; }
+        .file-input { display: none; }
+        .file-label { display: block; padding: 12px; background-color: var(--info); color: white; border-radius: var(--rounded-sm); text-align: center; cursor: pointer; transition: all 0.2s; }
+        .file-label:hover { background-color: #138496; }
+        
+        /* KTA Card Design */
+        #ktaCard { width: 320px; height: 500px; margin: 0 auto; border-radius: 20px; background: radial-gradient(circle at top left, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5); color: white; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.2); }
+        #ktaCard::before { content: ''; position: absolute; top: -80px; left: -80px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(10px); }
+        #ktaCard::after { content: ''; position: absolute; bottom: -100px; right: -60px; width: 250px; height: 250px; background: rgba(255,255,255,0.15); border-radius: 45%; filter: blur(15px); }
+        .kta-header { text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 15px; margin-bottom: 25px; z-index: 1; }
+        .kta-store-info h3 { font-size: 18px; margin: 0; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .kta-store-info p { font-size: 11px; margin: 0; opacity: 0.9; }
+        .kta-body { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 1; }
+        #ktaMemberName { font-size: 26px; font-weight: 600; margin-bottom: 8px; text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        #ktaMemberId { font-family: 'Courier New', monospace; font-size: 14px; background-color: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 20px; letter-spacing: 1px; }
+        .kta-qrcode { background: white; padding: 10px; border-radius: 8px; min-height: 160px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .kta-qrcode img { width: 160px; height: auto; display: block; }
+        .kta-footer { text-align: center; font-size: 11px; opacity: 0.8; padding-top: 15px; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.3); z-index: 1; }
+        
+        /* Premium Badge */
+        .premium-badge {
+            background: linear-gradient(45deg, #feda75, #fa7e1e);
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 6px;
+            display: inline-block;
+        }
+        
+        /* Hak Akses Styles */
+        .permissions-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: var(--rounded-sm);
+            margin-bottom: 15px;
+        }
+        
+        .permission-group {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .permission-group:last-child {
+            border-bottom: none;
+        }
+        
+        .permission-group h5 {
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .permission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            border-radius: var(--rounded-sm);
+            border: 1px solid #eee;
+        }
+        
+        .permission-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .permission-name {
+            font-size: 13px;
+            color: var(--dark);
+        }
+        
+        .permission-description {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        /* PERBAIKAN UTAMA: Daftar Menu PDF Styles - DIPERBAIKI untuk 4x4 grid */
+        #menuPdfContainer {
+            background: white;
+            padding: 0;
+            max-width: 210mm;
+            margin: 0 auto;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            width: 210mm;
+            min-height: 297mm;
+            box-sizing: border-box;
+        }
+
+        .pdf-a4-wrapper {
+            padding: 15mm 10mm;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+
+        .pdf-header h1 {
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pdf-header h2 {
+            color: var(--secondary);
+            font-size: 16px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .pdf-subtitle {
+            font-size: 10px;
+            color: var(--gray);
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .pdf-subtitle strong {
+            color: var(--dark);
+        }
+
+        .pdf-support-info {
+            background: linear-gradient(90deg, var(--fishery-blue), var(--fishery-dark-blue));
+            color: white;
+            padding: 5px 10px;
+            border-radius: var(--rounded-sm);
+            margin: 8px auto;
+            font-size: 9px;
+            font-weight: 600;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .pdf-qr-section {
+            text-align: center;
+            margin: 10px 0;
+            padding: 15px;
+            background: var(--light);
+            border-radius: var(--rounded);
+            border: 1px dashed var(--primary);
+        }
+
+        .pdf-qr-section h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .pdf-category-section {
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+
+        .pdf-category-title {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 8px 10px;
+            border-radius: var(--rounded-sm);
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* PERBAIKAN UTAMA: Grid 4x4 dengan ukuran lebih kecil */
+        .pdf-menu-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 kolom */
+            grid-auto-rows: minmax(70mm, auto); /* Tinggi otomatis, maks 70mm */
+            gap: 8px; /* Gap lebih kecil */
+            margin-bottom: 10px;
+        }
+
+        .pdf-menu-item {
+            background: #f9f9f9;
+            border-radius: 6px;
+            padding: 8px;
+            border: 1px solid #eee;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+            break-inside: avoid;
+            min-height: 65mm; /* Tinggi minimum */
+        }
+
+        .pdf-menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .pdf-menu-image-container {
+            width: 100%;
+            height: 45mm; /* Lebih kecil */
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 6px;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--light);
+        }
+
+        .pdf-menu-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pdf-menu-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pdf-menu-name {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--dark);
+            margin-bottom: 4px;
+            line-height: 1.2;
+            min-height: 28px; /* Tinggi tetap untuk nama */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Batasi 2 baris */
+            -webkit-box-orient: vertical;
+        }
+
+        .pdf-menu-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            padding: 4px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .pdf-menu-description {
+            color: var(--gray);
+            font-size: 9px;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Batasi 3 baris */
+            -webkit-box-orient: vertical;
+            min-height: 35px; /* Tinggi minimum */
+        }
+
+        .pdf-menu-category {
+            font-size: 8px;
+            color: var(--white);
+            background-color: var(--info);
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: inline-block;
+            align-self: flex-start;
+            font-weight: 500;
+        }
+
+        .pdf-footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid var(--primary);
+            text-align: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .pdf-footer h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .pdf-footer p {
+            color: var(--gray);
+            font-size: 10px;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .pdf-qr-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pdf-qr-item {
+            text-align: center;
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            min-width: 150px;
+        }
+
+        .pdf-qr-code {
+            width: 100px;
+            height: 100px;
+            background: white;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pdf-qr-label {
+            font-size: 10px;
+            color: var(--dark);
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .pdf-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 60px;
+            color: rgba(0,0,0,0.05);
+            font-weight: 900;
+            z-index: -1;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .pdf-page-break {
+            page-break-before: always;
+            margin-top: 20px;
+        }
+
+        /* Kontrol pagination untuk PDF */
+        .pdf-page {
+            page-break-after: always;
+            margin-bottom: 20px;
+        }
+
+        .pdf-page:last-child {
+            page-break-after: auto;
+        }
+
+        /* Untuk cetak PDF A4 - PERBAIKAN untuk grid 4x4 */
+        @media print {
+            .pdf-category-section {
+                page-break-inside: avoid;
+            }
+            
+            .pdf-menu-item {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            
+            #menuPdfContainer {
+                box-shadow: none;
+                padding: 0;
+                width: 210mm !important;
+                max-width: 210mm !important;
+                min-height: 297mm !important;
+            }
+            
+            .pdf-a4-wrapper {
+                padding: 15mm 10mm;
+            }
+            
+            /* Grid 4x4 saat print */
+            .pdf-menu-grid {
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 6px !important;
+            }
+            
+            /* Ukuran font saat print */
+            .pdf-menu-name {
+                font-size: 11pt !important;
+            }
+            
+            .pdf-menu-price {
+                font-size: 12pt !important;
+            }
+            
+            .pdf-menu-description {
+                font-size: 9pt !important;
+            }
+            
+            /* Pastikan QR Code muncul saat print */
+            .pdf-qr-code canvas, .pdf-qr-code img {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            /* Kontrol page break */
+            .pdf-page {
+                page-break-after: always;
+            }
+            
+            .pdf-page:last-child {
+                page-break-after: auto;
+            }
+        }
+
+        /* Responsive untuk PDF */
+        @media (max-width: 768px) {
+            .pdf-menu-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 kolom di mobile */
+            }
+            
+            .pdf-qr-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .pdf-menu-item {
+                min-height: 70mm; /* Lebih tinggi di mobile */
+            }
+        }
+
+        /* PERBAIKAN: Tambahan untuk mendukung zoom dan responsif */
+        html {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            overflow-x: hidden;
+        }
+
+        /* PERBAIKAN: Untuk mencegah overflow horizontal */
+        .container, .app-content, .panel, .modal-content {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* PERBAIKAN: Untuk input number di iOS */
+        input[type="number"] {
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* PERBAIKAN: Untuk touch-friendly elements */
+        button, .btn, .filter-chip, .tab, .menu-card {
+            -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+            tap-highlight-color: rgba(0,0,0,0.1);
+        }
+
+        /* PERBAIKAN: Untuk font scaling */
+        @media (max-width: 320px) {
+            .login-title {
+                font-size: 1.5rem;
+            }
+            
+            .login-logo {
+                font-size: 2.5rem;
+            }
+            
+            .pdf-header h1 {
+                font-size: 18px;
+            }
+            
+            .pdf-header h2 {
+                font-size: 14px;
+            }
+        }
+
+        /* PERBAIKAN: Untuk tinggi viewport mobile */
+        @media (max-height: 600px) {
+            .login-container {
+                padding: 20px;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* PERBAIKAN BARU: Styling untuk PDF Laporan yang Lebih Profesional */
+        .professional-pdf {
+            font-family: 'Poppins', sans-serif;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: white;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        .pdf-report-header {
+            text-align: center;
+            border-bottom: 3px double var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-report-header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .pdf-report-header h2 {
+            color: var(--secondary);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .pdf-report-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: var(--rounded-sm);
+            border: 1px solid #eee;
+        }
+
+        .pdf-report-info div {
+            font-size: 11px;
+        }
+
+        .pdf-report-info strong {
+            color: var(--dark);
+        }
+
+        .pdf-report-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-summary-card {
+            background: linear-gradient(135deg, var(--primary-light), #c3e6cb);
+            padding: 15px;
+            border-radius: var(--rounded);
+            text-align: center;
+            border: 1px solid var(--primary);
+        }
+
+        .pdf-summary-card h3 {
+            font-size: 12px;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .pdf-summary-card p {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .pdf-table-container {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        .pdf-table th {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #ddd;
+        }
+
+        .pdf-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .pdf-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .pdf-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .pdf-chart-container {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: var(--rounded);
+            background: #f8f9fa;
+        }
+
+        .pdf-footer-signature {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--primary);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .pdf-signature-box {
+            text-align: center;
+        }
+
+        .pdf-signature-line {
+            margin-top: 60px;
+            border-top: 1px solid #333;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* PERBAIKAN BARU: Styling untuk Modal Cash Management dan Profit Calculation */
+        .cash-management-container {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: var(--rounded);
+            margin-bottom: 20px;
+        }
+
+        .cash-summary-card {
+            background: white;
+            padding: 15px;
+            border-radius: var(--rounded);
+            border: 2px solid var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .cash-summary-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .cash-summary-card p {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .shift-status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .shift-open {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .shift-closed {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .profit-calculation-container {
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: var(--rounded);
+            border: 1px solid #dee2e6;
+        }
+
+        .profit-input-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profit-result-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--rounded);
+            border: 2px solid var(--success);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profit-result-card h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .profit-result-card p {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .profit-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .breakdown-item {
+            background: white;
+            padding: 10px;
+            border-radius: var(--rounded-sm);
+            border: 1px solid #dee2e6;
+        }
+
+        .breakdown-item label {
+            font-size: 12px;
+            color: var(--gray);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .breakdown-item span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* PERBAIKAN: Tombol di admin panel untuk fitur baru */
+        .btn-shift {
+            background: linear-gradient(90deg, var(--success), #218838);
+            color: white;
+        }
+
+        .btn-shift:hover {
+            background: linear-gradient(90deg, #218838, #1e7e34);
+        }
+
+        .btn-profit {
+            background: linear-gradient(90deg, var(--warning), #e0a800);
+            color: #000;
+        }
+
+        .btn-profit:hover {
+            background: linear-gradient(90deg, #e0a800, #d39e00);
+        }
