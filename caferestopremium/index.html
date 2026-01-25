@@ -612,11 +612,6 @@
         .login-header p {
             color: var(--gray);
         }
-        
-        .form-control:read-only {
-            background-color: #e9ecef;
-            cursor: not-allowed;
-        }
 
         /* Toast Notification */
         .toast {
@@ -1027,6 +1022,57 @@
             margin-left: 6px;
             display: inline-block;
         }
+        
+        /* Hak Akses Styles */
+        .permissions-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: var(--rounded-sm);
+            margin-bottom: 15px;
+        }
+        
+        .permission-group {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .permission-group:last-child {
+            border-bottom: none;
+        }
+        
+        .permission-group h5 {
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .permission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            border-radius: var(--rounded-sm);
+            border: 1px solid #eee;
+        }
+        
+        .permission-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .permission-name {
+            font-size: 13px;
+            color: var(--dark);
+        }
+        
+        .permission-description {
+            font-size: 11px;
+            color: var(--gray);
+        }
     </style>
 </head>
 <body>
@@ -1047,11 +1093,11 @@
             <form id="loginForm">
                 <div class="form-group">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" id="username" class="form-control" value="User" readonly>
+                    <input type="text" id="username" class="form-control" placeholder="Masukkan username" autocomplete="username" required>
                 </div>
                 <div class="form-group">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" value="UjiCoba" readonly autocomplete="current-password">
+                    <input type="password" id="password" class="form-control" placeholder="Masukkan password" autocomplete="current-password" required>
                 </div>
                 
                 <div class="form-group mt-3">
@@ -1506,6 +1552,7 @@
                 <div class="tabs">
                     <div class="tab active" data-tab="users"><i class="fas fa-users-cog"></i> Pengguna</div>
                     <div class="tab" data-tab="security"><i class="fas fa-shield-alt"></i> Keamanan</div>
+                    <div class="tab" data-tab="permissions"><i class="fas fa-key"></i> Hak Akses</div>
                 </div>
 
                 <div class="tab-content active" id="usersTab">
@@ -1587,6 +1634,159 @@
                         </div>
                         <button type="submit" class="btn btn-sm btn-success">Simpan Password Baru</button>
                     </form>
+                </div>
+                
+                <div class="tab-content" id="permissionsTab">
+                    <h4 class="mt-3">Manajemen Hak Akses</h4>
+                    <div class="form-group">
+                        <label class="form-label">Pilih Pengguna</label>
+                        <select id="permissionUserSelect" class="form-control">
+                            <option value="">-- Pilih Pengguna --</option>
+                        </select>
+                    </div>
+                    
+                    <div id="permissionsContainer" class="permissions-container" style="display: none;">
+                        <div class="permission-group">
+                            <h5>Menu Utama</h5>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Tambah Menu</div>
+                                    <div class="permission-description">Akses untuk menambah menu baru</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="add_menu" id="perm_add_menu">
+                                    <label for="perm_add_menu"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Edit Menu</div>
+                                    <div class="permission-description">Akses untuk mengedit menu yang ada</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="edit_menu" id="perm_edit_menu">
+                                    <label for="perm_edit_menu"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Hapus Menu</div>
+                                    <div class="permission-description">Akses untuk menghapus menu</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="delete_menu" id="perm_delete_menu">
+                                    <label for="perm_delete_menu"></label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="permission-group">
+                            <h5>Kelola Data</h5>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Kelola Kategori</div>
+                                    <div class="permission-description">Akses untuk mengelola kategori menu</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="manage_categories" id="perm_manage_categories">
+                                    <label for="perm_manage_categories"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Kelola Member</div>
+                                    <div class="permission-description">Akses untuk mengelola data member</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="manage_members" id="perm_manage_members">
+                                    <label for="perm_manage_members"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Info Restoran</div>
+                                    <div class="permission-description">Akses untuk mengubah info restoran</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="manage_store_info" id="perm_manage_store_info">
+                                    <label for="perm_manage_store_info"></label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="permission-group">
+                            <h5>Laporan dan Transaksi</h5>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Lihat Laporan</div>
+                                    <div class="permission-description">Akses untuk melihat laporan penjualan</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="view_reports" id="perm_view_reports">
+                                    <label for="perm_view_reports"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Histori Transaksi</div>
+                                    <div class="permission-description">Akses untuk melihat histori transaksi</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="transaction_history" id="perm_transaction_history">
+                                    <label for="perm_transaction_history"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Info Pesanan Dapur</div>
+                                    <div class="permission-description">Akses untuk melihat info pesanan dapur</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="kitchen_display" id="perm_kitchen_display">
+                                    <label for="perm_kitchen_display"></label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="permission-group">
+                            <h5>Administrasi</h5>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Kontrol Panel</div>
+                                    <div class="permission-description">Akses ke kontrol panel sistem</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="control_panel" id="perm_control_panel">
+                                    <label for="perm_control_panel"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Backup & Restore</div>
+                                    <div class="permission-description">Akses untuk backup dan restore data</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="backup_restore" id="perm_backup_restore">
+                                    <label for="perm_backup_restore"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Reset Data</div>
+                                    <div class="permission-description">Akses untuk mereset semua data</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="reset_data" id="perm_reset_data">
+                                    <label for="perm_reset_data"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="permissionsActions" class="d-flex gap-2 mt-3" style="display: none;">
+                        <button type="button" class="btn btn-sm btn-warning" id="resetPermissionsBtn">Reset ke Default</button>
+                        <button type="button" class="btn btn-sm btn-success" id="savePermissionsBtn">Simpan Hak Akses</button>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1713,10 +1913,46 @@
 
         const DEFAULT_TRIAL_USER = {
             id: 'U-PREMIUM-001',
-            username: 'User',
-            password: CryptoJS.SHA256('UjiCoba').toString(),
-            name: 'Pengguna Premium',
-            role: 'admin'
+            username: 'admin',
+            password: CryptoJS.SHA256('admin123').toString(),
+            name: 'Administrator Premium',
+            role: 'admin',
+            permissions: {
+                add_menu: true,
+                edit_menu: true,
+                delete_menu: true,
+                manage_categories: true,
+                manage_members: true,
+                manage_store_info: true,
+                view_reports: true,
+                transaction_history: true,
+                kitchen_display: true,
+                control_panel: true,
+                backup_restore: true,
+                reset_data: true
+            }
+        };
+        
+        const DEFAULT_CASHIER_USER = {
+            id: 'U-CASHIER-001',
+            username: 'kasir',
+            password: CryptoJS.SHA256('kasir123').toString(),
+            name: 'Kasir Premium',
+            role: 'cashier',
+            permissions: {
+                add_menu: false,
+                edit_menu: false,
+                delete_menu: false,
+                manage_categories: false,
+                manage_members: true,
+                manage_store_info: false,
+                view_reports: true,
+                transaction_history: true,
+                kitchen_display: true,
+                control_panel: false,
+                backup_restore: false,
+                reset_data: false
+            }
         };
         
         const DEFAULT_MENU_IMAGES = {
@@ -1731,6 +1967,38 @@
             }
         };
 
+        // Default permissions berdasarkan role
+        const DEFAULT_PERMISSIONS = {
+            admin: {
+                add_menu: true,
+                edit_menu: true,
+                delete_menu: true,
+                manage_categories: true,
+                manage_members: true,
+                manage_store_info: true,
+                view_reports: true,
+                transaction_history: true,
+                kitchen_display: true,
+                control_panel: true,
+                backup_restore: true,
+                reset_data: true
+            },
+            cashier: {
+                add_menu: false,
+                edit_menu: false,
+                delete_menu: false,
+                manage_categories: false,
+                manage_members: true,
+                manage_store_info: false,
+                view_reports: true,
+                transaction_history: true,
+                kitchen_display: true,
+                control_panel: false,
+                backup_restore: false,
+                reset_data: false
+            }
+        };
+
         let menus, categories, orders, settings, users, members, currentUser, currentOrder;
         let kitchenInterval;
         let passwordPromptCallback = null;
@@ -1738,9 +2006,17 @@
         
         function initializeData() {
             let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
-            if (!users_init.find(u => u.username === 'User')) {
-                localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify([DEFAULT_TRIAL_USER]));
+            
+            // Tambahkan user default jika belum ada
+            if (!users_init.find(u => u.username === 'admin')) {
+                users_init.push(DEFAULT_TRIAL_USER);
             }
+            if (!users_init.find(u => u.username === 'kasir')) {
+                users_init.push(DEFAULT_CASHIER_USER);
+            }
+            
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users_init));
+            
             if (!localStorage.getItem(STORAGE_KEYS.MEMBERS)) localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify([]));
             if (!localStorage.getItem(STORAGE_KEYS.MENUS)) {
                 const sampleMenus = [
@@ -1801,6 +2077,7 @@
             
             setInterval(updateCurrentDate, 60000);
             
+            // Login form submission
             $('#loginForm').submit(function(e) {
                 e.preventDefault();
                 const $loginBtn = $(this).find('button[type="submit"]');
@@ -1817,18 +2094,29 @@
                             setButtonLoading($loginBtn, false, originalText);
                             return; 
                         }
-                        const user = users.find(u => u.username === 'User');
-                        const validPassword = CryptoJS.SHA256('UjiCoba').toString();
-                        if (user && user.password === validPassword) {
+                        
+                        const username = $('#username').val();
+                        const password = $('#password').val();
+                        const passwordHash = CryptoJS.SHA256(password).toString();
+                        
+                        // Cari user berdasarkan username
+                        const user = users.find(u => u.username === username);
+                        
+                        if (user && user.password === passwordHash) {
+                            // Set permissions default jika tidak ada
+                            if (!user.permissions) {
+                                user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
+                            }
+                            
                             currentUser = user;
                             localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
                             $('#loggedInUser').text(currentUser.name);
                             $('#loginModal').hide();
                             $('#mainApp').fadeIn();
                             initializeApp();
-                            showToast(`Selamat datang di versi Premium!`, 'success');
+                            showToast(`Selamat datang ${currentUser.name}!`, 'success');
                         } else {
-                            showToast('Autentikasi Gagal', 'error');
+                            showToast('Username atau password salah', 'error');
                             generateCaptcha();
                             $('#captchaInput').val('');
                         }
@@ -1850,6 +2138,8 @@
                 localStorage.removeItem(STORAGE_KEYS.USER);
                 $('#mainApp').fadeOut(() => {
                     $('#loginModal').css('display', 'flex');
+                    $('#username').val('');
+                    $('#password').val('');
                     $('#captchaInput').val('');
                     generateCaptcha();
                 });
@@ -1867,10 +2157,24 @@
                 }
             });
             
-            $(document).on('click', '.edit-menu', function(e) { e.stopPropagation(); if (currentUser.role === 'admin') openEditMenuModal(menus.find(m => m.id === $(this).data('id'))); });
+            // Cek permission untuk edit menu
+            $(document).on('click', '.edit-menu', function(e) { 
+                e.stopPropagation(); 
+                if (checkPermission('edit_menu')) {
+                    openEditMenuModal(menus.find(m => m.id === $(this).data('id'))); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mengedit menu', 'error');
+                }
+            });
+            
+            // Cek permission untuk delete menu
             $(document).on('click', '.delete-menu', function(e) {
                 e.stopPropagation();
-                if (currentUser.role !== 'admin') return;
+                if (!checkPermission('delete_menu')) {
+                    showToast('Anda tidak memiliki izin untuk menghapus menu', 'error');
+                    return;
+                }
+                
                 const menuId = $(this).data('id');
                 promptForPassword('item', () => {
                     showConfirmation('Hapus Menu', 'Yakin ingin menghapus menu ini?', () => {
@@ -1979,44 +2283,151 @@
             });
             
             $(document).on('click', '.filter-chip', function() { $('.filter-chip').removeClass('active'); $(this).addClass('active'); loadMenus($('#menuSearch').val(), $(this).data('category')); });
-            $('#addMenuBtn').click(() => { if (currentUser.role === 'admin') openEditMenuModal(null); });
-            $('#manageCategoriesBtn').click(() => { if (currentUser.role === 'admin') { loadCategoriesForManagement(); $('#manageCategoriesModal').css('display', 'flex'); } });
-            $('#viewReportsBtn').click(() => { 
-                if (currentUser.role !== 'admin') return;
-                $('#reportsModal .tabs .tab').removeClass('active').first().addClass('active');
-                $('#reportsModal .tab-content').removeClass('active').first().addClass('active');
-                $('#reportPeriod').val('today').trigger('change');
-                $('#reportResults, #donationReportResults').empty();
-                $('#printReportBtn, #downloadReportBtn').hide();
-                $('#reportsModal').css('display', 'flex');
+            
+            // Cek permission untuk add menu
+            $('#addMenuBtn').click(() => { 
+                if (checkPermission('add_menu')) {
+                    openEditMenuModal(null); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk menambah menu', 'error');
+                }
             });
-            $('#historyBtn').click(() => { if (currentUser.role !== 'admin') { loadTransactionHistory(); $('#historyModal').css('display', 'flex'); } });
-            $('#kitchenDisplayBtn').click(() => { loadKitchenOrders(); kitchenInterval = setInterval(loadKitchenOrders, 30000); $('#kitchenDisplayModal').css('display', 'flex'); });
-            $('#manageMembersBtn').click(() => { if (currentUser.role === 'admin') { resetMemberForm(); loadMembersForManagement(); $('#memberAdminFields').toggle(currentUser.role === 'admin'); $('#manageMembersModal').css('display', 'flex'); } });
+            
+            // Cek permission untuk manage categories
+            $('#manageCategoriesBtn').click(() => { 
+                if (checkPermission('manage_categories')) { 
+                    loadCategoriesForManagement(); 
+                    $('#manageCategoriesModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mengelola kategori', 'error');
+                }
+            });
+            
+            // Cek permission untuk view reports
+            $('#viewReportsBtn').click(() => { 
+                if (checkPermission('view_reports')) { 
+                    $('#reportsModal .tabs .tab').removeClass('active').first().addClass('active');
+                    $('#reportsModal .tab-content').removeClass('active').first().addClass('active');
+                    $('#reportPeriod').val('today').trigger('change');
+                    $('#reportResults, #donationReportResults').empty();
+                    $('#printReportBtn, #downloadReportBtn').hide();
+                    $('#reportsModal').css('display', 'flex');
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melihat laporan', 'error');
+                }
+            });
+            
+            // Cek permission untuk history
+            $('#historyBtn').click(() => { 
+                if (checkPermission('transaction_history')) { 
+                    loadTransactionHistory(); 
+                    $('#historyModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melihat histori transaksi', 'error');
+                }
+            });
+            
+            // Cek permission untuk kitchen display
+            $('#kitchenDisplayBtn').click(() => { 
+                if (checkPermission('kitchen_display')) { 
+                    loadKitchenOrders(); 
+                    kitchenInterval = setInterval(loadKitchenOrders, 30000); 
+                    $('#kitchenDisplayModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melihat info pesanan dapur', 'error');
+                }
+            });
+            
+            // Cek permission untuk manage members
+            $('#manageMembersBtn').click(() => { 
+                if (checkPermission('manage_members')) { 
+                    resetMemberForm(); 
+                    loadMembersForManagement(); 
+                    $('#memberAdminFields').toggle(currentUser.role === 'admin'); 
+                    $('#manageMembersModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mengelola member', 'error');
+                }
+            });
+            
             $('#manageMemberSearchInput').on('input', function() { loadMembersForManagement($(this).val()); });
-            $('#manageStoreInfoBtn').click(() => { if (currentUser.role === 'admin') { loadStoreInfo(); $('#manageStoreInfoModal').css('display', 'flex'); } });
+            
+            // Cek permission untuk manage store info
+            $('#manageStoreInfoBtn').click(() => { 
+                if (checkPermission('manage_store_info')) { 
+                    loadStoreInfo(); 
+                    $('#manageStoreInfoModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mengelola info restoran', 'error');
+                }
+            });
+            
+            // Cek permission untuk control panel
             $('#controlPanelBtn').click(() => {
-                if (currentUser.role !== 'admin') return;
+                if (!checkPermission('control_panel')) {
+                    showToast('Anda tidak memiliki izin untuk mengakses kontrol panel', 'error');
+                    return;
+                }
+                
                 promptForPassword('panel', () => {
                     $('#controlPanelModal .tabs .tab').removeClass('active').first().addClass('active');
                     $('#controlPanelModal .tab-content').removeClass('active').first().addClass('active');
                     loadUsersForManagement();
+                    loadPermissionsUserSelect();
                     $('#memberDiscount').val(settings.memberDiscountPercent || 2);
                     $('#nonMemberDiscount').val(settings.nonMemberDiscountPercent || 0);
                     $('#controlPanelModal').css('display', 'flex');
                 });
             });
-            $('#backupDataBtn').click(() => { if (currentUser.role === 'admin') showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lksbackup). Lanjutkan?', backupData); });
-            $('#restoreFile').change(function() { if (currentUser.role === 'admin') { restoreFromFile(this.files[0]); $(this).val(''); } });
-            $('#resetDataBtn').click(() => { if (currentUser.role === 'admin') promptForPassword('item', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', resetAllData, 'danger')); });
+            
+            // Cek permission untuk backup data
+            $('#backupDataBtn').click(() => { 
+                if (checkPermission('backup_restore')) { 
+                    showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lksbackup). Lanjutkan?', backupData); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melakukan backup data', 'error');
+                }
+            });
+            
+            $('#restoreFile').change(function() { 
+                if (checkPermission('backup_restore')) { 
+                    restoreFromFile(this.files[0]); 
+                    $(this).val(''); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melakukan restore data', 'error');
+                    $(this).val('');
+                }
+            });
+            
+            // Cek permission untuk reset data
+            $('#resetDataBtn').click(() => { 
+                if (checkPermission('reset_data')) { 
+                    promptForPassword('item', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', resetAllData, 'danger')); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mereset data', 'error');
+                }
+            });
+            
             $('#saveMenuBtn').click(function() {
                 const id = $('#menuId').val(), name = $('#menuName').val().trim(), category = $('#menuCategory').val(), price = parseFloat($('#menuPrice').val()) || 0, image = $('#menuImage').val().trim(), description = $('#menuDescription').val().trim();
                 if (!name || !category || price <= 0) { showToast('Nama, kategori, dan harga harus valid', 'error'); return; }
                 const action = () => {
                     if (id) {
+                        // Cek permission untuk edit menu
+                        if (!checkPermission('edit_menu')) {
+                            showToast('Anda tidak memiliki izin untuk mengedit menu', 'error');
+                            return;
+                        }
+                        
                         const menuIndex = menus.findIndex(m => m.id === id);
                         if (menuIndex > -1) menus[menuIndex] = { ...menus[menuIndex], name, category, price, image, description };
                     } else {
+                        // Cek permission untuk add menu
+                        if (!checkPermission('add_menu')) {
+                            showToast('Anda tidak memiliki izin untuk menambah menu', 'error');
+                            return;
+                        }
+                        
                         menus.unshift({ id: 'M' + moment().format('x'), name, category, price, image, description });
                     }
                     saveMenus(); loadMenus(); $('#menuModal').hide(); showToast(`Menu ${id ? 'diperbarui' : 'disimpan'}`, 'success');
@@ -2116,6 +2527,23 @@
                 settings.memberDiscountPercent = memberDiscount; settings.nonMemberDiscountPercent = nonMemberDiscount;
                 saveSettings(); showToast('Pengaturan diskon berhasil disimpan.', 'success');
             });
+            
+            // Event untuk permissions
+            $('#permissionUserSelect').change(function() {
+                const userId = $(this).val();
+                if (userId) {
+                    loadUserPermissions(userId);
+                    $('#permissionsContainer').show();
+                    $('#permissionsActions').show();
+                } else {
+                    $('#permissionsContainer').hide();
+                    $('#permissionsActions').hide();
+                }
+            });
+            
+            $('#savePermissionsBtn').click(saveUserPermissions);
+            $('#resetPermissionsBtn').click(resetUserPermissions);
+            
             $('#passwordPromptForm').submit(e => e.preventDefault());
             $('#passwordPromptSubmit').click(submitPasswordPrompt);
             $('.modal-close, .modal-close-btn').click(function() {
@@ -2135,7 +2563,16 @@
             updateCurrentDate(); 
             updateStoreInfo(); 
             updateTableNumbers(); 
-            $('#adminPanel').toggle(currentUser.role === 'admin'); 
+            
+            // Tampilkan/hide admin panel berdasarkan permission
+            const showAdminPanel = checkPermission('add_menu') || checkPermission('edit_menu') || 
+                                  checkPermission('delete_menu') || checkPermission('manage_categories') ||
+                                  checkPermission('manage_members') || checkPermission('manage_store_info') ||
+                                  checkPermission('view_reports') || checkPermission('transaction_history') ||
+                                  checkPermission('kitchen_display') || checkPermission('control_panel') ||
+                                  checkPermission('backup_restore') || checkPermission('reset_data');
+            
+            $('#adminPanel').toggle(showAdminPanel);
         }
         
         function generateCaptcha() {
@@ -2172,6 +2609,20 @@
                 ctx.lineWidth = 1;
                 ctx.stroke();
             }
+        }
+        
+        // Fungsi untuk mengecek permission user
+        function checkPermission(permission) {
+            if (!currentUser || !currentUser.permissions) {
+                return false;
+            }
+            
+            // Admin memiliki semua permission
+            if (currentUser.role === 'admin') {
+                return true;
+            }
+            
+            return currentUser.permissions[permission] === true;
         }
         
         function promptForPassword(type, callback) {
@@ -2233,6 +2684,80 @@
             }
         }
         
+        function loadPermissionsUserSelect() {
+            const $select = $('#permissionUserSelect').empty();
+            $select.append('<option value="">-- Pilih Pengguna --</option>');
+            users.forEach(user => {
+                $select.append(`<option value="${user.id}">${user.name} (${user.username} - ${user.role})</option>`);
+            });
+        }
+        
+        function loadUserPermissions(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            // Inisialisasi permissions jika belum ada
+            if (!user.permissions) {
+                user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
+            }
+            
+            // Set semua checkbox berdasarkan permissions user
+            $('.permission-checkbox').each(function() {
+                const permission = $(this).data('permission');
+                $(this).prop('checked', user.permissions[permission] === true);
+            });
+        }
+        
+        function saveUserPermissions() {
+            const userId = $('#permissionUserSelect').val();
+            if (!userId) return;
+            
+            const userIndex = users.findIndex(u => u.id === userId);
+            if (userIndex === -1) return;
+            
+            // Kumpulkan semua permission dari checkbox
+            const permissions = {};
+            $('.permission-checkbox').each(function() {
+                const permission = $(this).data('permission');
+                permissions[permission] = $(this).prop('checked');
+            });
+            
+            // Update user permissions
+            users[userIndex].permissions = permissions;
+            saveUsers();
+            
+            // Update currentUser jika yang diubah adalah user yang sedang login
+            if (currentUser.id === userId) {
+                currentUser.permissions = permissions;
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
+                initializeApp(); // Refresh tampilan untuk update permission
+            }
+            
+            showToast('Hak akses berhasil disimpan', 'success');
+        }
+        
+        function resetUserPermissions() {
+            const userId = $('#permissionUserSelect').val();
+            if (!userId) return;
+            
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            // Reset ke default permissions berdasarkan role
+            user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
+            saveUsers();
+            
+            // Update currentUser jika yang diubah adalah user yang sedang login
+            if (currentUser.id === userId) {
+                currentUser.permissions = user.permissions;
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
+                initializeApp(); // Refresh tampilan untuk update permission
+            }
+            
+            loadUserPermissions(userId);
+            showToast('Hak akses berhasil direset ke default', 'success');
+        }
+        
         function resetUserForm() { $('#userForm')[0].reset(); $('#userIdInput').val(''); $('#userFormTitle').text('Tambah Pengguna'); $('#userUsername').prop('disabled', false); }
         
         function populateUserForm(user) { $('#userFormTitle').text('Edit Pengguna'); $('#userIdInput').val(user.id); $('#userName').val(user.name); $('#userUsername').val(user.username).prop('disabled', true); $('#userRole').val(user.role); }
@@ -2243,13 +2768,36 @@
             if (!name || !username) { showToast('Nama dan username harus diisi.', 'error'); return; }
             if (id) {
                 const userIndex = users.findIndex(u => u.id === id);
-                if (userIndex !== -1) { users[userIndex].name = name; users[userIndex].role = role; if (password) users[userIndex].password = CryptoJS.SHA256(password).toString(); }
+                if (userIndex !== -1) { 
+                    users[userIndex].name = name; 
+                    users[userIndex].role = role; 
+                    if (password) users[userIndex].password = CryptoJS.SHA256(password).toString(); 
+                    
+                    // Reset permissions jika role berubah
+                    if (role !== users[userIndex].role) {
+                        users[userIndex].permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
+                    }
+                }
             } else {
                 if (!password) { showToast('Password harus diisi untuk pengguna baru.', 'error'); return; }
                 if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) { showToast('Username sudah digunakan.', 'error'); return; }
-                users.push({ id: 'U' + moment().format('x'), name, username, password: CryptoJS.SHA256(password).toString(), role });
+                
+                // Set default permissions berdasarkan role
+                const permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
+                
+                users.push({ 
+                    id: 'U' + moment().format('x'), 
+                    name, 
+                    username, 
+                    password: CryptoJS.SHA256(password).toString(), 
+                    role,
+                    permissions
+                });
             }
-            saveUsers(); loadUsersForManagement(); $('#userFormContainer').slideUp(resetUserForm);
+            saveUsers(); 
+            loadUsersForManagement(); 
+            loadPermissionsUserSelect();
+            $('#userFormContainer').slideUp(resetUserForm);
             showToast(`Pengguna berhasil ${id ? 'diperbarui' : 'ditambahkan'}.`, 'success');
         }
         
@@ -2318,7 +2866,22 @@
             if (filteredMenus.length === 0) { $menuGrid.html('<div class="empty-state"><i class="fas fa-utensils"></i><p>Tidak ada menu ditemukan</p></div>'); }
             else {
                 filteredMenus.forEach(menu => {
-                    const adminActions = currentUser.role === 'admin' ? `<div class="menu-actions"><div class="action-btn edit-btn edit-menu" data-id="${menu.id}"><i class="fas fa-edit"></i></div><div class="action-btn delete-btn delete-menu" data-id="${menu.id}"><i class="fas fa-trash"></i></div></div>` : '';
+                    // Tampilkan tombol edit/hapus hanya jika user memiliki permission
+                    const canEdit = checkPermission('edit_menu');
+                    const canDelete = checkPermission('delete_menu');
+                    
+                    let adminActions = '';
+                    if (canEdit || canDelete) {
+                        adminActions = '<div class="menu-actions">';
+                        if (canEdit) {
+                            adminActions += `<div class="action-btn edit-btn edit-menu" data-id="${menu.id}"><i class="fas fa-edit"></i></div>`;
+                        }
+                        if (canDelete) {
+                            adminActions += `<div class="action-btn delete-btn delete-menu" data-id="${menu.id}"><i class="fas fa-trash"></i></div>`;
+                        }
+                        adminActions += '</div>';
+                    }
+                    
                     $menuGrid.append(`<div class="menu-card" data-id="${menu.id}">${adminActions}<div class="menu-image">${menu.image ? `<img src="${menu.image}" alt="${menu.name}" onerror="this.parentElement.innerHTML = '<i class=\\'fas fa-utensils\\'></i>';">` : `<i class="fas fa-utensils"></i>`}</div><div class="menu-name">${menu.name}</div><div class="menu-price">${formatCurrency(menu.price)}</div><div class="menu-category">${menu.category}</div></div>`);
                 });
             }
