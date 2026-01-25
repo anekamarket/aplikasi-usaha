@@ -141,16 +141,24 @@
             color: rgba(255, 255, 255, 0.9);
         }
 
-        .fishery-badge {
-            background: linear-gradient(90deg, var(--fishery-blue), var(--fishery-dark-blue));
+        /* PERBAIKAN: Ganti badge dengan tampilan waktu yang lebih baik */
+        .time-badge {
+            background: linear-gradient(90deg, #1a237e, #283593);
             color: white;
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             font-weight: 600;
             display: inline-block;
             margin-top: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .time-badge i {
+            margin-right: 5px;
+            font-size: 0.9rem;
         }
 
         .header-info {
@@ -781,6 +789,32 @@
             margin-top: 15px;
             padding-top: 15px;
             border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* PERBAIKAN: Tombol close untuk welcome toast */
+        .welcome-toast-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .welcome-toast-close:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         @keyframes bounce {
@@ -1795,7 +1829,9 @@
 </head>
 <body>
     <!-- Welcome Toast Modal -->
+    <!-- PERBAIKAN: Tambahkan tombol close dan perbaikan struktur -->
     <div id="welcomeToast" class="welcome-toast">
+        <button class="welcome-toast-close">&times;</button>
         <div class="welcome-icon">
             <i class="fas fa-hand-sparkles"></i>
         </div>
@@ -1805,7 +1841,7 @@
             Aplikasi kasir digital terbaik untuk mengelola bisnis Anda dengan mudah dan profesional.
         </div>
         <div class="welcome-submessage">
-            Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan
+            <i class="fas fa-clock"></i> Notifikasi ini akan hilang dalam <span id="countdown">15</span> detik
         </div>
     </div>
 
@@ -1858,9 +1894,10 @@
                 <div>
                     <h1 class="app-title" id="storeNameHeader">UMKM CASH <span class="premium-badge">PREMIUM</span></h1>
                     <p id="currentDate">Rabu, 24 September 2025</p>
+                    <!-- PERBAIKAN: Ganti teks supported dengan waktu real-time -->
                     <div class="app-subtitle">
-                        <span class="fishery-badge">
-                            <i class="fas fa-fish"></i> Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan
+                        <span class="time-badge">
+                            <i class="fas fa-clock"></i> <span id="liveClock">00:00:00</span>
                         </span>
                     </div>
                 </div>
@@ -2790,6 +2827,8 @@
         let kitchenInterval;
         let passwordPromptCallback = null;
         let captchaText = '';
+        let welcomeToastTimeout = null;
+        let countdownInterval = null;
         
         function initializeData() {
             let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
@@ -2863,6 +2902,10 @@
             } else {
                 generateCaptcha();
             }
+            
+            // Inisialisasi jam real-time
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
             
             setInterval(updateCurrentDate, 60000);
             
@@ -3431,20 +3474,65 @@
             
             // FIX: Inisialisasi button status berdasarkan isi pesanan
             updateOrder();
+            
+            // Event untuk tombol close welcome toast
+            $('.welcome-toast-close').click(function() {
+                hideWelcomeToast();
+            });
         });
+
+        // Fungsi untuk menampilkan jam real-time
+        function updateLiveClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
+            $('#liveClock').text(timeString);
+        }
 
         // Fungsi untuk menampilkan welcome toast setelah login
         function showWelcomeToast() {
             const $welcomeToast = $('#welcomeToast');
             $welcomeToast.addClass('show');
             
-            // Sembunyikan toast setelah 5 detik
-            setTimeout(() => {
-                $welcomeToast.removeClass('show');
-            }, 5000);
+            // Reset countdown
+            let countdown = 15;
+            $('#countdown').text(countdown);
+            
+            // Clear existing intervals/timeouts
+            if (countdownInterval) clearInterval(countdownInterval);
+            if (welcomeToastTimeout) clearTimeout(welcomeToastTimeout);
+            
+            // Start countdown
+            countdownInterval = setInterval(function() {
+                countdown--;
+                $('#countdown').text(countdown);
+                if (countdown <= 0) {
+                    hideWelcomeToast();
+                }
+            }, 1000);
+            
+            // Set timeout untuk auto-hide setelah 15 detik
+            welcomeToastTimeout = setTimeout(() => {
+                hideWelcomeToast();
+            }, 15000);
             
             // Tampilkan pesan toast biasa juga
             showToast(`Selamat datang ${currentUser.name}! di UMKM CASH - Aplikasi Kasir Terbaik untuk UMKM Anda. Mari wujudkan usaha mandiri yang tangguh dan berdaya saing!`, 'success');
+        }
+        
+        // Fungsi untuk menyembunyikan welcome toast
+        function hideWelcomeToast() {
+            const $welcomeToast = $('#welcomeToast');
+            $welcomeToast.removeClass('show');
+            
+            // Clear intervals/timeouts
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            if (welcomeToastTimeout) {
+                clearTimeout(welcomeToastTimeout);
+                welcomeToastTimeout = null;
+            }
         }
 
         function initializeApp() { 
