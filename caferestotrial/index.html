@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Semua style CSS tetap sama seperti sebelumnya */
         :root {
             --primary: #28a745;
             --primary-light: #d4edda;
@@ -1110,6 +1111,7 @@
             font-family: 'Poppins', sans-serif;
             color: #333;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         .pdf-header {
@@ -1358,10 +1360,19 @@
             #menuPdfContainer {
                 box-shadow: none;
                 padding: 15px;
+                width: 100% !important;
+                max-width: 100% !important;
             }
             
             .pdf-menu-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            /* Pastikan QR Code muncul saat print */
+            .pdf-qr-code canvas, .pdf-qr-code img {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
             }
         }
 
@@ -3063,7 +3074,7 @@
             return currentUser.permissions[permission] === true;
         }
         
-        // FUNGSI BARU: Generate Menu PDF Preview - DIKEMBANGKAN
+        // FUNGSI PERBAIKAN: Generate Menu PDF Preview - DIKEMBANGKAN
         function generateMenuPdfPreview() {
             // Kelompokkan menu berdasarkan kategori
             const menuByCategory = {};
@@ -3147,7 +3158,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
             `;
             
             // Set HTML ke modal
@@ -3160,7 +3170,7 @@
                 if (qrOrderContainer) {
                     $(qrOrderContainer).empty();
                     new QRCode(qrOrderContainer, {
-                        text: `http://www.aplikasiusaha.com/orderform?resto=${encodeURIComponent(settings.umkmName || 'Cafe')}`,
+                        text: `https://www.aplikasiusaha.com/orderform?resto=${encodeURIComponent(settings.umkmName || 'Cafe')}`,
                         width: 150,
                         height: 150,
                         correctLevel: QRCode.CorrectLevel.H
@@ -3172,7 +3182,7 @@
                 if (qrWebsiteContainer) {
                     $(qrWebsiteContainer).empty();
                     new QRCode(qrWebsiteContainer, {
-                        text: 'http://www.aplikasiusaha.com',
+                        text: 'https://www.aplikasiusaha.com',
                         width: 150,
                         height: 150,
                         correctLevel: QRCode.CorrectLevel.H
@@ -3198,7 +3208,7 @@
             showToast('Preview daftar menu berhasil dibuat', 'success');
         }
         
-        // FUNGSI BARU: Download Menu PDF - DIKEMBANGKAN
+        // FUNGSI PERBAIKAN: Download Menu PDF - DIKEMBANGKAN
         function downloadMenuPdf() {
             showToast('Menyiapkan PDF untuk diunduh...', 'info');
             
@@ -3206,56 +3216,108 @@
             
             // Pastikan QRCode sudah tergenerate
             setTimeout(() => {
-                html2canvas(element, {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    allowTaint: true,
-                    backgroundColor: '#ffffff'
-                }).then(canvas => {
-                    const imgData = canvas.toDataURL('image/png', 1.0);
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-                    
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = pdf.internal.pageSize.getHeight();
-                    const canvasWidth = canvas.width;
-                    const canvasHeight = canvas.height;
-                    
-                    // Hitung rasio untuk menyesuaikan gambar dengan halaman PDF
-                    const ratio = Math.min(pdfWidth / canvasWidth, pdfHeight / canvasHeight);
-                    const imgWidth = canvasWidth * ratio - 20;
-                    const imgHeight = canvasHeight * ratio - 20;
-                    
-                    // Hitung posisi tengah
-                    const x = (pdfWidth - imgWidth) / 2;
-                    const y = 10;
-                    
-                    // Tambahkan gambar ke PDF
-                    pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
-                    
-                    // Tambahkan halaman jika konten terlalu panjang
-                    let heightLeft = imgHeight;
-                    let position = y;
-                    
-                    // Jika konten lebih panjang dari satu halaman, tambahkan halaman baru
-                    while (heightLeft > pdfHeight - 20) {
-                        position = heightLeft - pdfHeight + 20;
-                        pdf.addPage();
-                        pdf.addImage(imgData, 'PNG', x, -position, imgWidth, imgHeight);
-                        heightLeft -= pdfHeight - 20;
+                // Pastikan semua gambar dimuat sebelum konversi
+                const images = element.getElementsByTagName('img');
+                let loadedImages = 0;
+                const totalImages = images.length;
+                
+                if (totalImages === 0) {
+                    generateCanvasForPDF(element);
+                    return;
+                }
+                
+                // Tunggu semua gambar dimuat
+                Array.from(images).forEach(img => {
+                    if (img.complete) {
+                        loadedImages++;
+                    } else {
+                        img.onload = () => {
+                            loadedImages++;
+                            if (loadedImages === totalImages) {
+                                generateCanvasForPDF(element);
+                            }
+                        };
+                        img.onerror = () => {
+                            loadedImages++;
+                            if (loadedImages === totalImages) {
+                                generateCanvasForPDF(element);
+                            }
+                        };
                     }
-                    
-                    // Simpan PDF
-                    pdf.save(`Daftar_Menu_${settings.umkmName || 'Restoran'}_${moment().format('YYYYMMDD_HHmm')}.pdf`);
-                    showToast('PDF berhasil diunduh', 'success');
-                }).catch(error => {
-                    console.error('Error generating PDF:', error);
-                    showToast('Gagal membuat PDF', 'error');
                 });
-            }, 800);
+                
+                // Jika semua gambar sudah dimuat
+                if (loadedImages === totalImages) {
+                    generateCanvasForPDF(element);
+                } else {
+                    // Timeout untuk kasus gambar gagal dimuat
+                    setTimeout(() => {
+                        generateCanvasForPDF(element);
+                    }, 2000);
+                }
+            }, 1000);
         }
         
-        // FUNGSI BARU: Print Menu PDF
+        // Fungsi bantu untuk generate canvas untuk PDF
+        function generateCanvasForPDF(element) {
+            html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                onclone: function(clonedDoc) {
+                    // Pastikan QRCode terlihat di clone
+                    const qrCodes = clonedDoc.querySelectorAll('.pdf-qr-code');
+                    qrCodes.forEach(qrCode => {
+                        if (qrCode.children.length > 0) {
+                            qrCode.style.display = 'block';
+                        }
+                    });
+                }
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png', 1.0);
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const canvasWidth = canvas.width;
+                const canvasHeight = canvas.height;
+                
+                // Hitung rasio untuk menyesuaikan gambar dengan halaman PDF
+                const ratio = Math.min(pdfWidth / canvasWidth, pdfHeight / canvasHeight);
+                const imgWidth = canvasWidth * ratio - 20;
+                const imgHeight = canvasHeight * ratio - 20;
+                
+                // Hitung posisi tengah
+                const x = (pdfWidth - imgWidth) / 2;
+                const y = 10;
+                
+                // Tambahkan gambar ke PDF
+                pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+                
+                // Tambahkan halaman jika konten terlalu panjang
+                let heightLeft = imgHeight;
+                let position = y;
+                
+                // Jika konten lebih panjang dari satu halaman, tambahkan halaman baru
+                while (heightLeft > pdfHeight - 20) {
+                    position = heightLeft - pdfHeight + 20;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', x, -position, imgWidth, imgHeight);
+                    heightLeft -= pdfHeight - 20;
+                }
+                
+                // Simpan PDF
+                pdf.save(`Daftar_Menu_${settings.umkmName || 'Restoran'}_${moment().format('YYYYMMDD_HHmm')}.pdf`);
+                showToast('PDF berhasil diunduh', 'success');
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                showToast('Gagal membuat PDF', 'error');
+            });
+        }
+        
+        // FUNGSI PERBAIKAN: Print Menu PDF
         function printMenuPdf() {
             const printContainer = document.getElementById('print-container');
             const menuPdfContainer = document.getElementById('menuPdfContainer');
@@ -3270,24 +3332,71 @@
             printContainer.innerHTML = '';
             printContainer.appendChild(contentToPrint);
             
-            // Tambahkan style untuk print
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @media print {
-                    body { margin: 0; padding: 0; }
-                    #print-container { width: 100%; margin: 0; padding: 0; }
-                    .pdf-menu-grid { grid-template-columns: repeat(2, 1fr) !important; }
-                    .pdf-qr-footer { flex-wrap: nowrap !important; }
+            // Tunggu gambar di-load sebelum print
+            const images = contentToPrint.getElementsByTagName('img');
+            let loadedImages = 0;
+            const totalImages = images.length;
+            
+            function startPrint() {
+                // Tambahkan style untuk print
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    @media print {
+                        body { margin: 0; padding: 0; }
+                        #print-container { width: 100%; margin: 0; padding: 0; }
+                        .pdf-menu-grid { grid-template-columns: repeat(2, 1fr) !important; }
+                        .pdf-qr-footer { flex-wrap: nowrap !important; }
+                        .pdf-qr-code canvas, .pdf-qr-code img { 
+                            display: block !important; 
+                            visibility: visible !important; 
+                            opacity: 1 !important; 
+                        }
+                    }
+                `;
+                printContainer.appendChild(style);
+                
+                // Show print dialog
+                setTimeout(() => {
+                    window.print();
+                }, 300);
+                
+                showToast('Mempersiapkan cetakan...', 'info');
+            }
+            
+            if (totalImages === 0) {
+                startPrint();
+                return;
+            }
+            
+            // Tunggu semua gambar dimuat
+            Array.from(images).forEach(img => {
+                if (img.complete) {
+                    loadedImages++;
+                } else {
+                    img.onload = () => {
+                        loadedImages++;
+                        if (loadedImages === totalImages) {
+                            startPrint();
+                        }
+                    };
+                    img.onerror = () => {
+                        loadedImages++;
+                        if (loadedImages === totalImages) {
+                            startPrint();
+                        }
+                    };
                 }
-            `;
-            printContainer.appendChild(style);
+            });
             
-            // Show print dialog
-            setTimeout(() => {
-                window.print();
-            }, 300);
-            
-            showToast('Mempersiapkan cetakan...', 'info');
+            // Jika semua gambar sudah dimuat
+            if (loadedImages === totalImages) {
+                startPrint();
+            } else {
+                // Timeout untuk kasus gambar gagal dimuat
+                setTimeout(() => {
+                    startPrint();
+                }, 1500);
+            }
         }
         
         function promptForPassword(type, callback) {
