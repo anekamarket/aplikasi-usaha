@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAFE & RESTO</title>
+    <title>CAFE & RESTO - Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -36,7 +36,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* [PENYEMPURNAAN] Styling scrollbar agar lebih minimalis dan konsisten */
+        /* Styling scrollbar agar lebih minimalis dan konsisten */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -61,7 +61,7 @@
 
         .container {
             width: 100%;
-            max-width: 1200px; /* [PERBAIKAN] Batasi lebar maksimum pada layar besar */
+            max-width: 1200px;
             margin: 0 auto;
             padding: 12px;
         }
@@ -567,101 +567,12 @@
             resize: vertical;
         }
 
-        /* === [PENYEMPURNAAN] DESAIN LOGIN & NOTIFIKASI === */
-        
-        /* [PERBAIKAN] Notifikasi Uji Coba (Modal Pop-up) */
-        .trial-notification-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: none; /* Awalnya disembunyikan */
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            padding: 15px;
-        }
-
-        .trial-notification-content {
-            position: relative;
-            background: linear-gradient(135deg, #4f5bd5, #962fbf);
-            color: white;
-            padding: 25px;
-            border-radius: var(--rounded);
-            text-align: center;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-            border: 1px solid rgba(255,255,255,0.2);
-            animation: fadeIn 0.5s ease-out;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .trial-notification-close {
-            position: absolute;
-            top: 8px;
-            right: 12px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            line-height: 1;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-
-        .trial-notification-close:hover {
-            opacity: 1;
-        }
-
-        .trial-notification-content h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .trial-notification-content h4 i {
-            color: var(--premium-gold);
-        }
-        .trial-notification-content p {
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-            opacity: 0.9;
-        }
-        
-        /* [REVISI] List fitur premium */
-        .trial-notification-content ul {
-            text-align: left; 
-            font-size: 0.85rem; 
-            margin: 0 0 20px 30px; 
-            opacity: 0.9;
-        }
-
-        .trial-notification-content .btn-upgrade {
-            background: var(--premium-gold);
-            color: var(--dark);
-            font-weight: 700;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-        .trial-notification-content .btn-upgrade:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
+        /* DESAIN LOGIN */
         #loginModal {
             background: linear-gradient(45deg, #f0f2f5, #e6e9ed);
             display: flex;
-            align-items: center; /* Memusatkan secara vertikal */
-            justify-content: center; /* Memusatkan secara horizontal */
+            align-items: center;
+            justify-content: center;
             padding: 20px;
             overflow-y: auto;
             position: fixed;
@@ -701,12 +612,6 @@
         .login-header p {
             color: var(--gray);
         }
-        
-        .form-control:read-only {
-            background-color: #e9ecef;
-            cursor: not-allowed;
-        }
-        /* === AKHIR DARI PENYEMPURNAAN DESAIN LOGIN === */
 
         /* Toast Notification */
         .toast {
@@ -970,6 +875,33 @@
             gap: 8px;
             margin: 16px 0;
         }
+        
+        /* QRIS Container */
+        .qris-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--light);
+            border-radius: var(--rounded);
+            border: 1px solid #ddd;
+        }
+        
+        .qris-image-placeholder {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--rounded-sm);
+            border: 2px dashed var(--primary);
+        }
+        
+        .qris-image-placeholder i {
+            font-size: 3rem;
+            color: var(--primary);
+        }
 
         /* Member Badge */
         .member-badge {
@@ -996,7 +928,7 @@
             }
         }
 
-        /* [PERBAIKAN] Penyesuaian untuk layar sangat kecil */
+        /* Penyesuaian untuk layar sangat kecil */
         @media (max-width: 380px) {
             .app-title {
                 font-size: 1.2rem;
@@ -1050,7 +982,7 @@
             font-size: 0.8rem;
         }
 
-        /* === [PENYEMPURNAAN] KODE CETAK STRUK & HISTORI === */
+        /* KODE CETAK STRUK & HISTORI */
         #receiptContent {
             font-family: 'Courier New', Courier, monospace;
             width: 300px;
@@ -1084,7 +1016,6 @@
             .no-print, .modal-footer, .modal-header, .app-header, .app-footer, .order-panel, .menu-panel, #loginModal { display: none !important; }
             @page { size: auto; margin: 10mm; }
         }
-        /* === AKHIR DARI PENYEMPURNAAN KODE CETAK === */
 
         /* Backup Restore Styles */
         .backup-actions { display: flex; gap: 8px; margin-top: 16px; }
@@ -1106,33 +1037,235 @@
         .kta-qrcode { background: white; padding: 10px; border-radius: 8px; min-height: 160px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
         .kta-qrcode img { width: 160px; height: auto; display: block; }
         .kta-footer { text-align: center; font-size: 11px; opacity: 0.8; padding-top: 15px; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.3); z-index: 1; }
+        
+        /* Premium Badge */
+        .premium-badge {
+            background: linear-gradient(45deg, #feda75, #fa7e1e);
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 6px;
+            display: inline-block;
+        }
+        
+        /* Hak Akses Styles */
+        .permissions-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: var(--rounded-sm);
+            margin-bottom: 15px;
+        }
+        
+        .permission-group {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .permission-group:last-child {
+            border-bottom: none;
+        }
+        
+        .permission-group h5 {
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .permission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            border-radius: var(--rounded-sm);
+            border: 1px solid #eee;
+        }
+        
+        .permission-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .permission-name {
+            font-size: 13px;
+            color: var(--dark);
+        }
+        
+        .permission-description {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        /* Daftar Menu PDF Styles */
+        #menuPdfContainer {
+            background: white;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+        }
+
+        .pdf-header h1 {
+            color: var(--primary);
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .pdf-header h2 {
+            color: var(--secondary);
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .pdf-subtitle {
+            font-size: 16px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .pdf-qr-section {
+            text-align: center;
+            margin: 25px 0;
+            padding: 20px;
+            background: var(--light);
+            border-radius: var(--rounded);
+            border: 1px dashed var(--primary);
+        }
+
+        .pdf-qr-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .pdf-category-section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .pdf-category-title {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 15px;
+            border-radius: var(--rounded-sm);
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .pdf-menu-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .pdf-menu-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-right: 15px;
+            flex-shrink: 0;
+            border: 2px solid var(--light);
+        }
+
+        .pdf-menu-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pdf-menu-info {
+            flex: 1;
+        }
+
+        .pdf-menu-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .pdf-menu-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .pdf-menu-description {
+            color: var(--gray);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .pdf-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid var(--primary);
+            text-align: center;
+        }
+
+        .pdf-footer h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .pdf-footer p {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .pdf-qr-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .pdf-qr-item {
+            text-align: center;
+        }
+
+        .pdf-qr-code {
+            width: 120px;
+            height: 120px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            margin: 0 auto 10px;
+        }
+
+        .pdf-qr-label {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div id="toast" class="toast">
         <i class="fas fa-info-circle"></i>
         <span id="toast-message">Notification message</span>
-    </div>
-
-    <div id="trialNotification" class="trial-notification-overlay">
-        <div class="trial-notification-content">
-            <button id="closeTrialNotification" class="trial-notification-close">&times;</button>
-            <h4><i class="fas fa-crown"></i> Versi Uji Coba Harian</h4>
-            <p style="font-size: 0.9rem; margin-bottom: 8px; opacity: 0.9;">
-                Anda dapat melakukan hingga <strong>25x transaksi</strong> per hari.
-            </p>
-            <p style="font-size: 0.9rem; margin-bottom: 16px; opacity: 0.9;">
-                Upgrade ke versi premium untuk <strong>transaksi tanpa batas</strong> dan mendapatkan <strong>Password Kontrol Panel</strong> untuk membuka fitur:
-            </p>
-            <ul>
-                <li>Tambah pengguna (karyawan) baru</li>
-                <li>Mengatur password edit/hapus item</li>
-                <li>Mengatur password login pribadi</li>
-                <li>Mengatur password Kontrol Panel</li>
-                <li>Mengatur diskon member & pelanggan</li>
-            </ul>
-            <a href="#" id="upgradeBtn" class="btn-upgrade"><i class="fab fa-whatsapp"></i> Upgrade ke Premium</a>
-        </div>
     </div>
 
     <div id="loginModal" class="modal" style="display: flex;">
@@ -1142,16 +1275,16 @@
                     <i class="fas fa-utensils"></i>
                 </div>
                 <h1 class="login-title">CAFE & RESTO</h1>
-                <p>Aplikasi Penjualan Digital</p>
+                <p>Aplikasi Penjualan Digital <span class="premium-badge">PREMIUM</span></p>
             </div>
             <form id="loginForm">
                 <div class="form-group">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" id="username" class="form-control" value="User" readonly>
+                    <input type="text" id="username" class="form-control" placeholder="Masukkan username" autocomplete="username" required>
                 </div>
                 <div class="form-group">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" value="UjiCoba" readonly autocomplete="current-password">
+                    <input type="password" id="password" class="form-control" placeholder="Masukkan password" autocomplete="current-password" required>
                 </div>
                 
                 <div class="form-group mt-3">
@@ -1174,7 +1307,7 @@
                     <i class="fas fa-utensils"></i>
                 </div>
                 <div>
-                    <h1 class="app-title" id="storeNameHeader">CAFE & RESTO</h1>
+                    <h1 class="app-title" id="storeNameHeader">CAFE & RESTO <span class="premium-badge">PREMIUM</span></h1>
                     <p id="currentDate">Rabu, 24 September 2025</p>
                 </div>
             </div>
@@ -1214,6 +1347,8 @@
                         <button id="manageMembersBtn" class="btn btn-sm">Kelola Member</button>
                         <button id="manageStoreInfoBtn" class="btn btn-sm">Info Restoran</button>
                         <button id="controlPanelBtn" class="btn btn-sm btn-warning">Kontrol Panel</button>
+                        <!-- TOMBOL BARU: Generate Daftar Menu PDF -->
+                        <button id="generateMenuPdfBtn" class="btn btn-sm btn-info">Generate Daftar Menu PDF</button>
                     </div>
                     
                     <div class="mt-3">
@@ -1288,7 +1423,7 @@
         </main>
 
         <footer class="app-footer">
-            <p>&copy; <span id="currentYear"></span> CAFE & RESTO - Hak Cipta oleh Lentera Karya Situbondo</p>
+            <p>&copy; <span id="currentYear"></span> CAFE & RESTO - Hak Cipta oleh Lentera Karya Situbondo <span class="premium-badge">VERSI PREMIUM</span></p>
         </footer>
     </div>
 
@@ -1314,23 +1449,40 @@
                         <label class="form-label">Metode Pembayaran</label>
                         <select id="paymentMethod" class="form-control">
                             <option value="cash">Tunai</option>
+                            <option value="qris">QRIS</option>
                             <option value="transfer">Transfer Bank</option>
                             <option value="ewallet">E-Wallet</option>
                         </select>
                     </div>
 
-                    <div class="quick-cash-buttons" id="quickCashButtons">
+                    <!-- Container for QRIS -->
+                    <div id="qrisContainer" class="qris-container" style="display: none;">
+                        <h4><i class="fas fa-qrcode"></i> Pembayaran QRIS</h4>
+                        <p>Scan QR Code berikut untuk pembayaran:</p>
+                        <div class="qris-image-placeholder">
+                            <i class="fas fa-qrcode"></i>
                         </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Jumlah Pembayaran</label>
-                        <input type="number" id="paymentAmount" class="form-control" placeholder="Masukkan jumlah" min="0">
+                        <p class="mt-2">Total: <strong id="qrisTotal">Rp 0</strong></p>
+                        <p class="text-center" style="font-size: 0.8rem; color: var(--gray);">
+                            <i class="fas fa-info-circle"></i> QR Code akan otomatis terisi dengan total pembayaran
+                        </p>
                     </div>
 
-                    <div id="changeContainer" style="display: none;">
-                        <div class="summary-row total-row" style="border-top: 1px solid #ddd;">
-                            <span>Kembalian:</span>
-                            <span id="paymentChange">Rp 0</span>
+                    <!-- Container for Cash Payment -->
+                    <div id="cashPaymentContainer">
+                        <div class="quick-cash-buttons" id="quickCashButtons">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Jumlah Pembayaran</label>
+                            <input type="number" id="paymentAmount" class="form-control" placeholder="Masukkan jumlah" min="0">
+                        </div>
+
+                        <div id="changeContainer" style="display: none;">
+                            <div class="summary-row total-row" style="border-top: 1px solid #ddd;">
+                                <span>Kembalian:</span>
+                                <span id="paymentChange">Rp 0</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1353,6 +1505,31 @@
         </div>
     </div>
 
+    <!-- Modal untuk Preview Daftar Menu PDF -->
+    <div id="menuPdfModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Preview Daftar Menu PDF</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div id="menuPdfContainer">
+                    <!-- Konten akan diisi oleh JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-success" id="downloadMenuPdfBtn">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" id="printMenuPdfBtn">
+                    <i class="fas fa-print"></i> Cetak Daftar Menu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals lainnya tetap sama seperti sebelumnya -->
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1606,6 +1783,7 @@
                 <div class="tabs">
                     <div class="tab active" data-tab="users"><i class="fas fa-users-cog"></i> Pengguna</div>
                     <div class="tab" data-tab="security"><i class="fas fa-shield-alt"></i> Keamanan</div>
+                    <div class="tab" data-tab="permissions"><i class="fas fa-key"></i> Hak Akses</div>
                 </div>
 
                 <div class="tab-content active" id="usersTab">
@@ -1687,6 +1865,159 @@
                         </div>
                         <button type="submit" class="btn btn-sm btn-success">Simpan Password Baru</button>
                     </form>
+                </div>
+                
+                <div class="tab-content" id="permissionsTab">
+                    <h4 class="mt-3">Manajemen Hak Akses</h4>
+                    <div class="form-group">
+                        <label class="form-label">Pilih Pengguna</label>
+                        <select id="permissionUserSelect" class="form-control">
+                            <option value="">-- Pilih Pengguna --</option>
+                        </select>
+                    </div>
+                    
+                    <div id="permissionsContainer" class="permissions-container" style="display: none;">
+                        <div class="permission-group">
+                            <h5>Menu Utama</h5>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Tambah Menu</div>
+                                    <div class="permission-description">Akses untuk menambah menu baru</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="add_menu" id="perm_add_menu">
+                                    <label for="perm_add_menu"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Edit Menu</div>
+                                    <div class="permission-description">Akses untuk mengedit menu yang ada</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="edit_menu" id="perm_edit_menu">
+                                    <label for="perm_edit_menu"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Hapus Menu</div>
+                                    <div class="permission-description">Akses untuk menghapus menu</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="delete_menu" id="perm_delete_menu">
+                                    <label for="perm_delete_menu"></label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="permission-group">
+                            <h5>Kelola Data</h5>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Kelola Kategori</div>
+                                    <div class="permission-description">Akses untuk mengelola kategori menu</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="manage_categories" id="perm_manage_categories">
+                                    <label for="perm_manage_categories"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Kelola Member</div>
+                                    <div class="permission-description">Akses untuk mengelola data member</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="manage_members" id="perm_manage_members">
+                                    <label for="perm_manage_members"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Info Restoran</div>
+                                    <div class="permission-description">Akses untuk mengubah info restoran</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="manage_store_info" id="perm_manage_store_info">
+                                    <label for="perm_manage_store_info"></label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="permission-group">
+                            <h5>Laporan dan Transaksi</h5>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Lihat Laporan</div>
+                                    <div class="permission-description">Akses untuk melihat laporan penjualan</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="view_reports" id="perm_view_reports">
+                                    <label for="perm_view_reports"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Histori Transaksi</div>
+                                    <div class="permission-description">Akses untuk melihat histori transaksi</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="transaction_history" id="perm_transaction_history">
+                                    <label for="perm_transaction_history"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Info Pesanan Dapur</div>
+                                    <div class="permission-description">Akses untuk melihat info pesanan dapur</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="kitchen_display" id="perm_kitchen_display">
+                                    <label for="perm_kitchen_display"></label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="permission-group">
+                            <h5>Administrasi</h5>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Kontrol Panel</div>
+                                    <div class="permission-description">Akses ke kontrol panel sistem</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="control_panel" id="perm_control_panel">
+                                    <label for="perm_control_panel"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Backup & Restore</div>
+                                    <div class="permission-description">Akses untuk backup dan restore data</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="backup_restore" id="perm_backup_restore">
+                                    <label for="perm_backup_restore"></label>
+                                </div>
+                            </div>
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Reset Data</div>
+                                    <div class="permission-description">Akses untuk mereset semua data</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="reset_data" id="perm_reset_data">
+                                    <label for="perm_reset_data"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="permissionsActions" class="d-flex gap-2 mt-3" style="display: none;">
+                        <button type="button" class="btn btn-sm btn-warning" id="resetPermissionsBtn">Reset ke Default</button>
+                        <button type="button" class="btn btn-sm btn-success" id="savePermissionsBtn">Simpan Hak Akses</button>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1788,7 +2119,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script>
         // Set locale to Indonesian
         moment.locale('id');
@@ -1805,26 +2136,54 @@
             CURRENT_ORDER: 'warungmakan_current_order',
             SETTINGS: 'warungmakan_settings',
             USERS: 'warungmakan_users',
-            MEMBERS: 'warungmakan_members',
-            DAILY_TRANSACTIONS: 'warungmakan_daily_transactions' // [REVISI] Kunci untuk limit harian
+            MEMBERS: 'warungmakan_members'
         };
 
-        // [PENYEMPURNAAN] Kunci rahasia untuk enkripsi dan dekripsi file backup.
+        // Kunci rahasia untuk enkripsi dan dekripsi file backup.
         const ENCRYPTION_KEY = 'LenteraKaryaSitubondo-SecretKey-2025';
 
-        /*
-            --- [REVISI] INFORMASI LOGIN VERSI UJI COBA ---
-            Aplikasi ini sekarang memiliki 1 pengguna default untuk mode uji coba.
-            - Username: User (read-only)
-            - Password: UjiCoba (read-only)
-            Login hanya memerlukan input CAPTCHA.
-        */
         const DEFAULT_TRIAL_USER = {
-            id: 'U-TRIAL-001',
-            username: 'User',
-            password: CryptoJS.SHA256('UjiCoba').toString(),
-            name: 'Pengguna Uji Coba',
-            role: 'admin' // Diberi role admin agar semua fitur bisa diuji
+            id: 'U-PREMIUM-001',
+            username: 'admin',
+            password: CryptoJS.SHA256('admin123').toString(),
+            name: 'Administrator Premium',
+            role: 'admin',
+            permissions: {
+                add_menu: true,
+                edit_menu: true,
+                delete_menu: true,
+                manage_categories: true,
+                manage_members: true,
+                manage_store_info: true,
+                view_reports: true,
+                transaction_history: true,
+                kitchen_display: true,
+                control_panel: true,
+                backup_restore: true,
+                reset_data: true
+            }
+        };
+        
+        const DEFAULT_CASHIER_USER = {
+            id: 'U-CASHIER-001',
+            username: 'kasir',
+            password: CryptoJS.SHA256('kasir123').toString(),
+            name: 'Kasir Premium',
+            role: 'cashier',
+            permissions: {
+                add_menu: false,
+                edit_menu: false,
+                delete_menu: false,
+                manage_categories: false,
+                manage_members: true,
+                manage_store_info: false,
+                view_reports: true,
+                transaction_history: true,
+                kitchen_display: true,
+                control_panel: false,
+                backup_restore: false,
+                reset_data: false
+            }
         };
         
         const DEFAULT_MENU_IMAGES = {
@@ -1839,21 +2198,56 @@
             }
         };
 
+        // Default permissions berdasarkan role
+        const DEFAULT_PERMISSIONS = {
+            admin: {
+                add_menu: true,
+                edit_menu: true,
+                delete_menu: true,
+                manage_categories: true,
+                manage_members: true,
+                manage_store_info: true,
+                view_reports: true,
+                transaction_history: true,
+                kitchen_display: true,
+                control_panel: true,
+                backup_restore: true,
+                reset_data: true
+            },
+            cashier: {
+                add_menu: false,
+                edit_menu: false,
+                delete_menu: false,
+                manage_categories: false,
+                manage_members: true,
+                manage_store_info: false,
+                view_reports: true,
+                transaction_history: true,
+                kitchen_display: true,
+                control_panel: false,
+                backup_restore: false,
+                reset_data: false
+            }
+        };
+
         let menus, categories, orders, settings, users, members, currentUser, currentOrder;
         let kitchenInterval;
         let passwordPromptCallback = null;
         let captchaText = '';
         
-        // [REVISI] Batas transaksi harian
-        const DAILY_LIMIT = 25; 
-        let currentOnlineDate = ''; // Variabel global untuk menyimpan tanggal online
-
-        
         function initializeData() {
             let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
-            if (!users_init.find(u => u.username === 'User')) {
-                localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify([DEFAULT_TRIAL_USER]));
+            
+            // Tambahkan user default jika belum ada
+            if (!users_init.find(u => u.username === 'admin')) {
+                users_init.push(DEFAULT_TRIAL_USER);
             }
+            if (!users_init.find(u => u.username === 'kasir')) {
+                users_init.push(DEFAULT_CASHIER_USER);
+            }
+            
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users_init));
+            
             if (!localStorage.getItem(STORAGE_KEYS.MEMBERS)) localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify([]));
             if (!localStorage.getItem(STORAGE_KEYS.MENUS)) {
                 const sampleMenus = [
@@ -1871,21 +2265,16 @@
             }
             if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify([]));
             
-            // [REVISI] Kunci penyimpanan untuk limit harian
-            if (!localStorage.getItem(STORAGE_KEYS.DAILY_TRANSACTIONS)) {
-                localStorage.setItem(STORAGE_KEYS.DAILY_TRANSACTIONS, JSON.stringify({ date: '', count: 0 }));
-            }
-            
             if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
                 localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify({
-                    storeName: 'MITRA ANEKAMARKET', // [REVISI] Nama developer, dikunci
-                    umkmName: 'Cafe Chacha', // [REVISI] Nama UMKM baru
+                    storeName: 'MITRA ANEKAMARKET',
+                    umkmName: 'Cafe Chacha',
                     storeAddress: 'Jl. Cinta No. 8899, Kota Abadi', 
                     storePhone: '081234567890', 
                     storeEmail: 'admin@resto.com', 
                     tableCount: 10,
-                    itemSecurityCode: CryptoJS.SHA256('17081945').toString(), 
-                    panelSecurityCode: CryptoJS.SHA256('LKS.1945').toString(), 
+                    itemSecurityCode: CryptoJS.SHA256('01234567').toString(), 
+                    panelSecurityCode: CryptoJS.SHA256('11223344').toString(), 
                     memberDiscountPercent: 2, 
                     nonMemberDiscountPercent: 0
                 }));
@@ -1906,45 +2295,20 @@
                 items: [], subtotal: 0, total: 0, discount: 0, type: 'dinein', tableNumber: '1', note: '', memberId: null
             };
 
-            // === [PENYEMPURNAAN] Logika Notifikasi Uji Coba ===
-            let trialNotificationTimeout;
-            function showTrialNotification() {
-                $('#trialNotification').css('display', 'flex').hide().fadeIn(500);
-                trialNotificationTimeout = setTimeout(() => {
-                    hideTrialNotification();
-                }, 10000); // Otomatis hilang setelah 10 detik
-            }
-            function hideTrialNotification() {
-                clearTimeout(trialNotificationTimeout); // Hapus timer jika ditutup manual
-                $('#trialNotification').fadeOut(500);
-            }
-            $('#closeTrialNotification').on('click', hideTrialNotification);
-            // === AKHIR PENYEMPURNAAN ===
-
             $('#currentYear').text(new Date().getFullYear());
-            
-            $('#upgradeBtn').on('click', function(e) {
-                e.preventDefault();
-                const phone = "6287865614222";
-                const message = encodeURIComponent( "Halo Lentera Karya Situbondo, saya tertarik dengan Aplikasi Cafe & Resto Anda. Saya telah mencoba versi trial dan ingin melakukan upgrade ke versi premium. Mohon informasinya, terima kasih." );
-                window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${message}`, '_blank');
-            });
             
             if (currentUser) {
                 $('#loggedInUser').text(currentUser.name);
                 $('#loginModal').hide();
                 $('#mainApp').show();
                 initializeApp();
-                
-                // [REVISI] Set interval untuk notifikasi upgrade setiap 1 jam
-                setInterval(showTrialNotification, 3600000); 
             } else {
-                showTrialNotification(); // Tampilkan notifikasi saat pertama kali membuka
                 generateCaptcha();
             }
             
             setInterval(updateCurrentDate, 60000);
             
+            // Login form submission
             $('#loginForm').submit(function(e) {
                 e.preventDefault();
                 const $loginBtn = $(this).find('button[type="submit"]');
@@ -1961,18 +2325,29 @@
                             setButtonLoading($loginBtn, false, originalText);
                             return; 
                         }
-                        const user = users.find(u => u.username === 'User');
-                        const validPassword = CryptoJS.SHA256('UjiCoba').toString();
-                        if (user && user.password === validPassword) {
+                        
+                        const username = $('#username').val();
+                        const password = $('#password').val();
+                        const passwordHash = CryptoJS.SHA256(password).toString();
+                        
+                        // Cari user berdasarkan username
+                        const user = users.find(u => u.username === username);
+                        
+                        if (user && user.password === passwordHash) {
+                            // Set permissions default jika tidak ada
+                            if (!user.permissions) {
+                                user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
+                            }
+                            
                             currentUser = user;
                             localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
                             $('#loggedInUser').text(currentUser.name);
                             $('#loginModal').hide();
                             $('#mainApp').fadeIn();
                             initializeApp();
-                            showToast(`Selamat datang di versi Uji Coba!`, 'success');
+                            showToast(`Selamat datang ${currentUser.name}!`, 'success');
                         } else {
-                            showToast('Autentikasi Uji Coba Gagal', 'error');
+                            showToast('Username atau password salah', 'error');
                             generateCaptcha();
                             $('#captchaInput').val('');
                         }
@@ -1994,9 +2369,10 @@
                 localStorage.removeItem(STORAGE_KEYS.USER);
                 $('#mainApp').fadeOut(() => {
                     $('#loginModal').css('display', 'flex');
+                    $('#username').val('');
+                    $('#password').val('');
                     $('#captchaInput').val('');
                     generateCaptcha();
-                    showTrialNotification(); // Tampilkan lagi notifikasi setelah logout
                 });
                 showToast('Anda telah logout', 'info');
             });
@@ -2006,16 +2382,34 @@
                 const menu = menus.find(m => m.id === $(this).data('id'));
                 if (menu) {
                     const existingItem = currentOrder.items.find(item => item.menu.id === menu.id);
-                    if (existingItem) existingItem.quantity++; else currentOrder.items.push({ menu: menu, quantity: 1, status: 'pending' });
+                    if (existingItem) {
+                        existingItem.quantity++; 
+                    } else {
+                        currentOrder.items.push({ menu: menu, quantity: 1, status: 'pending' });
+                    }
                     updateOrder();
                     showToast(`${menu.name} ditambahkan`, 'success');
                 }
             });
             
-            $(document).on('click', '.edit-menu', function(e) { e.stopPropagation(); if (currentUser.role === 'admin') openEditMenuModal(menus.find(m => m.id === $(this).data('id'))); });
+            // Cek permission untuk edit menu
+            $(document).on('click', '.edit-menu', function(e) { 
+                e.stopPropagation(); 
+                if (checkPermission('edit_menu')) {
+                    openEditMenuModal(menus.find(m => m.id === $(this).data('id'))); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mengedit menu', 'error');
+                }
+            });
+            
+            // Cek permission untuk delete menu
             $(document).on('click', '.delete-menu', function(e) {
                 e.stopPropagation();
-                if (currentUser.role !== 'admin') return;
+                if (!checkPermission('delete_menu')) {
+                    showToast('Anda tidak memiliki izin untuk menghapus menu', 'error');
+                    return;
+                }
+                
                 const menuId = $(this).data('id');
                 promptForPassword('item', () => {
                     showConfirmation('Hapus Menu', 'Yakin ingin menghapus menu ini?', () => {
@@ -2080,26 +2474,61 @@
 
             $(document).on('click', function(e) { if (!$(e.target).closest('.member-search-container').length) $('#memberSearchResults').hide(); });
             
+            // PROSES ORDER FIX: Perbaikan event handler untuk tombol proses pesanan
             $('#processOrderBtn').click(function() {
-                if (currentOrder.items.length === 0) { showToast('Pesanan kosong', 'warning'); return; }
-                
-                // [REVISI] Tombol sudah di-cek limitnya secara async. 
-                // Jika bisa diklik, berarti limit aman.
+                if (currentOrder.items.length === 0) { 
+                    showToast('Pesanan kosong', 'warning'); 
+                    return; 
+                }
                 
                 const member = members.find(m => m.id === currentOrder.memberId);
                 $('#customerName').val(member ? member.name : '');
-                updateOrderSummary(); updatePaymentTab(); switchPaymentModalTab('payment');
+                updateOrderSummary(); 
+                updatePaymentTab(); 
+                switchPaymentModalTab('payment');
+                
+                // Reset payment method ke tunai setiap kali modal dibuka
+                $('#paymentMethod').val('cash').trigger('change');
+                $('#paymentAmount').val('').trigger('input');
+                
                 $('#processOrderModal').css('display', 'flex');
             });
             
-            $('.modal-body .tabs .tab').click(function() { switchPaymentModalTab($(this).data('tab')); });
-            $('#paymentAmount').on('input', calculateChange);
-            $(document).on('click', '.quick-cash-btn', function() { $('#paymentAmount').val($(this).data('amount')).trigger('input'); });
+            // Fix: Tambahkan event handler untuk tabs di modal pembayaran
+            $('#processOrderModal .tabs .tab').click(function() { 
+                switchPaymentModalTab($(this).data('tab')); 
+            });
             
+            // Handle payment method change
+            $('#paymentMethod').change(function() {
+                togglePaymentMethod();
+                if ($(this).val() === 'cash') {
+                    generateQuickCashButtons(currentOrder.total);
+                }
+            });
+            
+            $('#paymentAmount').on('input', calculateChange);
+            $(document).on('click', '.quick-cash-btn', function() { 
+                $('#paymentAmount').val($(this).data('amount')).trigger('input'); 
+            });
+            
+            // FIX: Perbaikan fungsi completePaymentBtn untuk menangani semua metode pembayaran
             $('#completePaymentBtn').click(function() {
                 if ($(this).prop('disabled')) return;
-                const paymentAmount = parseFloat($('#paymentAmount').val()) || 0;
-                if (paymentAmount < currentOrder.total) { showToast('Jumlah pembayaran kurang', 'error'); return; }
+                
+                const paymentMethod = $('#paymentMethod').val();
+                let paymentAmount;
+                
+                if (paymentMethod === 'qris') {
+                    // Untuk QRIS, payment amount sama dengan total
+                    paymentAmount = currentOrder.total;
+                } else {
+                    paymentAmount = parseFloat($('#paymentAmount').val()) || 0;
+                    if (paymentAmount < currentOrder.total) { 
+                        showToast('Jumlah pembayaran kurang', 'error'); 
+                        return; 
+                    }
+                }
                 
                 const $btn = $(this), originalText = $btn.html();
                 setButtonLoading($btn, true);
@@ -2107,67 +2536,217 @@
                 setTimeout(() => {
                     try {
                         const order = {
-                            id: 'ORD' + moment().format('YYYYMMDDHHmmss'), date: new Date(), ...currentOrder, paymentMethod: $('#paymentMethod').val(), paymentAmount,
-                            change: paymentAmount - currentOrder.total, cashier: currentUser, customerName: $('#customerName').val().trim() || 'Pelanggan',
-                            status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', statusLocked: false
+                            id: 'ORD' + moment().format('YYYYMMDDHHmmss'), 
+                            date: new Date(), 
+                            ...currentOrder, 
+                            paymentMethod: paymentMethod,
+                            paymentAmount: paymentAmount,
+                            change: paymentMethod === 'qris' ? 0 : paymentAmount - currentOrder.total, 
+                            cashier: currentUser, 
+                            customerName: $('#customerName').val().trim() || 'Pelanggan',
+                            status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', 
+                            statusLocked: false
                         };
-                        orders.unshift(order); saveOrders();
-                        
-                        // [REVISI] Panggil fungsi increment limit harian
-                        incrementDailyTransactionCount();
+                        orders.unshift(order); 
+                        saveOrders();
                         
                         if (order.memberId) {
                             const member = members.find(m => m.id === order.memberId);
-                            if (member) { member.transactions = (member.transactions || 0) + 1; member.totalSpent = (member.totalSpent || 0) + order.total; saveMembers(); }
+                            if (member) { 
+                                member.transactions = (member.transactions || 0) + 1; 
+                                member.totalSpent = (member.totalSpent || 0) + order.total; 
+                                saveMembers(); 
+                            }
                         }
-                        showReceiptModal(order); resetOrder();
+                        showReceiptModal(order); 
+                        resetOrder();
                         $('#processOrderModal').hide();
                         showToast('Pesanan berhasil diproses', 'success');
+                    } catch(error) {
+                        console.error("Error processing order:", error);
+                        showToast('Terjadi kesalahan saat memproses pesanan', 'error');
                     } finally {
                         setButtonLoading($btn, false, originalText);
                     }
                 }, 500);
             });
             
-            $(document).on('click', '.filter-chip', function() { $('.filter-chip').removeClass('active'); $(this).addClass('active'); loadMenus($('#menuSearch').val(), $(this).data('category')); });
-            $('#addMenuBtn').click(() => { if (currentUser.role === 'admin') openEditMenuModal(null); });
-            $('#manageCategoriesBtn').click(() => { if (currentUser.role === 'admin') { loadCategoriesForManagement(); $('#manageCategoriesModal').css('display', 'flex'); } });
-            $('#viewReportsBtn').click(() => { 
-                if (currentUser.role !== 'admin') return;
-                $('#reportsModal .tabs .tab').removeClass('active').first().addClass('active');
-                $('#reportsModal .tab-content').removeClass('active').first().addClass('active');
-                $('#reportPeriod').val('today').trigger('change');
-                $('#reportResults, #donationReportResults').empty();
-                $('#printReportBtn, #downloadReportBtn').hide();
-                $('#reportsModal').css('display', 'flex');
+            $(document).on('click', '.filter-chip', function() { 
+                $('.filter-chip').removeClass('active'); 
+                $(this).addClass('active'); 
+                loadMenus($('#menuSearch').val(), $(this).data('category')); 
             });
-            $('#historyBtn').click(() => { if (currentUser.role !== 'admin') { loadTransactionHistory(); $('#historyModal').css('display', 'flex'); } });
-            $('#kitchenDisplayBtn').click(() => { loadKitchenOrders(); kitchenInterval = setInterval(loadKitchenOrders, 30000); $('#kitchenDisplayModal').css('display', 'flex'); });
-            $('#manageMembersBtn').click(() => { if (currentUser.role === 'admin') { resetMemberForm(); loadMembersForManagement(); $('#memberAdminFields').toggle(currentUser.role === 'admin'); $('#manageMembersModal').css('display', 'flex'); } });
+            
+            // Cek permission untuk add menu
+            $('#addMenuBtn').click(() => { 
+                if (checkPermission('add_menu')) {
+                    openEditMenuModal(null); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk menambah menu', 'error');
+                }
+            });
+            
+            // Cek permission untuk manage categories
+            $('#manageCategoriesBtn').click(() => { 
+                if (checkPermission('manage_categories')) { 
+                    loadCategoriesForManagement(); 
+                    $('#manageCategoriesModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mengelola kategori', 'error');
+                }
+            });
+            
+            // Cek permission untuk view reports
+            $('#viewReportsBtn').click(() => { 
+                if (checkPermission('view_reports')) { 
+                    $('#reportsModal .tabs .tab').removeClass('active').first().addClass('active');
+                    $('#reportsModal .tab-content').removeClass('active').first().addClass('active');
+                    $('#reportPeriod').val('today').trigger('change');
+                    $('#reportResults, #donationReportResults').empty();
+                    $('#printReportBtn, #downloadReportBtn').hide();
+                    $('#reportsModal').css('display', 'flex');
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melihat laporan', 'error');
+                }
+            });
+            
+            // Cek permission untuk history
+            $('#historyBtn').click(() => { 
+                if (checkPermission('transaction_history')) { 
+                    loadTransactionHistory(); 
+                    $('#historyModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melihat histori transaksi', 'error');
+                }
+            });
+            
+            // Cek permission untuk kitchen display
+            $('#kitchenDisplayBtn').click(() => { 
+                if (checkPermission('kitchen_display')) { 
+                    loadKitchenOrders(); 
+                    kitchenInterval = setInterval(loadKitchenOrders, 30000); 
+                    $('#kitchenDisplayModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melihat info pesanan dapur', 'error');
+                }
+            });
+            
+            // Cek permission untuk manage members
+            $('#manageMembersBtn').click(() => { 
+                if (checkPermission('manage_members')) { 
+                    resetMemberForm(); 
+                    loadMembersForManagement(); 
+                    $('#memberAdminFields').toggle(currentUser.role === 'admin'); 
+                    $('#manageMembersModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mengelola member', 'error');
+                }
+            });
+            
             $('#manageMemberSearchInput').on('input', function() { loadMembersForManagement($(this).val()); });
-            $('#manageStoreInfoBtn').click(() => { if (currentUser.role === 'admin') { loadStoreInfo(); $('#manageStoreInfoModal').css('display', 'flex'); } });
+            
+            // Cek permission untuk manage store info
+            $('#manageStoreInfoBtn').click(() => { 
+                if (checkPermission('manage_store_info')) { 
+                    loadStoreInfo(); 
+                    $('#manageStoreInfoModal').css('display', 'flex'); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mengelola info restoran', 'error');
+                }
+            });
+            
+            // Cek permission untuk control panel
             $('#controlPanelBtn').click(() => {
-                if (currentUser.role !== 'admin') return;
+                if (!checkPermission('control_panel')) {
+                    showToast('Anda tidak memiliki izin untuk mengakses kontrol panel', 'error');
+                    return;
+                }
+                
                 promptForPassword('panel', () => {
                     $('#controlPanelModal .tabs .tab').removeClass('active').first().addClass('active');
                     $('#controlPanelModal .tab-content').removeClass('active').first().addClass('active');
                     loadUsersForManagement();
+                    loadPermissionsUserSelect();
                     $('#memberDiscount').val(settings.memberDiscountPercent || 2);
                     $('#nonMemberDiscount').val(settings.nonMemberDiscountPercent || 0);
                     $('#controlPanelModal').css('display', 'flex');
                 });
             });
-            $('#backupDataBtn').click(() => { if (currentUser.role === 'admin') showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lksbackup). Lanjutkan?', backupData); });
-            $('#restoreFile').change(function() { if (currentUser.role === 'admin') { restoreFromFile(this.files[0]); $(this).val(''); } });
-            $('#resetDataBtn').click(() => { if (currentUser.role === 'admin') promptForPassword('item', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', resetAllData, 'danger')); });
+            
+            // Cek permission untuk backup data
+            $('#backupDataBtn').click(() => { 
+                if (checkPermission('backup_restore')) { 
+                    showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lksbackup). Lanjutkan?', backupData); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melakukan backup data', 'error');
+                }
+            });
+            
+            $('#restoreFile').change(function() { 
+                if (checkPermission('backup_restore')) { 
+                    restoreFromFile(this.files[0]); 
+                    $(this).val(''); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk melakukan restore data', 'error');
+                    $(this).val('');
+                }
+            });
+            
+            // Cek permission untuk reset data
+            $('#resetDataBtn').click(() => { 
+                if (checkPermission('reset_data')) { 
+                    promptForPassword('item', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', resetAllData, 'danger')); 
+                } else {
+                    showToast('Anda tidak memiliki izin untuk mereset data', 'error');
+                }
+            });
+            
+            // TOMBOL BARU: Generate Daftar Menu PDF
+            $('#generateMenuPdfBtn').click(function() {
+                if (menus.length === 0) {
+                    showToast('Tidak ada menu untuk digenerate', 'warning');
+                    return;
+                }
+                
+                if (!checkPermission('view_reports')) {
+                    showToast('Anda tidak memiliki izin untuk generate daftar menu', 'error');
+                    return;
+                }
+                
+                showToast('Mempersiapkan daftar menu...', 'info');
+                setTimeout(() => {
+                    generateMenuPdfPreview();
+                }, 500);
+            });
+            
+            $('#downloadMenuPdfBtn').click(function() {
+                downloadMenuPdf();
+            });
+            
+            $('#printMenuPdfBtn').click(function() {
+                printMenuPdf();
+            });
+            
             $('#saveMenuBtn').click(function() {
                 const id = $('#menuId').val(), name = $('#menuName').val().trim(), category = $('#menuCategory').val(), price = parseFloat($('#menuPrice').val()) || 0, image = $('#menuImage').val().trim(), description = $('#menuDescription').val().trim();
                 if (!name || !category || price <= 0) { showToast('Nama, kategori, dan harga harus valid', 'error'); return; }
                 const action = () => {
                     if (id) {
+                        // Cek permission untuk edit menu
+                        if (!checkPermission('edit_menu')) {
+                            showToast('Anda tidak memiliki izin untuk mengedit menu', 'error');
+                            return;
+                        }
+                        
                         const menuIndex = menus.findIndex(m => m.id === id);
                         if (menuIndex > -1) menus[menuIndex] = { ...menus[menuIndex], name, category, price, image, description };
                     } else {
+                        // Cek permission untuk add menu
+                        if (!checkPermission('add_menu')) {
+                            showToast('Anda tidak memiliki izin untuk menambah menu', 'error');
+                            return;
+                        }
+                        
                         menus.unshift({ id: 'M' + moment().format('x'), name, category, price, image, description });
                     }
                     saveMenus(); loadMenus(); $('#menuModal').hide(); showToast(`Menu ${id ? 'diperbarui' : 'disimpan'}`, 'success');
@@ -2267,6 +2846,23 @@
                 settings.memberDiscountPercent = memberDiscount; settings.nonMemberDiscountPercent = nonMemberDiscount;
                 saveSettings(); showToast('Pengaturan diskon berhasil disimpan.', 'success');
             });
+            
+            // Event untuk permissions
+            $('#permissionUserSelect').change(function() {
+                const userId = $(this).val();
+                if (userId) {
+                    loadUserPermissions(userId);
+                    $('#permissionsContainer').show();
+                    $('#permissionsActions').show();
+                } else {
+                    $('#permissionsContainer').hide();
+                    $('#permissionsActions').hide();
+                }
+            });
+            
+            $('#savePermissionsBtn').click(saveUserPermissions);
+            $('#resetPermissionsBtn').click(resetUserPermissions);
+            
             $('#passwordPromptForm').submit(e => e.preventDefault());
             $('#passwordPromptSubmit').click(submitPasswordPrompt);
             $('.modal-close, .modal-close-btn').click(function() {
@@ -2277,32 +2873,48 @@
             $('#reportPeriod').change(() => $('#customDateRange').toggle($('#reportPeriod').val() === 'custom'));
             $('#printReceiptBtn').on('click', () => printElement('#receiptModalBody #receiptContent'));
             $('#downloadReceiptPdfBtn').on('click', downloadReceiptAsPdf);
+            
+            // FIX: Inisialisasi button status berdasarkan isi pesanan
+            updateOrder();
         });
 
-        function initializeApp() { loadMenus(); updateOrder(); loadCategories(); updateCurrentDate(); updateStoreInfo(); updateTableNumbers(); $('#adminPanel').toggle(currentUser.role === 'admin'); checkDailyTransactionLimit(false); }
+        function initializeApp() { 
+            loadMenus(); 
+            updateOrder(); 
+            loadCategories(); 
+            updateCurrentDate(); 
+            updateStoreInfo(); 
+            updateTableNumbers(); 
+            
+            // Tampilkan/hide admin panel berdasarkan permission
+            const showAdminPanel = checkPermission('add_menu') || checkPermission('edit_menu') || 
+                                  checkPermission('delete_menu') || checkPermission('manage_categories') ||
+                                  checkPermission('manage_members') || checkPermission('manage_store_info') ||
+                                  checkPermission('view_reports') || checkPermission('transaction_history') ||
+                                  checkPermission('kitchen_display') || checkPermission('control_panel') ||
+                                  checkPermission('backup_restore') || checkPermission('reset_data');
+            
+            $('#adminPanel').toggle(showAdminPanel);
+        }
         
-        // === [PERBAIKAN] Fungsi Captcha ===
         function generateCaptcha() {
             const canvas = document.getElementById('captchaCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            const chars = 'AbCdEfGhIjKlMnOpQrStUvWxYz0123456789'; // Karakter campuran untuk mempersulit
+            const chars = 'AbCdEfGhIjKlMnOpQrStUvWxYz0123456789';
             let text = '';
-            for (let i = 0; i < 5; i++) { // 5 karakter sudah cukup untuk ukuran canvas ini
+            for (let i = 0; i < 5; i++) {
                 text += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-            captchaText = text; // Simpan teks yang benar ke variabel global
+            captchaText = text;
 
-            // Bersihkan canvas dan gambar latar belakang
             ctx.fillStyle = '#f0f2f5';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Gambar setiap karakter dengan sedikit distorsi
             for (let i = 0; i < text.length; i++) {
                 ctx.save();
-                // Posisi, warna, dan rotasi acak untuk setiap karakter
                 ctx.translate(20 + i * 25, canvas.height / 2 + (Math.random() - 0.5) * 10);
-                ctx.rotate((Math.random() - 0.5) * 0.4); // Rotasi hingga ~20 derajat
+                ctx.rotate((Math.random() - 0.5) * 0.4);
                 ctx.font = 'bold 24px Poppins';
                 ctx.fillStyle = `rgba(0,0,0,${0.7 + Math.random() * 0.3})`;
                 ctx.textAlign = 'center';
@@ -2311,7 +2923,6 @@
                 ctx.restore();
             }
 
-            // Tambahkan beberapa garis acak (noise)
             for (let i = 0; i < 3; i++) {
                 ctx.beginPath();
                 ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
@@ -2322,97 +2933,197 @@
             }
         }
         
-        // === [REVISI] Logika Cek Limit Transaksi Harian (Async) ===
-        function checkDailyTransactionLimit(showAlert = false) {
-            const $processBtn = $('#processOrderBtn');
-            const $completeBtn = $('#completePaymentBtn');
-            
-            // Nonaktifkan tombol saat pemeriksaan berlangsung
-            setButtonLoading($processBtn, true, 'Memeriksa Limit...');
-            $completeBtn.prop('disabled', true).html('<i class="fas fa-lock"></i> Memeriksa Limit...');
-
-            fetch('http://worldtimeapi.org/api/ip')
-                .then(response => response.json())
-                .then(data => {
-                    const onlineDate = data.datetime.split('T')[0];
-                    currentOnlineDate = onlineDate; // Simpan tanggal online global
-                    handleDateCheck(onlineDate, showAlert);
-                })
-                .catch(err => {
-                    console.warn("World Time API gagal, beralih ke waktu perangkat.", err);
-                    showToast('Gagal cek waktu online, pakai waktu perangkat.', 'warning');
-                    const deviceDate = moment().format('YYYY-MM-DD');
-                    currentOnlineDate = deviceDate; // Simpan tanggal perangkat global
-                    handleDateCheck(deviceDate, showAlert);
-                });
-        }
-        
-        function handleDateCheck(currentDate, showAlert) {
-            const $processBtn = $('#processOrderBtn');
-            const $completeBtn = $('#completePaymentBtn');
-            const originalProcessText = 'Proses Pesanan';
-            const originalCompleteText = '<i class="fas fa-check-circle"></i> Selesaikan Pembayaran';
-
-            let storedData = JSON.parse(localStorage.getItem(STORAGE_KEYS.DAILY_TRANSACTIONS)) || { date: '', count: 0 };
-            
-            if (storedData.date !== currentDate) {
-                // Hari baru, reset counter
-                storedData = { date: currentDate, count: 0 };
-                localStorage.setItem(STORAGE_KEYS.DAILY_TRANSACTIONS, JSON.stringify(storedData));
+        // Fungsi untuk mengecek permission user
+        function checkPermission(permission) {
+            if (!currentUser || !currentUser.permissions) {
+                return false;
             }
             
-            const transactionsLeft = DAILY_LIMIT - storedData.count;
-
-            if (storedData.count >= DAILY_LIMIT) {
-                // Limit tercapai
-                $processBtn.prop('disabled', true).text('Limit Harian Tercapai');
-                $completeBtn.prop('disabled', true).html('<i class="fas fa-lock"></i> Limit Harian Tercapai');
-                if (showAlert) showDailyLimitAlert();
-            } else {
-                // Masih bisa
-                setButtonLoading($processBtn, false, originalProcessText);
-                $completeBtn.prop('disabled', false).html(originalCompleteText);
-                if(transactionsLeft <= 5) { // Tampilkan sisa jika tinggal sedikit
-                   showToast(`Sisa transaksi harian: ${transactionsLeft}`, 'warning');
-                } else {
-                   showToast(`Limit transaksi harian terverifikasi.`, 'success');
+            // Admin memiliki semua permission
+            if (currentUser.role === 'admin') {
+                return true;
+            }
+            
+            return currentUser.permissions[permission] === true;
+        }
+        
+        // FUNGSI BARU: Generate Menu PDF Preview
+        function generateMenuPdfPreview() {
+            // Kelompokkan menu berdasarkan kategori
+            const menuByCategory = {};
+            menus.forEach(menu => {
+                if (!menuByCategory[menu.category]) {
+                    menuByCategory[menu.category] = [];
                 }
-            }
+                menuByCategory[menu.category].push(menu);
+            });
+            
+            // Buat HTML untuk preview
+            let html = `
+                <div id="menuPdfContainer">
+                    <div class="pdf-header">
+                        <h1>DAFTAR MENU LENGKAP</h1>
+                        <h2>${settings.umkmName || 'CAFE & RESTO'} <span class="premium-badge">PREMIUM</span></h2>
+                        <div class="pdf-subtitle">${settings.storeAddress || ''}</div>
+                        <div class="pdf-subtitle">Telp: ${settings.storePhone || ''} | Email: ${settings.storeEmail || ''}</div>
+                        <div class="pdf-subtitle">Tanggal Cetak: ${moment().format('DD/MM/YYYY HH:mm')}</div>
+                    </div>
+                    
+                    <div class="pdf-qr-section">
+                        <h3>Scan QRCode untuk Memesan</h3>
+                        <p>Gunakan kamera smartphone Anda untuk scan QRCode di bawah ini:</p>
+                        <div class="pdf-qr-code" id="qrOrderPdf"></div>
+                        <p class="pdf-qr-label">www.aplikasiusaha.com/orderform</p>
+                    </div>
+            `;
+            
+            // Loop melalui setiap kategori
+            Object.keys(menuByCategory).forEach(category => {
+                html += `
+                    <div class="pdf-category-section">
+                        <div class="pdf-category-title">${category}</div>
+                `;
+                
+                // Loop melalui setiap menu dalam kategori
+                menuByCategory[category].forEach(menu => {
+                    html += `
+                        <div class="pdf-menu-item">
+                            <div class="pdf-menu-image">
+                                ${menu.image ? `<img src="${menu.image}" alt="${menu.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgZmlsbD0iIzk5OSI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+';">` : 
+                                '<div style="width:100%;height:100%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;">No Image</div>'}
+                            </div>
+                            <div class="pdf-menu-info">
+                                <div class="pdf-menu-name">${menu.name}</div>
+                                <div class="pdf-menu-price">${formatCurrency(menu.price)}</div>
+                                ${menu.description ? `<div class="pdf-menu-description">${menu.description}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            });
+            
+            // Footer dengan QRCode untuk website
+            html += `
+                <div class="pdf-footer">
+                    <h4>Informasi Restoran</h4>
+                    <p>Aplikasi Kasir ${settings.storeName || 'CAFE & RESTO'}</p>
+                    <p>Dikembangkan oleh Lentera Karya Situbondo</p>
+                    <p>&copy; ${new Date().getFullYear()} - Hak Cipta Dilindungi Undang-Undang</p>
+                    
+                    <div class="pdf-qr-footer">
+                        <div class="pdf-qr-item">
+                            <div class="pdf-qr-code" id="qrWebsitePdf"></div>
+                            <p class="pdf-qr-label">www.aplikasiusaha.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            
+            // Set HTML ke modal
+            $('#menuPdfContainer').html(html);
+            
+            // Generate QRCode setelah HTML dimuat
+            setTimeout(() => {
+                // QRCode untuk pemesanan
+                const qrOrderContainer = document.getElementById('qrOrderPdf');
+                if (qrOrderContainer) {
+                    $(qrOrderContainer).empty();
+                    new QRCode(qrOrderContainer, {
+                        text: 'http://www.aplikasiusaha.com/orderform',
+                        width: 120,
+                        height: 120,
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+                
+                // QRCode untuk website
+                const qrWebsiteContainer = document.getElementById('qrWebsitePdf');
+                if (qrWebsiteContainer) {
+                    $(qrWebsiteContainer).empty();
+                    new QRCode(qrWebsiteContainer, {
+                        text: 'http://www.aplikasiusaha.com',
+                        width: 120,
+                        height: 120,
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+            }, 100);
+            
+            // Tampilkan modal
+            $('#menuPdfModal').css('display', 'flex');
+            showToast('Preview daftar menu berhasil dibuat', 'success');
         }
         
-        function incrementDailyTransactionCount() {
-            // Gunakan tanggal yg sudah disimpan dari `checkDailyTransactionLimit`
-            if (!currentOnlineDate) { 
-                currentOnlineDate = moment().format('YYYY-MM-DD');
+        // FUNGSI BARU: Download Menu PDF
+        function downloadMenuPdf() {
+            showToast('Menyiapkan PDF untuk diunduh...', 'info');
+            
+            const element = document.getElementById('menuPdfContainer');
+            
+            // Pastikan QRCode sudah tergenerate
+            setTimeout(() => {
+                html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    allowTaint: true
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    
+                    const imgWidth = 210; // A4 width in mm
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    
+                    let heightLeft = imgHeight;
+                    let position = 0;
+                    
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= 297; // A4 height in mm
+                    
+                    // Add remaining pages if content is longer than one page
+                    while (heightLeft > 0) {
+                        position = heightLeft - imgHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= 297;
+                    }
+                    
+                    // Simpan PDF
+                    pdf.save(`Daftar_Menu_${settings.umkmName || 'Restoran'}_${moment().format('YYYYMMDD_HHmm')}.pdf`);
+                    showToast('PDF berhasil diunduh', 'success');
+                }).catch(error => {
+                    console.error('Error generating PDF:', error);
+                    showToast('Gagal membuat PDF', 'error');
+                });
+            }, 500);
+        }
+        
+        // FUNGSI BARU: Print Menu PDF
+        function printMenuPdf() {
+            const printContainer = document.getElementById('print-container');
+            const menuPdfContainer = document.getElementById('menuPdfContainer');
+            
+            if (!menuPdfContainer) {
+                showToast('Tidak ada konten untuk dicetak', 'error');
+                return;
             }
             
-            let storedData = JSON.parse(localStorage.getItem(STORAGE_KEYS.DAILY_TRANSACTIONS)) || { date: currentOnlineDate, count: 0 };
+            // Clone the content
+            const contentToPrint = menuPdfContainer.cloneNode(true);
+            printContainer.innerHTML = '';
+            printContainer.appendChild(contentToPrint);
             
-            if (storedData.date === currentOnlineDate) {
-                storedData.count++;
-            } else {
-                // Kasus pindah hari tepat saat transaksi
-                storedData = { date: currentOnlineDate, count: 1 };
-            }
-            localStorage.setItem(STORAGE_KEYS.DAILY_TRANSACTIONS, JSON.stringify(storedData));
+            // Show print dialog
+            setTimeout(() => {
+                window.print();
+            }, 300);
             
-            // Perbarui status tombol setelah increment
-            checkDailyTransactionLimit(false); 
+            showToast('Mempersiapkan cetakan...', 'info');
         }
-
-        function showDailyLimitAlert() {
-            const phone = "6287865614222", message = encodeURIComponent( "Halo Lentera Karya Situbondo, saya tertarik dengan Aplikasi Cafe & Resto Anda. Saya telah mencoba versi trial harian dan ingin melakukan upgrade ke versi premium. Mohon informasinya, terima kasih." ), waLink = `https://api.whatsapp.com/send?phone=${phone}&text=${message}`;
-            $('#confirmTitle').text('Batas Transaksi Harian Tercapai');
-            $('#confirmMessage').html(`Anda telah mencapai batas <strong>${DAILY_LIMIT} transaksi</strong> untuk hari ini. Untuk melanjutkan transaksi tanpa batas, silakan upgrade ke versi premium.`);
-            const $confirmBtn = $('#confirmAction');
-            $confirmBtn.off('click').on('click', () => { window.open(waLink, '_blank'); $('#confirmationModal').hide(); });
-            $confirmBtn.removeClass('btn-danger').addClass('btn-success').html('<i class="fab fa-whatsapp"></i> Hubungi Developer');
-            $('#confirmCancel').hide();
-            $('#confirmationModal').off('hidden.bs.modal').on('hidden.bs.modal', function () { $('#confirmCancel').show(); });
-            $('#confirmationModal').css('display', 'flex');
-        }
-        // === AKHIR DARI REVISI LOGIKA LIMIT ===
-
+        
         function promptForPassword(type, callback) {
             const title = type === 'item' ? 'Password Edit/Hapus' : 'Password Kontrol Panel';
             $('#passwordPromptTitle').text(title);
@@ -2421,6 +3132,7 @@
             $('#passwordPromptInput').val('');
             $('#passwordPromptModal').css('display', 'flex').find('input').focus();
         }
+        
         function submitPasswordPrompt() {
             const password = $('#passwordPromptInput').val(), type = $('#passwordPromptTitle').text().includes('Kontrol Panel') ? 'panel' : 'item', correctHash = type === 'panel' ? settings.panelSecurityCode : settings.itemSecurityCode;
             if (CryptoJS.SHA256(password).toString() === correctHash) {
@@ -2431,6 +3143,7 @@
                 showToast('Password keamanan salah.', 'error');
             }
         }
+        
         function changeSecurityCode(e) {
             e.preventDefault();
             const formId = $(this).attr('id'), newPassword = formId === 'itemSecurityForm' ? $('#itemSecurityCode').val() : $('#panelSecurityCode').val();
@@ -2444,6 +3157,7 @@
             }
             saveSettings(); $(this)[0].reset();
         }
+        
         function changeOwnPassword(e) {
             e.preventDefault();
             const currentPass = $('#currentPassword').val(), newPass = $('#newPassword').val();
@@ -2458,6 +3172,7 @@
                 $(this)[0].reset();
             }
         }
+        
         function loadUsersForManagement() {
             const $list = $('#usersList').empty();
             if (users.length === 0) { $list.html('<div class="empty-state"><i class="fas fa-users"></i><p>Tidak ada pengguna</p></div>'); }
@@ -2467,23 +3182,124 @@
                 });
             }
         }
+        
+        function loadPermissionsUserSelect() {
+            const $select = $('#permissionUserSelect').empty();
+            $select.append('<option value="">-- Pilih Pengguna --</option>');
+            users.forEach(user => {
+                $select.append(`<option value="${user.id}">${user.name} (${user.username} - ${user.role})</option>`);
+            });
+        }
+        
+        function loadUserPermissions(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            // Inisialisasi permissions jika belum ada
+            if (!user.permissions) {
+                user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
+            }
+            
+            // Set semua checkbox berdasarkan permissions user
+            $('.permission-checkbox').each(function() {
+                const permission = $(this).data('permission');
+                $(this).prop('checked', user.permissions[permission] === true);
+            });
+        }
+        
+        function saveUserPermissions() {
+            const userId = $('#permissionUserSelect').val();
+            if (!userId) return;
+            
+            const userIndex = users.findIndex(u => u.id === userId);
+            if (userIndex === -1) return;
+            
+            // Kumpulkan semua permission dari checkbox
+            const permissions = {};
+            $('.permission-checkbox').each(function() {
+                const permission = $(this).data('permission');
+                permissions[permission] = $(this).prop('checked');
+            });
+            
+            // Update user permissions
+            users[userIndex].permissions = permissions;
+            saveUsers();
+            
+            // Update currentUser jika yang diubah adalah user yang sedang login
+            if (currentUser.id === userId) {
+                currentUser.permissions = permissions;
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
+                initializeApp(); // Refresh tampilan untuk update permission
+            }
+            
+            showToast('Hak akses berhasil disimpan', 'success');
+        }
+        
+        function resetUserPermissions() {
+            const userId = $('#permissionUserSelect').val();
+            if (!userId) return;
+            
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            // Reset ke default permissions berdasarkan role
+            user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
+            saveUsers();
+            
+            // Update currentUser jika yang diubah adalah user yang sedang login
+            if (currentUser.id === userId) {
+                currentUser.permissions = user.permissions;
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
+                initializeApp(); // Refresh tampilan untuk update permission
+            }
+            
+            loadUserPermissions(userId);
+            showToast('Hak akses berhasil direset ke default', 'success');
+        }
+        
         function resetUserForm() { $('#userForm')[0].reset(); $('#userIdInput').val(''); $('#userFormTitle').text('Tambah Pengguna'); $('#userUsername').prop('disabled', false); }
+        
         function populateUserForm(user) { $('#userFormTitle').text('Edit Pengguna'); $('#userIdInput').val(user.id); $('#userName').val(user.name); $('#userUsername').val(user.username).prop('disabled', true); $('#userRole').val(user.role); }
+        
         function saveUser(e) {
             e.preventDefault();
             const id = $('#userIdInput').val(), name = $('#userName').val().trim(), username = $('#userUsername').val().trim(), password = $('#userPassword').val(), role = $('#userRole').val();
             if (!name || !username) { showToast('Nama dan username harus diisi.', 'error'); return; }
             if (id) {
                 const userIndex = users.findIndex(u => u.id === id);
-                if (userIndex !== -1) { users[userIndex].name = name; users[userIndex].role = role; if (password) users[userIndex].password = CryptoJS.SHA256(password).toString(); }
+                if (userIndex !== -1) { 
+                    users[userIndex].name = name; 
+                    users[userIndex].role = role; 
+                    if (password) users[userIndex].password = CryptoJS.SHA256(password).toString(); 
+                    
+                    // Reset permissions jika role berubah
+                    if (role !== users[userIndex].role) {
+                        users[userIndex].permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
+                    }
+                }
             } else {
                 if (!password) { showToast('Password harus diisi untuk pengguna baru.', 'error'); return; }
                 if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) { showToast('Username sudah digunakan.', 'error'); return; }
-                users.push({ id: 'U' + moment().format('x'), name, username, password: CryptoJS.SHA256(password).toString(), role });
+                
+                // Set default permissions berdasarkan role
+                const permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
+                
+                users.push({ 
+                    id: 'U' + moment().format('x'), 
+                    name, 
+                    username, 
+                    password: CryptoJS.SHA256(password).toString(), 
+                    role,
+                    permissions
+                });
             }
-            saveUsers(); loadUsersForManagement(); $('#userFormContainer').slideUp(resetUserForm);
+            saveUsers(); 
+            loadUsersForManagement(); 
+            loadPermissionsUserSelect();
+            $('#userFormContainer').slideUp(resetUserForm);
             showToast(`Pengguna berhasil ${id ? 'diperbarui' : 'ditambahkan'}.`, 'success');
         }
+        
         function backupData() {
             try {
                 const backup = { menus, categories, orders, settings, users, members, backupDate: new Date().toISOString() };
@@ -2495,6 +3311,7 @@
                 showToast('Backup data terenkripsi berhasil', 'success');
             } catch (err) { showToast('Gagal membuat backup terenkripsi', 'error'); console.error("Backup encryption error:", err); }
         }
+        
         function restoreFromFile(file) {
             if (!file) return;
             const reader = new FileReader();
@@ -2510,14 +3327,36 @@
             };
             reader.readAsText(file);
         }
-        function restoreData(data) { try { Object.keys(STORAGE_KEYS).forEach(key => localStorage.setItem(STORAGE_KEYS[key], JSON.stringify(data[key.toLowerCase().slice(0,-1) + 's']))); location.reload(); } catch (e) { showToast('Gagal melakukan restore data', 'error'); } }
-        function resetAllData() { Object.values(STORAGE_KEYS).forEach(key => { if (key !== STORAGE_KEYS.USER) localStorage.removeItem(key); }); location.reload(); }
+        
+        function restoreData(data) { 
+            try { 
+                Object.keys(STORAGE_KEYS).forEach(key => {
+                    const dataKey = key.toLowerCase().slice(0, -1) + 's';
+                    if (data[dataKey]) {
+                        localStorage.setItem(STORAGE_KEYS[key], JSON.stringify(data[dataKey]));
+                    }
+                }); 
+                location.reload(); 
+            } catch (e) { 
+                showToast('Gagal melakukan restore data', 'error'); 
+                console.error("Restore error:", e);
+            } 
+        }
+        
+        function resetAllData() { 
+            Object.values(STORAGE_KEYS).forEach(key => { 
+                if (key !== STORAGE_KEYS.USER) localStorage.removeItem(key); 
+            }); 
+            location.reload(); 
+        }
+        
         function openEditMenuModal(menu) {
             $('#menuModal .modal-title').text(menu ? 'Edit Menu' : 'Tambah Menu Baru');
             $('#menuForm')[0].reset(); $('#menuId').val(menu ? menu.id : '');
             if (menu) { $('#menuName').val(menu.name); $('#menuPrice').val(menu.price); $('#menuImage').val(menu.image || ''); $('#menuDescription').val(menu.description || ''); $('#menuCategory').val(menu.category); }
             loadCategoriesForSelect(); $('#menuModal').css('display', 'flex');
         }
+        
         function loadMenus(searchTerm = '', category = 'all') {
             const lowerSearchTerm = searchTerm.toLowerCase();
             let filteredMenus = menus.filter(m => (category === 'all' || m.category === category) && (!searchTerm || m.name.toLowerCase().includes(lowerSearchTerm)));
@@ -2526,17 +3365,38 @@
             if (filteredMenus.length === 0) { $menuGrid.html('<div class="empty-state"><i class="fas fa-utensils"></i><p>Tidak ada menu ditemukan</p></div>'); }
             else {
                 filteredMenus.forEach(menu => {
-                    const adminActions = currentUser.role === 'admin' ? `<div class="menu-actions"><div class="action-btn edit-btn edit-menu" data-id="${menu.id}"><i class="fas fa-edit"></i></div><div class="action-btn delete-btn delete-menu" data-id="${menu.id}"><i class="fas fa-trash"></i></div></div>` : '';
+                    // Tampilkan tombol edit/hapus hanya jika user memiliki permission
+                    const canEdit = checkPermission('edit_menu');
+                    const canDelete = checkPermission('delete_menu');
+                    
+                    let adminActions = '';
+                    if (canEdit || canDelete) {
+                        adminActions = '<div class="menu-actions">';
+                        if (canEdit) {
+                            adminActions += `<div class="action-btn edit-btn edit-menu" data-id="${menu.id}"><i class="fas fa-edit"></i></div>`;
+                        }
+                        if (canDelete) {
+                            adminActions += `<div class="action-btn delete-btn delete-menu" data-id="${menu.id}"><i class="fas fa-trash"></i></div>`;
+                        }
+                        adminActions += '</div>';
+                    }
+                    
                     $menuGrid.append(`<div class="menu-card" data-id="${menu.id}">${adminActions}<div class="menu-image">${menu.image ? `<img src="${menu.image}" alt="${menu.name}" onerror="this.parentElement.innerHTML = '<i class=\\'fas fa-utensils\\'></i>';">` : `<i class="fas fa-utensils"></i>`}</div><div class="menu-name">${menu.name}</div><div class="menu-price">${formatCurrency(menu.price)}</div><div class="menu-category">${menu.category}</div></div>`);
                 });
             }
         }
-        function loadCategories() { const $filterRow = $('.filter-row').html('<div class="filter-chip active" data-category="all">Semua</div>'); categories.forEach(category => $filterRow.append(`<div class="filter-chip" data-category="${category.name}">${category.name}</div>`)); }
+        
+        function loadCategories() { 
+            const $filterRow = $('.filter-row').html('<div class="filter-chip active" data-category="all">Semua</div>'); 
+            categories.forEach(category => $filterRow.append(`<div class="filter-chip" data-category="${category.name}">${category.name}</div>`)); 
+        }
+        
         function loadCategoriesForSelect() {
             const $select = $('#menuCategory').empty();
             if (categories.length === 0) $select.append('<option value="" disabled selected>Tidak ada kategori</option>');
             else categories.forEach(category => $select.append(`<option value="${category.name}">${category.name}</option>`));
         }
+        
         function loadCategoriesForManagement() {
             const $list = $('#categoriesList').empty();
             if (categories.length === 0) $list.html('<div class="empty-state"><i class="fas fa-tags"></i><p>Tidak ada kategori</p></div>');
@@ -2547,12 +3407,28 @@
                 });
             }
         }
-        function resetMemberForm() { $('#memberForm')[0].reset(); $('#memberIdInput').val(''); $('#memberFormTitle').text('Tambah Member Baru'); $('#saveMemberBtn').text('Tambah Member'); $('#deleteMemberBtn').hide(); }
-        function generateMemberId() { let id = 'M' + moment().format('YYMMDDHHmmss'); return members.some(m => m.id === id) ? generateMemberId() : id; }
-        function formatPhoneNumberForWhatsApp(phone) { let p = phone.replace(/[^0-9]/g, ''); return `https://wa.me/${p.startsWith('0') ? '62' + p.substring(1) : (p.startsWith('62') ? p : '62' + p)}`; }
+        
+        function resetMemberForm() { 
+            $('#memberForm')[0].reset(); 
+            $('#memberIdInput').val(''); 
+            $('#memberFormTitle').text('Tambah Member Baru'); 
+            $('#saveMemberBtn').text('Tambah Member'); 
+            $('#deleteMemberBtn').hide(); 
+        }
+        
+        function generateMemberId() { 
+            let id = 'M' + moment().format('YYMMDDHHmmss'); 
+            return members.some(m => m.id === id) ? generateMemberId() : id; 
+        }
+        
+        function formatPhoneNumberForWhatsApp(phone) { 
+            let p = phone.replace(/[^0-9]/g, ''); 
+            return `https://wa.me/${p.startsWith('0') ? '62' + p.substring(1) : (p.startsWith('62') ? p : '62' + p)}`; 
+        }
+        
         function loadMembersForManagement(searchTerm = '') {
             const $list = $('#membersList').empty(), lowerSearchTerm = searchTerm.toLowerCase();
-            const filteredMembers = members.filter(m => !searchTerm || m.name.toLowerCase().includes(lowerSearchTerm) || m.id.toLowerCase().includes(lowerSearchTerm) || m.phone.includes(lowerSearchTerm));
+            const filteredMembers = members.filter(m => !searchTerm || m.name.toLowerCase().includes(lowerSearchTerm) || m.id.toLowerCase().includes(lowerSearchTerm) || m.phone.includes(searchTerm));
             if (filteredMembers.length === 0) { $list.html('<div class="empty-state"><i class="fas fa-users"></i><p>Member tidak ditemukan</p></div>'); }
             else {
                 filteredMembers.forEach(member => {
@@ -2560,6 +3436,7 @@
                 });
             }
         }
+        
         function updateOrder() {
             currentOrder.subtotal = currentOrder.items.reduce((total, item) => total + (item.menu.price * item.quantity), 0);
             const memberDiscount = settings.memberDiscountPercent ?? 2, nonMemberDiscount = settings.nonMemberDiscountPercent ?? 0;
@@ -2572,46 +3449,157 @@
             $('#orderCount').text(`(${currentOrder.items.length} item)`);
             $('#discountRow').toggle(currentOrder.discount > 0).find('span:first-child').text(discountText);
             $('#orderDiscount').text(`-${formatCurrency(currentOrder.discount)}`);
-            if (currentOrder.items.length === 0) $orderItems.html('<div class="empty-state"><i class="fas fa-shopping-basket"></i><p>Pesanan kosong</p></div>');
-            else {
+            if (currentOrder.items.length === 0) {
+                $orderItems.html('<div class="empty-state"><i class="fas fa-shopping-basket"></i><p>Pesanan kosong</p></div>');
+                $('#processOrderBtn').prop('disabled', true);
+            } else {
                 currentOrder.items.forEach(item => { $orderItems.append(`<div class="order-item"><div class="order-item-info"><div class="order-item-name">${item.menu.name}</div><div class="order-item-price">${formatCurrency(item.menu.price)} x ${item.quantity}</div></div><div class="order-item-qty"><input type="number" value="${item.quantity}" min="1" class="item-qty qty-input" data-id="${item.menu.id}"><i class="fas fa-trash remove-item" data-id="${item.menu.id}" style="cursor:pointer; color: var(--danger); margin-left: 8px;"></i></div></div>`); });
+                $('#processOrderBtn').prop('disabled', false);
             }
             $('#orderSubtotal').text(formatCurrency(currentOrder.subtotal));
             $('#orderTotal').text(formatCurrency(currentOrder.total));
         }
+        
         function updateOrderSummary() {
             let discountText = '';
-            if (currentOrder.discount > 0) { let percent = currentOrder.memberId ? (settings.memberDiscountPercent ?? 2) : (settings.nonMemberDiscountPercent ?? 0); discountText = `Diskon (${percent}%):`; }
+            if (currentOrder.discount > 0) { 
+                let percent = currentOrder.memberId ? (settings.memberDiscountPercent ?? 2) : (settings.nonMemberDiscountPercent ?? 0); 
+                discountText = `Diskon (${percent}%):`; 
+            }
             $('#orderSummary').html(currentOrder.items.map(item => `<div class="summary-row"><span>${item.menu.name} (${item.quantity}x)</span><span>${formatCurrency(item.menu.price * item.quantity)}</span></div>`).join('') + `<div class="summary-row" style="border-top: 1px dashed #ddd; margin-top: 8px; padding-top: 8px;"><span>Subtotal:</span><span>${formatCurrency(currentOrder.subtotal)}</span></div>` + (currentOrder.discount > 0 ? `<div class="summary-row"><span>${discountText}</span><span>-${formatCurrency(currentOrder.discount)}</span></div>` : '') + `<div class="summary-row total-row"><span>Total:</span><span>${formatCurrency(currentOrder.total)}</span></div>`);
         }
+        
         function updatePaymentTab() {
             $('#paymentTotal').text(formatCurrency(currentOrder.total));
             $('#paymentAmount').val('').trigger('input');
-            const $quickCash = $('#quickCashButtons').empty(), total = currentOrder.total;
-            if (total > 0) {
-                const denominations = [total, Math.ceil(total / 10000) * 10000, 50000, 100000].filter(d => d >= total);
-                [...new Set(denominations)].sort((a,b) => a-b).slice(0,3).forEach(amount => {
-                    $quickCash.append(`<button class="btn btn-sm btn-outline-primary quick-cash-btn" data-amount="${amount}">${amount === total ? 'Uang Pas' : formatCurrency(amount)}</button>`);
-                });
+            $('#qrisTotal').text(formatCurrency(currentOrder.total));
+            
+            // Generate quick cash buttons untuk tunai
+            generateQuickCashButtons(currentOrder.total);
+            
+            // Tampilkan metode pembayaran yang sesuai
+            togglePaymentMethod();
+        }
+        
+        function togglePaymentMethod() {
+            const method = $('#paymentMethod').val();
+            const isCash = method === 'cash';
+            const isQris = method === 'qris';
+            
+            if (isCash) {
+                $('#cashPaymentContainer').show();
+                $('#qrisContainer').hide();
+                $('#paymentAmount').prop('disabled', false).val('').trigger('input');
+                generateQuickCashButtons(currentOrder.total);
+                $('#completePaymentBtn').prop('disabled', true);
+            } else if (isQris) {
+                $('#cashPaymentContainer').hide();
+                $('#qrisContainer').show();
+                $('#paymentAmount').val(currentOrder.total).prop('disabled', true);
+                $('#changeContainer').hide();
+                $('#completePaymentBtn').prop('disabled', false);
+            } else {
+                $('#cashPaymentContainer').show();
+                $('#qrisContainer').hide();
+                $('#quickCashButtons').hide();
+                $('#paymentAmount').prop('disabled', false).val('').trigger('input');
+                $('#completePaymentBtn').prop('disabled', true);
+            }
+            
+            // Hitung kembalian untuk metode yang memerlukan
+            calculateChange();
+        }
+        
+        function generateQuickCashButtons(total) {
+            const $quickCash = $('#quickCashButtons').empty();
+            let buttons = [];
+            
+            // Logika tombol cerdas sesuai permintaan
+            if (total <= 12000) {
+                buttons = [15000, 20000, 50000, 100000];
+            } else if (total <= 15000) {
+                buttons = [15000, 20000, 50000, 100000];
+            } else if (total <= 20000) {
+                buttons = [20000, 50000, 100000];
+            } else if (total <= 25000) {
+                buttons = [25000, 30000, 50000, 100000];
+            } else {
+                // Untuk total di atas 25000, buat tombol dengan nilai yang logis
+                const next = Math.ceil(total / 5000) * 5000;
+                buttons = [next, next + 5000, next + 10000, next + 20000];
+            }
+            
+            // Hapus duplikat dan urutkan
+            buttons = [...new Set(buttons)].sort((a, b) => a - b);
+            
+            // Batasi hanya 4 tombol
+            buttons.slice(0, 4).forEach(amount => {
+                $quickCash.append(`<button class="btn btn-sm btn-outline-primary quick-cash-btn" data-amount="${amount}">${formatCurrency(amount)}</button>`);
+            });
+        }
+        
+        // FIX: Perbaikan fungsi calculateChange untuk mengaktifkan/menonaktifkan tombol pembayaran
+        function calculateChange() { 
+            const method = $('#paymentMethod').val();
+            if (method === 'qris') {
+                // Untuk QRIS, tidak perlu menghitung kembalian
+                $('#changeContainer').hide();
+                // Untuk QRIS, tombol selalu aktif
+                $('#completePaymentBtn').prop('disabled', false);
+                return;
+            }
+            
+            // Untuk metode tunai, transfer, dan e-wallet
+            const amount = parseFloat($('#paymentAmount').val()) || 0; 
+            const change = amount - currentOrder.total; 
+            
+            // Tampilkan/sembunyikan container kembalian
+            if (change >= 0) {
+                $('#changeContainer').show();
+                $('#paymentChange').text(formatCurrency(change));
+            } else {
+                $('#changeContainer').hide();
+            }
+            
+            // Aktifkan/nonaktifkan tombol pembayaran
+            if (amount >= currentOrder.total) {
+                $('#completePaymentBtn').prop('disabled', false);
+            } else {
+                $('#completePaymentBtn').prop('disabled', true);
             }
         }
-        function calculateChange() { const amount = parseFloat($('#paymentAmount').val()) || 0, change = amount - currentOrder.total; $('#changeContainer').toggle(change >= 0); $('#paymentChange').text(formatCurrency(change)); }
-        function switchPaymentModalTab(tabName) { $('#processOrderModal .tabs .tab, #processOrderModal .tab-content').removeClass('active'); $(`[data-tab="${tabName}"], #${tabName}Tab`).addClass('active'); }
-        function switchReportsModalTab(tabName) { $('#reportsModal .tabs .tab, #reportsModal .tab-content').removeClass('active'); $(`#reportsModal [data-tab="${tabName}"], #${tabName}Tab`).addClass('active'); }
-        function switchControlPanelTab(tabName) { $('#controlPanelModal .tabs .tab, #controlPanelModal .tab-content').removeClass('active'); $(`#controlPanelModal [data-tab="${tabName}"], #${tabName}Tab`).addClass('active'); }
+        
+        function switchPaymentModalTab(tabName) { 
+            $('#processOrderModal .tabs .tab, #processOrderModal .tab-content').removeClass('active'); 
+            $(`[data-tab="${tabName}"], #${tabName}Tab`).addClass('active'); 
+        }
+        
+        function switchReportsModalTab(tabName) { 
+            $('#reportsModal .tabs .tab, #reportsModal .tab-content').removeClass('active'); 
+            $(`#reportsModal [data-tab="${tabName}"], #${tabName}Tab`).addClass('active'); 
+        }
+        
+        function switchControlPanelTab(tabName) { 
+            $('#controlPanelModal .tabs .tab, #controlPanelModal .tab-content').removeClass('active'); 
+            $(`#controlPanelModal [data-tab="${tabName}"], #${tabName}Tab`).addClass('active'); 
+        }
+        
         function resetOrder() {
             currentOrder = { items: [], subtotal: 0, total: 0, discount: 0, type: 'dinein', tableNumber: '1', note: '', memberId: null };
             localStorage.setItem(STORAGE_KEYS.CURRENT_ORDER, JSON.stringify(currentOrder));
-            updateOrder(); $('.order-type-btn').removeClass('active'); $('[data-type="dinein"]').addClass('active');
-            $('#orderNote, #memberSearchInput').val(''); $('#tableNumberContainer').show();
+            updateOrder(); 
+            $('.order-type-btn').removeClass('active'); 
+            $('[data-type="dinein"]').addClass('active');
+            $('#orderNote, #memberSearchInput').val(''); 
+            $('#tableNumberContainer').show();
         }
+        
         function generateReceiptHTML(order) {
             const member = members.find(m => m.id === order.memberId);
-            // [REVISI] Struk menampilkan Nama UMKM dan Nama Developer (Mitra Anekamarket)
             return `<div id="receiptContent">
                 <div class="receipt-header">
                     <img src="https://raw.githubusercontent.com/anekamarket/tester/refs/heads/main/logo-cafe.png" alt="Logo" style="width: 80px; margin-bottom: 5px;">
-                    <div class="receipt-title">${settings.umkmName}</div>
+                    <div class="receipt-title">${settings.umkmName} <span class="premium-badge">PREMIUM</span></div>
                     <div>${settings.storeAddress}</div>
                     <div>Telp: ${settings.storePhone}</div>
                 </div>
@@ -2622,6 +3610,7 @@
                     <div><span>Pelanggan:</span> <span>${order.customerName}</span></div>
                     ${member ? `<div><span>Member:</span> <span>${member.name} (${member.id})</span></div>` : ''}
                     <div><span>Tipe:</span> <span>${order.type === 'dinein' ? `Makan di Tempat (Meja ${order.tableNumber})` : 'Bungkus'}</span></div>
+                    <div><span>Metode:</span> <span>${order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'transfer' ? 'Transfer Bank' : 'E-Wallet'}</span></div>
                 </div>
                 <div id="receiptItemsContainer">
                     ${order.items.map(item => `<div class="receipt-item"><div class="receipt-item-details"><div class="item-name">${item.menu.name}</div><div class="item-price-calc">${item.quantity} x ${formatCurrency(item.menu.price)}</div></div><span>${formatCurrency(item.menu.price * item.quantity)}</span></div>`).join('')}
@@ -2631,8 +3620,8 @@
                     <div class="receipt-item"><span>Subtotal</span> <span>${formatCurrency(order.subtotal)}</span></div>
                     ${order.discount > 0 ? `<div class="receipt-item"><span>Diskon</span> <span>-${formatCurrency(order.discount)}</span></div>` : ''}
                     <div class="receipt-item" style="font-weight:bold; font-size: 14px;"><span>TOTAL</span> <span>${formatCurrency(order.total)}</span></div>
-                    <div class="receipt-item"><span>${{ cash: 'Tunai', transfer: 'Transfer', ewallet: 'E-Wallet' }[order.paymentMethod]}</span> <span>${formatCurrency(order.paymentAmount)}</span></div>
-                    <div class="receipt-item"><span>Kembali</span> <span>${formatCurrency(order.change)}</span></div>
+                    <div class="receipt-item"><span>${order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'transfer' ? 'Transfer' : 'E-Wallet'}</span> <span>${formatCurrency(order.paymentAmount)}</span></div>
+                    ${order.paymentMethod === 'cash' ? `<div class="receipt-item"><span>Kembali</span> <span>${formatCurrency(order.change)}</span></div>` : ''}
                 </div>
                 <div class="receipt-footer">
                     <p>Terima kasih telah berkunjung</p>
@@ -2645,6 +3634,7 @@
                 </div>
             </div>`;
         }
+        
         function showReceiptModal(order) {
             showToast('Membuat struk...', 'info');
             $('#receiptModalBody').html(generateReceiptHTML(order));
@@ -2654,6 +3644,7 @@
             $('#downloadReceiptPdfBtn').data('order', order);
             $('#receiptModal').css('display', 'flex');
         }
+        
         function downloadReceiptAsPdf() {
             const order = $('#downloadReceiptPdfBtn').data('order');
             if (!order) return;
@@ -2665,21 +3656,21 @@
                 pdf.save(`Struk-${order.id}-${moment(order.date).format('DD-MM-YYYY')}.pdf`);
             }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF download error:", err); });
         }
+        
         function openKtaModal(memberId) {
             const member = members.find(m => m.id === memberId); if (!member) return;
-            // [REVISI] KTA menampilkan Nama UMKM
             $('#ktaStoreName').text(settings.umkmName);
             $('#ktaStoreContact').text(`${settings.storeAddress} • ${settings.storePhone}`);
             $('#ktaMemberName').text(member.name); $('#ktaMemberId').text(`ID: ${member.id}`);
             showToast('Membuat kartu...', 'info');
             const qrContainer = document.getElementById("ktaQrcodeImg");
             $(qrContainer).empty();
-            // [REVISI] QR Code KTA berisi Nama UMKM
             const qrCodeData = JSON.stringify({ memberId: member.id, name: member.name, phone: member.phone, store: settings.umkmName, joinDate: member.joinDate });
             new QRCode(qrContainer, { text: qrCodeData, width: 160, height: 160, correctLevel : QRCode.CorrectLevel.H });
             $('#downloadKtaPdfBtn').data('member', member);
             $('#ktaModal').css('display', 'flex');
         }
+        
         function downloadKtaAsPdf() {
             const member = $('#downloadKtaPdfBtn').data('member'); if (!member) return;
             const element = document.getElementById('ktaCard');
@@ -2690,10 +3681,12 @@
                 pdf.save(`KTA-${member.name.replace(/\s/g, '_')}-${member.id}.pdf`);
             }).catch(err => { showToast('Gagal mengunduh PDF KTA', 'error'); console.error("KTA PDF error:", err); });
         }
+        
         function printElement(selector) {
             const printContainer = $('#print-container').empty().append($(selector).clone());
             setTimeout(() => { try { window.print(); } catch (e) { showToast('Gagal membuka dialog cetak.', 'error'); console.error("Print error:", e); } }, 300);
         }
+        
         function loadKitchenOrders() {
             const kitchenOrders = orders.filter(o => o.type === 'dinein' && o.status !== 'completed'), $kitchenOrders = $('#kitchenOrders').empty();
             if (kitchenOrders.length === 0) $kitchenOrders.html('<div class="empty-state"><i class="fas fa-check-circle"></i><p>Tidak ada pesanan aktif</p></div>');
@@ -2705,6 +3698,7 @@
                 });
             }
         }
+        
         function loadTransactionHistory(searchTerm = '') {
             const $list = $('#historyResults').empty(), lowerSearchTerm = searchTerm.toLowerCase();
             const filteredOrders = orders.filter(o => !searchTerm || o.id.toLowerCase().includes(lowerSearchTerm));
@@ -2713,6 +3707,7 @@
                 $list.append(`<div class="order-item"><div class="order-item-info"><div class="order-item-name">${order.id}</div><div class="order-item-price">${moment(order.date).format('DD MMM YYYY, HH:mm')} | ${order.customerName} | ${formatCurrency(order.total)}</div></div><div class="order-item-qty"><button class="btn btn-sm btn-info reprint-receipt" data-id="${order.id}"><i class="fas fa-print"></i> Cetak Ulang</button></div></div>`);
             });
         }
+        
         function downloadHistoryAsPdf() {
             const element = document.getElementById('historyResults');
             showToast('Mengunduh PDF Histori...', 'info');
@@ -2727,6 +3722,7 @@
                 showToast('PDF berhasil diunduh.', 'success');
             }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF history download error:", err); });
         }
+        
         function generateReport() {
             let startDate, endDate;
             const period = $('#reportPeriod').val();
@@ -2740,6 +3736,7 @@
             const filteredOrders = orders.filter(o => moment(o.date).isBetween(startDate, endDate));
             generateSalesReportHTML(filteredOrders, startDate, endDate);
         }
+        
         function generateSalesReportHTML(filteredOrders, startDate, endDate) {
             const $resultsContainer = $('#reportResults');
             if (filteredOrders.length === 0) { $resultsContainer.html('<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Tidak ada data penjualan</p></div>'); $('#printReportBtn, #downloadReportBtn').hide(); return; }
@@ -2751,9 +3748,11 @@
             $resultsContainer.html(`<div class="panel"><h4>Ringkasan Penjualan (${startDate.format('DD/MM/YY')} - ${endDate.format('DD/MM/YY')})</h4><div class="summary-row"><span>Total Transaksi:</span> <span>${filteredOrders.length}</span></div><div class="summary-row"><span>Total Pendapatan (Laba):</span> <span>${formatCurrency(totalRevenue)}</span></div><div class="summary-row"><span>Total Item Terjual:</span> <span>${totalItemsSold}</span></div></div><div class="panel mt-3"><h4>Menu Terlaris</h4>${topMenus.map(menu => `<div class="summary-row"><span>${menu.name}:</span> <span>${menu.quantity} terjual (${formatCurrency(menu.total)})</span></div>`).join('') || '<p>Tidak ada data.</p>'}</div>`);
             $('#printReportBtn, #downloadReportBtn').show();
         }
+        
         function printReport() {
             printElement('#reportResults');
         }
+        
         function downloadReportAsPdf() {
             const element = document.querySelector('#reportResults');
             showToast('Mengunduh Laporan PDF...', 'info');
@@ -2766,13 +3765,13 @@
                 pdf.save(`Laporan_Penjualan_${moment().format('YYYY-MM-DD')}.pdf`);
             }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF report download error:", err); });
         }
+        
         function updateStoreInfo() { 
-            // [REVISI] Header dan Judul halaman menggunakan Nama UMKM
             $('#storeNameHeader').text(settings.umkmName || 'CAFE & RESTO'); 
             document.title = settings.umkmName || 'CAFE & RESTO'; 
         }
+        
         function loadStoreInfo() { 
-            // [REVISI] Memuat Nama Developer (readonly) dan Nama UMKM (editable)
             $('#storeName').val(settings.storeName || ''); 
             $('#umkmName').val(settings.umkmName || '');
             $('#storeAddress').val(settings.storeAddress || ''); 
@@ -2780,9 +3779,9 @@
             $('#storeEmail').val(settings.storeEmail || ''); 
             $('#tableCount').val(settings.tableCount || 5); 
         }
+        
         function saveStoreInfo(e) {
             e.preventDefault();
-            // [REVISI] Nama Developer (storeName) tidak disimpan, hanya Nama UMKM
             settings.umkmName = $('#umkmName').val().trim();
             settings.storeAddress = $('#storeAddress').val().trim();
             settings.storePhone = $('#storePhone').val().trim();
@@ -2792,21 +3791,28 @@
             $('#manageStoreInfoModal').hide();
             showToast('Info restoran berhasil disimpan', 'success');
         }
+        
         function updateTableNumbers() {
             const $select = $('#tableNumber').empty(), count = settings.tableCount || 5;
             for (let i = 1; i <= count; i++) $select.append(`<option value="${i}">Meja ${i}</option>`);
         }
-        function formatCurrency(amount) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount); }
+        
+        function formatCurrency(amount) { 
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount); 
+        }
+        
         function showToast(message, type = 'info') {
             const $toast = $('#toast').removeClass('success error warning').addClass(type);
             $('#toast-message').text(message);
             $toast.addClass('show');
             setTimeout(() => $toast.removeClass('show'), 3000);
         }
+        
         function setButtonLoading($button, isLoading, originalText = 'Loading...') {
             if (isLoading) $button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
             else $button.prop('disabled', false).html(originalText);
         }
+        
         function showConfirmation(title, message, callback, btnClass = 'btn-success') {
             $('#confirmTitle').text(title);
             $('#confirmMessage').html(message);
@@ -2815,13 +3821,34 @@
             $confirmBtn.removeClass('btn-success btn-danger btn-info').addClass(btnClass);
             $('#confirmationModal').css('display', 'flex');
         }
-        function updateCurrentDate() { $('#currentDate').text(moment().format('dddd, DD MMMM YYYY')); }
-        function saveMenus() { localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(menus)); }
-        function saveCategories() { localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories)); }
-        function saveOrders() { localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders)); }
-        function saveSettings() { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); }
-        function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); }
-        function saveMembers() { localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(members)); }
+        
+        function updateCurrentDate() { 
+            $('#currentDate').text(moment().format('dddd, DD MMMM YYYY')); 
+        }
+        
+        function saveMenus() { 
+            localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(menus)); 
+        }
+        
+        function saveCategories() { 
+            localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories)); 
+        }
+        
+        function saveOrders() { 
+            localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders)); 
+        }
+        
+        function saveSettings() { 
+            localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); 
+        }
+        
+        function saveUsers() { 
+            localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); 
+        }
+        
+        function saveMembers() { 
+            localStorage.setItem(STORAGE_KEYS.MEMBERS, JSON.stringify(members)); 
+        }
     </script>
 </body>
 </html>
