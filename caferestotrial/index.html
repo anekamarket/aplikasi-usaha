@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PERBAIKAN VIEWPORT: Tambahkan properti untuk zoom dan responsif -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>CAFE & RESTO - Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -37,7 +38,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Styling scrollbar agar lebih minimalis dan konsisten */
+        /* PERBAIKAN: Styling scrollbar agar lebih minimalis dan konsisten */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -57,7 +58,17 @@
             background-color: #f0f2f5;
             color: #212529;
             line-height: 1.5;
-            touch-action: manipulation;
+            /* PERBAIKAN: Ubah touch-action untuk mendukung zoom */
+            touch-action: pan-x pan-y;
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        /* PERBAIKAN: Tambahkan untuk responsif gambar */
+        img {
+            max-width: 100%;
+            height: auto;
         }
 
         .container {
@@ -65,6 +76,10 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 12px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Header Styles */
@@ -81,12 +96,16 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
         }
         
         .header-title-container {
             display: flex;
             align-items: center;
             gap: 15px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-width: 0;
         }
 
         .header-logo {
@@ -101,16 +120,23 @@
             justify-content: center;
             font-size: 1.8rem;
             color: var(--primary);
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
         }
 
         .app-title {
             font-size: 1.4rem;
             font-weight: 600;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .header-info {
             text-align: right;
             font-size: 0.9rem;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
         }
 
         .header-info p {
@@ -122,6 +148,8 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex: 1;
         }
 
         /* Panel Styles */
@@ -130,6 +158,9 @@
             border-radius: var(--rounded);
             padding: 16px;
             box-shadow: var(--shadow-sm);
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-height: 0;
+            overflow: hidden;
         }
 
         .panel-title {
@@ -140,6 +171,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         /* Menu Grid */
@@ -148,6 +182,8 @@
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 12px;
             margin-bottom: 16px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            grid-auto-rows: min-content;
         }
 
         .menu-card {
@@ -163,6 +199,9 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-height: 180px;
+            height: 100%;
         }
 
         .menu-card:hover {
@@ -181,12 +220,16 @@
             justify-content: center;
             margin-bottom: 8px;
             overflow: hidden;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
         }
 
         .menu-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            max-width: 100%;
         }
 
         .menu-image i {
@@ -201,12 +244,16 @@
             overflow: hidden;
             text-overflow: ellipsis;
             width: 100%;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .menu-price {
             color: var(--primary);
             font-weight: 600;
             margin-bottom: 4px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .menu-category {
@@ -216,6 +263,11 @@
             padding: 2px 6px;
             border-radius: 10px;
             margin-top: 4px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
 
         /* Search and Filter */
@@ -238,6 +290,8 @@
             border: 1px solid #ddd;
             border-radius: var(--rounded-sm);
             font-size: 1rem;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 3vw, 1rem);
         }
 
         .filter-row {
@@ -246,6 +300,8 @@
             margin-bottom: 16px;
             overflow-x: auto;
             padding-bottom: 4px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            -webkit-overflow-scrolling: touch;
         }
 
         .filter-chip {
@@ -255,6 +311,8 @@
             font-size: 0.9rem;
             white-space: nowrap;
             cursor: pointer;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
         }
 
         .filter-chip.active {
@@ -269,14 +327,21 @@
             align-items: center;
             padding: 12px 0;
             border-bottom: 1px solid #eee;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .order-item-info {
             flex: 1;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-width: 0;
         }
 
         .order-item-name {
             font-weight: 500;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            word-break: break-word;
         }
 
         .order-item-price {
@@ -296,6 +361,8 @@
         .order-item-qty {
             display: flex;
             align-items: center;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
         }
 
         .qty-btn {
@@ -317,6 +384,8 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             padding: 6px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .remove-btn {
@@ -361,6 +430,9 @@
             text-align: center;
             transition: all 0.2s;
             width: 100%;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            white-space: nowrap;
         }
         
         .btn:disabled {
@@ -454,6 +526,8 @@
             border-bottom: 1px solid #ddd;
             margin-bottom: 16px;
             overflow-x: auto;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            -webkit-overflow-scrolling: touch;
         }
 
         .tab {
@@ -463,6 +537,8 @@
             white-space: nowrap;
             text-align: center;
             flex: 1;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            min-width: max-content;
         }
 
         .tab.active {
@@ -492,6 +568,9 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            /* PERBAIKAN: Tambahkan untuk responsif dan zoom */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .modal-content {
@@ -503,6 +582,8 @@
             overflow-y: auto;
             box-shadow: var(--shadow);
             animation: fadeIn 0.3s;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            margin: auto;
         }
 
         .modal-header {
@@ -511,11 +592,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
         }
 
         .modal-title {
             font-size: 1.2rem;
             font-weight: 600;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            word-break: break-word;
         }
 
         .modal-close {
@@ -524,10 +609,14 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--gray);
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
         }
 
         .modal-body {
             padding: 16px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            overflow-y: auto;
         }
 
         .modal-footer {
@@ -536,6 +625,8 @@
             display: flex;
             justify-content: flex-end;
             gap: 8px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-wrap: wrap;
         }
 
         /* Form Styles */
@@ -561,6 +652,8 @@
             border: 1px solid #ddd;
             border-radius: var(--rounded-sm);
             font-size: 1rem;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            font-size: clamp(0.9rem, 3vw, 1rem);
         }
 
         textarea.form-control {
@@ -629,6 +722,9 @@
             align-items: center;
             transform: translateX(200%);
             transition: transform 0.3s;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            max-width: 90%;
+            word-break: break-word;
         }
 
         .toast.show {
@@ -685,12 +781,17 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 16px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            display: block;
+            overflow-x: auto;
         }
 
         .data-table th, .data-table td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #eee;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            white-space: nowrap;
         }
 
         .data-table th {
@@ -709,6 +810,8 @@
             right: 8px;
             display: none;
             gap: 4px;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            z-index: 10;
         }
 
         .menu-card:hover .menu-actions {
@@ -922,10 +1025,12 @@
             
             .menu-panel {
                 flex: 2;
+                min-width: 0;
             }
             
             .order-panel {
                 flex: 1;
+                min-width: 0;
             }
         }
 
@@ -948,6 +1053,47 @@
             .btn {
                 padding: 10px 16px;
                 font-size: 0.9rem;
+            }
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            }
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* PERBAIKAN: Penyesuaian untuk tablet */
+        @media (max-width: 768px) {
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .header-info {
+                text-align: left;
+                width: 100%;
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+        }
+
+        /* PERBAIKAN: Penyesuaian untuk landscape mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .app-header {
+                position: relative;
+                top: auto;
+            }
+            
+            .app-content {
+                flex-direction: column;
+            }
+            
+            .menu-panel, .order-panel {
+                max-height: 50vh;
+                overflow-y: auto;
             }
         }
 
@@ -981,6 +1127,8 @@
             padding: 10px;
             color: var(--gray);
             font-size: 0.8rem;
+            /* PERBAIKAN: Tambahkan untuk responsif */
+            flex-shrink: 0;
         }
 
         /* KODE CETAK STRUK & HISTORI */
@@ -1387,6 +1535,67 @@
                 gap: 20px;
             }
         }
+
+        /* PERBAIKAN: Tambahan untuk mendukung zoom dan responsif */
+        html {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            overflow-x: hidden;
+        }
+
+        /* PERBAIKAN: Untuk mencegah overflow horizontal */
+        .container, .app-content, .panel, .modal-content {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* PERBAIKAN: Untuk input number di iOS */
+        input[type="number"] {
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* PERBAIKAN: Untuk touch-friendly elements */
+        button, .btn, .filter-chip, .tab, .menu-card {
+            -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+            tap-highlight-color: rgba(0,0,0,0.1);
+        }
+
+        /* PERBAIKAN: Untuk font scaling */
+        @media (max-width: 320px) {
+            .login-title {
+                font-size: 1.5rem;
+            }
+            
+            .login-logo {
+                font-size: 2.5rem;
+            }
+            
+            .pdf-header h1 {
+                font-size: 24px;
+            }
+            
+            .pdf-header h2 {
+                font-size: 18px;
+            }
+        }
+
+        /* PERBAIKAN: Untuk tinggi viewport mobile */
+        @media (max-height: 600px) {
+            .login-container {
+                padding: 20px;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1633,6 +1842,7 @@
     </div>
 
     <!-- Modal untuk Preview Daftar Menu PDF -->
+    <!-- PERBAIKAN: Hapus tombol cetak, pertahankan tombol download -->
     <div id="menuPdfModal" class="modal">
         <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
@@ -1649,9 +1859,7 @@
                 <button class="btn btn-success" id="downloadMenuPdfBtn">
                     <i class="fas fa-file-pdf"></i> Download PDF
                 </button>
-                <button class="btn btn-primary" id="printMenuPdfBtn">
-                    <i class="fas fa-print"></i> Cetak Daftar Menu
-                </button>
+                <!-- PERBAIKAN: Hapus tombol cetak -->
             </div>
         </div>
     </div>
@@ -2850,9 +3058,10 @@
                 downloadMenuPdf();
             });
             
-            $('#printMenuPdfBtn').click(function() {
-                printMenuPdf();
-            });
+            // PERBAIKAN: Hapus event handler untuk tombol cetak
+            // $('#printMenuPdfBtn').click(function() {
+            //     printMenuPdf();
+            // });
             
             $('#saveMenuBtn').click(function() {
                 const id = $('#menuId').val(), name = $('#menuName').val().trim(), category = $('#menuCategory').val(), price = parseFloat($('#menuPrice').val()) || 0, image = $('#menuImage').val().trim(), description = $('#menuDescription').val().trim();
@@ -3317,87 +3526,87 @@
             });
         }
         
-        // FUNGSI PERBAIKAN: Print Menu PDF
-        function printMenuPdf() {
-            const printContainer = document.getElementById('print-container');
-            const menuPdfContainer = document.getElementById('menuPdfContainer');
-            
-            if (!menuPdfContainer) {
-                showToast('Tidak ada konten untuk dicetak', 'error');
-                return;
-            }
-            
-            // Clone the content
-            const contentToPrint = menuPdfContainer.cloneNode(true);
-            printContainer.innerHTML = '';
-            printContainer.appendChild(contentToPrint);
-            
-            // Tunggu gambar di-load sebelum print
-            const images = contentToPrint.getElementsByTagName('img');
-            let loadedImages = 0;
-            const totalImages = images.length;
-            
-            function startPrint() {
-                // Tambahkan style untuk print
-                const style = document.createElement('style');
-                style.innerHTML = `
-                    @media print {
-                        body { margin: 0; padding: 0; }
-                        #print-container { width: 100%; margin: 0; padding: 0; }
-                        .pdf-menu-grid { grid-template-columns: repeat(2, 1fr) !important; }
-                        .pdf-qr-footer { flex-wrap: nowrap !important; }
-                        .pdf-qr-code canvas, .pdf-qr-code img { 
-                            display: block !important; 
-                            visibility: visible !important; 
-                            opacity: 1 !important; 
-                        }
-                    }
-                `;
-                printContainer.appendChild(style);
-                
-                // Show print dialog
-                setTimeout(() => {
-                    window.print();
-                }, 300);
-                
-                showToast('Mempersiapkan cetakan...', 'info');
-            }
-            
-            if (totalImages === 0) {
-                startPrint();
-                return;
-            }
-            
-            // Tunggu semua gambar dimuat
-            Array.from(images).forEach(img => {
-                if (img.complete) {
-                    loadedImages++;
-                } else {
-                    img.onload = () => {
-                        loadedImages++;
-                        if (loadedImages === totalImages) {
-                            startPrint();
-                        }
-                    };
-                    img.onerror = () => {
-                        loadedImages++;
-                        if (loadedImages === totalImages) {
-                            startPrint();
-                        }
-                    };
-                }
-            });
-            
-            // Jika semua gambar sudah dimuat
-            if (loadedImages === totalImages) {
-                startPrint();
-            } else {
-                // Timeout untuk kasus gambar gagal dimuat
-                setTimeout(() => {
-                    startPrint();
-                }, 1500);
-            }
-        }
+        // PERBAIKAN: Hapus fungsi printMenuPdf karena tombol cetak sudah dihapus
+        // function printMenuPdf() {
+        //     const printContainer = document.getElementById('print-container');
+        //     const menuPdfContainer = document.getElementById('menuPdfContainer');
+        //     
+        //     if (!menuPdfContainer) {
+        //         showToast('Tidak ada konten untuk dicetak', 'error');
+        //         return;
+        //     }
+        //     
+        //     // Clone the content
+        //     const contentToPrint = menuPdfContainer.cloneNode(true);
+        //     printContainer.innerHTML = '';
+        //     printContainer.appendChild(contentToPrint);
+        //     
+        //     // Tunggu gambar di-load sebelum print
+        //     const images = contentToPrint.getElementsByTagName('img');
+        //     let loadedImages = 0;
+        //     const totalImages = images.length;
+        //     
+        //     function startPrint() {
+        //         // Tambahkan style untuk print
+        //         const style = document.createElement('style');
+        //         style.innerHTML = `
+        //             @media print {
+        //                 body { margin: 0; padding: 0; }
+        //                 #print-container { width: 100%; margin: 0; padding: 0; }
+        //                 .pdf-menu-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        //                 .pdf-qr-footer { flex-wrap: nowrap !important; }
+        //                 .pdf-qr-code canvas, .pdf-qr-code img { 
+        //                     display: block !important; 
+        //                     visibility: visible !important; 
+        //                     opacity: 1 !important; 
+        //                 }
+        //             }
+        //         `;
+        //         printContainer.appendChild(style);
+        //         
+        //         // Show print dialog
+        //         setTimeout(() => {
+        //             window.print();
+        //         }, 300);
+        //         
+        //         showToast('Mempersiapkan cetakan...', 'info');
+        //     }
+        //     
+        //     if (totalImages === 0) {
+        //         startPrint();
+        //         return;
+        //     }
+        //     
+        //     // Tunggu semua gambar dimuat
+        //     Array.from(images).forEach(img => {
+        //         if (img.complete) {
+        //             loadedImages++;
+        //         } else {
+        //             img.onload = () => {
+        //                 loadedImages++;
+        //                 if (loadedImages === totalImages) {
+        //                     startPrint();
+        //                 }
+        //             };
+        //             img.onerror = () => {
+        //                 loadedImages++;
+        //                 if (loadedImages === totalImages) {
+        //                     startPrint();
+        //                 }
+        //             };
+        //         }
+        //     });
+        //     
+        //     // Jika semua gambar sudah dimuat
+        //     if (loadedImages === totalImages) {
+        //         startPrint();
+        //     } else {
+        //         // Timeout untuk kasus gambar gagal dimuat
+        //         setTimeout(() => {
+        //             startPrint();
+        //         }, 1500);
+        //     }
+        // }
         
         function promptForPassword(type, callback) {
             const title = type === 'item' ? 'Password Edit/Hapus' : 'Password Kontrol Panel';
