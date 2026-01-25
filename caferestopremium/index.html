@@ -1933,7 +1933,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script>
         // Set locale to Indonesian
         moment.locale('id');
@@ -2196,7 +2196,11 @@
                 const menu = menus.find(m => m.id === $(this).data('id'));
                 if (menu) {
                     const existingItem = currentOrder.items.find(item => item.menu.id === menu.id);
-                    if (existingItem) existingItem.quantity++; else currentOrder.items.push({ menu: menu, quantity: 1, status: 'pending' });
+                    if (existingItem) {
+                        existingItem.quantity++; 
+                    } else {
+                        currentOrder.items.push({ menu: menu, quantity: 1, status: 'pending' });
+                    }
                     updateOrder();
                     showToast(`${menu.name} ditambahkan`, 'success');
                 }
@@ -2284,16 +2288,30 @@
 
             $(document).on('click', function(e) { if (!$(e.target).closest('.member-search-container').length) $('#memberSearchResults').hide(); });
             
+            // PROSES ORDER FIX: Perbaikan event handler untuk tombol proses pesanan
             $('#processOrderBtn').click(function() {
-                if (currentOrder.items.length === 0) { showToast('Pesanan kosong', 'warning'); return; }
+                if (currentOrder.items.length === 0) { 
+                    showToast('Pesanan kosong', 'warning'); 
+                    return; 
+                }
                 
                 const member = members.find(m => m.id === currentOrder.memberId);
                 $('#customerName').val(member ? member.name : '');
-                updateOrderSummary(); updatePaymentTab(); switchPaymentModalTab('payment');
+                updateOrderSummary(); 
+                updatePaymentTab(); 
+                switchPaymentModalTab('payment');
+                
+                // Reset payment method ke tunai setiap kali modal dibuka
+                $('#paymentMethod').val('cash').trigger('change');
+                $('#paymentAmount').val('').trigger('input');
+                
                 $('#processOrderModal').css('display', 'flex');
             });
             
-            $('.modal-body .tabs .tab').click(function() { switchPaymentModalTab($(this).data('tab')); });
+            // Fix: Tambahkan event handler untuk tabs di modal pembayaran
+            $('#processOrderModal .tabs .tab').click(function() { 
+                switchPaymentModalTab($(this).data('tab')); 
+            });
             
             // Handle payment method change
             $('#paymentMethod').change(function() {
@@ -2308,6 +2326,7 @@
                 $('#paymentAmount').val($(this).data('amount')).trigger('input'); 
             });
             
+            // FIX: Perbaikan fungsi completePaymentBtn untuk menangani semua metode pembayaran
             $('#completePaymentBtn').click(function() {
                 if ($(this).prop('disabled')) return;
                 
@@ -2357,6 +2376,9 @@
                         resetOrder();
                         $('#processOrderModal').hide();
                         showToast('Pesanan berhasil diproses', 'success');
+                    } catch(error) {
+                        console.error("Error processing order:", error);
+                        showToast('Terjadi kesalahan saat memproses pesanan', 'error');
                     } finally {
                         setButtonLoading($btn, false, originalText);
                     }
@@ -2639,6 +2661,9 @@
             $('#reportPeriod').change(() => $('#customDateRange').toggle($('#reportPeriod').val() === 'custom'));
             $('#printReceiptBtn').on('click', () => printElement('#receiptModalBody #receiptContent'));
             $('#downloadReceiptPdfBtn').on('click', downloadReceiptAsPdf);
+            
+            // FIX: Inisialisasi button status berdasarkan isi pesanan
+            updateOrder();
         });
 
         function initializeApp() { 
@@ -3035,9 +3060,12 @@
             $('#orderCount').text(`(${currentOrder.items.length} item)`);
             $('#discountRow').toggle(currentOrder.discount > 0).find('span:first-child').text(discountText);
             $('#orderDiscount').text(`-${formatCurrency(currentOrder.discount)}`);
-            if (currentOrder.items.length === 0) $orderItems.html('<div class="empty-state"><i class="fas fa-shopping-basket"></i><p>Pesanan kosong</p></div>');
-            else {
+            if (currentOrder.items.length === 0) {
+                $orderItems.html('<div class="empty-state"><i class="fas fa-shopping-basket"></i><p>Pesanan kosong</p></div>');
+                $('#processOrderBtn').prop('disabled', true);
+            } else {
                 currentOrder.items.forEach(item => { $orderItems.append(`<div class="order-item"><div class="order-item-info"><div class="order-item-name">${item.menu.name}</div><div class="order-item-price">${formatCurrency(item.menu.price)} x ${item.quantity}</div></div><div class="order-item-qty"><input type="number" value="${item.quantity}" min="1" class="item-qty qty-input" data-id="${item.menu.id}"><i class="fas fa-trash remove-item" data-id="${item.menu.id}" style="cursor:pointer; color: var(--danger); margin-left: 8px;"></i></div></div>`); });
+                $('#processOrderBtn').prop('disabled', false);
             }
             $('#orderSubtotal').text(formatCurrency(currentOrder.subtotal));
             $('#orderTotal').text(formatCurrency(currentOrder.total));
@@ -3074,16 +3102,19 @@
                 $('#qrisContainer').hide();
                 $('#paymentAmount').prop('disabled', false).val('').trigger('input');
                 generateQuickCashButtons(currentOrder.total);
+                $('#completePaymentBtn').prop('disabled', true);
             } else if (isQris) {
                 $('#cashPaymentContainer').hide();
                 $('#qrisContainer').show();
                 $('#paymentAmount').val(currentOrder.total).prop('disabled', true);
                 $('#changeContainer').hide();
+                $('#completePaymentBtn').prop('disabled', false);
             } else {
                 $('#cashPaymentContainer').show();
                 $('#qrisContainer').hide();
                 $('#quickCashButtons').hide();
                 $('#paymentAmount').prop('disabled', false).val('').trigger('input');
+                $('#completePaymentBtn').prop('disabled', true);
             }
             
             // Hitung kembalian untuk metode yang memerlukan
@@ -3118,18 +3149,35 @@
             });
         }
         
+        // FIX: Perbaikan fungsi calculateChange untuk mengaktifkan/menonaktifkan tombol pembayaran
         function calculateChange() { 
             const method = $('#paymentMethod').val();
             if (method === 'qris') {
                 // Untuk QRIS, tidak perlu menghitung kembalian
                 $('#changeContainer').hide();
+                // Untuk QRIS, tombol selalu aktif
+                $('#completePaymentBtn').prop('disabled', false);
                 return;
             }
             
+            // Untuk metode tunai, transfer, dan e-wallet
             const amount = parseFloat($('#paymentAmount').val()) || 0; 
             const change = amount - currentOrder.total; 
-            $('#changeContainer').toggle(change >= 0); 
-            $('#paymentChange').text(formatCurrency(change)); 
+            
+            // Tampilkan/sembunyikan container kembalian
+            if (change >= 0) {
+                $('#changeContainer').show();
+                $('#paymentChange').text(formatCurrency(change));
+            } else {
+                $('#changeContainer').hide();
+            }
+            
+            // Aktifkan/nonaktifkan tombol pembayaran
+            if (amount >= currentOrder.total) {
+                $('#completePaymentBtn').prop('disabled', false);
+            } else {
+                $('#completePaymentBtn').prop('disabled', true);
+            }
         }
         
         function switchPaymentModalTab(tabName) { 
