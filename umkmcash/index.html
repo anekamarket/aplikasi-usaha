@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <!-- PERBAIKAN VIEWPORT: Tambahkan properti untuk zoom dan responsif -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>UMKM CASH - Aplikasi Kasir Digital Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-       
     <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
     <!-- Welcome Toast Modal -->
@@ -1176,7 +1176,7 @@
         const DEFAULT_TRIAL_USER = {
             id: 'U-PREMIUM-001',
             username: 'admin',
-            password: CryptoJS.SHA256('Situbondo-Naik-Kelas').toString(),
+            password: CryptoJS.SHA256('admin123').toString(),
             name: 'Administrator Premium',
             role: 'admin',
             permissions: {
@@ -1278,26 +1278,6 @@
         let countdownInterval = null;
         let currentShift = null;
         
-        // PERBAIKAN: Fungsi untuk mendeteksi perangkat mobile
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                   window.innerWidth <= 768;
-        }
-        
-        // PERBAIKAN: Fungsi untuk menyesuaikan tampilan berdasarkan perangkat
-        function adjustLayoutForMobile() {
-            if (isMobileDevice()) {
-                // Tambahkan class mobile ke body
-                document.body.classList.add('mobile-device');
-                
-                // Sesuaikan ukuran font untuk mobile
-                document.documentElement.style.fontSize = '14px';
-                
-                // Optimasi touch events
-                $('body').addClass('touch-device');
-            }
-        }
-        
         function initializeData() {
             let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
             
@@ -1364,16 +1344,6 @@
         
         $(document).ready(function() {
             initializeData();
-            
-            // PERBAIKAN: Sesuaikan layout untuk mobile
-            adjustLayoutForMobile();
-            
-            // PERBAIKAN: Handle resize untuk responsivitas
-            $(window).on('resize', function() {
-                adjustLayoutForMobile();
-                // Update admin grid layout
-                updateAdminGridLayout();
-            });
             
             menus = JSON.parse(localStorage.getItem(STORAGE_KEYS.MENUS)) || [];
             categories = JSON.parse(localStorage.getItem(STORAGE_KEYS.CATEGORIES)) || [];
@@ -2323,27 +2293,7 @@
             $('.welcome-toast-close').click(function() {
                 hideWelcomeToast();
             });
-            
-            // PERBAIKAN: Inisialisasi admin grid layout
-            updateAdminGridLayout();
         });
-
-        // PERBAIKAN: Fungsi untuk update layout admin grid berdasarkan ukuran layar
-        function updateAdminGridLayout() {
-            const width = window.innerWidth;
-            const $adminGrid = $('.admin-grid');
-            
-            if (width <= 480) {
-                // Mobile sangat kecil: 2 kolom
-                $adminGrid.css('grid-template-columns', 'repeat(2, 1fr)');
-            } else if (width <= 768) {
-                // Tablet kecil: 3 kolom
-                $adminGrid.css('grid-template-columns', 'repeat(3, 1fr)');
-            } else {
-                // Desktop: kembali ke auto-fill
-                $adminGrid.css('grid-template-columns', 'repeat(auto-fill, minmax(150px, 1fr))');
-            }
-        }
 
         // Fungsi untuk menampilkan modal input uang kas awal
         function showCashStartModal() {
@@ -2396,7 +2346,10 @@
                 hideWelcomeToast();
             }, 15000);
             
-                   
+            // Tampilkan pesan toast biasa juga
+            showToast(`Selamat datang ${currentUser.name}! di UMKM CASH - Aplikasi Kasir Terbaik untuk UMKM Anda. Mari wujudkan usaha mandiri yang tangguh dan berdaya saing!`, 'success');
+        }
+        
         // Fungsi untuk menyembunyikan welcome toast
         function hideWelcomeToast() {
             const $welcomeToast = $('#welcomeToast');
@@ -2441,9 +2394,6 @@
                                   checkPermission('shift_management') || checkPermission('profit_calculation');
             
             $('#adminPanel').toggle(showAdminPanel);
-            
-            // PERBAIKAN: Update admin grid layout
-            updateAdminGridLayout();
         }
         
         // PERBAIKAN: Fungsi untuk update tampilan tombol shift
