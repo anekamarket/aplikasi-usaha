@@ -106,6 +106,87 @@
             font-size: 16px;
             font-weight: 500;
         }
+
+        /* PERBAIKAN TAMBAHAN: Responsif untuk Admin Panel di Mobile */
+        @media (max-width: 768px) {
+            .admin-panel .admin-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8px !important;
+            }
+            
+            .admin-panel .btn-sm {
+                font-size: 12px !important;
+                padding: 8px 5px !important;
+                min-height: 40px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                white-space: normal !important;
+                word-wrap: break-word !important;
+                line-height: 1.2 !important;
+            }
+            
+            .admin-panel .backup-actions {
+                flex-direction: column !important;
+                gap: 8px !important;
+            }
+            
+            .admin-panel .backup-btn,
+            .admin-panel .file-label {
+                width: 100% !important;
+                margin-bottom: 5px !important;
+            }
+            
+            /* Perbaikan untuk tombol shift dan laba */
+            .admin-panel .btn-shift,
+            .admin-panel .btn-profit {
+                font-size: 11px !important;
+                padding: 6px 3px !important;
+            }
+            
+            /* Perbaikan untuk tombol generate PDF */
+            #generateMenuPdfBtn {
+                font-size: 11px !important;
+                padding: 6px 3px !important;
+            }
+        }
+        
+        /* PERBAIKAN TAMBAHAN: Responsif untuk Quick Cash Buttons */
+        @media (max-width: 480px) {
+            #quickCashButtons {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8px !important;
+            }
+            
+            #quickCashButtons .quick-cash-btn {
+                width: 100% !important;
+                font-size: 12px !important;
+                padding: 8px 5px !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+            
+            /* Perbaikan tambahan untuk admin panel di layar sangat kecil */
+            .admin-panel .admin-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* PERBAIKAN: Responsif untuk tombol-tombol kecil di admin panel */
+        @media (max-width: 1024px) {
+            .admin-panel .admin-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 10px !important;
+            }
+            
+            .admin-panel .btn-sm {
+                font-size: 13px !important;
+                padding: 9px 6px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -4336,7 +4417,7 @@
             const $quickCash = $('#quickCashButtons').empty();
             let buttons = [];
             
-            // Logika tombol cerdas sesuai permintaan
+            // PERBAIKAN: Logika tombol cerdas yang responsif untuk mobile
             if (total <= 12000) {
                 buttons = [15000, 20000, 50000, 100000];
             } else if (total <= 15000) {
