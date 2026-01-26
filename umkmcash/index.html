@@ -320,6 +320,60 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 10px;
         }
+        
+        /* PERBAIKAN BARU: Styling untuk indicator loading aksi */
+        .action-loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        .action-loading-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* PERBAIKAN BARU: Toast loading */
+        .toast.loading {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+        
+        .toast.loading .toast-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        /* PERBAIKAN BARU: Loading overlay untuk aksi spesifik */
+        .action-loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            border-radius: var(--rounded);
+        }
+        
+        .action-loading-overlay.active {
+            display: flex;
+        }
     </style>
 </head>
 <body>
@@ -1713,15 +1767,21 @@
         let kitchenRefreshInterval = null;
         let kitchenLastRefreshTime = null;
         
-        // FUNGSI BARU: Tampilkan loading overlay
-        function showLoading(message = 'Memproses...') {
-            $('#loadingMessage').text(message);
-            $('#globalLoading').css('display', 'flex');
+        // FUNGSI BARU: Tampilkan loading overlay dengan tipe khusus
+        function showLoading(message = 'Memproses...', type = 'global') {
+            if (type === 'global') {
+                $('#loadingMessage').text(message);
+                $('#globalLoading').css('display', 'flex');
+            } else if (type === 'toast') {
+                showToast(message, 'loading');
+            }
         }
         
         // FUNGSI BARU: Sembunyikan loading overlay
-        function hideLoading() {
-            $('#globalLoading').hide();
+        function hideLoading(type = 'global') {
+            if (type === 'global') {
+                $('#globalLoading').hide();
+            }
         }
         
         // FUNGSI BARU: Tampilkan modal loading
@@ -1733,6 +1793,26 @@
         // FUNGSI BARU: Sembunyikan modal loading
         function hideModalLoading() {
             $('#modalLoading').hide();
+        }
+        
+        // FUNGSI BARU: Toast loading khusus
+        function showLoadingToast(message, duration = 3000) {
+            const $toast = $('#toast').removeClass('success error warning info').addClass('loading');
+            $('#toast-message').html(`<div class="toast-spinner"></div> ${message}`);
+            $toast.addClass('show');
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    $toast.removeClass('show');
+                }, duration);
+            }
+            
+            return $toast;
+        }
+        
+        // FUNGSI BARU: Hide loading toast
+        function hideLoadingToast() {
+            $('#toast').removeClass('show loading');
         }
         
         // FUNGSI BARU: Toggle password visibility
@@ -2576,13 +2656,18 @@
             // FITUR BARU: Event handler untuk tombol Info Pesanan Dapur dengan tabs
             $('#kitchenDisplayBtn').click(() => { 
                 if (checkPermission('kitchen_display')) { 
+                    // Tampilkan loading toast
+                    const loadingToast = showLoadingToast('Memuat pesanan dapur...', 0);
+                    
                     loadKitchenOrders(); 
                     // PERBAIKAN: Hapus interval sebelumnya jika ada untuk menghindari duplikasi
                     if (kitchenRefreshInterval) {
                         clearInterval(kitchenRefreshInterval);
                     }
                     // PERBAIKAN: Set interval yang lebih stabil
-                    kitchenRefreshInterval = setInterval(loadKitchenOrders, 30000);
+                    kitchenRefreshInterval = setInterval(() => {
+                        loadKitchenOrders();
+                    }, 30000);
                     kitchenLastRefreshTime = new Date();
                     
                     // Reset tab ke pesanan aktif
@@ -2598,6 +2683,11 @@
                     $('#kitchenHistoryActions').hide();
                     
                     $('#kitchenDisplayModal').css('display', 'flex'); 
+                    
+                    // Sembunyikan loading toast setelah 1.5 detik
+                    setTimeout(() => {
+                        hideLoadingToast();
+                    }, 1500);
                 } else {
                     showToast('Anda tidak memiliki izin untuk melihat info pesanan dapur', 'error');
                 }
@@ -2827,7 +2917,21 @@
                 });
             });
             
-            $('#refreshKitchenBtn').click(loadKitchenOrders);
+            $('#refreshKitchenBtn').click(function() {
+                // Tampilkan loading
+                const $btn = $(this);
+                const originalText = $btn.html();
+                $btn.html('<i class="fas fa-spinner fa-spin"></i> Memuat...').prop('disabled', true);
+                
+                loadKitchenOrders();
+                
+                // Reset tombol setelah 1.5 detik
+                setTimeout(() => {
+                    $btn.html(originalText).prop('disabled', false);
+                    showToast('Pesanan dapur diperbarui', 'success');
+                }, 1500);
+            });
+            
             $('#saveStoreInfoBtn').click(saveStoreInfo);
             $('#controlPanelModal .tabs .tab').click(function() { switchControlPanelTab($(this).data('tab')); });
             $('#showAddUserFormBtn').click(() => { resetUserForm(); $('#userFormContainer').slideDown(); });
@@ -2917,12 +3021,22 @@
                 $('#kitchenHistoryCustomRange').toggle($(this).val() === 'custom');
             });
             
-            // FITUR BARU: Event handler untuk load history dapur
+            // FITUR BARU: Event handler untuk load history dapur - PERBAIKAN
             $('#loadKitchenHistoryBtn').click(function() {
+                // Tampilkan loading
+                const $btn = $(this);
+                const originalText = $btn.html();
+                $btn.html('<i class="fas fa-spinner fa-spin"></i> Memuat...').prop('disabled', true);
+                
                 loadKitchenHistory();
+                
+                // Reset tombol setelah proses selesai
+                setTimeout(() => {
+                    $btn.html(originalText).prop('disabled', false);
+                }, 1000);
             });
             
-            // FITUR BARU: Event handler untuk delete history dapur
+            // FITUR BARU: Event handler untuk delete history dapur - PERBAIKAN
             $('#deleteKitchenHistoryBtn').click(function() {
                 deleteKitchenHistory();
             });
@@ -2935,6 +3049,11 @@
                 if (!order) return;
                 
                 showConfirmation('Tandai Selesai', `Apakah Anda yakin ingin menandai pesanan ${orderId} sebagai selesai?`, () => {
+                    // Tampilkan loading
+                    const $btn = $(this);
+                    const originalText = $btn.html();
+                    $btn.html('<i class="fas fa-spinner fa-spin"></i> Memproses...').prop('disabled', true);
+                    
                     // Tandai sebagai selesai (archive)
                     order.kitchenArchived = true;
                     saveOrders();
@@ -2945,7 +3064,11 @@
                     // Update notifikasi
                     updateKitchenNotification();
                     
-                    showToast(`Pesanan ${orderId} telah ditandai selesai dari dapur`, 'success');
+                    // Reset tombol
+                    setTimeout(() => {
+                        $btn.html(originalText).prop('disabled', false);
+                        showToast(`Pesanan ${orderId} telah ditandai selesai dari dapur`, 'success');
+                    }, 1000);
                 });
             });
             
@@ -3096,7 +3219,7 @@
             }
         }
         
-        // FITUR BARU: Fungsi untuk load history pesanan dapur
+        // PERBAIKAN UTAMA: Fungsi loadKitchenHistory yang diperbaiki
         function loadKitchenHistory() {
             const period = $('#kitchenHistoryPeriod').val();
             let startDate, endDate;
@@ -3133,11 +3256,12 @@
                 return;
             }
             
-            // Filter pesanan dine-in yang sudah di-archive dalam periode tertentu
+            // PERBAIKAN: Filter pesanan dine-in yang sudah di-archive (kitchenArchived = true) 
+            // atau sudah completed (status = 'completed') dalam periode tertentu
             const filteredOrders = orders.filter(order => {
                 const orderDate = moment(order.date);
                 return order.type === 'dinein' && 
-                       order.kitchenArchived === true &&
+                       (order.kitchenArchived === true || order.status === 'completed') &&
                        orderDate.isBetween(startDate, endDate, null, '[]');
             });
             
@@ -3182,8 +3306,8 @@
                 
                 dateOrders.forEach(order => {
                     const timeFormatted = moment(order.date).format('HH:mm');
-                    const statusClass = order.status === 'ready' ? 'completed' : 'cancelled';
-                    const statusText = order.status === 'ready' ? 'Selesai' : 'Dibatalkan';
+                    const statusClass = order.status === 'completed' || order.kitchenArchived ? 'completed' : 'cancelled';
+                    const statusText = order.status === 'completed' || order.kitchenArchived ? 'Selesai' : 'Dibatalkan';
                     
                     historyHTML += `
                         <div class="kitchen-history-item ${statusClass}">
@@ -3232,9 +3356,10 @@
                         orders.forEach(order => {
                             const orderDate = moment(order.date);
                             if (order.type === 'dinein' && 
-                                order.kitchenArchived === true &&
+                                (order.kitchenArchived === true || order.status === 'completed') &&
                                 orderDate.isBetween(filter.startDate, filter.endDate, null, '[]')) {
                                 order.kitchenArchived = false;
+                                if (order.status === 'completed') order.status = 'ready';
                                 deletedCount++;
                             }
                         });
@@ -3249,57 +3374,57 @@
             });
         }
         
-        // PERBAIKAN UTAMA: Fungsi loadKitchenOrders yang diperbaiki
+        // PERBAIKAN UTAMA: Fungsi loadKitchenOrders yang diperbaiki dengan loading indicator
         function loadKitchenOrders() {
             const $kitchenOrders = $('#kitchenOrders');
             
-            // PERBAIKAN: Tampilkan loading indicator jika belum ada data
-            if (orders.length === 0) {
-                $kitchenOrders.html('<div class="kitchen-loading"><div class="kitchen-loading-spinner"></div><p>Memuat pesanan...</p></div>');
-                return;
-            }
+            // PERBAIKAN: Tampilkan loading indicator
+            $kitchenOrders.html('<div class="kitchen-loading"><div class="kitchen-loading-spinner"></div><p>Memuat pesanan dapur...</p></div>');
             
-            const kitchenOrders = orders.filter(o => o.type === 'dinein' && o.status !== 'completed' && !o.kitchenArchived);
-            
-            $kitchenOrders.empty();
-            
-            if (kitchenOrders.length === 0) {
-                $kitchenOrders.html('<div class="empty-state"><i class="fas fa-check-circle"></i><p>Tidak ada pesanan aktif</p></div>');
-            } else {
-                kitchenOrders.forEach(order => {
-                    const statusClass = order.status === 'ready' ? (order.statusLocked ? 'status-locked' : 'status-ready') : 'status-preparing';
-                    const itemsSummary = order.items.slice(0, 2).map(item => `${item.menu.name} (${item.quantity}x)`).join(', ') + (order.items.length > 2 ? ` + ${order.items.length - 2} lainnya` : '');
-                    
-                    // PERBAIKAN: Tombol "Tandai Selesai" hanya muncul jika status sudah 'ready'
-                    let actionButton = '';
-                    if (order.status === 'ready') {
-                        actionButton = `<button class="btn btn-sm btn-success mark-kitchen-done" data-id="${order.id}" style="font-size: 0.7rem; padding: 3px 8px;"><i class="fas fa-check"></i> Tandai Selesai</button>`;
-                    }
-                    
-                    $kitchenOrders.append(`
-                        <div class="status-item ${statusClass}" data-id="${order.id}">
-                            <div>
-                                <strong>${order.id} (Meja ${order.tableNumber})</strong>
-                                <div style="font-size:0.8rem;">${itemsSummary}</div>
-                                <div style="font-size:0.8rem; color: #666; margin-top: 3px;">
-                                    <i class="fas fa-user"></i> ${order.customerName || 'Tidak ada nama'} | 
-                                    <i class="fas fa-clock"></i> ${moment(order.date).format('HH:mm')}
+            setTimeout(() => {
+                const kitchenOrders = orders.filter(o => o.type === 'dinein' && o.status !== 'completed' && !o.kitchenArchived);
+                
+                $kitchenOrders.empty();
+                
+                if (kitchenOrders.length === 0) {
+                    $kitchenOrders.html('<div class="empty-state"><i class="fas fa-check-circle"></i><p>Tidak ada pesanan aktif</p><small>Semua pesanan telah diproses</small></div>');
+                } else {
+                    kitchenOrders.forEach(order => {
+                        const statusClass = order.status === 'ready' ? (order.statusLocked ? 'status-locked' : 'status-ready') : 'status-preparing';
+                        const itemsSummary = order.items.slice(0, 2).map(item => `${item.menu.name} (${item.quantity}x)`).join(', ') + (order.items.length > 2 ? ` + ${order.items.length - 2} lainnya` : '');
+                        
+                        // PERBAIKAN: Tombol "Tandai Selesai" hanya muncul jika status sudah 'ready'
+                        let actionButton = '';
+                        if (order.status === 'ready') {
+                            actionButton = `<button class="btn btn-sm btn-success mark-kitchen-done" data-id="${order.id}" style="font-size: 0.7rem; padding: 3px 8px;"><i class="fas fa-check"></i> Tandai Selesai</button>`;
+                        }
+                        
+                        $kitchenOrders.append(`
+                            <div class="status-item ${statusClass}" data-id="${order.id}">
+                                <div>
+                                    <strong>${order.id} (Meja ${order.tableNumber})</strong>
+                                    <div style="font-size:0.8rem;">${itemsSummary}</div>
+                                    <div style="font-size:0.8rem; color: #666; margin-top: 3px;">
+                                        <i class="fas fa-user"></i> ${order.customerName || 'Tidak ada nama'} | 
+                                        <i class="fas fa-clock"></i> ${moment(order.date).format('HH:mm')}
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
+                                    <div style="font-weight:600;">${order.status === 'ready' ? 'Siap' : 'Proses'}</div>
+                                    ${actionButton}
                                 </div>
                             </div>
-                            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
-                                <div style="font-weight:600;">${order.status === 'ready' ? 'Siap' : 'Proses'}</div>
-                                ${actionButton}
-                            </div>
-                        </div>
-                    `);
-                });
-            }
-            
-            // PERBAIKAN: Update waktu refresh terakhir
-            kitchenLastRefreshTime = new Date();
-            
-            // FITUR BARU: Update notifikasi setelah load
-            updateKitchenNotification();
+                        `);
+                    });
+                }
+                
+                // PERBAIKAN: Update waktu refresh terakhir
+                kitchenLastRefreshTime = new Date();
+                
+                // FITUR BARU: Update notifikasi setelah load
+                updateKitchenNotification();
+                
+            }, 500); // Simulasi loading
         }
         
         function promptForProfitAccess(callback) {
@@ -5201,10 +5326,20 @@
         }
         
         function showToast(message, type = 'info') {
-            const $toast = $('#toast').removeClass('success error warning').addClass(type);
-            $('#toast-message').text(message);
+            const $toast = $('#toast').removeClass('success error warning loading').addClass(type);
+            
+            if (type === 'loading') {
+                $('#toast-message').html(`<div class="toast-spinner"></div> ${message}`);
+            } else {
+                $('#toast-message').html(`<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i> ${message}`);
+            }
+            
             $toast.addClass('show');
-            setTimeout(() => $toast.removeClass('show'), 3000);
+            
+            // Auto hide setelah 3 detik, kecuali untuk loading
+            if (type !== 'loading') {
+                setTimeout(() => $toast.removeClass('show'), 3000);
+            }
         }
         
         function setButtonLoading($button, isLoading, originalText = 'Loading...') {
