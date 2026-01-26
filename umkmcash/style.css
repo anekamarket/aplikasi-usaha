@@ -2209,1300 +2209,422 @@
         .btn-profit:hover {
             background: linear-gradient(90deg, #e0a800, #d39e00);
         }
-
-// ----------------------------------------TAMBAHAN DESAIN BARU------------------------------------------ //
-
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            flex-direction: column;
-            color: white;
+       
+        {
+            --mobile-breakpoint: 768px;
+            --small-mobile: 480px;
         }
         
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Password toggle icon */
-        .password-toggle-container {
-            position: relative;
-        }
-        
-        .password-toggle-icon {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #666;
-            z-index: 10;
-        }
-        
-        .password-toggle-icon:hover {
-            color: var(--primary);
-        }
-        
-              
+        /* Reset dasar untuk mobile */
         * {
-            margin: 0;
-            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Perbaikan untuk zoom pada mobile */
+        html {
+            font-size: 16px;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
         
         body {
-            background: #f5f7fa;
-            color: #333;
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+        
+        /* Perbaikan container utama untuk mobile */
+        .container {
+            width: 100%;
+            max-width: 100%;
             overflow-x: hidden;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
+        /* Perbaikan app header untuk mobile */
         .app-header {
-            background: linear-gradient(135deg, var(--primary), #2a4bdb);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow);
+            flex-wrap: wrap;
+            padding: 10px;
         }
         
         .header-title-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            flex: 1;
+            min-width: 200px;
         }
         
-        .header-logo {
-            font-size: 2.5rem;
+        .header-info {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.85rem;
+            justify-content: flex-start;
+            margin-top: 10px;
+            width: 100%;
         }
         
-        .app-title {
-            font-size: 1.5rem;
-            font-weight: 700;
+        .header-info p {
+            margin: 5px 10px 5px 0;
         }
         
-        .premium-badge {
-            background: gold;
-            color: #000;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            margin-left: 5px;
-        }
-        
+        /* Perbaikan app content untuk mobile */
         .app-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            padding: 20px;
-        }
-        
-        @media (max-width: 992px) {
-            .app-content {
-                grid-template-columns: 1fr;
-            }
+            flex-direction: column;
+            padding: 10px;
+            gap: 15px;
         }
         
         .panel {
-            background: white;
-            border-radius: var(--rounded);
-            box-shadow: var(--shadow);
-            padding: 20px;
-        }
-        
-        .panel-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .menu-card {
-            background: white;
-            border-radius: var(--rounded);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-        }
-        
-        .menu-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .menu-image {
             width: 100%;
-            height: 100px;
-            background: #f5f5f5;
-            border-radius: var(--rounded-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-        
-        .menu-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .menu-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .menu-price {
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-        
-        .menu-category {
-            font-size: 0.8rem;
-            color: var(--gray);
-            margin-top: 5px;
-        }
-        
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--rounded);
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-        
-        .btn:hover {
-            background: #3a5bff;
-        }
-        
-        .btn-success {
-            background: var(--success);
-        }
-        
-        .btn-success:hover {
-            background: #218838;
-        }
-        
-        .btn-warning {
-            background: var(--warning);
-            color: #000;
-        }
-        
-        .btn-warning:hover {
-            background: #e0a800;
-        }
-        
-        .btn-danger {
-            background: var(--danger);
-        }
-        
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        
-        .btn-info {
-            background: var(--info);
-        }
-        
-        .btn-info:hover {
-            background: #138496;
-        }
-        
-        .form-group {
             margin-bottom: 15px;
         }
         
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: var(--rounded-sm);
-            font-size: 1rem;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(74, 107, 255, 0.2);
-        }
-        
-        .search-container {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        
-        .search-container i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 10px 15px 10px 40px;
-            border: 1px solid #ddd;
-            border-radius: var(--rounded-sm);
-        }
-        
-        .filter-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-        
-        .filter-chip {
-            padding: 5px 15px;
-            background: #f0f2f5;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        
-        .filter-chip.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .order-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .order-item-info {
-            flex: 1;
-        }
-        
-        .order-item-name {
-            font-weight: 600;
-        }
-        
-        .order-item-price {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-        
-        .order-item-qty {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .qty-input {
-            width: 60px;
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: var(--rounded-sm);
-            text-align: center;
-        }
-        
-        .summary-container {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 2px solid #eee;
-        }
-        
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .total-row {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
-        
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: var(--rounded);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .modal-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-        
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray);
-        }
-        
-        .modal-body {
-            padding: 20px;
-        }
-        
-        .modal-footer {
-            padding: 15px 20px;
-            border-top: 1px solid #eee;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        
-        .login-container {
-            background: white;
-            border-radius: var(--rounded);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            padding: 30px;
-            max-width: 400px;
-            width: 90%;
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .login-logo {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .login-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            padding: 15px 20px;
-            border-radius: var(--rounded);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1001;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: transform 0.3s, opacity 0.3s;
-        }
-        
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .toast.success {
-            border-left: 4px solid var(--success);
-        }
-        
-        .toast.error {
-            border-left: 4px solid var(--danger);
-        }
-        
-        .toast.warning {
-            border-left: 4px solid var(--warning);
-        }
-        
-        .toast.info {
-            border-left: 4px solid var(--info);
-        }
-        
+        /* PERBAIKAN UTAMA: Admin panel untuk mobile */
         .admin-panel {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
+            position: relative;
+            width: 100%;
+            overflow: visible;
+            padding: 15px;
+            margin-top: 20px;
+            background: var(--light);
+            border-radius: var(--rounded);
+            border: 1px solid var(--gray-light);
         }
         
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 10px;
-            margin-bottom: 15px;
+            width: 100%;
+            overflow: visible;
+        }
+        
+        .admin-grid .btn {
+            width: 100%;
+            padding: 10px 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Menu grid untuk mobile */
+        .menu-grid {
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        
+        .menu-card {
+            min-height: 160px;
+        }
+        
+        /* Order panel untuk mobile */
+        .order-panel {
+            min-height: auto;
+        }
+        
+        /* Modal responsif */
+        .modal-content {
+            width: 95%;
+            max-width: 95%;
+            margin: 10px auto;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        /* Footer untuk mobile */
+        .app-footer {
+            flex-direction: column;
+            text-align: center;
+            padding: 15px 10px;
+            font-size: 0.85rem;
+        }
+        
+        /* Perbaikan tombol untuk touch */
+        .btn, button, input, select, textarea {
+            font-size: 16px; /* Mencegah zoom iOS */
+        }
+        
+        .btn {
+            padding: 12px 16px;
+            min-height: 44px; /* Ukuran touch minimum */
         }
         
         .btn-sm {
+            min-height: 36px;
             padding: 8px 12px;
-            font-size: 0.9rem;
         }
         
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--gray);
+        /* Perbaikan input untuk mobile */
+        .form-control, .search-input, input, select, textarea {
+            font-size: 16px;
+            min-height: 44px;
+            padding: 10px 12px;
         }
         
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #ddd;
-        }
-        
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 15px;
-        }
-        
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-        }
-        
-        .tab.active {
-            border-bottom-color: var(--primary);
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .welcome-toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            padding: 20px;
-            border-radius: var(--rounded);
-            max-width: 400px;
-            z-index: 1002;
-            transform: translateX(100%);
-            transition: transform 0.5s;
-        }
-        
-        .welcome-toast.show {
-            transform: translateX(0);
-        }
-        
-        .welcome-icon {
-            font-size: 2rem;
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        .welcome-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .welcome-message {
-            text-align: center;
-            margin-bottom: 15px;
-            color: var(--gray);
-        }
-        
-        .welcome-submessage {
-            font-size: 0.9rem;
-            color: var(--warning);
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-        
-        .welcome-toast-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray);
-        }
-        
-        .shift-status-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .shift-open {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .shift-closed {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .cash-management-container {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: var(--rounded);
-            margin-bottom: 15px;
-        }
-        
-        .cash-summary-card {
-            background: white;
-            padding: 15px;
-            border-radius: var(--rounded);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
-        }
-        
-        .profit-calculation-container {
-            background: white;
-            padding: 15px;
-            border-radius: var(--rounded);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .profit-input-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
+        /* Media query untuk mobile kecil */
         @media (max-width: 768px) {
-            .profit-input-group {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .profit-result-card {
-            background: linear-gradient(135deg, var(--primary), #2a4bdb);
-            color: white;
-            padding: 15px;
-            border-radius: var(--rounded);
-            text-align: center;
-            margin: 15px 0;
-        }
-        
-        .profit-breakdown {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .breakdown-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: var(--rounded-sm);
-        }
-        
-        .breakdown-item label {
-            font-weight: 500;
-        }
-        
-        .professional-pdf {
-            background: white;
-            padding: 20px;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .pdf-report-header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
-        }
-        
-        .pdf-report-header h1 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .pdf-report-header h2 {
-            font-size: 1.2rem;
-            color: var(--dark);
-            margin-bottom: 15px;
-        }
-        
-        .pdf-report-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .pdf-report-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .pdf-summary-card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: var(--rounded);
-            text-align: center;
-        }
-        
-        .pdf-summary-card h3 {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-bottom: 5px;
-        }
-        
-        .pdf-summary-card p {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .pdf-table-container {
-            margin-bottom: 20px;
-        }
-        
-        .pdf-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        
-        .pdf-table th {
-            background: #f8f9fa;
-            padding: 10px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #ddd;
-        }
-        
-        .pdf-table td {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .pdf-footer-signature {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-        }
-        
-        .pdf-signature-box {
-            text-align: center;
-        }
-        
-        .pdf-signature-line {
-            height: 1px;
-            background: #000;
-            margin: 20px 0;
-        }
-        
-        .pdf-footer {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-            font-size: 0.9rem;
-            color: var(--gray);
-        }
-        
-        .fishery-support {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            color: var(--info);
-            font-size: 0.9rem;
-            margin-top: 10px;
-        }
-        
-        .app-footer {
-            text-align: center;
-            padding: 15px;
-            background: var(--dark);
-            color: white;
-            margin-top: 20px;
-        }
-        
-        .quick-cash-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-        
-        .btn-outline-primary {
-            background: white;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .btn-outline-primary:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .receipt-header {
-            text-align: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed #000;
-        }
-        
-        .receipt-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .receipt-info {
-            margin-bottom: 15px;
-        }
-        
-        .receipt-info div {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 3px;
-            font-size: 0.9rem;
-        }
-        
-        .receipt-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            padding-bottom: 5px;
-            border-bottom: 1px dashed #ddd;
-        }
-        
-        .receipt-total {
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 2px solid #000;
-        }
-        
-        .receipt-footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: #666;
-        }
-        
-        .kta-card {
-            background: white;
-            border-radius: var(--rounded);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .kta-header {
-            background: linear-gradient(135deg, var(--primary), #2a4bdb);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .kta-body {
-            padding: 30px 20px;
-            text-align: center;
-        }
-        
-        .kta-body h2 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-        
-        .kta-qrcode {
-            margin: 20px auto;
-            width: 160px;
-            height: 160px;
-        }
-        
-        .kta-footer {
-            padding: 15px;
-            text-align: center;
-            background: #f8f9fa;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-        
-        .pdf-a4-wrapper {
-            background: white;
-            padding: 20px;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .pdf-header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
-        }
-        
-        .pdf-header h1 {
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .pdf-header h2 {
-            font-size: 1.4rem;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-        
-        .pdf-subtitle {
-            margin-bottom: 5px;
-            color: var(--gray);
-        }
-        
-        .pdf-support-info {
-            background: #e7f3ff;
-            padding: 10px;
-            border-radius: var(--rounded);
-            margin-top: 10px;
-            color: var(--info);
-            font-size: 0.9rem;
-        }
-        
-        .pdf-qr-section {
-            text-align: center;
-            margin: 20px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: var(--rounded);
-        }
-        
-        .pdf-category-section {
-            margin: 30px 0;
-        }
-        
-        .pdf-category-title {
-            background: var(--primary);
-            color: white;
-            padding: 10px 15px;
-            border-radius: var(--rounded);
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .pdf-menu-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .pdf-menu-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        .pdf-menu-item {
-            background: white;
-            border: 1px solid #eee;
-            border-radius: var(--rounded);
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .pdf-menu-image-container {
-            height: 150px;
-            overflow: hidden;
-        }
-        
-        .pdf-menu-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .pdf-menu-info {
-            padding: 10px;
-        }
-        
-        .pdf-menu-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-            font-size: 1rem;
-        }
-        
-        .pdf-menu-price {
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-        
-        .pdf-menu-description {
-            font-size: 0.8rem;
-            color: var(--gray);
-            margin-bottom: 5px;
-            line-height: 1.3;
-        }
-        
-        .pdf-menu-category {
-            display: inline-block;
-            background: #f0f2f5;
-            color: var(--gray);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-        }
-        
-        .pdf-footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-        }
-        
-        .pdf-qr-footer {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        .pdf-qr-item {
-            text-align: center;
-        }
-        
-        .pdf-qr-label {
-            font-size: 0.8rem;
-            color: var(--gray);
-            margin-top: 5px;
-        }
-        
-        .pdf-page-break {
-            page-break-before: always;
-            margin-top: 40px;
-        }
-        
-        .member-search-container {
-            position: relative;
-        }
-        
-        .member-search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: var(--rounded-sm);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            z-index: 100;
-            display: none;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        .member-search-item {
-            padding: 10px;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .member-search-item:hover {
-            background: #f8f9fa;
-        }
-        
-        .member-search-item.disabled {
-            color: var(--gray);
-            cursor: default;
-        }
-        
-        .member-search-item.disabled:hover {
-            background: white;
-        }
-        
-        .whatsapp-link {
-            color: var(--success);
-            text-decoration: none;
-        }
-        
-        .whatsapp-link:hover {
-            text-decoration: underline;
-        }
-        
-        .member-badge {
-            display: inline-block;
-            background: #e7f3ff;
-            color: var(--primary);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            margin-left: 5px;
-        }
-        
-        .permissions-container {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-        }
-        
-        .permission-group {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .permission-group h5 {
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-        
-        .permission-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #f8f9fa;
-        }
-        
-        .permission-name {
-            font-weight: 500;
-        }
-        
-        .permission-description {
-            font-size: 0.8rem;
-            color: var(--gray);
-        }
-        
-        .form-check {
-            position: relative;
-        }
-        
-        .form-check input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-        
-        .form-check label {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-        
-        .gap-2 {
-            gap: 10px;
-        }
-        
-        .d-flex {
-            display: flex;
-        }
-        
-        .align-center {
-            align-items: center;
-        }
-        
-        .mt-2 {
-            margin-top: 10px;
-        }
-        
-        .mt-3 {
-            margin-top: 15px;
-        }
-        
-        .mb-3 {
-            margin-bottom: 15px;
-        }
-        
-        .ml-2 {
-            margin-left: 10px;
-        }
-        
-        .mr-2 {
-            margin-right: 10px;
-        }
-        
-        .p-2 {
-            padding: 10px;
-        }
-        
-        .text-muted {
-            color: var(--gray);
-        }
-        
-        .text-center {
-            text-align: center;
-        }
-        
-        .no-print {
-            display: block;
-        }
-        
-        @media print {
-            .no-print {
-                display: none !important;
-            }
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .app-header {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
+            .app-title {
+                font-size: 1.5rem;
             }
             
-            .header-info {
+            .app-subtitle {
+                font-size: 0.85rem;
+            }
+            
+            .panel-title {
+                font-size: 1.2rem;
+            }
+            
+            .admin-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 8px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .order-type-btn {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .summary-container {
+                font-size: 0.95rem;
+            }
+            
+            /* Tab untuk mobile */
+            .tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 5px;
+            }
+            
+            .tab {
+                display: inline-block;
+                white-space: nowrap;
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            /* Modal tabs */
+            .modal-content .tabs {
                 display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 10px;
-            }
-            
-            .header-info p {
-                margin: 0 5px;
-            }
-            
-            .modal-content {
-                width: 95%;
-            }
-            
-            .pdf-menu-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .pdf-qr-footer {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .pdf-footer-signature {
-                grid-template-columns: 1fr;
-                gap: 20px;
+                flex-wrap: nowrap;
             }
         }
         
         @media (max-width: 480px) {
-            .app-content {
-                padding: 10px;
-            }
-            
-            .panel {
-                padding: 15px;
-            }
-            
-            .menu-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-                gap: 10px;
-            }
-            
             .admin-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
             
-            .modal-content {
-                width: 98%;
-                margin: 0 10px;
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
             
-            .pdf-menu-grid {
-                grid-template-columns: 1fr;
+            .header-logo {
+                font-size: 2rem;
+            }
+            
+            .app-title {
+                font-size: 1.3rem;
+            }
+            
+            .menu-card {
+                min-height: 140px;
+            }
+            
+            .menu-name {
+                font-size: 0.9rem;
+            }
+            
+            .menu-price {
+                font-size: 0.95rem;
+            }
+            
+            /* Tombol shift dan laba */
+            .btn-shift, .btn-profit {
+                font-size: 0.8rem;
+                padding: 8px 6px;
+            }
+            
+            /* Backup actions */
+            .backup-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .file-label {
+                width: 100%;
+                text-align: center;
             }
         }
-  
+        
+        /* Perbaikan untuk iOS Safari */
+        @supports (-webkit-touch-callout: none) {
+            .modal-content {
+                max-height: 85vh;
+            }
+            
+            .btn, .form-control {
+                cursor: pointer;
+            }
+        }
+        
+        /* Scrollbar yang lebih baik untuk mobile */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+        
+        /* Perbaikan untuk landscape mode */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .modal-content {
+                max-height: 80vh;
+            }
+            
+            .app-content {
+                flex-direction: row;
+            }
+            
+            .menu-panel {
+                flex: 1;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+            
+            .order-panel {
+                flex: 1;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+        }
+        
+        /* Touch-friendly improvements */
+        .menu-card, .order-item, .tab, .filter-chip {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Loading state untuk mobile */
+        .loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        /* Toast untuk mobile */
+        .toast {
+            max-width: 90%;
+            left: 5%;
+            right: 5%;
+            bottom: 20px;
+        }
+        
+        /* Welcome toast untuk mobile */
+        .welcome-toast {
+            width: 95%;
+            left: 2.5%;
+            right: 2.5%;
+        }
+        
+        /* PERBAIKAN: Pastikan admin panel tidak terpotong */
+        .admin-panel .backup-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .backup-btn {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        /* QR Code responsive */
+        .qris-image-placeholder, .pdf-qr-code, #receiptQrcode {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* Print styles untuk mobile */
+        @media print {
+            .no-print, .modal-footer, .modal-close {
+                display: none !important;
+            }
+            
+            .modal-content {
+                box-shadow: none;
+                border: none;
+                max-width: 100%;
+                margin: 0;
+            }
+        }
+        
+        /* High DPI screen optimization */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .btn, .menu-card, .order-item {
+                border-width: 0.5px;
+            }
+        }
+        
+        /* Dark mode support (jika diperlukan) */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --light: #2a2a2a;
+                --gray-light: #444;
+                --dark: #f8f9fa;
+                --body-bg: #121212;
+                --card-bg: #1e1e1e;
+            }
+            
+            body {
+                background-color: var(--body-bg);
+                color: #e0e0e0;
+            }
+            
+            .panel {
+                background-color: var(--card-bg);
+            }
+        }
+        
+        /* Animasi untuk feedback touch */
+        .btn:active, .menu-card:active, .tab:active {
+            transform: scale(0.98);
+            transition: transform 0.1s;
+        }
+        
+        /* Overflow protection */
+        .menu-grid, .admin-grid, .order-items {
+            overflow: hidden;
+        }
+        
+        /* Fix untuk input number di iOS */
+        input[type="number"] {
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+        
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* Pencegahan highlight biru di iOS */
+        input, textarea, select {
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-user-select: text;
+        }
+   
