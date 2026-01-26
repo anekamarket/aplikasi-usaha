@@ -9,8 +9,120 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     
+    <style>
+        /* Styling tambahan untuk fitur baru */
+        .password-input-container {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+            padding: 5px;
+            z-index: 10;
+        }
+        
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            flex-direction: column;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* PERBAIKAN: Tambah styling untuk modal loading */
+        .modal-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            flex-direction: column;
+        }
+        
+        .modal-loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+        }
+        
+        .modal-loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        .modal-loading-text {
+            color: var(--dark);
+            font-size: 16px;
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body>
+    <!-- Loading Overlay Global -->
+    <div id="globalLoading" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingMessage">Memproses...</div>
+    </div>
+    
+    <!-- Modal Loading Khusus -->
+    <div id="modalLoading" class="modal-loading">
+        <div class="modal-loading-content">
+            <div class="modal-loading-spinner"></div>
+            <div class="modal-loading-text" id="modalLoadingMessage">Memproses...</div>
+        </div>
+    </div>
+
     <!-- Welcome Toast Modal -->
     <!-- PERBAIKAN: Tambahkan tombol close dan perbaikan struktur -->
     <div id="welcomeToast" class="welcome-toast">
@@ -229,7 +341,12 @@
                 </div>
                 <div class="form-group">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Masukkan password" autocomplete="current-password" required>
+                    <div class="password-input-container">
+                        <input type="password" id="password" class="form-control" placeholder="Masukkan password" autocomplete="current-password" required>
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="form-group mt-3">
@@ -763,7 +880,12 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Password</label>
-                                <input type="password" id="userPassword" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah">
+                                <div class="password-input-container">
+                                    <input type="password" id="userPassword" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah">
+                                    <button type="button" class="password-toggle user-password-toggle">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Hak Akses (Role)</label>
@@ -786,7 +908,12 @@
                     <form id="itemSecurityForm" class="mt-2">
                         <div class="form-group">
                             <label class="form-label">Password Keamanan Edit/Hapus Item</label>
-                            <input type="password" id="itemSecurityCode" class="form-control" required>
+                            <div class="password-input-container">
+                                <input type="password" id="itemSecurityCode" class="form-control" required>
+                                <button type="button" class="password-toggle security-password-toggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-sm btn-info">Ubah Password</button>
                     </form>
@@ -794,7 +921,12 @@
                     <form id="panelSecurityForm" class="mt-2">
                         <div class="form-group">
                             <label class="form-label">Password Keamanan Kontrol Panel</label>
-                            <input type="password" id="panelSecurityCode" class="form-control" required>
+                            <div class="password-input-container">
+                                <input type="password" id="panelSecurityCode" class="form-control" required>
+                                <button type="button" class="password-toggle security-password-toggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-sm btn-info">Ubah Password</button>
                     </form>
@@ -817,11 +949,21 @@
                     <form id="changeOwnPasswordForm" class="mt-2">
                         <div class="form-group">
                             <label class="form-label">Password Saat Ini</label>
-                            <input type="password" id="currentPassword" class="form-control" required>
+                            <div class="password-input-container">
+                                <input type="password" id="currentPassword" class="form-control" required>
+                                <button type="button" class="password-toggle current-password-toggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                          <div class="form-group">
                             <label class="form-label">Password Baru</label>
-                            <input type="password" id="newPassword" class="form-control" required>
+                            <div class="password-input-container">
+                                <input type="password" id="newPassword" class="form-control" required>
+                                <button type="button" class="password-toggle new-password-toggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-sm btn-success">Simpan Password Baru</button>
                     </form>
@@ -1030,13 +1172,23 @@
                         <h5 class="panel-title">Pengaturan Perhitungan Laba</h5>
                         <div class="form-group">
                             <label class="form-label">Kode Keamanan Akses Laba</label>
-                            <input type="password" id="profitAccessCode" class="form-control" placeholder="Masukkan kode keamanan">
+                            <div class="password-input-container">
+                                <input type="password" id="profitAccessCode" class="form-control" placeholder="Masukkan kode keamanan">
+                                <button type="button" class="password-toggle profit-password-toggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                             <small class="form-text text-muted">Kode ini diperlukan untuk mengakses fitur perhitungan laba</small>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Konfirmasi Kode Keamanan</label>
-                            <input type="password" id="profitAccessCodeConfirm" class="form-control" placeholder="Konfirmasi kode keamanan">
+                            <div class="password-input-container">
+                                <input type="password" id="profitAccessCodeConfirm" class="form-control" placeholder="Konfirmasi kode keamanan">
+                                <button type="button" class="password-toggle profit-confirm-toggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -1065,7 +1217,12 @@
                 <form id="passwordPromptForm">
                     <div class="form-group">
                          <label class="form-label" id="passwordPromptMessage">Untuk melanjutkan, masukkan password.</label>
-                         <input type="password" id="passwordPromptInput" class="form-control" required>
+                         <div class="password-input-container">
+                             <input type="password" id="passwordPromptInput" class="form-control" required>
+                             <button type="button" class="password-toggle prompt-password-toggle">
+                                 <i class="fas fa-eye"></i>
+                             </button>
+                         </div>
                     </div>
                 </form>
             </div>
@@ -1278,6 +1435,43 @@
         let countdownInterval = null;
         let currentShift = null;
         
+        // FUNGSI BARU: Tampilkan loading overlay
+        function showLoading(message = 'Memproses...') {
+            $('#loadingMessage').text(message);
+            $('#globalLoading').css('display', 'flex');
+        }
+        
+        // FUNGSI BARU: Sembunyikan loading overlay
+        function hideLoading() {
+            $('#globalLoading').hide();
+        }
+        
+        // FUNGSI BARU: Tampilkan modal loading
+        function showModalLoading(message = 'Memproses...') {
+            $('#modalLoadingMessage').text(message);
+            $('#modalLoading').css('display', 'flex');
+        }
+        
+        // FUNGSI BARU: Sembunyikan modal loading
+        function hideModalLoading() {
+            $('#modalLoading').hide();
+        }
+        
+        // FUNGSI BARU: Toggle password visibility
+        function togglePasswordVisibility(inputId, toggleBtn) {
+            const input = $(inputId);
+            const type = input.attr('type') === 'password' ? 'text' : 'password';
+            input.attr('type', type);
+            
+            // Ubah ikon
+            const icon = toggleBtn.find('i');
+            if (type === 'text') {
+                icon.removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                icon.removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        }
+        
         function initializeData() {
             let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
             
@@ -1402,12 +1596,59 @@
             
             setInterval(updateCurrentDate, 60000);
             
+            // FUNGSI BARU: Event handler untuk toggle password visibility
+            $('#passwordToggle').click(function() {
+                togglePasswordVisibility('#password', $(this));
+            });
+            
+            // FUNGSI BARU: Event handler untuk toggle password di kontrol panel
+            $(document).on('click', '.user-password-toggle', function() {
+                togglePasswordVisibility('#userPassword', $(this));
+            });
+            
+            $(document).on('click', '.security-password-toggle', function() {
+                const input = $(this).closest('.form-group').find('input[type="password"]');
+                const type = input.attr('type') === 'password' ? 'text' : 'password';
+                input.attr('type', type);
+                
+                // Ubah ikon
+                const icon = $(this).find('i');
+                if (type === 'text') {
+                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+            
+            $(document).on('click', '.current-password-toggle', function() {
+                togglePasswordVisibility('#currentPassword', $(this));
+            });
+            
+            $(document).on('click', '.new-password-toggle', function() {
+                togglePasswordVisibility('#newPassword', $(this));
+            });
+            
+            $(document).on('click', '.profit-password-toggle', function() {
+                togglePasswordVisibility('#profitAccessCode', $(this));
+            });
+            
+            $(document).on('click', '.profit-confirm-toggle', function() {
+                togglePasswordVisibility('#profitAccessCodeConfirm', $(this));
+            });
+            
+            $(document).on('click', '.prompt-password-toggle', function() {
+                togglePasswordVisibility('#passwordPromptInput', $(this));
+            });
+            
             // Login form submission
             $('#loginForm').submit(function(e) {
                 e.preventDefault();
                 const $loginBtn = $(this).find('button[type="submit"]');
                 const originalText = $loginBtn.html();
                 setButtonLoading($loginBtn, true);
+                
+                // Tampilkan loading
+                showModalLoading('Memverifikasi login...');
 
                 setTimeout(() => {
                     try {
@@ -1417,6 +1658,7 @@
                             generateCaptcha();
                             $('#captchaInput').val('');
                             setButtonLoading($loginBtn, false, originalText);
+                            hideModalLoading();
                             return; 
                         }
                         
@@ -1475,8 +1717,9 @@
                         if ($loginBtn.prop('disabled')) {
                            setButtonLoading($loginBtn, false, originalText);
                         }
+                        hideModalLoading();
                     }
-                }, 500);
+                }, 800);
             });
             
             // PERBAIKAN: Event handler untuk tombol skip shift (hanya admin)
@@ -1496,6 +1739,9 @@
                     showToast('Masukkan jumlah uang kas yang valid', 'error');
                     return;
                 }
+                
+                // Tampilkan loading
+                showModalLoading('Membuka shift...');
                 
                 // Buat shift baru
                 currentShift = {
@@ -1526,6 +1772,7 @@
                 $('#mainApp').fadeIn();
                 initializeApp();
                 
+                hideModalLoading();
                 showToast('Shift berhasil dimulai dengan uang kas awal: ' + formatCurrency(initialCash), 'success');
             });
             
@@ -1640,6 +1887,9 @@
                     return;
                 }
                 
+                // Tampilkan loading
+                showModalLoading('Menutup shift...');
+                
                 // Hitung expected cash
                 const initialCash = currentShift.initialCash || 0;
                 const totalSales = currentShift.totalSales || 0;
@@ -1672,6 +1922,8 @@
                 $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
                 $('#closeShiftModal').hide();
                 
+                hideModalLoading();
+                
                 // Tampilkan laporan shift
                 generateShiftReport(currentShift);
                 
@@ -1695,7 +1947,11 @@
             });
             
             $('#calculateProfitBtn').click(function() {
-                calculateProfit();
+                showModalLoading('Menghitung laba...');
+                setTimeout(() => {
+                    calculateProfit();
+                    hideModalLoading();
+                }, 800);
             });
             
             $('#profitPeriod').change(function() {
@@ -1719,7 +1975,10 @@
             });
             
             $('#downloadProfitReportBtn').click(function() {
-                downloadProfitReportAsPdf();
+                showLoading('Menyiapkan laporan laba PDF...');
+                setTimeout(() => {
+                    downloadProfitReportAsPdf();
+                }, 500);
             });
             
             // Pengaturan shift dan laba di kontrol panel
@@ -1932,6 +2191,9 @@
                 
                 const $btn = $(this), originalText = $btn.html();
                 setButtonLoading($btn, true);
+                
+                // Tampilkan loading
+                showModalLoading('Memproses pembayaran...');
 
                 setTimeout(() => {
                     try {
@@ -1968,8 +2230,9 @@
                         showToast('Terjadi kesalahan saat memproses pesanan', 'error');
                     } finally {
                         setButtonLoading($btn, false, originalText);
+                        hideModalLoading();
                     }
-                }, 500);
+                }, 800);
             });
             
             $(document).on('click', '.filter-chip', function() { 
@@ -2091,6 +2354,7 @@
             
             $('#restoreFile').change(function() { 
                 if (checkPermission('backup_restore')) { 
+                    showModalLoading('Memproses restore data...');
                     restoreFromFile(this.files[0]); 
                     $(this).val(''); 
                 } else {
@@ -2120,14 +2384,18 @@
                     return;
                 }
                 
-                showToast('Mempersiapkan daftar menu...', 'info');
+                showModalLoading('Mempersiapkan daftar menu...');
                 setTimeout(() => {
                     generateMenuPdfPreview();
-                }, 500);
+                    hideModalLoading();
+                }, 800);
             });
             
             $('#downloadMenuPdfBtn').click(function() {
-                downloadMenuPdf();
+                showLoading('Menyiapkan PDF untuk diunduh...');
+                setTimeout(() => {
+                    downloadMenuPdf();
+                }, 500);
             });
             
             $('#saveMenuBtn').click(function() {
@@ -2209,15 +2477,29 @@
             
             // PERBAIKAN: Event handler untuk tombol Generate Laporan yang diperbaiki
             $('#generateReportBtn').click(function() {
-                generateReport();
+                showModalLoading('Membuat laporan...');
+                setTimeout(() => {
+                    generateReport();
+                    hideModalLoading();
+                }, 800);
             });
             
             $('#printReportBtn').click(printReport);
-            $('#downloadReportBtn').click(downloadReportAsPdf);
+            $('#downloadReportBtn').click(function() {
+                showLoading('Mengunduh laporan PDF...');
+                setTimeout(() => {
+                    downloadReportAsPdf();
+                }, 500);
+            });
             $('#reportsModal .tabs .tab').click(function() { switchReportsModalTab($(this).data('tab')); });
             $('#historySearchInput').on('input', function() { loadTransactionHistory($(this).val()); });
             $('#printHistoryBtn').click(() => printElement('#historyResultsContainer .printable-area'));
-            $('#downloadHistoryBtn').click(downloadHistoryAsPdf);
+            $('#downloadHistoryBtn').click(function() {
+                showLoading('Mengunduh histori PDF...');
+                setTimeout(() => {
+                    downloadHistoryAsPdf();
+                }, 500);
+            });
             $(document).on('click', '.reprint-receipt', function() { const order = orders.find(o => o.id === $(this).data('id')); if (order) showReceiptModal(order); });
             $(document).on('click', '.status-item', function() {
                 const order = orders.find(o => o.id === $(this).data('id'));
@@ -2284,7 +2566,12 @@
             });
             $('#reportPeriod').change(() => $('#customDateRange').toggle($('#reportPeriod').val() === 'custom'));
             $('#printReceiptBtn').on('click', () => printElement('#receiptModalBody #receiptContent'));
-            $('#downloadReceiptPdfBtn').on('click', downloadReceiptAsPdf);
+            $('#downloadReceiptPdfBtn').on('click', function() {
+                showLoading('Mengunduh struk PDF...');
+                setTimeout(() => {
+                    downloadReceiptAsPdf();
+                }, 500);
+            });
             
             // FIX: Inisialisasi button status berdasarkan isi pesanan
             updateOrder();
@@ -2345,7 +2632,7 @@
             welcomeToastTimeout = setTimeout(() => {
                 hideWelcomeToast();
             }, 15000);
-            
+        }
                     
         // Fungsi untuk menyembunyikan welcome toast
         function hideWelcomeToast() {
@@ -2623,8 +2910,11 @@
             });
             
             tempModal.find('#downloadShiftReportBtn').click(function() {
-                downloadShiftReportAsPdf(shift);
-                tempModal.remove();
+                showLoading('Mengunduh laporan shift PDF...');
+                setTimeout(() => {
+                    downloadShiftReportAsPdf(shift);
+                    tempModal.remove();
+                }, 500);
             });
             
             tempModal.find('#printShiftReportBtn').click(function() {
@@ -3018,8 +3308,6 @@
             const reportData = $('#downloadProfitReportBtn').data('reportData');
             if (!reportData) return;
             
-            showToast('Menyiapkan laporan laba PDF...', 'info');
-            
             // Buat HTML untuk PDF
             const periodText = reportData.period === 'today' ? 'Hari Ini' : 
                              reportData.period === 'week' ? 'Minggu Ini' : 
@@ -3170,10 +3458,12 @@
                     pdf.save(`Laporan_Laba_${settings.umkmName || 'UMKM'}_${moment().format('YYYYMMDD_HHmm')}.pdf`);
                     
                     document.body.removeChild(tempElement);
+                    hideLoading();
                     showToast('Laporan laba berhasil diunduh', 'success');
                 }).catch(err => {
                     console.error('Error generating PDF:', err);
                     document.body.removeChild(tempElement);
+                    hideLoading();
                     showToast('Gagal membuat PDF', 'error');
                 });
             }, 1000);
@@ -3181,8 +3471,6 @@
         
         // Fungsi untuk download laporan shift sebagai PDF
         function downloadShiftReportAsPdf(shift) {
-            showToast('Menyiapkan laporan shift PDF...', 'info');
-            
             // Generate HTML untuk laporan shift (sama seperti di generateShiftReport)
             const shiftDuration = moment.duration(moment(shift.endTime).diff(moment(shift.startTime)));
             const hours = Math.floor(shiftDuration.asHours());
@@ -3212,10 +3500,12 @@
                     pdf.save(`Laporan_Shift_${shift.id}_${moment(shift.endTime).format('YYYYMMDD')}.pdf`);
                     
                     document.body.removeChild(tempElement);
+                    hideLoading();
                     showToast('Laporan shift berhasil diunduh', 'success');
                 }).catch(err => {
                     console.error('Error generating PDF:', err);
                     document.body.removeChild(tempElement);
+                    hideLoading();
                     showToast('Gagal membuat PDF', 'error');
                 });
             }, 1000);
@@ -3512,13 +3802,10 @@
             
             // Tampilkan modal
             $('#menuPdfModal').css('display', 'flex');
-            showToast('Preview daftar menu berhasil dibuat', 'success');
         }
         
         // PERBAIKAN UTAMA: Download Menu PDF dengan layout 4x4
         function downloadMenuPdf() {
-            showToast('Menyiapkan PDF untuk diunduh...', 'info');
-            
             const element = document.getElementById('menuPdfContainer');
             
             // Pastikan QRCode sudah tergenerate
@@ -3623,9 +3910,11 @@
                 // Simpan PDF
                 const fileName = `Daftar_Menu_${settings.umkmName || 'UMKM'}_${moment().format('YYYYMMDD_HHmm')}.pdf`;
                 pdf.save(fileName);
+                hideLoading();
                 showToast(`PDF berhasil diunduh: ${fileName} (${pageCount} halaman)`, 'success');
             }).catch(error => {
                 console.error('Error generating PDF:', error);
+                hideLoading();
                 showToast('Gagal membuat PDF', 'error');
             });
         }
@@ -3819,15 +4108,23 @@
         }
         
         function backupData() {
-            try {
-                const backup = { menus, categories, orders, settings, users, members, shiftData, profitSettings, backupDate: new Date().toISOString() };
-                const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
-                const linkElement = document.createElement('a');
-                linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
-                linkElement.download = `backup_umkm_cash_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
-                linkElement.click();
-                showToast('Backup data terenkripsi berhasil', 'success');
-            } catch (err) { showToast('Gagal membuat backup terenkripsi', 'error'); console.error("Backup encryption error:", err); }
+            showLoading('Membackup data...');
+            setTimeout(() => {
+                try {
+                    const backup = { menus, categories, orders, settings, users, members, shiftData, profitSettings, backupDate: new Date().toISOString() };
+                    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
+                    const linkElement = document.createElement('a');
+                    linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
+                    linkElement.download = `backup_umkm_cash_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
+                    linkElement.click();
+                    hideLoading();
+                    showToast('Backup data terenkripsi berhasil', 'success');
+                } catch (err) { 
+                    hideLoading();
+                    showToast('Gagal membuat backup terenkripsi', 'error'); 
+                    console.error("Backup encryption error:", err); 
+                }
+            }, 800);
         }
         
         function restoreFromFile(file) {
@@ -3840,8 +4137,15 @@
                     const data = JSON.parse(decryptedString);
                     if (data.menus && data.categories && data.orders && data.settings && data.users && data.members) {
                         showConfirmation('Restore Data', 'Data saat ini akan diganti oleh file backup. Lanjutkan?', () => restoreData(data));
-                    } else { showToast('File backup tidak valid atau rusak.', 'error'); }
-                } catch (err) { showToast('Gagal memproses file backup. File mungkin rusak atau bukan file backup yang valid.', 'error'); console.error("Restore error:", err); }
+                    } else { 
+                        showToast('File backup tidak valid atau rusak.', 'error'); 
+                    }
+                } catch (err) { 
+                    showToast('Gagal memproses file backup. File mungkin rusak atau bukan file backup yang valid.', 'error'); 
+                    console.error("Restore error:", err); 
+                } finally {
+                    hideModalLoading();
+                }
             };
             reader.readAsText(file);
         }
@@ -4168,12 +4472,18 @@
             const order = $('#downloadReceiptPdfBtn').data('order');
             if (!order) return;
             const element = document.getElementById('receiptModalBody').querySelector('#receiptContent');
-            showToast('Mengunduh PDF...', 'info');
+            
             html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
                 const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
                 pdf.save(`Struk-${order.id}-${moment(order.date).format('DD-MM-YYYY')}.pdf`);
-            }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF download error:", err); });
+                hideLoading();
+                showToast('Struk berhasil diunduh', 'success');
+            }).catch(err => { 
+                hideLoading();
+                showToast('Gagal mengunduh PDF', 'error'); 
+                console.error("PDF download error:", err); 
+            });
         }
         
         function openKtaModal(memberId) {
@@ -4193,12 +4503,18 @@
         function downloadKtaAsPdf() {
             const member = $('#downloadKtaPdfBtn').data('member'); if (!member) return;
             const element = document.getElementById('ktaCard');
-            showToast('Mempersiapkan PDF...', 'info');
+            
             html2canvas(element, { scale: 2, useCORS: true, allowTaint: true }).then(canvas => {
                 const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
                 pdf.save(`KTA-${member.name.replace(/\s/g, '_')}-${member.id}.pdf`);
-            }).catch(err => { showToast('Gagal mengunduh PDF KTA', 'error'); console.error("KTA PDF error:", err); });
+                hideLoading();
+                showToast('KTA berhasil diunduh', 'success');
+            }).catch(err => { 
+                hideLoading();
+                showToast('Gagal mengunduh PDF KTA', 'error'); 
+                console.error("KTA PDF error:", err); 
+            });
         }
         
         function printElement(selector) {
@@ -4229,7 +4545,7 @@
         
         function downloadHistoryAsPdf() {
             const element = document.getElementById('historyResults');
-            showToast('Mengunduh PDF Histori...', 'info');
+            
             html2canvas(element, { scale: 2, useCORS: true, windowWidth: element.scrollWidth, windowHeight: element.scrollHeight }).then(canvas => {
                 const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
                 const pdfWidth = pdf.internal.pageSize.getWidth(), pdfHeight = pdf.internal.pageSize.getHeight(), canvasAspectRatio = canvas.width / canvas.height, scaledHeight = pdfWidth / canvasAspectRatio;
@@ -4238,8 +4554,13 @@
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, position, pdfWidth - 20, scaledHeight);
                 for (heightLeft -= (pdfHeight - position - 10); heightLeft > 0; heightLeft -= pdfHeight) { position = -heightLeft; pdf.addPage(); pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, position, pdfWidth - 20, scaledHeight); }
                 pdf.save(`Histori_Transaksi_UMKM_CASH_${moment().format('YYYY-MM-DD')}.pdf`);
+                hideLoading();
                 showToast('PDF berhasil diunduh.', 'success');
-            }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF history download error:", err); });
+            }).catch(err => { 
+                hideLoading();
+                showToast('Gagal mengunduh PDF', 'error'); 
+                console.error("PDF history download error:", err); 
+            });
         }
         
         function printReport() {
@@ -4251,10 +4572,9 @@
             const element = document.querySelector('#reportResults .professional-pdf');
             if (!element) {
                 showToast('Tidak ada laporan untuk diunduh', 'warning');
+                hideLoading();
                 return;
             }
-            
-            showToast('Mengunduh Laporan PDF Profesional...', 'info');
             
             html2canvas(element, { 
                 scale: 2, 
@@ -4269,8 +4589,10 @@
                 
                 pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
                 pdf.save(`Laporan_Penjualan_Profesional_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
+                hideLoading();
                 showToast('Laporan PDF berhasil diunduh', 'success');
             }).catch(err => { 
+                hideLoading();
                 showToast('Gagal mengunduh PDF', 'error'); 
                 console.error("PDF report download error:", err); 
             });
