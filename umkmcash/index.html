@@ -187,6 +187,106 @@
                 padding: 9px 6px !important;
             }
         }
+        
+        /* NOTIFIKASI PESANAN DAPUR - FITUR BARU */
+        .kitchen-notification-badge {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .kitchen-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Styling untuk tab history dapur */
+        .kitchen-history-item {
+            background: #f8f9fa;
+            border-radius: var(--rounded);
+            padding: 12px;
+            margin-bottom: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .kitchen-history-item.completed {
+            border-left-color: var(--success);
+        }
+        
+        .kitchen-history-item.cancelled {
+            border-left-color: var(--danger);
+        }
+        
+        .kitchen-history-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .kitchen-history-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .kitchen-history-date {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .kitchen-history-details {
+            font-size: 0.85rem;
+            color: var(--gray-dark);
+        }
+        
+        .kitchen-history-actions {
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* Filter untuk history dapur */
+        .kitchen-history-filter {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: var(--rounded);
+            margin-bottom: 15px;
+        }
+        
+        .kitchen-history-filter-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        
+        .kitchen-history-empty {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+        }
+        
+        .kitchen-history-empty i {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: var(--gray-light);
+        }
     </style>
 </head>
 <body>
@@ -493,7 +593,11 @@
                         <button id="manageCategoriesBtn" class="btn btn-sm">Kelola Kategori</button>
                         <button id="viewReportsBtn" class="btn btn-sm">Laporan</button>
                         <button id="historyBtn" class="btn btn-sm">Histori Transaksi</button>
-                        <button id="kitchenDisplayBtn" class="btn btn-sm">Info Pesanan</button>
+                        <!-- FITUR BARU: Tambahkan notifikasi badge di tombol Info Pesanan -->
+                        <button id="kitchenDisplayBtn" class="btn btn-sm kitchen-notification-badge">
+                            Info Pesanan 
+                            <span id="kitchenNotificationBadge" class="kitchen-badge" style="display: none;">0</span>
+                        </button>
                         <button id="manageMembersBtn" class="btn btn-sm">Kelola Member</button>
                         <button id="manageStoreInfoBtn" class="btn btn-sm">Info Restoran</button>
                         <button id="controlPanelBtn" class="btn btn-sm btn-warning">Kontrol Panel</button>
@@ -812,17 +916,72 @@
         </div>
     </div>
 
+    <!-- FITUR BARU: Modal untuk Info Pesanan Dapur dengan Tab History -->
     <div id="kitchenDisplayModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header">
                 <h3 class="modal-title">Info Pesanan Dapur</h3>
                 <button class="modal-close">&times;</button>
             </div>
-            <div class="modal-body">
-                <div class="kitchen-status">
-                    <h4>Pesanan Masuk (Refresh otomatis setiap 30 detik)</h4>
-                    <div id="kitchenOrders">
+            <div class="modal-body" style="padding: 0 16px 16px 16px;">
+                <div class="tabs">
+                    <div class="tab active" data-tab="kitchenActive"><i class="fas fa-utensils"></i> Pesanan Aktif</div>
+                    <div class="tab" data-tab="kitchenHistory"><i class="fas fa-history"></i> History Pesanan</div>
+                </div>
+                
+                <!-- Tab Pesanan Aktif -->
+                <div class="tab-content active" id="kitchenActiveTab">
+                    <div class="kitchen-status">
+                        <h4>Pesanan Masuk (Refresh otomatis setiap 30 detik)</h4>
+                        <div id="kitchenOrders">
+                            </div>
+                    </div>
+                </div>
+                
+                <!-- Tab History Pesanan - FITUR BARU -->
+                <div class="tab-content" id="kitchenHistoryTab">
+                    <div class="kitchen-history-filter">
+                        <h5>Filter History Pesanan</h5>
+                        <div class="kitchen-history-filter-row">
+                            <div class="form-group" style="flex: 1;">
+                                <label class="form-label">Periode</label>
+                                <select id="kitchenHistoryPeriod" class="form-control">
+                                    <option value="today">Hari Ini</option>
+                                    <option value="yesterday">Kemarin</option>
+                                    <option value="week">7 Hari Terakhir</option>
+                                    <option value="month">Bulan Ini</option>
+                                    <option value="custom">Rentang Tanggal</option>
+                                </select>
+                            </div>
+                            <div id="kitchenHistoryCustomRange" style="display: none; flex: 2; gap: 10px;" class="d-flex">
+                                <div class="form-group" style="flex: 1;">
+                                    <label class="form-label">Dari</label>
+                                    <input type="date" id="kitchenHistoryStartDate" class="form-control">
+                                </div>
+                                <div class="form-group" style="flex: 1;">
+                                    <label class="form-label">Sampai</label>
+                                    <input type="date" id="kitchenHistoryEndDate" class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-success" id="loadKitchenHistoryBtn">Tampilkan</button>
+                            </div>
                         </div>
+                    </div>
+                    
+                    <div id="kitchenHistoryResults">
+                        <div class="kitchen-history-empty">
+                            <i class="fas fa-history"></i>
+                            <p>Pilih periode dan klik "Tampilkan" untuk melihat history pesanan</p>
+                        </div>
+                    </div>
+                    
+                    <div class="kitchen-history-actions" id="kitchenHistoryActions" style="display: none; margin-top: 20px;">
+                        <button class="btn btn-sm btn-danger" id="deleteKitchenHistoryBtn">
+                            <i class="fas fa-trash"></i> Hapus History Periode Ini
+                        </button>
+                        <small class="text-muted" style="margin-left: 10px;">Aksi ini memerlukan kode keamanan</small>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1405,7 +1564,8 @@
             USERS: 'warungmakan_users',
             MEMBERS: 'warungmakan_members',
             SHIFT_DATA: 'warungmakan_shift_data',
-            PROFIT_SETTINGS: 'warungmakan_profit_settings'
+            PROFIT_SETTINGS: 'warungmakan_profit_settings',
+            KITCHEN_HISTORY: 'warungmakan_kitchen_history' // FITUR BARU: Storage untuk history dapur
         };
 
         // Kunci rahasia untuk enkripsi dan dekripsi file backup.
@@ -1508,7 +1668,7 @@
         };
 
         let menus, categories, orders, settings, users, members, currentUser, currentOrder;
-        let shiftData, profitSettings;
+        let shiftData, profitSettings, kitchenHistory;
         let kitchenInterval;
         let passwordPromptCallback = null;
         let captchaText = '';
@@ -1615,6 +1775,11 @@
                     profitAccessCode: CryptoJS.SHA256('labarugi2025').toString()
                 }));
             }
+            
+            // FITUR BARU: Inisialisasi kitchen history jika belum ada
+            if (!localStorage.getItem(STORAGE_KEYS.KITCHEN_HISTORY)) {
+                localStorage.setItem(STORAGE_KEYS.KITCHEN_HISTORY, JSON.stringify([]));
+            }
         }
         
         $(document).ready(function() {
@@ -1633,6 +1798,7 @@
             
             shiftData = JSON.parse(localStorage.getItem(STORAGE_KEYS.SHIFT_DATA)) || { currentShift: null, shiftHistory: [] };
             profitSettings = JSON.parse(localStorage.getItem(STORAGE_KEYS.PROFIT_SETTINGS)) || { defaultCOGS: 60, monthlyFixedCost: 0, profitAccessCode: CryptoJS.SHA256('labarugi2025').toString() };
+            kitchenHistory = JSON.parse(localStorage.getItem(STORAGE_KEYS.KITCHEN_HISTORY)) || [];
 
             $('#currentYear').text(new Date().getFullYear());
             
@@ -2289,10 +2455,15 @@
                             customerName: $('#customerName').val().trim() || 'Pelanggan',
                             status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', 
                             statusLocked: false,
-                            shiftId: currentShift ? currentShift.id : null
+                            shiftId: currentShift ? currentShift.id : null,
+                            // FITUR BARU: Tambahkan flag untuk history dapur
+                            kitchenArchived: false
                         };
                         orders.unshift(order); 
                         saveOrders();
+                        
+                        // FITUR BARU: Update notifikasi pesanan dapur
+                        updateKitchenNotification();
                         
                         if (order.memberId) {
                             const member = members.find(m => m.id === order.memberId);
@@ -2365,11 +2536,24 @@
                 }
             });
             
-            // Cek permission untuk kitchen display
+            // FITUR BARU: Event handler untuk tombol Info Pesanan Dapur dengan tabs
             $('#kitchenDisplayBtn').click(() => { 
                 if (checkPermission('kitchen_display')) { 
                     loadKitchenOrders(); 
                     kitchenInterval = setInterval(loadKitchenOrders, 30000); 
+                    
+                    // Reset tab ke pesanan aktif
+                    $('#kitchenDisplayModal .tabs .tab').removeClass('active');
+                    $('#kitchenDisplayModal .tab-content').removeClass('active');
+                    $('[data-tab="kitchenActive"]').addClass('active');
+                    $('#kitchenActiveTab').addClass('active');
+                    
+                    // Reset filter history
+                    $('#kitchenHistoryPeriod').val('today');
+                    $('#kitchenHistoryCustomRange').hide();
+                    $('#kitchenHistoryResults').html('<div class="kitchen-history-empty"><i class="fas fa-history"></i><p>Pilih periode dan klik "Tampilkan" untuk melihat history pesanan</p></div>');
+                    $('#kitchenHistoryActions').hide();
+                    
                     $('#kitchenDisplayModal').css('display', 'flex'); 
                 } else {
                     showToast('Anda tidak memiliki izin untuk melihat info pesanan dapur', 'error');
@@ -2587,7 +2771,12 @@
                 if (!order || order.statusLocked) return;
                 order.status = order.status === 'preparing' ? 'ready' : 'preparing';
                 if (order.status === 'ready') order.statusLocked = true;
-                saveOrders(); loadKitchenOrders(); showToast(`Status pesanan ${order.id} diperbarui`, 'success');
+                saveOrders(); loadKitchenOrders(); 
+                
+                // FITUR BARU: Update notifikasi setelah status berubah
+                updateKitchenNotification();
+                
+                showToast(`Status pesanan ${order.id} diperbarui`, 'success');
             });
             
             $('#refreshKitchenBtn').click(loadKitchenOrders);
@@ -2652,6 +2841,36 @@
                 setTimeout(() => {
                     downloadReceiptAsPdf();
                 }, 500);
+            });
+            
+            // FITUR BARU: Event handler untuk tab di modal kitchen
+            $('#kitchenDisplayModal .tabs .tab').click(function() { 
+                const tabName = $(this).data('tab');
+                $('#kitchenDisplayModal .tabs .tab, #kitchenDisplayModal .tab-content').removeClass('active'); 
+                $(`[data-tab="${tabName}"], #${tabName}Tab`).addClass('active'); 
+                
+                // Jika tab history dipilih, reset filter
+                if (tabName === 'kitchenHistory') {
+                    $('#kitchenHistoryPeriod').val('today');
+                    $('#kitchenHistoryCustomRange').hide();
+                    $('#kitchenHistoryResults').html('<div class="kitchen-history-empty"><i class="fas fa-history"></i><p>Pilih periode dan klik "Tampilkan" untuk melihat history pesanan</p></div>');
+                    $('#kitchenHistoryActions').hide();
+                }
+            });
+            
+            // FITUR BARU: Event handler untuk filter period history dapur
+            $('#kitchenHistoryPeriod').change(function() {
+                $('#kitchenHistoryCustomRange').toggle($(this).val() === 'custom');
+            });
+            
+            // FITUR BARU: Event handler untuk load history dapur
+            $('#loadKitchenHistoryBtn').click(function() {
+                loadKitchenHistory();
+            });
+            
+            // FITUR BARU: Event handler untuk delete history dapur
+            $('#deleteKitchenHistoryBtn').click(function() {
+                deleteKitchenHistory();
             });
             
             // FIX: Inisialisasi button status berdasarkan isi pesanan
@@ -2759,6 +2978,9 @@
                                   checkPermission('shift_management') || checkPermission('profit_calculation');
             
             $('#adminPanel').toggle(showAdminPanel);
+            
+            // FITUR BARU: Update notifikasi pesanan dapur saat inisialisasi
+            updateKitchenNotification();
         }
         
         // PERBAIKAN: Fungsi untuk update tampilan tombol shift
@@ -2774,7 +2996,236 @@
             }
         }
         
-        // Fungsi untuk meminta kode keamanan akses laba
+        // FITUR BARU: Fungsi untuk update notifikasi pesanan dapur
+        function updateKitchenNotification() {
+            // Hitung pesanan aktif (dine-in dengan status preparing atau ready dan belum di-archive)
+            const activeOrders = orders.filter(order => 
+                order.type === 'dinein' && 
+                (order.status === 'preparing' || order.status === 'ready') &&
+                !order.kitchenArchived
+            );
+            
+            const orderCount = activeOrders.length;
+            const $badge = $('#kitchenNotificationBadge');
+            
+            if (orderCount > 0) {
+                $badge.text(orderCount).show();
+            } else {
+                $badge.hide();
+            }
+            
+            // Juga update badge di tab jika modal kitchen sedang terbuka
+            if ($('#kitchenDisplayModal').is(':visible')) {
+                loadKitchenOrders();
+            }
+        }
+        
+        // FITUR BARU: Fungsi untuk load history pesanan dapur
+        function loadKitchenHistory() {
+            const period = $('#kitchenHistoryPeriod').val();
+            let startDate, endDate;
+            
+            const now = moment();
+            
+            if (period === 'today') {
+                startDate = now.startOf('day');
+                endDate = now.endOf('day');
+            } else if (period === 'yesterday') {
+                startDate = now.clone().subtract(1, 'day').startOf('day');
+                endDate = now.clone().subtract(1, 'day').endOf('day');
+            } else if (period === 'week') {
+                startDate = now.clone().subtract(7, 'day').startOf('day');
+                endDate = now.endOf('day');
+            } else if (period === 'month') {
+                startDate = now.startOf('month');
+                endDate = now.endOf('month');
+            } else if (period === 'custom') {
+                startDate = moment($('#kitchenHistoryStartDate').val());
+                endDate = moment($('#kitchenHistoryEndDate').val()).endOf('day');
+                
+                if (!startDate.isValid() || !endDate.isValid()) {
+                    showToast('Pilih tanggal yang valid', 'error');
+                    return;
+                }
+                
+                if (endDate.isBefore(startDate)) {
+                    showToast('Tanggal akhir harus setelah tanggal awal', 'error');
+                    return;
+                }
+            } else {
+                showToast('Periode tidak valid', 'error');
+                return;
+            }
+            
+            // Filter pesanan dine-in yang sudah di-archive dalam periode tertentu
+            const filteredOrders = orders.filter(order => {
+                const orderDate = moment(order.date);
+                return order.type === 'dinein' && 
+                       order.kitchenArchived === true &&
+                       orderDate.isBetween(startDate, endDate, null, '[]');
+            });
+            
+            if (filteredOrders.length === 0) {
+                $('#kitchenHistoryResults').html(`
+                    <div class="kitchen-history-empty">
+                        <i class="fas fa-history"></i>
+                        <p>Tidak ada history pesanan dapur pada periode ini</p>
+                        <small>${startDate.format('DD/MM/YYYY')} - ${endDate.format('DD/MM/YYYY')}</small>
+                    </div>
+                `);
+                $('#kitchenHistoryActions').hide();
+                return;
+            }
+            
+            // Group by tanggal untuk tampilan yang lebih rapi
+            const ordersByDate = {};
+            filteredOrders.forEach(order => {
+                const dateKey = moment(order.date).format('YYYY-MM-DD');
+                if (!ordersByDate[dateKey]) {
+                    ordersByDate[dateKey] = [];
+                }
+                ordersByDate[dateKey].push(order);
+            });
+            
+            let historyHTML = '';
+            
+            // Urutkan tanggal dari yang terbaru
+            const sortedDates = Object.keys(ordersByDate).sort((a, b) => b.localeCompare(a));
+            
+            sortedDates.forEach(dateKey => {
+                const dateOrders = ordersByDate[dateKey];
+                const dateFormatted = moment(dateKey).format('dddd, DD MMMM YYYY');
+                
+                historyHTML += `
+                    <div class="kitchen-history-date-group">
+                        <h6 class="mt-3 mb-2" style="color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                            <i class="fas fa-calendar-day"></i> ${dateFormatted}
+                            <span class="badge bg-primary" style="font-size: 0.7rem; float: right;">${dateOrders.length} pesanan</span>
+                        </h6>
+                `;
+                
+                dateOrders.forEach(order => {
+                    const timeFormatted = moment(order.date).format('HH:mm');
+                    const statusClass = order.status === 'ready' ? 'completed' : 'cancelled';
+                    const statusText = order.status === 'ready' ? 'Selesai' : 'Dibatalkan';
+                    
+                    historyHTML += `
+                        <div class="kitchen-history-item ${statusClass}">
+                            <div class="kitchen-history-header">
+                                <div class="kitchen-history-title">${order.id} - Meja ${order.tableNumber}</div>
+                                <div class="kitchen-history-date">${timeFormatted}</div>
+                            </div>
+                            <div class="kitchen-history-details">
+                                <div><strong>Pelanggan:</strong> ${order.customerName || 'Tidak ada nama'}</div>
+                                <div><strong>Items:</strong> ${order.items.map(item => `${item.menu.name} (${item.quantity}x)`).join(', ')}</div>
+                                <div><strong>Total:</strong> ${formatCurrency(order.total)}</div>
+                                <div><strong>Status:</strong> ${statusText}</div>
+                                <div><strong>Kasir:</strong> ${order.cashier.name}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                historyHTML += `</div>`;
+            });
+            
+            $('#kitchenHistoryResults').html(historyHTML);
+            
+            // Tampilkan tombol hapus history
+            $('#kitchenHistoryActions').show().data('filter', {
+                startDate: startDate,
+                endDate: endDate,
+                period: period
+            });
+            
+            showToast(`Menampilkan ${filteredOrders.length} history pesanan`, 'success');
+        }
+        
+        // FITUR BARU: Fungsi untuk menghapus history pesanan dapur
+        function deleteKitchenHistory() {
+            const filter = $('#kitchenHistoryActions').data('filter');
+            if (!filter) return;
+            
+            promptForPassword('item', () => {
+                showConfirmation('Hapus History Pesanan Dapur', 
+                    `Apakah Anda yakin ingin menghapus semua history pesanan dapur dari ${filter.startDate.format('DD/MM/YYYY')} sampai ${filter.endDate.format('DD/MM/YYYY')}? Aksi ini tidak dapat dibatalkan.`, 
+                    () => {
+                        // Hapus flag kitchenArchived untuk pesanan dalam periode tersebut
+                        let deletedCount = 0;
+                        
+                        orders.forEach(order => {
+                            const orderDate = moment(order.date);
+                            if (order.type === 'dinein' && 
+                                order.kitchenArchived === true &&
+                                orderDate.isBetween(filter.startDate, filter.endDate, null, '[]')) {
+                                order.kitchenArchived = false;
+                                deletedCount++;
+                            }
+                        });
+                        
+                        saveOrders();
+                        
+                        // Update tampilan
+                        loadKitchenHistory();
+                        
+                        showToast(`${deletedCount} history pesanan dapur berhasil dihapus`, 'success');
+                    }, 'danger');
+            });
+        }
+        
+        // MODIFIKASI: Fungsi loadKitchenOrders untuk menambahkan tombol "Tandai Selesai"
+        function loadKitchenOrders() {
+            const kitchenOrders = orders.filter(o => o.type === 'dinein' && o.status !== 'completed' && !o.kitchenArchived), $kitchenOrders = $('#kitchenOrders').empty();
+            if (kitchenOrders.length === 0) $kitchenOrders.html('<div class="empty-state"><i class="fas fa-check-circle"></i><p>Tidak ada pesanan aktif</p></div>');
+            else {
+                kitchenOrders.forEach(order => {
+                    const statusClass = order.status === 'ready' ? (order.statusLocked ? 'status-locked' : 'status-ready') : 'status-preparing';
+                    const itemsSummary = order.items.slice(0, 2).map(item => `${item.menu.name} (${item.quantity}x)`).join(', ') + (order.items.length > 2 ? ` + ${order.items.length - 2} lainnya` : '');
+                    $kitchenOrders.append(`
+                        <div class="status-item ${statusClass}" data-id="${order.id}">
+                            <div>
+                                <strong>${order.id} (Meja ${order.tableNumber})</strong>
+                                <div style="font-size:0.8rem;">${itemsSummary}</div>
+                                <div style="font-size:0.8rem; color: #666; margin-top: 3px;">
+                                    <i class="fas fa-user"></i> ${order.customerName || 'Tidak ada nama'} | 
+                                    <i class="fas fa-clock"></i> ${moment(order.date).format('HH:mm')}
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
+                                <div style="font-weight:600;">${order.status === 'ready' ? 'Siap' : 'Proses'}</div>
+                                <button class="btn btn-sm btn-success mark-kitchen-done" data-id="${order.id}" style="font-size: 0.7rem; padding: 3px 8px;">
+                                    <i class="fas fa-check"></i> Tandai Selesai
+                                </button>
+                            </div>
+                        </div>
+                    `);
+                });
+            }
+            
+            // FITUR BARU: Update notifikasi setelah load
+            updateKitchenNotification();
+        }
+        
+        // FITUR BARU: Event handler untuk tombol "Tandai Selesai"
+        $(document).on('click', '.mark-kitchen-done', function() {
+            const orderId = $(this).data('id');
+            const order = orders.find(o => o.id === orderId);
+            
+            if (!order) return;
+            
+            // Tandai sebagai selesai (archive)
+            order.kitchenArchived = true;
+            saveOrders();
+            
+            // Update tampilan
+            loadKitchenOrders();
+            
+            // Update notifikasi
+            updateKitchenNotification();
+            
+            showToast(`Pesanan ${orderId} telah ditandai selesai dari dapur`, 'success');
+        });
+        
         function promptForProfitAccess(callback) {
             const title = 'Kode Keamanan Akses Laba';
             $('#passwordPromptTitle').text(title);
@@ -4192,7 +4643,7 @@
             showLoading('Membackup data...');
             setTimeout(() => {
                 try {
-                    const backup = { menus, categories, orders, settings, users, members, shiftData, profitSettings, backupDate: new Date().toISOString() };
+                    const backup = { menus, categories, orders, settings, users, members, shiftData, profitSettings, kitchenHistory, backupDate: new Date().toISOString() };
                     const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
                     const linkElement = document.createElement('a');
                     linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
@@ -4603,47 +5054,6 @@
             setTimeout(() => { try { window.print(); } catch (e) { showToast('Gagal membuka dialog cetak.', 'error'); console.error("Print error:", e); } }, 300);
         }
         
-        function loadKitchenOrders() {
-            const kitchenOrders = orders.filter(o => o.type === 'dinein' && o.status !== 'completed'), $kitchenOrders = $('#kitchenOrders').empty();
-            if (kitchenOrders.length === 0) $kitchenOrders.html('<div class="empty-state"><i class="fas fa-check-circle"></i><p>Tidak ada pesanan aktif</p></div>');
-            else {
-                kitchenOrders.forEach(order => {
-                    const statusClass = order.status === 'ready' ? (order.statusLocked ? 'status-locked' : 'status-ready') : 'status-preparing';
-                    const itemsSummary = order.items.slice(0, 2).map(item => `${item.menu.name} (${item.quantity}x)`).join(', ') + (order.items.length > 2 ? ` + ${order.items.length - 2} lainnya` : '');
-                    $kitchenOrders.append(`<div class="status-item ${statusClass}" data-id="${order.id}"><div><strong>${order.id} (Meja ${order.tableNumber})</strong><div style="font-size:0.8rem;">${itemsSummary}</div></div><div style="font-weight:600;">${order.status === 'ready' ? 'Siap' : 'Proses'}</div></div>`);
-                });
-            }
-        }
-        
-        function loadTransactionHistory(searchTerm = '') {
-            const $list = $('#historyResults').empty(), lowerSearchTerm = searchTerm.toLowerCase();
-            const filteredOrders = orders.filter(o => !searchTerm || o.id.toLowerCase().includes(lowerSearchTerm));
-            if (filteredOrders.length === 0) { $list.html('<div class="empty-state"><i class="fas fa-history"></i><p>Tidak ada transaksi ditemukan</p></div>'); return; }
-            filteredOrders.forEach(order => {
-                $list.append(`<div class="order-item"><div class="order-item-info"><div class="order-item-name">${order.id}</div><div class="order-item-price">${moment(order.date).format('DD MMM YYYY, HH:mm')} | ${order.customerName} | ${formatCurrency(order.total)}</div></div><div class="order-item-qty"><button class="btn btn-sm btn-info reprint-receipt" data-id="${order.id}"><i class="fas fa-print"></i> Cetak Ulang</button></div></div>`);
-            });
-        }
-        
-        function downloadHistoryAsPdf() {
-            const element = document.getElementById('historyResults');
-            
-            html2canvas(element, { scale: 2, useCORS: true, windowWidth: element.scrollWidth, windowHeight: element.scrollHeight }).then(canvas => {
-                const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-                const pdfWidth = pdf.internal.pageSize.getWidth(), pdfHeight = pdf.internal.pageSize.getHeight(), canvasAspectRatio = canvas.width / canvas.height, scaledHeight = pdfWidth / canvasAspectRatio;
-                let heightLeft = scaledHeight, position = 10;
-                pdf.setFontSize(18); pdf.text("Histori Transaksi UMKM CASH", pdfWidth / 2, position, { align: 'center' }); position += 10;
-                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, position, pdfWidth - 20, scaledHeight);
-                for (heightLeft -= (pdfHeight - position - 10); heightLeft > 0; heightLeft -= pdfHeight) { position = -heightLeft; pdf.addPage(); pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, position, pdfWidth - 20, scaledHeight); }
-                pdf.save(`Histori_Transaksi_UMKM_CASH_${moment().format('YYYY-MM-DD')}.pdf`);
-                hideLoading();
-                showToast('PDF berhasil diunduh.', 'success');
-            }).catch(err => { 
-                hideLoading();
-                showToast('Gagal mengunduh PDF', 'error'); 
-                console.error("PDF history download error:", err); 
-            });
-        }
-        
         function printReport() {
             printElement('#reportResults .professional-pdf');
         }
@@ -4769,6 +5179,10 @@
         
         function saveProfitSettings() {
             localStorage.setItem(STORAGE_KEYS.PROFIT_SETTINGS, JSON.stringify(profitSettings));
+        }
+        
+        function saveKitchenHistory() {
+            localStorage.setItem(STORAGE_KEYS.KITCHEN_HISTORY, JSON.stringify(kitchenHistory));
         }
     </script>
 </body>
