@@ -2,21 +2,17 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <!-- PERBAIKAN VIEWPORT: Tambahkan properti untuk zoom dan responsif -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <title>UMKM CASH - Aplikasi Kasir Digital Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+       
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loading-spinner"></div>
-        <div id="loadingMessage">Memproses...</div>
-    </div>
-
     <!-- Welcome Toast Modal -->
+    <!-- PERBAIKAN: Tambahkan tombol close dan perbaikan struktur -->
     <div id="welcomeToast" class="welcome-toast">
         <button class="welcome-toast-close">&times;</button>
         <div class="welcome-icon">
@@ -64,6 +60,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-warning modal-close-btn" id="cancelShiftBtn">Batal</button>
+                <!-- PERBAIKAN: Tambahkan tombol Skip khusus admin -->
                 <button class="btn btn-info" id="skipShiftBtn" style="display: none;">Lewati (Admin)</button>
                 <button class="btn btn-success" id="startShiftBtn">Mulai Shift</button>
             </div>
@@ -185,13 +182,6 @@
                     <div class="cash-management-container">
                         <h4 class="panel-title">Pengaturan Perhitungan Laba</h4>
                         
-                        <div class="form-group password-toggle-container">
-                            <label class="form-label">Kode Keamanan Akses Laba</label>
-                            <input type="password" id="profitSecurityCode" class="form-control" placeholder="Masukkan kode keamanan">
-                            <i class="fas fa-eye password-toggle-icon" id="toggleProfitSecurity"></i>
-                            <small class="form-text text-muted">Kode ini diperlukan untuk mengakses fitur perhitungan laba</small>
-                        </div>
-                        
                         <div class="form-group">
                             <label class="form-label">Persentase HPP (Harga Pokok Penjualan) Default (%)</label>
                             <input type="number" id="defaultCOGS" class="form-control" min="0" max="100" value="60">
@@ -201,6 +191,12 @@
                         <div class="form-group">
                             <label class="form-label">Biaya Operasional Tetap Bulanan (Rp)</label>
                             <input type="number" id="monthlyFixedCost" class="form-control" min="0" value="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Kode Keamanan Akses Laba</label>
+                            <input type="password" id="profitSecurityCode" class="form-control" placeholder="Masukkan kode keamanan">
+                            <small class="form-text text-muted">Kode ini diperlukan untuk mengakses fitur perhitungan laba</small>
                         </div>
                         
                         <button class="btn btn-success" id="saveProfitSettingsBtn">Simpan Pengaturan</button>
@@ -231,10 +227,9 @@
                     <label for="username" class="form-label">Username</label>
                     <input type="text" id="username" class="form-control" placeholder="Masukkan username" autocomplete="username" required>
                 </div>
-                <div class="form-group password-toggle-container">
+                <div class="form-group">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" id="password" class="form-control" placeholder="Masukkan password" autocomplete="current-password" required>
-                    <i class="fas fa-eye password-toggle-icon" id="togglePassword"></i>
                 </div>
                 
                 <div class="form-group mt-3">
@@ -259,6 +254,7 @@
                 <div>
                     <h1 class="app-title" id="storeNameHeader">UMKM CASH <span class="premium-badge">PREMIUM</span></h1>
                     <p id="currentDate">Rabu, 24 September 2025</p>
+                    <!-- PERBAIKAN: Ganti teks supported dengan waktu real-time -->
                     <div class="app-subtitle">
                         <span class="time-badge">
                             <i class="fas fa-clock"></i> <span id="liveClock">00:00:00</span>
@@ -287,10 +283,10 @@
                 
                 <div class="filter-row">
                     <div class="filter-chip active" data-category="all">Semua</div>
-                </div>
+                    </div>
                 
                 <div class="menu-grid" id="menuGrid">
-                </div>
+                    </div>
 
                 <div id="adminPanel" class="admin-panel">
                     <h3 class="panel-title">Admin Panel</h3>
@@ -303,7 +299,10 @@
                         <button id="manageMembersBtn" class="btn btn-sm">Kelola Member</button>
                         <button id="manageStoreInfoBtn" class="btn btn-sm">Info Restoran</button>
                         <button id="controlPanelBtn" class="btn btn-sm btn-warning">Kontrol Panel</button>
+                        <!-- TOMBOL BARU: Generate Daftar Menu PDF -->
                         <button id="generateMenuPdfBtn" class="btn btn-sm btn-info">Daftar Menu</button>
+                        <!-- TOMBOL BARU: Fitur Shift dan Laba -->
+                        <!-- PERBAIKAN: Tambahkan tombol Buka Shift yang akan disable jika shift berlangsung -->
                         <button id="openShiftBtn" class="btn btn-sm btn-shift">Buka Shift</button>
                         <button id="closeShiftBtn" class="btn btn-sm btn-shift">Tutup Shift</button>
                         <button id="profitCalculationBtn" class="btn btn-sm btn-profit">Hitung Laba</button>
@@ -354,7 +353,7 @@
                 </div>
                 
                 <div id="orderItems">
-                </div>
+                    </div>
                 
                 <div class="note-input">
                     <label class="form-label">Catatan Pesanan (opsional)</label>
@@ -416,6 +415,7 @@
                         </select>
                     </div>
 
+                    <!-- Container for QRIS -->
                     <div id="qrisContainer" class="qris-container" style="display: none;">
                         <h4><i class="fas fa-qrcode"></i> Pembayaran QRIS</h4>
                         <p>Scan QR Code berikut untuk pembayaran:</p>
@@ -428,6 +428,7 @@
                         </p>
                     </div>
 
+                    <!-- Container for Cash Payment -->
                     <div id="cashPaymentContainer">
                         <div class="quick-cash-buttons" id="quickCashButtons">
                         </div>
@@ -452,7 +453,7 @@
                         <input type="text" id="customerName" class="form-control" placeholder="Masukkan nama pelanggan">
                     </div>
                     <div id="orderSummary">
-                    </div>
+                        </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -465,6 +466,7 @@
     </div>
 
     <!-- Modal untuk Preview Daftar Menu PDF -->
+    <!-- PERBAIKAN: Hapus tombol cetak, pertahankan tombol download -->
     <div id="menuPdfModal" class="modal">
         <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
@@ -473,6 +475,7 @@
             </div>
             <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                 <div id="menuPdfContainer">
+                    <!-- Konten akan diisi oleh JavaScript -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -480,11 +483,12 @@
                 <button class="btn btn-success" id="downloadMenuPdfBtn">
                     <i class="fas fa-file-pdf"></i> Download PDF
                 </button>
+                <!-- PERBAIKAN: Hapus tombol cetak -->
             </div>
         </div>
     </div>
 
-    <!-- Modals lainnya -->
+    <!-- Modals lainnya tetap sama seperti sebelumnya -->
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -501,7 +505,7 @@
                     <div class="form-group">
                         <label class="form-label">Kategori</label>
                         <select id="menuCategory" class="form-control" required>
-                        </select>
+                            </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Harga</label>
@@ -532,7 +536,7 @@
             </div>
             <div class="modal-body">
                 <div id="categoriesList">
-                </div>
+                    </div>
                 <div class="form-group mt-3">
                     <input type="text" id="newCategoryName" class="form-control" placeholder="Nama kategori baru">
                 </div>
@@ -620,7 +624,7 @@
                 <div class="kitchen-status">
                     <h4>Pesanan Masuk (Refresh otomatis setiap 30 detik)</h4>
                     <div id="kitchenOrders">
-                    </div>
+                        </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -678,7 +682,7 @@
                     <hr class="mt-3 mb-3">
                 </div>
                 <div id="membersList">
-                </div>
+                    </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-warning modal-close-btn">Tutup</button>
@@ -757,10 +761,9 @@
                                 <label class="form-label">Username</label>
                                 <input type="text" id="userUsername" class="form-control" required>
                             </div>
-                            <div class="form-group password-toggle-container">
+                            <div class="form-group">
                                 <label class="form-label">Password</label>
                                 <input type="password" id="userPassword" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah">
-                                <i class="fas fa-eye password-toggle-icon" id="toggleUserPassword"></i>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Hak Akses (Role)</label>
@@ -781,19 +784,17 @@
                 <div class="tab-content" id="securityTab">
                     <h4 class="mt-3">Pengaturan Keamanan</h4>
                     <form id="itemSecurityForm" class="mt-2">
-                        <div class="form-group password-toggle-container">
+                        <div class="form-group">
                             <label class="form-label">Password Keamanan Edit/Hapus Item</label>
                             <input type="password" id="itemSecurityCode" class="form-control" required>
-                            <i class="fas fa-eye password-toggle-icon" id="toggleItemSecurity"></i>
                         </div>
                         <button type="submit" class="btn btn-sm btn-info">Ubah Password</button>
                     </form>
                     <hr class="mt-3 mb-3">
                     <form id="panelSecurityForm" class="mt-2">
-                        <div class="form-group password-toggle-container">
+                        <div class="form-group">
                             <label class="form-label">Password Keamanan Kontrol Panel</label>
                             <input type="password" id="panelSecurityCode" class="form-control" required>
-                            <i class="fas fa-eye password-toggle-icon" id="togglePanelSecurity"></i>
                         </div>
                         <button type="submit" class="btn btn-sm btn-info">Ubah Password</button>
                     </form>
@@ -814,15 +815,13 @@
                     <hr class="mt-3 mb-3">
                     <h4 class="mt-3">Ubah Password Login Anda</h4>
                     <form id="changeOwnPasswordForm" class="mt-2">
-                        <div class="form-group password-toggle-container">
+                        <div class="form-group">
                             <label class="form-label">Password Saat Ini</label>
                             <input type="password" id="currentPassword" class="form-control" required>
-                            <i class="fas fa-eye password-toggle-icon" id="toggleCurrentPassword"></i>
                         </div>
-                         <div class="form-group password-toggle-container">
+                         <div class="form-group">
                             <label class="form-label">Password Baru</label>
                             <input type="password" id="newPassword" class="form-control" required>
-                            <i class="fas fa-eye password-toggle-icon" id="toggleNewPassword"></i>
                         </div>
                         <button type="submit" class="btn btn-sm btn-success">Simpan Password Baru</button>
                     </form>
@@ -974,6 +973,7 @@
                             </div>
                         </div>
                         
+                        <!-- PERBAIKAN: Tambah permission untuk fitur baru -->
                         <div class="permission-group">
                             <h5>Fitur Baru</h5>
                             <div class="permission-item">
@@ -1005,6 +1005,7 @@
                     </div>
                 </div>
                 
+                <!-- PERBAIKAN: Tab baru untuk pengaturan shift dan laba -->
                 <div class="tab-content" id="shiftSettingsTab">
                     <h4 class="mt-3">Pengaturan Shift & Perhitungan Laba</h4>
                     
@@ -1027,17 +1028,15 @@
                         <hr class="mt-3 mb-3">
                         
                         <h5 class="panel-title">Pengaturan Perhitungan Laba</h5>
-                        <div class="form-group password-toggle-container">
+                        <div class="form-group">
                             <label class="form-label">Kode Keamanan Akses Laba</label>
                             <input type="password" id="profitAccessCode" class="form-control" placeholder="Masukkan kode keamanan">
-                            <i class="fas fa-eye password-toggle-icon" id="toggleProfitAccessCode"></i>
                             <small class="form-text text-muted">Kode ini diperlukan untuk mengakses fitur perhitungan laba</small>
                         </div>
                         
-                        <div class="form-group password-toggle-container">
+                        <div class="form-group">
                             <label class="form-label">Konfirmasi Kode Keamanan</label>
                             <input type="password" id="profitAccessCodeConfirm" class="form-control" placeholder="Konfirmasi kode keamanan">
-                            <i class="fas fa-eye password-toggle-icon" id="toggleProfitAccessCodeConfirm"></i>
                         </div>
                         
                         <div class="form-group">
@@ -1064,10 +1063,9 @@
             </div>
             <div class="modal-body">
                 <form id="passwordPromptForm">
-                    <div class="form-group password-toggle-container">
+                    <div class="form-group">
                          <label class="form-label" id="passwordPromptMessage">Untuk melanjutkan, masukkan password.</label>
                          <input type="password" id="passwordPromptInput" class="form-control" required>
-                         <i class="fas fa-eye password-toggle-icon" id="togglePasswordPrompt"></i>
                     </div>
                 </form>
             </div>
@@ -1101,7 +1099,7 @@
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body" id="receiptModalBody" style="background: #eee;">
-            </div>
+                </div>
             <div class="modal-footer no-print">
                 <button class="btn btn-warning modal-close-btn">Tutup</button>
                 <button class="btn btn-info" id="downloadReceiptPdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
@@ -1138,7 +1136,7 @@
             <div class="modal-footer no-print">
                  <button class="btn btn-warning modal-close-btn">Tutup</button>
                  <button class="btn btn-info" id="downloadKtaPdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
-            </div>
+                 </div>
         </div>
     </div>
     
@@ -1280,142 +1278,22 @@
         let countdownInterval = null;
         let currentShift = null;
         
-        // Loading utility functions
-        function showLoading(message = 'Memproses...') {
-            $('#loadingMessage').text(message);
-            $('#loadingOverlay').css('display', 'flex');
-        }
-
-        function hideLoading() {
-            $('#loadingOverlay').css('display', 'none');
-        }
-
-        // Password toggle functionality
-        function initializePasswordToggles() {
-            // Toggle untuk login password
-            $('#togglePassword').click(function() {
-                const passwordInput = $('#password');
-                const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
-                passwordInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-            
-            // Toggle untuk kode keamanan item
-            $('#toggleItemSecurity').click(function() {
-                const securityInput = $('#itemSecurityCode');
-                const type = securityInput.attr('type') === 'password' ? 'text' : 'password';
-                securityInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-            
-            // Toggle untuk kode keamanan panel
-            $('#togglePanelSecurity').click(function() {
-                const securityInput = $('#panelSecurityCode');
-                const type = securityInput.attr('type') === 'password' ? 'text' : 'password';
-                securityInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-            
-            // Toggle untuk kode keamanan laba
-            $('#toggleProfitSecurity').click(function() {
-                const securityInput = $('#profitSecurityCode');
-                const type = securityInput.attr('type') === 'password' ? 'text' : 'password';
-                securityInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-            
-            // Toggle untuk password prompt
-            $('#togglePasswordPrompt').click(function() {
-                const promptInput = $('#passwordPromptInput');
-                const type = promptInput.attr('type') === 'password' ? 'text' : 'password';
-                promptInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-            
-            // Toggle untuk password saat ini
-            $('#toggleCurrentPassword').click(function() {
-                const currentInput = $('#currentPassword');
-                const type = currentInput.attr('type') === 'password' ? 'text' : 'password';
-                currentInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-            
-            // Toggle untuk password baru
-            $('#toggleNewPassword').click(function() {
-                const newInput = $('#newPassword');
-                const type = newInput.attr('type') === 'password' ? 'text' : 'password';
-                newInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-            
-            // Toggle untuk kode akses laba di kontrol panel
-            $('#toggleProfitAccessCode').click(function() {
-                const accessInput = $('#profitAccessCode');
-                const type = accessInput.attr('type') === 'password' ? 'text' : 'password';
-                accessInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-            
-            // Toggle untuk konfirmasi kode akses laba
-            $('#toggleProfitAccessCodeConfirm').click(function() {
-                const confirmInput = $('#profitAccessCodeConfirm');
-                const type = confirmInput.attr('type') === 'password' ? 'text' : 'password';
-                confirmInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-            
-            // Toggle untuk password user di kontrol panel
-            $('#toggleUserPassword').click(function() {
-                const userInput = $('#userPassword');
-                const type = userInput.attr('type') === 'password' ? 'text' : 'password';
-                userInput.attr('type', type);
-                $(this).toggleClass('fa-eye fa-eye-slash');
-            });
-        }
-
-        // Enhanced toast function with loading detection
-        function showToast(message, type = 'info') {
-            const $toast = $('#toast').removeClass('success error warning').addClass(type);
-            $('#toast-message').text(message);
-            $toast.addClass('show');
-            
-            // Auto-hide setelah 3 detik
-            setTimeout(() => $toast.removeClass('show'), 3000);
-        }
-
-        // Enhanced button loading with timeout
-        function setButtonLoading($button, isLoading, originalText = 'Loading...', timeout = 30000) {
-            if (isLoading) {
-                $button.prop('disabled', true);
-                $button.data('original-text', $button.html());
-                $button.html('<i class="fas fa-spinner fa-spin"></i> ' + originalText);
-                
-                // Timeout untuk mencegah button stuck dalam loading state
-                setTimeout(() => {
-                    if ($button.prop('disabled')) {
-                        setButtonLoading($button, false, $button.data('original-text'));
-                        showToast('Proses timeout, coba lagi', 'warning');
-                    }
-                }, timeout);
-            } else {
-                $button.prop('disabled', false);
-                if (originalText) {
-                    $button.html(originalText);
-                } else if ($button.data('original-text')) {
-                    $button.html($button.data('original-text'));
-                }
-            }
-        }
-        
+        // PERBAIKAN: Fungsi untuk mendeteksi perangkat mobile
         function isMobileDevice() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
                    window.innerWidth <= 768;
         }
         
+        // PERBAIKAN: Fungsi untuk menyesuaikan tampilan berdasarkan perangkat
         function adjustLayoutForMobile() {
             if (isMobileDevice()) {
+                // Tambahkan class mobile ke body
                 document.body.classList.add('mobile-device');
+                
+                // Sesuaikan ukuran font untuk mobile
                 document.documentElement.style.fontSize = '14px';
+                
+                // Optimasi touch events
                 $('body').addClass('touch-device');
             }
         }
@@ -1423,6 +1301,7 @@
         function initializeData() {
             let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
             
+            // Tambahkan user default jika belum ada
             if (!users_init.find(u => u.username === 'admin')) {
                 users_init.push(DEFAULT_TRIAL_USER);
             }
@@ -1486,10 +1365,13 @@
         $(document).ready(function() {
             initializeData();
             
+            // PERBAIKAN: Sesuaikan layout untuk mobile
             adjustLayoutForMobile();
             
+            // PERBAIKAN: Handle resize untuk responsivitas
             $(window).on('resize', function() {
                 adjustLayoutForMobile();
+                // Update admin grid layout
                 updateAdminGridLayout();
             });
             
@@ -1509,27 +1391,32 @@
 
             $('#currentYear').text(new Date().getFullYear());
             
+            // PERBAIKAN: Cek apakah shift sudah dibuka
             currentShift = shiftData.currentShift;
-            
-            // Inisialisasi password toggles
-            initializePasswordToggles();
             
             if (currentUser) {
                 $('#loggedInUser').text(currentUser.name);
                 $('#loginModal').hide();
                 
+                // PERBAIKAN: Logika baru - Admin boleh mengabaikan shift
                 if (currentUser.role === 'admin') {
+                    // Admin langsung bisa masuk tanpa harus buka shift
                     $('#mainApp').show();
                     initializeApp();
                     setTimeout(showWelcomeToast, 500);
                 } else {
+                    // Untuk kasir/non-admin, cek apakah shift sudah dibuka
                     if (!currentShift && checkPermission('shift_management')) {
+                        // Tampilkan modal input uang kas awal
                         showCashStartModal();
                     } else if (currentShift) {
+                        // Tampilkan aplikasi utama
                         $('#mainApp').show();
                         initializeApp();
+                        // Tampilkan welcome toast setelah login
                         setTimeout(showWelcomeToast, 500);
                     } else {
+                        // User tidak punya permission untuk shift management, langsung tampilkan app
                         $('#mainApp').show();
                         initializeApp();
                         setTimeout(showWelcomeToast, 500);
@@ -1539,18 +1426,18 @@
                 generateCaptcha();
             }
             
+            // Inisialisasi jam real-time
             updateLiveClock();
             setInterval(updateLiveClock, 1000);
             
             setInterval(updateCurrentDate, 60000);
             
-            // Login form submission dengan loading
+            // Login form submission
             $('#loginForm').submit(function(e) {
                 e.preventDefault();
                 const $loginBtn = $(this).find('button[type="submit"]');
                 const originalText = $loginBtn.html();
-                setButtonLoading($loginBtn, true, 'Memproses login...');
-                showLoading('Memverifikasi login...');
+                setButtonLoading($loginBtn, true);
 
                 setTimeout(() => {
                     try {
@@ -1560,7 +1447,6 @@
                             generateCaptcha();
                             $('#captchaInput').val('');
                             setButtonLoading($loginBtn, false, originalText);
-                            hideLoading();
                             return; 
                         }
                         
@@ -1568,9 +1454,11 @@
                         const password = $('#password').val();
                         const passwordHash = CryptoJS.SHA256(password).toString();
                         
+                        // Cari user berdasarkan username
                         const user = users.find(u => u.username === username);
                         
                         if (user && user.password === passwordHash) {
+                            // Set permissions default jika tidak ada
                             if (!user.permissions) {
                                 user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
                             }
@@ -1580,20 +1468,26 @@
                             $('#loggedInUser').text(currentUser.name);
                             $('#loginModal').hide();
                             
+                            // PERBAIKAN: Logika baru - Admin boleh mengabaikan shift
                             if (currentUser.role === 'admin') {
+                                // Admin langsung bisa masuk tanpa harus buka shift
                                 $('#mainApp').fadeIn();
                                 initializeApp();
                                 setTimeout(showWelcomeToast, 300);
                             } else {
+                                // Untuk kasir/non-admin, cek apakah shift sudah dibuka
                                 currentShift = shiftData.currentShift;
                                 
                                 if (!currentShift && checkPermission('shift_management')) {
+                                    // Tampilkan modal input uang kas awal
                                     showCashStartModal();
                                 } else if (currentShift) {
+                                    // Tampilkan aplikasi utama
                                     $('#mainApp').fadeIn();
                                     initializeApp();
                                     setTimeout(showWelcomeToast, 300);
                                 } else {
+                                    // User tidak punya permission untuk shift management, langsung tampilkan app
                                     $('#mainApp').fadeIn();
                                     initializeApp();
                                     setTimeout(showWelcomeToast, 300);
@@ -1611,12 +1505,11 @@
                         if ($loginBtn.prop('disabled')) {
                            setButtonLoading($loginBtn, false, originalText);
                         }
-                        hideLoading();
                     }
                 }, 500);
             });
             
-            // Event handlers dengan loading
+            // PERBAIKAN: Event handler untuk tombol skip shift (hanya admin)
             $('#skipShiftBtn').click(function() {
                 $('#cashStartModal').hide();
                 $('#mainApp').fadeIn();
@@ -1624,6 +1517,7 @@
                 showToast('Admin login tanpa membuka shift', 'info');
             });
             
+            // Event handlers untuk fitur shift baru
             $('#startShiftBtn').click(function() {
                 const initialCash = parseFloat($('#initialCashAmount').val()) || 0;
                 const cashNote = $('#cashNote').val().trim();
@@ -1633,37 +1527,36 @@
                     return;
                 }
                 
-                showLoading('Memulai shift...');
+                // Buat shift baru
+                currentShift = {
+                    id: 'SHIFT' + moment().format('YYYYMMDDHHmmss'),
+                    startTime: new Date(),
+                    cashier: {
+                        id: currentUser.id,
+                        name: currentUser.name,
+                        username: currentUser.username
+                    },
+                    initialCash: initialCash,
+                    initialNote: cashNote,
+                    status: 'open',
+                    orders: [],
+                    totalSales: 0,
+                    totalTransactions: 0
+                };
                 
-                setTimeout(() => {
-                    currentShift = {
-                        id: 'SHIFT' + moment().format('YYYYMMDDHHmmss'),
-                        startTime: new Date(),
-                        cashier: {
-                            id: currentUser.id,
-                            name: currentUser.name,
-                            username: currentUser.username
-                        },
-                        initialCash: initialCash,
-                        initialNote: cashNote,
-                        status: 'open',
-                        orders: [],
-                        totalSales: 0,
-                        totalTransactions: 0
-                    };
-                    
-                    shiftData.currentShift = currentShift;
-                    localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
-                    
-                    $('#shiftStatus').text('Aktif').removeClass('shift-closed').addClass('shift-open');
-                    
-                    $('#cashStartModal').hide();
-                    $('#mainApp').fadeIn();
-                    initializeApp();
-                    
-                    showToast('Shift berhasil dimulai dengan uang kas awal: ' + formatCurrency(initialCash), 'success');
-                    hideLoading();
-                }, 1000);
+                // Simpan shift data
+                shiftData.currentShift = currentShift;
+                localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
+                
+                // Update UI
+                $('#shiftStatus').text('Aktif').removeClass('shift-closed').addClass('shift-open');
+                
+                // Tampilkan aplikasi utama
+                $('#cashStartModal').hide();
+                $('#mainApp').fadeIn();
+                initializeApp();
+                
+                showToast('Shift berhasil dimulai dengan uang kas awal: ' + formatCurrency(initialCash), 'success');
             });
             
             $('#cancelShiftBtn').click(function() {
@@ -1672,6 +1565,7 @@
                 showToast('Pembukaan shift dibatalkan', 'info');
             });
             
+            // PERBAIKAN: Event handler untuk tombol Buka Shift di admin panel
             $('#openShiftBtn').click(function() {
                 if (!checkPermission('shift_management')) {
                     showToast('Anda tidak memiliki izin untuk membuka shift', 'error');
@@ -1697,35 +1591,35 @@
                     return;
                 }
                 
-                showLoading('Mempersiapkan penutupan shift...');
+                // Hitung total penjualan dari shift ini
+                const shiftStartTime = new Date(currentShift.startTime);
+                const shiftOrders = orders.filter(order => {
+                    const orderTime = new Date(order.date);
+                    return orderTime >= shiftStartTime;
+                });
                 
-                setTimeout(() => {
-                    const shiftStartTime = new Date(currentShift.startTime);
-                    const shiftOrders = orders.filter(order => {
-                        const orderTime = new Date(order.date);
-                        return orderTime >= shiftStartTime;
-                    });
-                    
-                    const totalSales = shiftOrders.reduce((sum, order) => sum + order.total, 0);
-                    const totalTransactions = shiftOrders.length;
-                    
-                    currentShift.orders = shiftOrders;
-                    currentShift.totalSales = totalSales;
-                    currentShift.totalTransactions = totalTransactions;
-                    
-                    $('#initialCashDisplay').text(formatCurrency(currentShift.initialCash));
-                    $('#totalSalesAmount').val(totalSales);
-                    $('#actualCashCount').val('');
-                    $('#dailyExpenses').val(0);
-                    $('#otherIncome').val(0);
-                    $('#shiftCloseNote').val('');
-                    
-                    const expectedCash = currentShift.initialCash + totalSales;
-                    $('#expectedCash').text(formatCurrency(expectedCash));
-                    
-                    $('#closeShiftModal').css('display', 'flex');
-                    hideLoading();
-                }, 1000);
+                const totalSales = shiftOrders.reduce((sum, order) => sum + order.total, 0);
+                const totalTransactions = shiftOrders.length;
+                
+                // Update data shift
+                currentShift.orders = shiftOrders;
+                currentShift.totalSales = totalSales;
+                currentShift.totalTransactions = totalTransactions;
+                
+                // Update UI modal
+                $('#initialCashDisplay').text(formatCurrency(currentShift.initialCash));
+                $('#totalSalesAmount').val(totalSales);
+                $('#actualCashCount').val('');
+                $('#dailyExpenses').val(0);
+                $('#otherIncome').val(0);
+                $('#shiftCloseNote').val('');
+                
+                // Hitung expected cash
+                const expectedCash = currentShift.initialCash + totalSales;
+                $('#expectedCash').text(formatCurrency(expectedCash));
+                
+                // Tampilkan modal tutup shift
+                $('#closeShiftModal').css('display', 'flex');
             });
             
             $('#actualCashCount').on('input', function() {
@@ -1754,6 +1648,7 @@
                 $('#actualCash').text(formatCurrency(actualCash));
                 $('#cashDifference').text(formatCurrency(difference));
                 
+                // Warna berdasarkan selisih
                 const $differenceElement = $('#cashDifference');
                 if (difference > 0) {
                     $differenceElement.css('color', 'var(--success)');
@@ -1775,48 +1670,52 @@
                     return;
                 }
                 
-                showLoading('Menutup shift...');
+                // Hitung expected cash
+                const initialCash = currentShift.initialCash || 0;
+                const totalSales = currentShift.totalSales || 0;
+                const expectedCash = initialCash + totalSales - expenses + otherIncome;
+                const difference = actualCash - expectedCash;
                 
-                setTimeout(() => {
-                    const initialCash = currentShift.initialCash || 0;
-                    const totalSales = currentShift.totalSales || 0;
-                    const expectedCash = initialCash + totalSales - expenses + otherIncome;
-                    const difference = actualCash - expectedCash;
-                    
-                    currentShift.endTime = new Date();
-                    currentShift.status = 'closed';
-                    currentShift.actualCash = actualCash;
-                    currentShift.expenses = expenses;
-                    currentShift.otherIncome = otherIncome;
-                    currentShift.cashDifference = difference;
-                    currentShift.closeNote = closeNote;
-                    
-                    if (!shiftData.shiftHistory) {
-                        shiftData.shiftHistory = [];
-                    }
-                    shiftData.shiftHistory.unshift(currentShift);
-                    
-                    shiftData.currentShift = null;
-                    currentShift = null;
-                    
-                    localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
-                    
-                    $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
-                    $('#closeShiftModal').hide();
-                    
-                    generateShiftReport(currentShift);
-                    
-                    showToast('Shift berhasil ditutup', 'success');
-                    hideLoading();
-                }, 1500);
+                // Tutup shift
+                currentShift.endTime = new Date();
+                currentShift.status = 'closed';
+                currentShift.actualCash = actualCash;
+                currentShift.expenses = expenses;
+                currentShift.otherIncome = otherIncome;
+                currentShift.cashDifference = difference;
+                currentShift.closeNote = closeNote;
+                
+                // Tambahkan ke history
+                if (!shiftData.shiftHistory) {
+                    shiftData.shiftHistory = [];
+                }
+                shiftData.shiftHistory.unshift(currentShift);
+                
+                // Reset current shift
+                shiftData.currentShift = null;
+                currentShift = null;
+                
+                // Simpan data
+                localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
+                
+                // Update UI
+                $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
+                $('#closeShiftModal').hide();
+                
+                // Tampilkan laporan shift
+                generateShiftReport(currentShift);
+                
+                showToast('Shift berhasil ditutup', 'success');
             });
             
+            // Event handler untuk fitur perhitungan laba
             $('#profitCalculationBtn').click(function() {
                 if (!checkPermission('profit_calculation')) {
                     showToast('Anda tidak memiliki izin untuk mengakses fitur perhitungan laba', 'error');
                     return;
                 }
                 
+                // Minta kode keamanan
                 promptForProfitAccess(() => {
                     $('#profitCalculationModal').css('display', 'flex');
                     $('#profitPeriod').val('today');
@@ -1826,11 +1725,7 @@
             });
             
             $('#calculateProfitBtn').click(function() {
-                showLoading('Menghitung laba...');
-                setTimeout(() => {
-                    calculateProfit();
-                    hideLoading();
-                }, 1000);
+                calculateProfit();
             });
             
             $('#profitPeriod').change(function() {
@@ -1842,29 +1737,22 @@
                 const monthlyFixedCost = parseFloat($('#monthlyFixedCost').val()) || 0;
                 const profitSecurityCode = $('#profitSecurityCode').val();
                 
-                showLoading('Menyimpan pengaturan...');
+                if (profitSecurityCode) {
+                    profitSettings.profitAccessCode = CryptoJS.SHA256(profitSecurityCode).toString();
+                }
                 
-                setTimeout(() => {
-                    if (profitSecurityCode) {
-                        profitSettings.profitAccessCode = CryptoJS.SHA256(profitSecurityCode).toString();
-                    }
-                    
-                    profitSettings.defaultCOGS = defaultCOGS;
-                    profitSettings.monthlyFixedCost = monthlyFixedCost;
-                    
-                    localStorage.setItem(STORAGE_KEYS.PROFIT_SETTINGS, JSON.stringify(profitSettings));
-                    showToast('Pengaturan perhitungan laba berhasil disimpan', 'success');
-                    hideLoading();
-                }, 800);
+                profitSettings.defaultCOGS = defaultCOGS;
+                profitSettings.monthlyFixedCost = monthlyFixedCost;
+                
+                localStorage.setItem(STORAGE_KEYS.PROFIT_SETTINGS, JSON.stringify(profitSettings));
+                showToast('Pengaturan perhitungan laba berhasil disimpan', 'success');
             });
             
             $('#downloadProfitReportBtn').click(function() {
-                showLoading('Menyiapkan laporan laba PDF...');
-                setTimeout(() => {
-                    downloadProfitReportAsPdf();
-                }, 500);
+                downloadProfitReportAsPdf();
             });
             
+            // Pengaturan shift dan laba di kontrol panel
             $('#saveShiftProfitSettingsBtn').click(function() {
                 const defaultShiftHours = parseFloat($('#defaultShiftHours').val()) || 8;
                 const autoCloseShift = $('#autoCloseShift').is(':checked');
@@ -1877,33 +1765,26 @@
                         showToast('Kode keamanan tidak cocok', 'error');
                         return;
                     }
+                    settings.profitAccessCode = CryptoJS.SHA256(profitAccessCode).toString();
+                    profitSettings.profitAccessCode = CryptoJS.SHA256(profitAccessCode).toString();
                 }
                 
-                showLoading('Menyimpan pengaturan...');
+                settings.defaultShiftHours = defaultShiftHours;
+                settings.autoCloseShift = autoCloseShift;
+                settings.defaultCOGS = defaultProfitCOGS;
+                profitSettings.defaultCOGS = defaultProfitCOGS;
                 
-                setTimeout(() => {
-                    if (profitAccessCode) {
-                        settings.profitAccessCode = CryptoJS.SHA256(profitAccessCode).toString();
-                        profitSettings.profitAccessCode = CryptoJS.SHA256(profitAccessCode).toString();
-                    }
-                    
-                    settings.defaultShiftHours = defaultShiftHours;
-                    settings.autoCloseShift = autoCloseShift;
-                    settings.defaultCOGS = defaultProfitCOGS;
-                    profitSettings.defaultCOGS = defaultProfitCOGS;
-                    
-                    localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
-                    localStorage.setItem(STORAGE_KEYS.PROFIT_SETTINGS, JSON.stringify(profitSettings));
-                    
-                    showToast('Pengaturan shift dan laba berhasil disimpan', 'success');
-                    hideLoading();
-                }, 800);
+                localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+                localStorage.setItem(STORAGE_KEYS.PROFIT_SETTINGS, JSON.stringify(profitSettings));
+                
+                showToast('Pengaturan shift dan laba berhasil disimpan', 'success');
             });
             
             $('#reloadCaptchaBtn').click(generateCaptcha);
             $('#logoutBtn').click(function(e) {
                 e.preventDefault();
                 
+                // Cek apakah shift masih terbuka
                 if (currentShift && currentShift.status === 'open') {
                     showConfirmation('Shift Masih Aktif', 'Shift penjualan masih aktif. Apakah Anda yakin ingin logout?', () => {
                         performLogout();
@@ -1941,6 +1822,7 @@
                 }
             });
             
+            // Cek permission untuk edit menu
             $(document).on('click', '.edit-menu', function(e) { 
                 e.stopPropagation(); 
                 if (checkPermission('edit_menu')) {
@@ -1950,6 +1832,7 @@
                 }
             });
             
+            // Cek permission untuk delete menu
             $(document).on('click', '.delete-menu', function(e) {
                 e.stopPropagation();
                 if (!checkPermission('delete_menu')) {
@@ -1960,12 +1843,8 @@
                 const menuId = $(this).data('id');
                 promptForPassword('item', () => {
                     showConfirmation('Hapus Menu', 'Yakin ingin menghapus menu ini?', () => {
-                        showLoading('Menghapus menu...');
-                        setTimeout(() => {
-                            menus = menus.filter(m => m.id !== menuId);
-                            saveMenus(); loadMenus(); showToast('Menu berhasil dihapus', 'success');
-                            hideLoading();
-                        }, 800);
+                        menus = menus.filter(m => m.id !== menuId);
+                        saveMenus(); loadMenus(); showToast('Menu berhasil dihapus', 'success');
                     });
                 });
             });
@@ -2025,6 +1904,7 @@
 
             $(document).on('click', function(e) { if (!$(e.target).closest('.member-search-container').length) $('#memberSearchResults').hide(); });
             
+            // PROSES ORDER FIX: Perbaikan event handler untuk tombol proses pesanan
             $('#processOrderBtn').click(function() {
                 if (currentOrder.items.length === 0) { 
                     showToast('Pesanan kosong', 'warning'); 
@@ -2037,16 +1917,19 @@
                 updatePaymentTab(); 
                 switchPaymentModalTab('payment');
                 
+                // Reset payment method ke tunai setiap kali modal dibuka
                 $('#paymentMethod').val('cash').trigger('change');
                 $('#paymentAmount').val('').trigger('input');
                 
                 $('#processOrderModal').css('display', 'flex');
             });
             
+            // Fix: Tambahkan event handler untuk tabs di modal pembayaran
             $('#processOrderModal .tabs .tab').click(function() { 
                 switchPaymentModalTab($(this).data('tab')); 
             });
             
+            // Handle payment method change
             $('#paymentMethod').change(function() {
                 togglePaymentMethod();
                 if ($(this).val() === 'cash') {
@@ -2059,6 +1942,7 @@
                 $('#paymentAmount').val($(this).data('amount')).trigger('input'); 
             });
             
+            // FIX: Perbaikan fungsi completePaymentBtn untuk menangani semua metode pembayaran
             $('#completePaymentBtn').click(function() {
                 if ($(this).prop('disabled')) return;
                 
@@ -2066,6 +1950,7 @@
                 let paymentAmount;
                 
                 if (paymentMethod === 'qris') {
+                    // Untuk QRIS, payment amount sama dengan total
                     paymentAmount = currentOrder.total;
                 } else {
                     paymentAmount = parseFloat($('#paymentAmount').val()) || 0;
@@ -2076,8 +1961,7 @@
                 }
                 
                 const $btn = $(this), originalText = $btn.html();
-                setButtonLoading($btn, true, 'Memproses pembayaran...');
-                showLoading('Memproses pesanan...');
+                setButtonLoading($btn, true);
 
                 setTimeout(() => {
                     try {
@@ -2114,9 +1998,8 @@
                         showToast('Terjadi kesalahan saat memproses pesanan', 'error');
                     } finally {
                         setButtonLoading($btn, false, originalText);
-                        hideLoading();
                     }
-                }, 1500);
+                }, 500);
             });
             
             $(document).on('click', '.filter-chip', function() { 
@@ -2125,6 +2008,7 @@
                 loadMenus($('#menuSearch').val(), $(this).data('category')); 
             });
             
+            // Cek permission untuk add menu
             $('#addMenuBtn').click(() => { 
                 if (checkPermission('add_menu')) {
                     openEditMenuModal(null); 
@@ -2133,6 +2017,7 @@
                 }
             });
             
+            // Cek permission untuk manage categories
             $('#manageCategoriesBtn').click(() => { 
                 if (checkPermission('manage_categories')) { 
                     loadCategoriesForManagement(); 
@@ -2142,6 +2027,7 @@
                 }
             });
             
+            // PERBAIKAN: Event handler untuk tombol Generate Laporan yang diperbaiki
             $('#viewReportsBtn').click(() => { 
                 if (checkPermission('view_reports')) { 
                     $('#reportsModal .tabs .tab').removeClass('active').first().addClass('active');
@@ -2155,6 +2041,7 @@
                 }
             });
             
+            // Cek permission untuk history
             $('#historyBtn').click(() => { 
                 if (checkPermission('transaction_history')) { 
                     loadTransactionHistory(); 
@@ -2164,6 +2051,7 @@
                 }
             });
             
+            // Cek permission untuk kitchen display
             $('#kitchenDisplayBtn').click(() => { 
                 if (checkPermission('kitchen_display')) { 
                     loadKitchenOrders(); 
@@ -2174,6 +2062,7 @@
                 }
             });
             
+            // Cek permission untuk manage members
             $('#manageMembersBtn').click(() => { 
                 if (checkPermission('manage_members')) { 
                     resetMemberForm(); 
@@ -2187,6 +2076,7 @@
             
             $('#manageMemberSearchInput').on('input', function() { loadMembersForManagement($(this).val()); });
             
+            // Cek permission untuk manage store info
             $('#manageStoreInfoBtn').click(() => { 
                 if (checkPermission('manage_store_info')) { 
                     loadStoreInfo(); 
@@ -2196,6 +2086,7 @@
                 }
             });
             
+            // Cek permission untuk control panel
             $('#controlPanelBtn').click(() => {
                 if (!checkPermission('control_panel')) {
                     showToast('Anda tidak memiliki izin untuk mengakses kontrol panel', 'error');
@@ -2210,6 +2101,7 @@
                     $('#memberDiscount').val(settings.memberDiscountPercent || 2);
                     $('#nonMemberDiscount').val(settings.nonMemberDiscountPercent || 0);
                     
+                    // Load shift settings
                     $('#defaultShiftHours').val(settings.defaultShiftHours || 8);
                     $('#autoCloseShift').prop('checked', settings.autoCloseShift || false);
                     $('#defaultProfitCOGS').val(settings.defaultCOGS || 60);
@@ -2218,14 +2110,10 @@
                 });
             });
             
+            // Cek permission untuk backup data
             $('#backupDataBtn').click(() => { 
                 if (checkPermission('backup_restore')) { 
-                    showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lksbackup). Lanjutkan?', () => {
-                        showLoading('Membuat backup data...');
-                        setTimeout(() => {
-                            backupData();
-                        }, 500);
-                    }); 
+                    showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lksbackup). Lanjutkan?', backupData); 
                 } else {
                     showToast('Anda tidak memiliki izin untuk melakukan backup data', 'error');
                 }
@@ -2233,30 +2121,24 @@
             
             $('#restoreFile').change(function() { 
                 if (checkPermission('backup_restore')) { 
-                    showLoading('Memproses file backup...');
-                    setTimeout(() => {
-                        restoreFromFile(this.files[0]); 
-                        $(this).val(''); 
-                    }, 500);
+                    restoreFromFile(this.files[0]); 
+                    $(this).val(''); 
                 } else {
                     showToast('Anda tidak memiliki izin untuk melakukan restore data', 'error');
                     $(this).val('');
                 }
             });
             
+            // Cek permission untuk reset data
             $('#resetDataBtn').click(() => { 
                 if (checkPermission('reset_data')) { 
-                    promptForPassword('item', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', () => {
-                        showLoading('Meriset data...');
-                        setTimeout(() => {
-                            resetAllData();
-                        }, 1000);
-                    }, 'danger')); 
+                    promptForPassword('item', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', resetAllData, 'danger')); 
                 } else {
                     showToast('Anda tidak memiliki izin untuk mereset data', 'error');
                 }
             });
             
+            // TOMBOL BARU: Generate Daftar Menu PDF
             $('#generateMenuPdfBtn').click(function() {
                 if (menus.length === 0) {
                     showToast('Tidak ada menu untuk digenerate', 'warning');
@@ -2268,47 +2150,39 @@
                     return;
                 }
                 
-                showLoading('Mempersiapkan daftar menu...');
+                showToast('Mempersiapkan daftar menu...', 'info');
                 setTimeout(() => {
                     generateMenuPdfPreview();
-                    hideLoading();
-                }, 1500);
+                }, 500);
             });
             
             $('#downloadMenuPdfBtn').click(function() {
-                showLoading('Menyiapkan PDF untuk diunduh...');
-                setTimeout(() => {
-                    downloadMenuPdf();
-                }, 500);
+                downloadMenuPdf();
             });
             
             $('#saveMenuBtn').click(function() {
                 const id = $('#menuId').val(), name = $('#menuName').val().trim(), category = $('#menuCategory').val(), price = parseFloat($('#menuPrice').val()) || 0, image = $('#menuImage').val().trim(), description = $('#menuDescription').val().trim();
                 if (!name || !category || price <= 0) { showToast('Nama, kategori, dan harga harus valid', 'error'); return; }
                 const action = () => {
-                    showLoading('Menyimpan menu...');
-                    setTimeout(() => {
-                        if (id) {
-                            if (!checkPermission('edit_menu')) {
-                                showToast('Anda tidak memiliki izin untuk mengedit menu', 'error');
-                                hideLoading();
-                                return;
-                            }
-                            
-                            const menuIndex = menus.findIndex(m => m.id === id);
-                            if (menuIndex > -1) menus[menuIndex] = { ...menus[menuIndex], name, category, price, image, description };
-                        } else {
-                            if (!checkPermission('add_menu')) {
-                                showToast('Anda tidak memiliki izin untuk menambah menu', 'error');
-                                hideLoading();
-                                return;
-                            }
-                            
-                            menus.unshift({ id: 'M' + moment().format('x'), name, category, price, image, description });
+                    if (id) {
+                        // Cek permission untuk edit menu
+                        if (!checkPermission('edit_menu')) {
+                            showToast('Anda tidak memiliki izin untuk mengedit menu', 'error');
+                            return;
                         }
-                        saveMenus(); loadMenus(); $('#menuModal').hide(); showToast(`Menu ${id ? 'diperbarui' : 'disimpan'}`, 'success');
-                        hideLoading();
-                    }, 800);
+                        
+                        const menuIndex = menus.findIndex(m => m.id === id);
+                        if (menuIndex > -1) menus[menuIndex] = { ...menus[menuIndex], name, category, price, image, description };
+                    } else {
+                        // Cek permission untuk add menu
+                        if (!checkPermission('add_menu')) {
+                            showToast('Anda tidak memiliki izin untuk menambah menu', 'error');
+                            return;
+                        }
+                        
+                        menus.unshift({ id: 'M' + moment().format('x'), name, category, price, image, description });
+                    }
+                    saveMenus(); loadMenus(); $('#menuModal').hide(); showToast(`Menu ${id ? 'diperbarui' : 'disimpan'}`, 'success');
                 };
                 if (id) promptForPassword('item', action); else action();
             });
@@ -2317,25 +2191,16 @@
                 const name = $('#newCategoryName').val().trim();
                 if (!name) return showToast('Nama kategori harus diisi', 'error');
                 if (categories.some(c => c.name.toLowerCase() === name.toLowerCase())) return showToast('Kategori sudah ada', 'error');
-                
-                showLoading('Menambahkan kategori...');
-                setTimeout(() => {
-                    categories.unshift({ id: 'C' + moment().format('x'), name });
-                    saveCategories(); loadCategories(); loadCategoriesForManagement(); $('#newCategoryName').val(''); showToast('Kategori ditambahkan', 'success');
-                    hideLoading();
-                }, 500);
+                categories.unshift({ id: 'C' + moment().format('x'), name });
+                saveCategories(); loadCategories(); loadCategoriesForManagement(); $('#newCategoryName').val(''); showToast('Kategori ditambahkan', 'success');
             });
             
             $(document).on('click', '.remove-category', function() {
                 const categoryId = $(this).data('id'), category = categories.find(c => c.id === categoryId);
                 if (menus.some(m => m.category === category.name)) return showToast('Kategori sedang digunakan', 'error');
                 promptForPassword('item', () => {
-                    showLoading('Menghapus kategori...');
-                    setTimeout(() => {
-                        categories = categories.filter(c => c.id !== categoryId);
-                        saveCategories(); loadCategories(); loadCategoriesForManagement(); showToast('Kategori dihapus', 'success');
-                        hideLoading();
-                    }, 500);
+                    categories = categories.filter(c => c.id !== categoryId);
+                    saveCategories(); loadCategories(); loadCategoriesForManagement(); showToast('Kategori dihapus', 'success');
                 });
             });
             
@@ -2346,18 +2211,13 @@
                 e.preventDefault();
                 const id = $('#memberIdInput').val(), name = $('#memberName').val().trim(), phone = $('#memberPhone').val().trim(), address = $('#memberAddress').val().trim();
                 if (!name || !phone) return showToast('Nama dan nomor telepon harus diisi', 'error');
-                
-                showLoading('Menyimpan member...');
-                setTimeout(() => {
-                    if (id) {
-                        const memberIndex = members.findIndex(m => m.id === id);
-                        if (memberIndex > -1) members[memberIndex] = { ...members[memberIndex], name, phone, address };
-                    } else {
-                        members.unshift({ id: generateMemberId(), name, phone, address, joinDate: new Date().toISOString(), transactions: 0, totalSpent: 0 });
-                    }
-                    saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm); showToast(`Member ${id ? 'diperbarui' : 'ditambahkan'}`, 'success');
-                    hideLoading();
-                }, 800);
+                if (id) {
+                    const memberIndex = members.findIndex(m => m.id === id);
+                    if (memberIndex > -1) members[memberIndex] = { ...members[memberIndex], name, phone, address };
+                } else {
+                    members.unshift({ id: generateMemberId(), name, phone, address, joinDate: new Date().toISOString(), transactions: 0, totalSpent: 0 });
+                }
+                saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm); showToast(`Member ${id ? 'diperbarui' : 'ditambahkan'}`, 'success');
             });
             
             $(document).on('click', '.edit-member', function() {
@@ -2369,61 +2229,26 @@
             $('#deleteMemberBtn').click(function() {
                 const memberId = $(this).data('id');
                 promptForPassword('item', () => showConfirmation('Hapus Member', 'Yakin ingin menghapus member ini?', () => {
-                    showLoading('Menghapus member...');
-                    setTimeout(() => {
-                        members = members.filter(m => m.id !== memberId);
-                        saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm); showToast('Member dihapus', 'success');
-                        hideLoading();
-                    }, 800);
+                    members = members.filter(m => m.id !== memberId);
+                    saveMembers(); loadMembersForManagement(); $('#memberFormContainer').slideUp(resetMemberForm); showToast('Member dihapus', 'success');
                 }, 'danger'));
             });
             
-            $(document).on('click', '.kta-member', function() { 
-                showLoading('Membuat kartu anggota...');
-                setTimeout(() => {
-                    openKtaModal($(this).data('id'));
-                    hideLoading();
-                }, 500);
-            });
-            $('#downloadKtaPdfBtn').click(function() {
-                showLoading('Menyiapkan PDF kartu anggota...');
-                setTimeout(() => {
-                    downloadKtaAsPdf();
-                }, 500);
-            });
+            $(document).on('click', '.kta-member', function() { openKtaModal($(this).data('id')); });
+            $('#downloadKtaPdfBtn').click(downloadKtaAsPdf);
             
+            // PERBAIKAN: Event handler untuk tombol Generate Laporan yang diperbaiki
             $('#generateReportBtn').click(function() {
-                showLoading('Membuat laporan...');
-                setTimeout(() => {
-                    generateReport();
-                    hideLoading();
-                }, 1000);
+                generateReport();
             });
             
             $('#printReportBtn').click(printReport);
-            $('#downloadReportBtn').click(function() {
-                showLoading('Menyiapkan laporan PDF...');
-                setTimeout(() => {
-                    downloadReportAsPdf();
-                }, 500);
-            });
+            $('#downloadReportBtn').click(downloadReportAsPdf);
             $('#reportsModal .tabs .tab').click(function() { switchReportsModalTab($(this).data('tab')); });
             $('#historySearchInput').on('input', function() { loadTransactionHistory($(this).val()); });
             $('#printHistoryBtn').click(() => printElement('#historyResultsContainer .printable-area'));
-            $('#downloadHistoryBtn').click(function() {
-                showLoading('Menyiapkan PDF histori...');
-                setTimeout(() => {
-                    downloadHistoryAsPdf();
-                }, 500);
-            });
-            $(document).on('click', '.reprint-receipt', function() { 
-                showLoading('Membuat struk...');
-                setTimeout(() => {
-                    const order = orders.find(o => o.id === $(this).data('id')); 
-                    if (order) showReceiptModal(order);
-                    hideLoading();
-                }, 500);
-            });
+            $('#downloadHistoryBtn').click(downloadHistoryAsPdf);
+            $(document).on('click', '.reprint-receipt', function() { const order = orders.find(o => o.id === $(this).data('id')); if (order) showReceiptModal(order); });
             $(document).on('click', '.status-item', function() {
                 const order = orders.find(o => o.id === $(this).data('id'));
                 if (!order || order.statusLocked) return;
@@ -2433,116 +2258,48 @@
             });
             
             $('#refreshKitchenBtn').click(loadKitchenOrders);
-            $('#saveStoreInfoBtn').click(function(e) {
-                e.preventDefault();
-                showLoading('Menyimpan info restoran...');
-                setTimeout(() => {
-                    saveStoreInfo(e);
-                    hideLoading();
-                }, 800);
-            });
+            $('#saveStoreInfoBtn').click(saveStoreInfo);
             $('#controlPanelModal .tabs .tab').click(function() { switchControlPanelTab($(this).data('tab')); });
             $('#showAddUserFormBtn').click(() => { resetUserForm(); $('#userFormContainer').slideDown(); });
             $('#cancelUserFormBtn').click(() => $('#userFormContainer').slideUp(resetUserForm));
-            $('#userForm').submit(function(e) {
-                e.preventDefault();
-                showLoading('Menyimpan pengguna...');
-                setTimeout(() => {
-                    saveUser(e);
-                    hideLoading();
-                }, 800);
-            });
-            $(document).on('click', '.edit-user', function() { 
-                showLoading('Memuat data pengguna...');
-                setTimeout(() => {
-                    const user = users.find(u => u.id === $(this).data('id')); 
-                    if (user) { populateUserForm(user); $('#userFormContainer').slideDown(); }
-                    hideLoading();
-                }, 500);
-            });
+            $('#userForm').submit(saveUser);
+            $(document).on('click', '.edit-user', function() { const user = users.find(u => u.id === $(this).data('id')); if (user) { populateUserForm(user); $('#userFormContainer').slideDown(); } });
             $(document).on('click', '.delete-user', function() {
                 const userId = $(this).data('id');
                 if (users.length <= 1) return showToast('Tidak dapat menghapus satu-satunya pengguna.', 'error');
                 if (userId === currentUser.id) return showToast('Anda tidak dapat menghapus akun Anda sendiri.', 'error');
                 showConfirmation('Hapus Pengguna', 'Yakin ingin menghapus pengguna ini?', () => {
-                    showLoading('Menghapus pengguna...');
-                    setTimeout(() => {
-                        users = users.filter(u => u.id !== userId);
-                        saveUsers(); loadUsersForManagement(); showToast('Pengguna dihapus', 'success');
-                        hideLoading();
-                    }, 800);
+                    users = users.filter(u => u.id !== userId);
+                    saveUsers(); loadUsersForManagement(); showToast('Pengguna dihapus', 'success');
                 }, 'danger');
             });
             
-            $('#itemSecurityForm').submit(function(e) {
-                e.preventDefault();
-                showLoading('Mengubah password...');
-                setTimeout(() => {
-                    changeSecurityCode(e);
-                    hideLoading();
-                }, 800);
-            });
-            $('#panelSecurityForm').submit(function(e) {
-                e.preventDefault();
-                showLoading('Mengubah password...');
-                setTimeout(() => {
-                    changeSecurityCode(e);
-                    hideLoading();
-                }, 800);
-            });
-            $('#changeOwnPasswordForm').submit(function(e) {
-                e.preventDefault();
-                showLoading('Mengubah password...');
-                setTimeout(() => {
-                    changeOwnPassword(e);
-                    hideLoading();
-                }, 800);
-            });
+            $('#itemSecurityForm').submit(changeSecurityCode);
+            $('#panelSecurityForm').submit(changeSecurityCode);
+            $('#changeOwnPasswordForm').submit(changeOwnPassword);
             $('#discountSettingsForm').submit(function(e) {
                 e.preventDefault();
                 const memberDiscount = parseFloat($('#memberDiscount').val()), nonMemberDiscount = parseFloat($('#nonMemberDiscount').val());
                 if (isNaN(memberDiscount) || isNaN(nonMemberDiscount) || memberDiscount < 0 || nonMemberDiscount < 0) return showToast('Nilai diskon tidak valid.', 'error');
-                
-                showLoading('Menyimpan pengaturan diskon...');
-                setTimeout(() => {
-                    settings.memberDiscountPercent = memberDiscount; settings.nonMemberDiscountPercent = nonMemberDiscount;
-                    saveSettings(); showToast('Pengaturan diskon berhasil disimpan.', 'success');
-                    hideLoading();
-                }, 800);
+                settings.memberDiscountPercent = memberDiscount; settings.nonMemberDiscountPercent = nonMemberDiscount;
+                saveSettings(); showToast('Pengaturan diskon berhasil disimpan.', 'success');
             });
             
             // Event untuk permissions
             $('#permissionUserSelect').change(function() {
                 const userId = $(this).val();
                 if (userId) {
-                    showLoading('Memuat hak akses...');
-                    setTimeout(() => {
-                        loadUserPermissions(userId);
-                        $('#permissionsContainer').show();
-                        $('#permissionsActions').show();
-                        hideLoading();
-                    }, 500);
+                    loadUserPermissions(userId);
+                    $('#permissionsContainer').show();
+                    $('#permissionsActions').show();
                 } else {
                     $('#permissionsContainer').hide();
                     $('#permissionsActions').hide();
                 }
             });
             
-            $('#savePermissionsBtn').click(function() {
-                showLoading('Menyimpan hak akses...');
-                setTimeout(() => {
-                    saveUserPermissions();
-                    hideLoading();
-                }, 800);
-            });
-            
-            $('#resetPermissionsBtn').click(function() {
-                showLoading('Meriset hak akses...');
-                setTimeout(() => {
-                    resetUserPermissions();
-                    hideLoading();
-                }, 800);
-            });
+            $('#savePermissionsBtn').click(saveUserPermissions);
+            $('#resetPermissionsBtn').click(resetUserPermissions);
             
             $('#passwordPromptForm').submit(e => e.preventDefault());
             $('#passwordPromptSubmit').click(submitPasswordPrompt);
@@ -2557,12 +2314,7 @@
             });
             $('#reportPeriod').change(() => $('#customDateRange').toggle($('#reportPeriod').val() === 'custom'));
             $('#printReceiptBtn').on('click', () => printElement('#receiptModalBody #receiptContent'));
-            $('#downloadReceiptPdfBtn').on('click', function() {
-                showLoading('Menyiapkan PDF struk...');
-                setTimeout(() => {
-                    downloadReceiptAsPdf();
-                }, 500);
-            });
+            $('#downloadReceiptPdfBtn').on('click', downloadReceiptAsPdf);
             
             // FIX: Inisialisasi button status berdasarkan isi pesanan
             updateOrder();
@@ -2572,29 +2324,35 @@
                 hideWelcomeToast();
             });
             
-            // Inisialisasi admin grid layout
+            // PERBAIKAN: Inisialisasi admin grid layout
             updateAdminGridLayout();
         });
 
+        // PERBAIKAN: Fungsi untuk update layout admin grid berdasarkan ukuran layar
         function updateAdminGridLayout() {
             const width = window.innerWidth;
             const $adminGrid = $('.admin-grid');
             
             if (width <= 480) {
+                // Mobile sangat kecil: 2 kolom
                 $adminGrid.css('grid-template-columns', 'repeat(2, 1fr)');
             } else if (width <= 768) {
+                // Tablet kecil: 3 kolom
                 $adminGrid.css('grid-template-columns', 'repeat(3, 1fr)');
             } else {
+                // Desktop: kembali ke auto-fill
                 $adminGrid.css('grid-template-columns', 'repeat(auto-fill, minmax(150px, 1fr))');
             }
         }
 
+        // Fungsi untuk menampilkan modal input uang kas awal
         function showCashStartModal() {
             $('#shiftDateDisplay').text(moment().format('dddd, DD MMMM YYYY'));
             $('#shiftCashierName').text(currentUser.name);
             $('#initialCashAmount').val('');
             $('#cashNote').val('');
             
+            // PERBAIKAN: Tampilkan tombol Skip hanya untuk admin
             if (currentUser.role === 'admin') {
                 $('#skipShiftBtn').show();
             } else {
@@ -2604,22 +2362,27 @@
             $('#cashStartModal').css('display', 'flex');
         }
 
+        // Fungsi untuk menampilkan jam real-time
         function updateLiveClock() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
             $('#liveClock').text(timeString);
         }
 
+        // Fungsi untuk menampilkan welcome toast setelah login
         function showWelcomeToast() {
             const $welcomeToast = $('#welcomeToast');
             $welcomeToast.addClass('show');
             
+            // Reset countdown
             let countdown = 15;
             $('#countdown').text(countdown);
             
+            // Clear existing intervals/timeouts
             if (countdownInterval) clearInterval(countdownInterval);
             if (welcomeToastTimeout) clearTimeout(welcomeToastTimeout);
             
+            // Start countdown
             countdownInterval = setInterval(function() {
                 countdown--;
                 $('#countdown').text(countdown);
@@ -2628,15 +2391,18 @@
                 }
             }, 1000);
             
+            // Set timeout untuk auto-hide setelah 15 detik
             welcomeToastTimeout = setTimeout(() => {
                 hideWelcomeToast();
             }, 15000);
-        }
-        
+            
+                    
+        // Fungsi untuk menyembunyikan welcome toast
         function hideWelcomeToast() {
             const $welcomeToast = $('#welcomeToast');
             $welcomeToast.removeClass('show');
             
+            // Clear intervals/timeouts
             if (countdownInterval) {
                 clearInterval(countdownInterval);
                 countdownInterval = null;
@@ -2655,14 +2421,17 @@
             updateStoreInfo(); 
             updateTableNumbers(); 
             
+            // Update shift status
             if (currentShift) {
                 $('#shiftStatus').text('Aktif').removeClass('shift-closed').addClass('shift-open');
             } else {
                 $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
             }
             
+            // PERBAIKAN: Update tampilan tombol shift berdasarkan status shift
             updateShiftButtons();
             
+            // Tampilkan/hide admin panel berdasarkan permission
             const showAdminPanel = checkPermission('add_menu') || checkPermission('edit_menu') || 
                                   checkPermission('delete_menu') || checkPermission('manage_categories') ||
                                   checkPermission('manage_members') || checkPermission('manage_store_info') ||
@@ -2673,19 +2442,24 @@
             
             $('#adminPanel').toggle(showAdminPanel);
             
+            // PERBAIKAN: Update admin grid layout
             updateAdminGridLayout();
         }
         
+        // PERBAIKAN: Fungsi untuk update tampilan tombol shift
         function updateShiftButtons() {
             if (currentShift) {
+                // Shift sedang berjalan
                 $('#openShiftBtn').prop('disabled', true).html('<i class="fas fa-cash-register"></i> Shift Berjalan');
                 $('#closeShiftBtn').prop('disabled', false);
             } else {
+                // Tidak ada shift
                 $('#openShiftBtn').prop('disabled', false).html('<i class="fas fa-cash-register"></i> Buka Shift');
                 $('#closeShiftBtn').prop('disabled', true);
             }
         }
         
+        // Fungsi untuk meminta kode keamanan akses laba
         function promptForProfitAccess(callback) {
             const title = 'Kode Keamanan Akses Laba';
             $('#passwordPromptTitle').text(title);
@@ -2731,11 +2505,13 @@
             }
         }
         
+        // Fungsi untuk mengecek permission user
         function checkPermission(permission) {
             if (!currentUser || !currentUser.permissions) {
                 return false;
             }
             
+            // Admin memiliki semua permission
             if (currentUser.role === 'admin') {
                 return true;
             }
@@ -2743,6 +2519,7 @@
             return currentUser.permissions[permission] === true;
         }
         
+        // Fungsi untuk menghasilkan laporan shift
         function generateShiftReport(shift) {
             const shiftDuration = moment.duration(moment(shift.endTime).diff(moment(shift.startTime)));
             const hours = Math.floor(shiftDuration.asHours());
@@ -2871,6 +2648,7 @@
                 </div>
             `;
             
+            // Tampilkan report dalam modal
             const modalContent = `
                 <div class="modal-content" style="max-width: 800px;">
                     <div class="modal-header">
@@ -2888,19 +2666,18 @@
                 </div>
             `;
             
+            // Buat modal sementara
             const tempModal = $('<div class="modal" style="display: flex;">' + modalContent + '</div>');
             $('body').append(tempModal);
             
+            // Event handlers untuk tombol di modal
             tempModal.find('.modal-close, .modal-close-btn').click(function() {
                 tempModal.remove();
             });
             
             tempModal.find('#downloadShiftReportBtn').click(function() {
-                showLoading('Menyiapkan laporan shift PDF...');
-                setTimeout(() => {
-                    downloadShiftReportAsPdf(shift);
-                    tempModal.remove();
-                }, 500);
+                downloadShiftReportAsPdf(shift);
+                tempModal.remove();
             });
             
             tempModal.find('#printShiftReportBtn').click(function() {
@@ -2908,6 +2685,7 @@
             });
         }
         
+        // PERBAIKAN: Fungsi untuk menghitung laba yang diperbaiki
         function calculateProfit() {
             let startDate, endDate;
             const period = $('#profitPeriod').val();
@@ -2944,26 +2722,32 @@
                 return;
             }
             
+            // Hitung total penjualan
             const totalSales = filteredOrders.reduce((sum, order) => sum + order.total, 0);
             const totalTransactions = filteredOrders.length;
             const totalItemsSold = filteredOrders.reduce((sum, order) => sum + order.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0);
             
+            // Hitung HPP (Harga Pokok Penjualan)
             const defaultCOGS = profitSettings.defaultCOGS || 60;
             const cogsPercentage = defaultCOGS / 100;
             const totalCOGS = totalSales * cogsPercentage;
             
+            // Hitung laba kotor
             const grossProfit = totalSales - totalCOGS;
             const grossProfitMargin = totalSales > 0 ? (grossProfit / totalSales) * 100 : 0;
             
+            // Hitung biaya operasional (estimasi dari fixed cost bulanan)
             const monthlyFixedCost = profitSettings.monthlyFixedCost || 0;
             const daysInMonth = moment().daysInMonth();
             const dailyFixedCost = monthlyFixedCost / daysInMonth;
             const periodDays = Math.ceil(moment.duration(endDate.diff(startDate)).asDays()) || 1;
             const operationalCost = dailyFixedCost * periodDays;
             
+            // Hitung laba bersih
             const netProfit = grossProfit - operationalCost;
             const netProfitMargin = totalSales > 0 ? (netProfit / totalSales) * 100 : 0;
             
+            // Generate report HTML
             let reportHtml = `
                 <div class="profit-calculation-container">
                     <h4 class="panel-title">Laporan Laba ${period === 'today' ? 'Hari Ini' : period === 'week' ? 'Minggu Ini' : period === 'month' ? 'Bulan Ini' : 'Custom'}</h4>
@@ -3050,6 +2834,7 @@
             showToast('Perhitungan laba selesai', 'success');
         }
         
+        // PERBAIKAN: Fungsi untuk generate laporan yang diperbaiki
         function generateReport() {
             let startDate, endDate;
             const period = $('#reportPeriod').val();
@@ -3080,9 +2865,11 @@
             
             const filteredOrders = orders.filter(o => moment(o.date).isBetween(startDate, endDate));
             
+            // Gunakan fungsi baru untuk generate laporan PDF yang profesional
             generateProfessionalSalesReport(filteredOrders, startDate, endDate, period);
         }
         
+        // FUNGSI BARU: Generate laporan PDF yang lebih profesional
         function generateProfessionalSalesReport(filteredOrders, startDate, endDate, period) {
             const $resultsContainer = $('#reportResults');
             if (filteredOrders.length === 0) { 
@@ -3095,6 +2882,7 @@
             const totalItemsSold = filteredOrders.reduce((s, o) => s + o.items.reduce((i, item) => i + item.quantity, 0), 0);
             const totalTransactions = filteredOrders.length;
             
+            // Hitung per metode pembayaran
             const paymentMethods = {};
             filteredOrders.forEach(o => {
                 const method = o.paymentMethod === 'cash' ? 'Tunai' : 
@@ -3103,6 +2891,7 @@
                 paymentMethods[method] = (paymentMethods[method] || 0) + o.total;
             });
             
+            // Hitung menu terlaris
             const menuSales = {};
             filteredOrders.forEach(o => o.items.forEach(item => { 
                 menuSales[item.menu.id] = menuSales[item.menu.id] || { 
@@ -3115,10 +2904,12 @@
             }));
             const topMenus = Object.values(menuSales).sort((a, b) => b.quantity - a.quantity).slice(0, 10);
             
+            // PERBAIKAN: Pastikan periodText didefinisikan
             const periodText = period === 'today' ? 'Hari Ini' : 
                              period === 'week' ? 'Minggu Ini' : 
                              period === 'month' ? 'Bulan Ini' : 'Custom';
             
+            // Generate HTML laporan profesional
             let reportHtml = `
                 <div class="professional-pdf">
                     <div class="pdf-report-header">
@@ -3168,6 +2959,7 @@
                             <tbody>
             `;
             
+            // Tampilkan data metode pembayaran
             Object.keys(paymentMethods).forEach(method => {
                 const methodOrders = filteredOrders.filter(o => {
                     const oMethod = o.paymentMethod === 'cash' ? 'Tunai' : 
@@ -3209,6 +3001,7 @@
                             <tbody>
             `;
             
+            // Tampilkan menu terlaris
             topMenus.forEach((menu, index) => {
                 const menuPercentage = totalRevenue > 0 ? (menu.total / totalRevenue * 100).toFixed(2) : 0;
                 reportHtml += `
@@ -3273,12 +3066,14 @@
             $('#printReportBtn, #downloadReportBtn').show();
         }
         
+        // Fungsi untuk download laporan laba sebagai PDF
         function downloadProfitReportAsPdf() {
             const reportData = $('#downloadProfitReportBtn').data('reportData');
             if (!reportData) return;
             
-            showLoading('Menyiapkan laporan laba PDF...');
+            showToast('Menyiapkan laporan laba PDF...', 'info');
             
+            // Buat HTML untuk PDF
             const periodText = reportData.period === 'today' ? 'Hari Ini' : 
                              reportData.period === 'week' ? 'Minggu Ini' : 
                              reportData.period === 'month' ? 'Bulan Ini' : 'Custom';
@@ -3406,10 +3201,12 @@
                 </div>
             `;
             
+            // Buat elemen sementara untuk render PDF
             const tempElement = document.createElement('div');
             tempElement.innerHTML = htmlContent;
             document.body.appendChild(tempElement);
             
+            // Konversi ke PDF
             setTimeout(() => {
                 html2canvas(tempElement.querySelector('.professional-pdf'), {
                     scale: 2,
@@ -3427,29 +3224,31 @@
                     
                     document.body.removeChild(tempElement);
                     showToast('Laporan laba berhasil diunduh', 'success');
-                    hideLoading();
                 }).catch(err => {
                     console.error('Error generating PDF:', err);
                     document.body.removeChild(tempElement);
                     showToast('Gagal membuat PDF', 'error');
-                    hideLoading();
                 });
             }, 1000);
         }
         
+        // Fungsi untuk download laporan shift sebagai PDF
         function downloadShiftReportAsPdf(shift) {
-            showLoading('Menyiapkan laporan shift PDF...');
+            showToast('Menyiapkan laporan shift PDF...', 'info');
             
+            // Generate HTML untuk laporan shift (sama seperti di generateShiftReport)
             const shiftDuration = moment.duration(moment(shift.endTime).diff(moment(shift.startTime)));
             const hours = Math.floor(shiftDuration.asHours());
             const minutes = Math.floor(shiftDuration.asMinutes()) - (hours * 60);
             
             const htmlContent = generateShiftReportHTML(shift, hours, minutes);
             
+            // Buat elemen sementara untuk render PDF
             const tempElement = document.createElement('div');
             tempElement.innerHTML = `<div class="professional-pdf">${htmlContent}</div>`;
             document.body.appendChild(tempElement);
             
+            // Konversi ke PDF
             setTimeout(() => {
                 html2canvas(tempElement.querySelector('.professional-pdf'), {
                     scale: 2,
@@ -3467,16 +3266,15 @@
                     
                     document.body.removeChild(tempElement);
                     showToast('Laporan shift berhasil diunduh', 'success');
-                    hideLoading();
                 }).catch(err => {
                     console.error('Error generating PDF:', err);
                     document.body.removeChild(tempElement);
                     showToast('Gagal membuat PDF', 'error');
-                    hideLoading();
                 });
             }, 1000);
         }
         
+        // Helper function untuk generate HTML laporan shift
         function generateShiftReportHTML(shift, hours, minutes) {
             return `
                 <div class="pdf-report-header">
@@ -3594,7 +3392,9 @@
             `;
         }
         
+        // PERBAIKAN UTAMA: Fungsi Generate Menu PDF Preview dengan layout 4x4
         function generateMenuPdfPreview() {
+            // Kelompokkan menu berdasarkan kategori
             const menuByCategory = {};
             menus.forEach(menu => {
                 if (!menuByCategory[menu.category]) {
@@ -3603,11 +3403,13 @@
                 menuByCategory[menu.category].push(menu);
             });
             
+            // Hitung total menu
             let totalMenus = 0;
             Object.keys(menuByCategory).forEach(category => {
                 totalMenus += menuByCategory[category].length;
             });
             
+            // Buat HTML untuk preview dengan grid 4x4
             let html = `
                 <div id="menuPdfContainer">
                     <div class="pdf-a4-wrapper">
@@ -3632,11 +3434,13 @@
                         </div>
             `;
             
+            // Loop melalui setiap kategori
             let categoryIndex = 0;
             Object.keys(menuByCategory).forEach(category => {
                 const categoryMenus = menuByCategory[category];
                 
-                const menusPerPage = 16;
+                // Hitung berapa halaman yang diperlukan untuk kategori ini (maks 16 menu per halaman)
+                const menusPerPage = 16; // 4x4 grid
                 const pages = Math.ceil(categoryMenus.length / menusPerPage);
                 
                 for (let page = 0; page < pages; page++) {
@@ -3644,6 +3448,7 @@
                     const endIndex = Math.min(startIndex + menusPerPage, categoryMenus.length);
                     const pageMenus = categoryMenus.slice(startIndex, endIndex);
                     
+                    // Tambahkan page break jika bukan halaman pertama dari kategori
                     if (page > 0 || categoryIndex > 0) {
                         html += `<div class="pdf-page-break"></div>`;
                     }
@@ -3656,6 +3461,7 @@
                             <div class="pdf-menu-grid">
                     `;
                     
+                    // Loop melalui setiap menu dalam halaman ini
                     pageMenus.forEach(menu => {
                         html += `
                             <div class="pdf-menu-item">
@@ -3673,6 +3479,7 @@
                         `;
                     });
                     
+                    // Tambahkan item kosong jika kurang dari 16 untuk menjaga grid
                     const emptyItems = menusPerPage - pageMenus.length;
                     for (let i = 0; i < emptyItems; i++) {
                         html += `<div class="pdf-menu-item" style="visibility: hidden;"></div>`;
@@ -3687,6 +3494,7 @@
                 categoryIndex++;
             });
             
+            // Footer dengan QRCode untuk website
             html += `
                 <div class="pdf-footer">
                     <h4><i class="fas fa-info-circle"></i> Informasi Restoran</h4>
@@ -3708,13 +3516,16 @@
                         </div>
                     </div>
                 </div>
-                </div>
-            </div>
+                </div> <!-- tutup pdf-a4-wrapper -->
+            </div> <!-- tutup menuPdfContainer -->
             `;
             
+            // Set HTML ke modal
             $('#menuPdfContainer').html(html);
             
+            // Generate QRCode setelah HTML dimuat
             setTimeout(() => {
+                // QRCode untuk pemesanan
                 const qrOrderContainer = document.getElementById('qrOrderPdf');
                 if (qrOrderContainer) {
                     $(qrOrderContainer).empty();
@@ -3726,6 +3537,7 @@
                     });
                 }
                 
+                // QRCode untuk website
                 const qrWebsiteContainer = document.getElementById('qrWebsitePdf');
                 if (qrWebsiteContainer) {
                     $(qrWebsiteContainer).empty();
@@ -3737,6 +3549,7 @@
                     });
                 }
                 
+                // QRCode untuk kontak
                 const qrContactContainer = document.getElementById('qrContactPdf');
                 if (qrContactContainer) {
                     $(qrContactContainer).empty();
@@ -3750,16 +3563,20 @@
                 }
             }, 100);
             
+            // Tampilkan modal
             $('#menuPdfModal').css('display', 'flex');
             showToast('Preview daftar menu berhasil dibuat', 'success');
         }
         
+        // PERBAIKAN UTAMA: Download Menu PDF dengan layout 4x4
         function downloadMenuPdf() {
-            showLoading('Menyiapkan PDF untuk diunduh...');
+            showToast('Menyiapkan PDF untuk diunduh...', 'info');
             
             const element = document.getElementById('menuPdfContainer');
             
+            // Pastikan QRCode sudah tergenerate
             setTimeout(() => {
+                // Pastikan semua gambar dimuat sebelum konversi
                 const images = element.getElementsByTagName('img');
                 let loadedImages = 0;
                 const totalImages = images.length;
@@ -3769,6 +3586,7 @@
                     return;
                 }
                 
+                // Tunggu semua gambar dimuat
                 Array.from(images).forEach(img => {
                     if (img.complete) {
                         loadedImages++;
@@ -3788,9 +3606,11 @@
                     }
                 });
                 
+                // Jika semua gambar sudah dimuat
                 if (loadedImages === totalImages) {
                     generatePdfFromElement(element);
                 } else {
+                    // Timeout untuk kasus gambar gagal dimuat
                     setTimeout(() => {
                         generatePdfFromElement(element);
                     }, 2000);
@@ -3798,6 +3618,7 @@
             }, 1000);
         }
         
+        // Fungsi bantu untuk generate PDF dari element dengan layout 4x4
         function generatePdfFromElement(element) {
             html2canvas(element, {
                 scale: 2,
@@ -3805,10 +3626,11 @@
                 logging: false,
                 allowTaint: true,
                 backgroundColor: '#ffffff',
-                width: 210 * 3.78,
+                width: 210 * 3.78, // Convert mm to pixels (210mm * 3.78px/mm)
                 height: element.scrollHeight,
                 windowWidth: 210 * 3.78,
                 onclone: function(clonedDoc) {
+                    // Pastikan QRCode terlihat di clone
                     const qrCodes = clonedDoc.querySelectorAll('.pdf-qr-code');
                     qrCodes.forEach(qrCode => {
                         if (qrCode.children.length > 0) {
@@ -3816,6 +3638,7 @@
                         }
                     });
                     
+                    // Pastikan grid 4x4 tetap terjaga
                     const menuGrids = clonedDoc.querySelectorAll('.pdf-menu-grid');
                     menuGrids.forEach(grid => {
                         grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
@@ -3829,15 +3652,18 @@
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = pdf.internal.pageSize.getHeight();
                 
-                const imgWidth = pdfWidth - 15;
+                // Hitung rasio untuk menyesuaikan gambar dengan halaman PDF
+                const imgWidth = pdfWidth - 15; // Margin 7.5mm kiri-kanan
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 
                 let heightLeft = imgHeight;
                 let position = 0;
                 
+                // Halaman pertama
                 pdf.addImage(imgData, 'PNG', 7.5, position, imgWidth, imgHeight);
                 heightLeft -= pdfHeight;
                 
+                // Halaman tambahan jika konten lebih panjang
                 let pageCount = 1;
                 while (heightLeft > 0) {
                     position = heightLeft - imgHeight;
@@ -3847,14 +3673,13 @@
                     pageCount++;
                 }
                 
+                // Simpan PDF
                 const fileName = `Daftar_Menu_${settings.umkmName || 'UMKM'}_${moment().format('YYYYMMDD_HHmm')}.pdf`;
                 pdf.save(fileName);
                 showToast(`PDF berhasil diunduh: ${fileName} (${pageCount} halaman)`, 'success');
-                hideLoading();
             }).catch(error => {
                 console.error('Error generating PDF:', error);
                 showToast('Gagal membuat PDF', 'error');
-                hideLoading();
             });
         }
         
@@ -3941,10 +3766,12 @@
             const user = users.find(u => u.id === userId);
             if (!user) return;
             
+            // Inisialisasi permissions jika belum ada
             if (!user.permissions) {
                 user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
             }
             
+            // Set semua checkbox berdasarkan permissions user
             $('.permission-checkbox').each(function() {
                 const permission = $(this).data('permission');
                 $(this).prop('checked', user.permissions[permission] === true);
@@ -3958,19 +3785,22 @@
             const userIndex = users.findIndex(u => u.id === userId);
             if (userIndex === -1) return;
             
+            // Kumpulkan semua permission dari checkbox
             const permissions = {};
             $('.permission-checkbox').each(function() {
                 const permission = $(this).data('permission');
                 permissions[permission] = $(this).prop('checked');
             });
             
+            // Update user permissions
             users[userIndex].permissions = permissions;
             saveUsers();
             
+            // Update currentUser jika yang diubah adalah user yang sedang login
             if (currentUser.id === userId) {
                 currentUser.permissions = permissions;
                 localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
-                initializeApp();
+                initializeApp(); // Refresh tampilan untuk update permission
             }
             
             showToast('Hak akses berhasil disimpan', 'success');
@@ -3983,13 +3813,15 @@
             const user = users.find(u => u.id === userId);
             if (!user) return;
             
+            // Reset ke default permissions berdasarkan role
             user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
             saveUsers();
             
+            // Update currentUser jika yang diubah adalah user yang sedang login
             if (currentUser.id === userId) {
                 currentUser.permissions = user.permissions;
                 localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
-                initializeApp();
+                initializeApp(); // Refresh tampilan untuk update permission
             }
             
             loadUserPermissions(userId);
@@ -4011,6 +3843,7 @@
                     users[userIndex].role = role; 
                     if (password) users[userIndex].password = CryptoJS.SHA256(password).toString(); 
                     
+                    // Reset permissions jika role berubah
                     if (role !== users[userIndex].role) {
                         users[userIndex].permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
                     }
@@ -4019,6 +3852,7 @@
                 if (!password) { showToast('Password harus diisi untuk pengguna baru.', 'error'); return; }
                 if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) { showToast('Username sudah digunakan.', 'error'); return; }
                 
+                // Set default permissions berdasarkan role
                 const permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
                 
                 users.push({ 
@@ -4038,55 +3872,29 @@
         }
         
         function backupData() {
-            showLoading('Membuat backup data terenkripsi...');
-            
-            setTimeout(() => {
-                try {
-                    const backup = { menus, categories, orders, settings, users, members, shiftData, profitSettings, backupDate: new Date().toISOString() };
-                    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
-                    const linkElement = document.createElement('a');
-                    linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
-                    linkElement.download = `backup_umkm_cash_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
-                    linkElement.click();
-                    showToast('Backup data terenkripsi berhasil', 'success');
-                } catch (err) { 
-                    showToast('Gagal membuat backup terenkripsi', 'error'); 
-                    console.error("Backup encryption error:", err); 
-                } finally {
-                    hideLoading();
-                }
-            }, 1000);
+            try {
+                const backup = { menus, categories, orders, settings, users, members, shiftData, profitSettings, backupDate: new Date().toISOString() };
+                const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
+                const linkElement = document.createElement('a');
+                linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
+                linkElement.download = `backup_umkm_cash_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
+                linkElement.click();
+                showToast('Backup data terenkripsi berhasil', 'success');
+            } catch (err) { showToast('Gagal membuat backup terenkripsi', 'error'); console.error("Backup encryption error:", err); }
         }
         
         function restoreFromFile(file) {
             if (!file) return;
-            
-            showLoading('Memproses file backup...');
-            
             const reader = new FileReader();
             reader.onload = (e) => {
-                setTimeout(() => {
-                    try {
-                        const decryptedString = CryptoJS.AES.decrypt(e.target.result, ENCRYPTION_KEY).toString(CryptoJS.enc.Utf8);
-                        if (!decryptedString) throw new Error("Decryption failed.");
-                        const data = JSON.parse(decryptedString);
-                        if (data.menus && data.categories && data.orders && data.settings && data.users && data.members) {
-                            showConfirmation('Restore Data', 'Data saat ini akan diganti oleh file backup. Lanjutkan?', () => {
-                                showLoading('Memulihkan data dari backup...');
-                                setTimeout(() => {
-                                    restoreData(data);
-                                }, 1500);
-                            });
-                        } else { 
-                            showToast('File backup tidak valid atau rusak.', 'error'); 
-                            hideLoading();
-                        }
-                    } catch (err) { 
-                        showToast('Gagal memproses file backup. File mungkin rusak atau bukan file backup yang valid.', 'error'); 
-                        console.error("Restore error:", err); 
-                        hideLoading();
-                    }
-                }, 1000);
+                try {
+                    const decryptedString = CryptoJS.AES.decrypt(e.target.result, ENCRYPTION_KEY).toString(CryptoJS.enc.Utf8);
+                    if (!decryptedString) throw new Error("Decryption failed.");
+                    const data = JSON.parse(decryptedString);
+                    if (data.menus && data.categories && data.orders && data.settings && data.users && data.members) {
+                        showConfirmation('Restore Data', 'Data saat ini akan diganti oleh file backup. Lanjutkan?', () => restoreData(data));
+                    } else { showToast('File backup tidak valid atau rusak.', 'error'); }
+                } catch (err) { showToast('Gagal memproses file backup. File mungkin rusak atau bukan file backup yang valid.', 'error'); console.error("Restore error:", err); }
             };
             reader.readAsText(file);
         }
@@ -4099,28 +3907,18 @@
                         localStorage.setItem(STORAGE_KEYS[key], JSON.stringify(data[dataKey]));
                     }
                 }); 
-                showToast('Restore data berhasil. Halaman akan direfresh.', 'success');
-                setTimeout(() => {
-                    location.reload(); 
-                }, 1500);
+                location.reload(); 
             } catch (e) { 
                 showToast('Gagal melakukan restore data', 'error'); 
                 console.error("Restore error:", e);
-                hideLoading();
             } 
         }
         
         function resetAllData() { 
-            showLoading('Meriset data...');
-            setTimeout(() => {
-                Object.values(STORAGE_KEYS).forEach(key => { 
-                    if (key !== STORAGE_KEYS.USER) localStorage.removeItem(key); 
-                }); 
-                showToast('Reset data berhasil. Halaman akan direfresh.', 'success');
-                setTimeout(() => {
-                    location.reload(); 
-                }, 1500);
-            }, 1000);
+            Object.values(STORAGE_KEYS).forEach(key => { 
+                if (key !== STORAGE_KEYS.USER) localStorage.removeItem(key); 
+            }); 
+            location.reload(); 
         }
         
         function openEditMenuModal(menu) {
@@ -4138,6 +3936,7 @@
             if (filteredMenus.length === 0) { $menuGrid.html('<div class="empty-state"><i class="fas fa-utensils"></i><p>Tidak ada menu ditemukan</p></div>'); }
             else {
                 filteredMenus.forEach(menu => {
+                    // Tampilkan tombol edit/hapus hanya jika user memiliki permission
                     const canEdit = checkPermission('edit_menu');
                     const canDelete = checkPermission('delete_menu');
                     
@@ -4246,8 +4045,10 @@
             $('#paymentAmount').val('').trigger('input');
             $('#qrisTotal').text(formatCurrency(currentOrder.total));
             
+            // Generate quick cash buttons untuk tunai
             generateQuickCashButtons(currentOrder.total);
             
+            // Tampilkan metode pembayaran yang sesuai
             togglePaymentMethod();
         }
         
@@ -4276,6 +4077,7 @@
                 $('#completePaymentBtn').prop('disabled', true);
             }
             
+            // Hitung kembalian untuk metode yang memerlukan
             calculateChange();
         }
         
@@ -4283,6 +4085,7 @@
             const $quickCash = $('#quickCashButtons').empty();
             let buttons = [];
             
+            // Logika tombol cerdas sesuai permintaan
             if (total <= 12000) {
                 buttons = [15000, 20000, 50000, 100000];
             } else if (total <= 15000) {
@@ -4292,28 +4095,36 @@
             } else if (total <= 25000) {
                 buttons = [25000, 30000, 50000, 100000];
             } else {
+                // Untuk total di atas 25000, buat tombol dengan nilai yang logis
                 const next = Math.ceil(total / 5000) * 5000;
                 buttons = [next, next + 5000, next + 10000, next + 20000];
             }
             
+            // Hapus duplikat dan urutkan
             buttons = [...new Set(buttons)].sort((a, b) => a - b);
             
+            // Batasi hanya 4 tombol
             buttons.slice(0, 4).forEach(amount => {
                 $quickCash.append(`<button class="btn btn-sm btn-outline-primary quick-cash-btn" data-amount="${amount}">${formatCurrency(amount)}</button>`);
             });
         }
         
+        // FIX: Perbaikan fungsi calculateChange untuk mengaktifkan/menonaktifkan tombol pembayaran
         function calculateChange() { 
             const method = $('#paymentMethod').val();
             if (method === 'qris') {
+                // Untuk QRIS, tidak perlu menghitung kembalian
                 $('#changeContainer').hide();
+                // Untuk QRIS, tombol selalu aktif
                 $('#completePaymentBtn').prop('disabled', false);
                 return;
             }
             
+            // Untuk metode tunai, transfer, dan e-wallet
             const amount = parseFloat($('#paymentAmount').val()) || 0; 
             const change = amount - currentOrder.total; 
             
+            // Tampilkan/sembunyikan container kembalian
             if (change >= 0) {
                 $('#changeContainer').show();
                 $('#paymentChange').text(formatCurrency(change));
@@ -4321,6 +4132,7 @@
                 $('#changeContainer').hide();
             }
             
+            // Aktifkan/nonaktifkan tombol pembayaran
             if (amount >= currentOrder.total) {
                 $('#completePaymentBtn').prop('disabled', false);
             } else {
@@ -4409,17 +4221,12 @@
             const order = $('#downloadReceiptPdfBtn').data('order');
             if (!order) return;
             const element = document.getElementById('receiptModalBody').querySelector('#receiptContent');
-            showLoading('Mengunduh PDF struk...');
+            showToast('Mengunduh PDF...', 'info');
             html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
                 const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
                 pdf.save(`Struk-${order.id}-${moment(order.date).format('DD-MM-YYYY')}.pdf`);
-                hideLoading();
-            }).catch(err => { 
-                showToast('Gagal mengunduh PDF', 'error'); 
-                console.error("PDF download error:", err); 
-                hideLoading();
-            });
+            }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF download error:", err); });
         }
         
         function openKtaModal(memberId) {
@@ -4439,17 +4246,12 @@
         function downloadKtaAsPdf() {
             const member = $('#downloadKtaPdfBtn').data('member'); if (!member) return;
             const element = document.getElementById('ktaCard');
-            showLoading('Mempersiapkan PDF kartu anggota...');
+            showToast('Mempersiapkan PDF...', 'info');
             html2canvas(element, { scale: 2, useCORS: true, allowTaint: true }).then(canvas => {
                 const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
                 pdf.save(`KTA-${member.name.replace(/\s/g, '_')}-${member.id}.pdf`);
-                hideLoading();
-            }).catch(err => { 
-                showToast('Gagal mengunduh PDF KTA', 'error'); 
-                console.error("KTA PDF error:", err); 
-                hideLoading();
-            });
+            }).catch(err => { showToast('Gagal mengunduh PDF KTA', 'error'); console.error("KTA PDF error:", err); });
         }
         
         function printElement(selector) {
@@ -4480,7 +4282,7 @@
         
         function downloadHistoryAsPdf() {
             const element = document.getElementById('historyResults');
-            showLoading('Mengunduh PDF Histori...');
+            showToast('Mengunduh PDF Histori...', 'info');
             html2canvas(element, { scale: 2, useCORS: true, windowWidth: element.scrollWidth, windowHeight: element.scrollHeight }).then(canvas => {
                 const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
                 const pdfWidth = pdf.internal.pageSize.getWidth(), pdfHeight = pdf.internal.pageSize.getHeight(), canvasAspectRatio = canvas.width / canvas.height, scaledHeight = pdfWidth / canvasAspectRatio;
@@ -4490,18 +4292,14 @@
                 for (heightLeft -= (pdfHeight - position - 10); heightLeft > 0; heightLeft -= pdfHeight) { position = -heightLeft; pdf.addPage(); pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, position, pdfWidth - 20, scaledHeight); }
                 pdf.save(`Histori_Transaksi_UMKM_CASH_${moment().format('YYYY-MM-DD')}.pdf`);
                 showToast('PDF berhasil diunduh.', 'success');
-                hideLoading();
-            }).catch(err => { 
-                showToast('Gagal mengunduh PDF', 'error'); 
-                console.error("PDF history download error:", err); 
-                hideLoading();
-            });
+            }).catch(err => { showToast('Gagal mengunduh PDF', 'error'); console.error("PDF history download error:", err); });
         }
         
         function printReport() {
             printElement('#reportResults .professional-pdf');
         }
         
+        // PERBAIKAN: Fungsi download report PDF yang lebih profesional
         function downloadReportAsPdf() {
             const element = document.querySelector('#reportResults .professional-pdf');
             if (!element) {
@@ -4509,7 +4307,7 @@
                 return;
             }
             
-            showLoading('Mengunduh Laporan PDF Profesional...');
+            showToast('Mengunduh Laporan PDF Profesional...', 'info');
             
             html2canvas(element, { 
                 scale: 2, 
@@ -4525,11 +4323,9 @@
                 pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
                 pdf.save(`Laporan_Penjualan_Profesional_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
                 showToast('Laporan PDF berhasil diunduh', 'success');
-                hideLoading();
             }).catch(err => { 
                 showToast('Gagal mengunduh PDF', 'error'); 
                 console.error("PDF report download error:", err); 
-                hideLoading();
             });
         }
         
@@ -4566,6 +4362,18 @@
         
         function formatCurrency(amount) { 
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount); 
+        }
+        
+        function showToast(message, type = 'info') {
+            const $toast = $('#toast').removeClass('success error warning').addClass(type);
+            $('#toast-message').text(message);
+            $toast.addClass('show');
+            setTimeout(() => $toast.removeClass('show'), 3000);
+        }
+        
+        function setButtonLoading($button, isLoading, originalText = 'Loading...') {
+            if (isLoading) $button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+            else $button.prop('disabled', false).html(originalText);
         }
         
         function showConfirmation(title, message, callback, btnClass = 'btn-success') {
