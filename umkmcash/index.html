@@ -1176,7 +1176,7 @@
         const DEFAULT_TRIAL_USER = {
             id: 'U-PREMIUM-001',
             username: 'admin',
-            password: CryptoJS.SHA256('admin123').toString(),
+            password: CryptoJS.SHA256('Situbondo-Naik-Kelas').toString(),
             name: 'Administrator Premium',
             role: 'admin',
             permissions: {
@@ -2346,10 +2346,7 @@
                 hideWelcomeToast();
             }, 15000);
             
-            // Tampilkan pesan toast biasa juga
-            showToast(`Selamat datang ${currentUser.name}! di UMKM CASH - Aplikasi Kasir Terbaik untuk UMKM Anda. Mari wujudkan usaha mandiri yang tangguh dan berdaya saing!`, 'success');
-        }
-        
+                    
         // Fungsi untuk menyembunyikan welcome toast
         function hideWelcomeToast() {
             const $welcomeToast = $('#welcomeToast');
