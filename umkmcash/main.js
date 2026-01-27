@@ -44,7 +44,7 @@ const DEFAULT_TRIAL_USER = {
         shift_management: true,
         profit_calculation: true,
         delete_kitchen_history: true,
-        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
+        reprint_receipt: true
     }
 };
 
@@ -70,7 +70,7 @@ const DEFAULT_CASHIER_USER = {
         shift_management: true,
         profit_calculation: false,
         delete_kitchen_history: false,
-        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
+        reprint_receipt: true
     }
 };
 
@@ -104,7 +104,7 @@ const DEFAULT_PERMISSIONS = {
         shift_management: true,
         profit_calculation: true,
         delete_kitchen_history: true,
-        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
+        reprint_receipt: true
     },
     cashier: {
         add_menu: false,
@@ -122,7 +122,7 @@ const DEFAULT_PERMISSIONS = {
         shift_management: true,
         profit_calculation: false,
         delete_kitchen_history: false,
-        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
+        reprint_receipt: true
     }
 };
 
@@ -138,6 +138,13 @@ let currentShift = null;
 // PERBAIKAN: Variabel untuk mengontrol interval kitchen
 let kitchenRefreshInterval = null;
 let kitchenLastRefreshTime = null;
+
+// PERBAIKAN: Variabel untuk filter histori transaksi
+let currentHistoryFilter = {
+    searchTerm: '',
+    startDate: null,
+    endDate: null
+};
 
 // FUNGSI BARU: Tampilkan loading overlay
 function showLoading(message = 'Memproses...') {
@@ -1282,7 +1289,25 @@ $(document).ready(function() {
     
     // PERBAIKAN: Fix event handler untuk pencarian histori transaksi
     $('#historySearchInput').on('input', function() { 
-        loadTransactionHistory($(this).val()); 
+        const searchTerm = $(this).val();
+        const startDate = $('#historyStartDate').val();
+        const endDate = $('#historyEndDate').val();
+        loadTransactionHistory({ searchTerm, startDate, endDate }); 
+    });
+    
+    // PERBAIKAN: Event handler untuk filter periode histori transaksi
+    $('#applyHistoryFilter').click(function() {
+        const searchTerm = $('#historySearchInput').val();
+        const startDate = $('#historyStartDate').val();
+        const endDate = $('#historyEndDate').val();
+        loadTransactionHistory({ searchTerm, startDate, endDate });
+    });
+    
+    $('#resetHistoryFilter').click(function() {
+        $('#historySearchInput').val('');
+        $('#historyStartDate').val('');
+        $('#historyEndDate').val('');
+        loadTransactionHistory({});
     });
     
     $('#printHistoryBtn').click(() => printElement('#historyResultsContainer .printable-area'));
@@ -1439,20 +1464,23 @@ $(document).ready(function() {
     });
 });
 
-// PERBAIKAN UTAMA: Fungsi loadTransactionHistory yang diperbaiki dengan tombol cetak ulang struk
-function loadTransactionHistory(searchTerm = '') {
+// PERBAIKAN UTAMA: Fungsi loadTransactionHistory yang diperbaiki dengan filter periode
+function loadTransactionHistory(filter = {}) {
     const $historyResults = $('#historyResults');
     
-    if (orders.length === 0) {
-        $historyResults.html('<div class="empty-state"><i class="fas fa-history"></i><p>Tidak ada histori transaksi</p></div>');
-        return;
-    }
+    // Simpan filter yang aktif
+    currentHistoryFilter = filter;
     
-    // Filter transaksi berdasarkan searchTerm
+    const searchTerm = filter.searchTerm || '';
+    const startDate = filter.startDate ? moment(filter.startDate).startOf('day') : null;
+    const endDate = filter.endDate ? moment(filter.endDate).endOf('day') : null;
+    
+    // Filter transaksi berdasarkan searchTerm dan tanggal
     let filteredOrders = orders;
+    
     if (searchTerm) {
         const lowerSearchTerm = searchTerm.toLowerCase();
-        filteredOrders = orders.filter(order => 
+        filteredOrders = filteredOrders.filter(order => 
             order.id.toLowerCase().includes(lowerSearchTerm) ||
             (order.customerName && order.customerName.toLowerCase().includes(lowerSearchTerm)) ||
             (order.memberId && order.memberId.toLowerCase().includes(lowerSearchTerm)) ||
@@ -1460,8 +1488,28 @@ function loadTransactionHistory(searchTerm = '') {
         );
     }
     
+    if (startDate && endDate) {
+        filteredOrders = filteredOrders.filter(order => {
+            const orderDate = moment(order.date);
+            return orderDate.isBetween(startDate, endDate, null, '[]');
+        });
+    } else if (startDate) {
+        filteredOrders = filteredOrders.filter(order => {
+            const orderDate = moment(order.date);
+            return orderDate.isSameOrAfter(startDate);
+        });
+    } else if (endDate) {
+        filteredOrders = filteredOrders.filter(order => {
+            const orderDate = moment(order.date);
+            return orderDate.isSameOrBefore(endDate);
+        });
+    }
+    
+    // Update tampilan filter
+    updateHistoryFilterDisplay(filter);
+    
     if (filteredOrders.length === 0) {
-        $historyResults.html('<div class="empty-state"><i class="fas fa-search"></i><p>Tidak ada transaksi yang sesuai dengan pencarian</p></div>');
+        $historyResults.html('<div class="empty-state"><i class="fas fa-history"></i><p>Tidak ada histori transaksi</p></div>');
         return;
     }
     
@@ -1473,6 +1521,7 @@ function loadTransactionHistory(searchTerm = '') {
                 <h3>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h3>
                 <div class="pdf-subtitle"><strong>Tanggal Cetak:</strong> ${moment().format('DD/MM/YYYY HH:mm')}</div>
                 <div class="pdf-subtitle"><strong>Total Transaksi:</strong> ${filteredOrders.length}</div>
+                <div class="pdf-subtitle"><strong>Periode:</strong> ${getPeriodDisplay(startDate, endDate)}</div>
             </div>
             
             <div class="pdf-table-container">
@@ -1583,6 +1632,49 @@ function loadTransactionHistory(searchTerm = '') {
     `;
     
     $historyResults.html(html);
+}
+
+// PERBAIKAN: Fungsi untuk update tampilan filter
+function updateHistoryFilterDisplay(filter) {
+    const searchTerm = filter.searchTerm || '';
+    const startDate = filter.startDate;
+    const endDate = filter.endDate;
+    
+    let filterText = '';
+    
+    if (searchTerm) {
+        filterText += `Pencarian: "${searchTerm}"`;
+    }
+    
+    if (startDate || endDate) {
+        if (filterText) filterText += ' | ';
+        filterText += 'Periode: ';
+        if (startDate && endDate) {
+            filterText += `${moment(startDate).format('DD/MM/YYYY')} - ${moment(endDate).format('DD/MM/YYYY')}`;
+        } else if (startDate) {
+            filterText += `Dari ${moment(startDate).format('DD/MM/YYYY')}`;
+        } else if (endDate) {
+            filterText += `Sampai ${moment(endDate).format('DD/MM/YYYY')}`;
+        }
+    }
+    
+    if (!filterText) {
+        filterText = 'Semua Transaksi';
+    }
+    
+    $('#historyFilterDisplay').text(filterText);
+}
+
+// PERBAIKAN: Fungsi untuk mendapatkan teks periode
+function getPeriodDisplay(startDate, endDate) {
+    if (startDate && endDate) {
+        return `${moment(startDate).format('DD/MM/YYYY')} - ${moment(endDate).format('DD/MM/YYYY')}`;
+    } else if (startDate) {
+        return `Dari ${moment(startDate).format('DD/MM/YYYY')}`;
+    } else if (endDate) {
+        return `Sampai ${moment(endDate).format('DD/MM/YYYY')}`;
+    }
+    return 'Semua Periode';
 }
 
 // PERBAIKAN: Fungsi untuk toggle detail pesanan
@@ -1717,66 +1809,194 @@ function downloadHistoryReceiptAsPdf() {
     });
 }
 
-// PERBAIKAN: Fungsi untuk download histori transaksi sebagai PDF
+// PERBAIKAN UTAMA: Fungsi untuk download histori transaksi sebagai PDF dengan filter
 function downloadHistoryAsPdf() {
-    const element = document.querySelector('#historyResults .professional-pdf');
-    if (!element) {
-        showToast('Tidak ada histori transaksi untuk diunduh', 'warning');
+    // Gunakan filter yang aktif
+    const filter = currentHistoryFilter || {};
+    const searchTerm = filter.searchTerm || '';
+    const startDate = filter.startDate ? moment(filter.startDate).startOf('day') : null;
+    const endDate = filter.endDate ? moment(filter.endDate).endOf('day') : null;
+    
+    // Filter transaksi berdasarkan filter yang aktif
+    let filteredOrders = orders;
+    
+    if (searchTerm) {
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        filteredOrders = filteredOrders.filter(order => 
+            order.id.toLowerCase().includes(lowerSearchTerm) ||
+            (order.customerName && order.customerName.toLowerCase().includes(lowerSearchTerm)) ||
+            (order.memberId && order.memberId.toLowerCase().includes(lowerSearchTerm)) ||
+            (order.cashier && order.cashier.name && order.cashier.name.toLowerCase().includes(lowerSearchTerm))
+        );
+    }
+    
+    if (startDate && endDate) {
+        filteredOrders = filteredOrders.filter(order => {
+            const orderDate = moment(order.date);
+            return orderDate.isBetween(startDate, endDate, null, '[]');
+        });
+    } else if (startDate) {
+        filteredOrders = filteredOrders.filter(order => {
+            const orderDate = moment(order.date);
+            return orderDate.isSameOrAfter(startDate);
+        });
+    } else if (endDate) {
+        filteredOrders = filteredOrders.filter(order => {
+            const orderDate = moment(order.date);
+            return orderDate.isSameOrBefore(endDate);
+        });
+    }
+    
+    if (filteredOrders.length === 0) {
+        showToast('Tidak ada data transaksi untuk diunduh', 'warning');
         hideLoading();
         return;
     }
     
-    // Clone elemen untuk menghapus kolom aksi sebelum konversi ke PDF
-    const clonedElement = element.cloneNode(true);
+    // Buat HTML untuk PDF
+    const htmlContent = generateHistoryPdfHtml(filteredOrders, startDate, endDate);
     
-    // Hapus kolom aksi (kolom terakhir) dari header dan body
-    clonedElement.querySelectorAll('thead tr, tbody tr').forEach(row => {
-        const cells = row.querySelectorAll('th, td');
-        if (cells.length > 0) {
-            // Hapus sel terakhir (kolom aksi)
-            cells[cells.length - 1].remove();
-        }
-    });
+    // Buat elemen sementara untuk render PDF
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = htmlContent;
+    document.body.appendChild(tempElement);
     
-    // Hapus kolom aksi dari footer jika ada
-    clonedElement.querySelectorAll('tfoot tr').forEach(row => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length > 0) {
-            // Hapus sel terakhir (kolom aksi)
-            cells[cells.length - 1].remove();
-        }
-    });
+    // Konversi ke PDF
+    setTimeout(() => {
+        html2canvas(tempElement, {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            backgroundColor: '#ffffff'
+        }).then(canvas => {
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgData = canvas.toDataURL('image/png', 1.0);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            const periodText = getPeriodFileName(startDate, endDate);
+            pdf.save(`Histori_Transaksi_${settings.umkmName || 'UMKM'}_${periodText}_${moment().format('YYYYMMDD')}.pdf`);
+            
+            document.body.removeChild(tempElement);
+            hideLoading();
+            showToast('Histori transaksi PDF berhasil diunduh', 'success');
+        }).catch(err => {
+            console.error('Error generating PDF:', err);
+            document.body.removeChild(tempElement);
+            hideLoading();
+            showToast('Gagal mengunduh PDF histori transaksi', 'error');
+        });
+    }, 1000);
+}
+
+// PERBAIKAN: Fungsi untuk generate HTML PDF dari histori transaksi
+function generateHistoryPdfHtml(filteredOrders, startDate, endDate) {
+    // Hitung total dari semua transaksi yang difilter
+    const totalRevenue = filteredOrders.reduce((sum, order) => sum + order.total, 0);
+    const totalTransactions = filteredOrders.length;
     
-    // Sembunyikan detail pesanan di PDF
-    clonedElement.querySelectorAll('.history-order-details').forEach(detail => {
-        detail.remove();
-    });
+    let html = `
+        <div class="professional-pdf">
+            <div class="pdf-report-header">
+                <h2>HISTORI TRANSAKSI</h2>
+                <h3>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h3>
+                <div class="pdf-subtitle"><strong>Tanggal Cetak:</strong> ${moment().format('DD/MM/YYYY HH:mm')}</div>
+                <div class="pdf-subtitle"><strong>Total Transaksi:</strong> ${totalTransactions}</div>
+                <div class="pdf-subtitle"><strong>Total Pendapatan:</strong> ${formatCurrency(totalRevenue)}</div>
+                <div class="pdf-subtitle"><strong>Periode:</strong> ${getPeriodDisplay(startDate, endDate)}</div>
+            </div>
+            
+            <div class="pdf-table-container">
+                <table class="pdf-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>ID Transaksi</th>
+                            <th>Tanggal/Waktu</th>
+                            <th>Pelanggan</th>
+                            <th>Total</th>
+                            <th>Metode Bayar</th>
+                            <th>Kasir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    `;
     
-    // Sembunyikan tombol aksi di PDF
-    clonedElement.querySelectorAll('.history-actions').forEach(action => {
-        action.remove();
-    });
-    
-    html2canvas(clonedElement, { 
-        scale: 2, 
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff'
-    }).then(canvas => {
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgData = canvas.toDataURL('image/png', 1.0);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    filteredOrders.forEach((order, index) => {
+        const member = order.memberId ? members.find(m => m.id === order.memberId) : null;
+        const customerName = member ? member.name : (order.customerName || 'Pelanggan');
+        const paymentMethodText = order.paymentMethod === 'cash' ? 'Tunai' : 
+                                  order.paymentMethod === 'qris' ? 'QRIS' : 
+                                  order.paymentMethod === 'transfer' ? 'Transfer' : 
+                                  order.paymentMethod === 'ewallet' ? 'E-Wallet' : order.paymentMethod;
         
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Histori_Transaksi_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
-        hideLoading();
-        showToast('Histori transaksi PDF berhasil diunduh', 'success');
-    }).catch(err => { 
-        hideLoading();
-        showToast('Gagal mengunduh PDF histori transaksi', 'error'); 
-        console.error("PDF history download error:", err); 
+        html += `
+            <tr>
+                <td>${index + 1}</td>
+                <td><strong>${order.id}</strong></td>
+                <td>${moment(order.date).format('DD/MM/YY HH:mm')}</td>
+                <td>${customerName}</td>
+                <td>${formatCurrency(order.total)}</td>
+                <td>${paymentMethodText}</td>
+                <td>${order.cashier ? order.cashier.name : 'System'}</td>
+            </tr>
+        `;
     });
+    
+    html += `
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="text-align: right; font-weight: bold;">TOTAL PENDAPATAN:</td>
+                            <td colspan="3" style="font-weight: bold; color: var(--success);">${formatCurrency(totalRevenue)}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <div class="pdf-summary">
+                <h4>Ringkasan Periode</h4>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <span class="summary-label">Total Transaksi</span>
+                        <span class="summary-value">${totalTransactions}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Total Pendapatan</span>
+                        <span class="summary-value">${formatCurrency(totalRevenue)}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Rata-rata/Transaksi</span>
+                        <span class="summary-value">${formatCurrency(totalRevenue / (totalTransactions || 1))}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Periode</span>
+                        <span class="summary-value">${getPeriodDisplay(startDate, endDate)}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pdf-footer">
+                <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
+            </div>
+        </div>
+    `;
+    
+    return html;
+}
+
+// PERBAIKAN: Fungsi untuk mendapatkan nama file berdasarkan periode
+function getPeriodFileName(startDate, endDate) {
+    if (startDate && endDate) {
+        return `${moment(startDate).format('YYYYMMDD')}-${moment(endDate).format('YYYYMMDD')}`;
+    } else if (startDate) {
+        return `from-${moment(startDate).format('YYYYMMDD')}`;
+    } else if (endDate) {
+        return `to-${moment(endDate).format('YYYYMMDD')}`;
+    }
+    return 'all';
 }
 
 // Fungsi untuk menampilkan modal input uang kas awal
