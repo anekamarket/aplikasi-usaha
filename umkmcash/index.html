@@ -426,6 +426,81 @@
             padding-top: 20px;
             border-top: 2px solid #eee;
         }
+        
+        /* PERBAIKAN: Tambahan styling untuk histori transaksi */
+        .history-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-history-print {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: var(--rounded-sm);
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+        
+        .btn-history-print:hover {
+            background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .btn-history-detail {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: var(--rounded-sm);
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+        
+        .btn-history-detail:hover {
+            background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .history-order-details {
+            background: #f8f9fa;
+            border-radius: var(--rounded);
+            padding: 15px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .history-order-details.show {
+            display: block;
+        }
+        
+        .history-order-items {
+            margin-top: 10px;
+        }
+        
+        .history-order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .history-order-item:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
@@ -691,6 +766,8 @@
                             <li>Struk Digital dengan QR Code</li>
                             <li>Notifikasi Pesanan Dapur</li>
                             <li>Pengaturan Keamanan Berlapis</li>
+                            <!-- PERBAIKAN: Tambahkan fitur cetak ulang struk -->
+                            <li>Cetak Ulang Struk dari Histori Transaksi</li>
                         </ul>
                     </div>
                     
@@ -1103,8 +1180,9 @@
         </div>
     </div>
     
+    <!-- PERBAIKAN: Modal Histori Transaksi dengan tombol cetak ulang -->
     <div id="historyModal" class="modal">
-        <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
                 <h3 class="modal-title">Histori Transaksi</h3>
                 <button class="modal-close">&times;</button>
@@ -1112,9 +1190,9 @@
             <div class="modal-body">
                 <div class="search-container">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="historySearchInput" class="search-input" placeholder="Cari berdasarkan Kode Transaksi...">
+                    <input type="text" id="historySearchInput" class="search-input" placeholder="Cari berdasarkan Kode Transaksi atau Nama Pelanggan...">
                 </div>
-                <div id="historyResultsContainer" style="max-height: 50vh; overflow-y: auto;">
+                <div id="historyResultsContainer" style="max-height: 60vh; overflow-y: auto; margin-top: 15px;">
                     <div id="historyResults" class="printable-area"></div>
                 </div>
             </div>
@@ -1122,6 +1200,24 @@
                 <button class="btn btn-warning modal-close-btn">Tutup</button>
                 <button class="btn btn-info" id="downloadHistoryBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
                 <button class="btn btn-primary" id="printHistoryBtn"><i class="fas fa-print"></i> Cetak Histori</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Cetak Ulang Struk dari Histori -->
+    <div id="historyReceiptModal" class="modal">
+        <div class="modal-content" style="max-width: 350px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Cetak Ulang Struk</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="historyReceiptModalBody" style="background: #eee;">
+                <!-- Struk akan dimuat di sini -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-info" id="downloadHistoryReceiptPdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                <button class="btn btn-success" id="printHistoryReceiptBtn"><i class="fas fa-print"></i> Cetak Struk</button>
             </div>
         </div>
     </div>
@@ -1549,6 +1645,17 @@
                                 <div class="form-check">
                                     <input type="checkbox" class="permission-checkbox" data-permission="delete_kitchen_history" id="perm_delete_kitchen_history">
                                     <label for="perm_delete_kitchen_history"></label>
+                                </div>
+                            </div>
+                            <!-- PERBAIKAN: Tambah permission untuk cetak ulang struk -->
+                            <div class="permission-item">
+                                <div>
+                                    <div class="permission-name">Cetak Ulang Struk</div>
+                                    <div class="permission-description">Akses untuk mencetak ulang struk dari histori transaksi</div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="permission-checkbox" data-permission="reprint_receipt" id="perm_reprint_receipt">
+                                    <label for="perm_reprint_receipt"></label>
                                 </div>
                             </div>
                         </div>
