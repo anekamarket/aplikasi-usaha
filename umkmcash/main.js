@@ -43,7 +43,8 @@ const DEFAULT_TRIAL_USER = {
         reset_data: true,
         shift_management: true,
         profit_calculation: true,
-        delete_kitchen_history: true
+        delete_kitchen_history: true,
+        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
     }
 };
 
@@ -68,7 +69,8 @@ const DEFAULT_CASHIER_USER = {
         reset_data: false,
         shift_management: true,
         profit_calculation: false,
-        delete_kitchen_history: false
+        delete_kitchen_history: false,
+        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
     }
 };
 
@@ -101,7 +103,8 @@ const DEFAULT_PERMISSIONS = {
         reset_data: true,
         shift_management: true,
         profit_calculation: true,
-        delete_kitchen_history: true
+        delete_kitchen_history: true,
+        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
     },
     cashier: {
         add_menu: false,
@@ -118,7 +121,8 @@ const DEFAULT_PERMISSIONS = {
         reset_data: false,
         shift_management: true,
         profit_calculation: false,
-        delete_kitchen_history: false
+        delete_kitchen_history: false,
+        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
     }
 };
 
@@ -1289,6 +1293,18 @@ $(document).ready(function() {
         }, 500);
     });
     
+    // PERBAIKAN: Event handler untuk tombol cetak ulang struk dari histori
+    $(document).on('click', '.btn-history-print', function() {
+        const orderId = $(this).data('id');
+        reprintReceipt(orderId);
+    });
+    
+    // PERBAIKAN: Event handler untuk tombol detail transaksi dari histori
+    $(document).on('click', '.btn-history-detail', function() {
+        const orderId = $(this).data('id');
+        toggleOrderDetails(orderId);
+    });
+    
     // PERBAIKAN: Event handler untuk status-item dengan konfirmasi yang benar
     $(document).on('click', '.status-item', function() {
         const order = orders.find(o => o.id === $(this).data('id'));
@@ -1367,6 +1383,9 @@ $(document).ready(function() {
             $('#profitResults').empty();
             $('#downloadProfitReportBtn').hide();
         }
+        if (modal.attr('id') === 'historyReceiptModal') {
+            $('#historyReceiptModalBody').empty();
+        }
     });
     $('#reportPeriod').change(() => $('#customDateRange').toggle($('#reportPeriod').val() === 'custom'));
     $('#printReceiptBtn').on('click', () => printElement('#receiptModalBody #receiptContent'));
@@ -1374,6 +1393,18 @@ $(document).ready(function() {
         showLoading('Mengunduh struk PDF...');
         setTimeout(() => {
             downloadReceiptAsPdf();
+        }, 500);
+    });
+    
+    // PERBAIKAN: Event handler untuk tombol cetak ulang struk dari histori
+    $('#printHistoryReceiptBtn').on('click', function() {
+        printElement('#historyReceiptModalBody #receiptContent');
+    });
+    
+    $('#downloadHistoryReceiptPdfBtn').on('click', function() {
+        showLoading('Mengunduh struk PDF...');
+        setTimeout(() => {
+            downloadHistoryReceiptAsPdf();
         }, 500);
     });
     
@@ -1408,7 +1439,7 @@ $(document).ready(function() {
     });
 });
 
-// PERBAIKAN UTAMA: Fungsi loadTransactionHistory yang sebelumnya hilang - DITAMBAHKAN
+// PERBAIKAN UTAMA: Fungsi loadTransactionHistory yang diperbaiki dengan tombol cetak ulang struk
 function loadTransactionHistory(searchTerm = '') {
     const $historyResults = $('#historyResults');
     
@@ -1424,7 +1455,8 @@ function loadTransactionHistory(searchTerm = '') {
         filteredOrders = orders.filter(order => 
             order.id.toLowerCase().includes(lowerSearchTerm) ||
             (order.customerName && order.customerName.toLowerCase().includes(lowerSearchTerm)) ||
-            (order.memberId && order.memberId.toLowerCase().includes(lowerSearchTerm))
+            (order.memberId && order.memberId.toLowerCase().includes(lowerSearchTerm)) ||
+            (order.cashier && order.cashier.name && order.cashier.name.toLowerCase().includes(lowerSearchTerm))
         );
     }
     
@@ -1454,6 +1486,7 @@ function loadTransactionHistory(searchTerm = '') {
                             <th>Total</th>
                             <th>Metode Bayar</th>
                             <th>Kasir</th>
+                            <th class="no-print">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1463,6 +1496,53 @@ function loadTransactionHistory(searchTerm = '') {
     filteredOrders.forEach((order, index) => {
         const member = order.memberId ? members.find(m => m.id === order.memberId) : null;
         const customerName = member ? member.name : (order.customerName || 'Pelanggan');
+        const paymentMethodText = order.paymentMethod === 'cash' ? 'Tunai' : 
+                                  order.paymentMethod === 'qris' ? 'QRIS' : 
+                                  order.paymentMethod === 'transfer' ? 'Transfer' : 
+                                  order.paymentMethod === 'ewallet' ? 'E-Wallet' : order.paymentMethod;
+        
+        // PERBAIKAN: Tambahkan tombol aksi untuk cetak ulang struk
+        const canReprint = checkPermission('reprint_receipt');
+        const actionButtons = canReprint ? `
+            <div class="history-actions">
+                <button class="btn-history-detail" data-id="${order.id}">
+                    <i class="fas fa-eye"></i> Detail
+                </button>
+                <button class="btn-history-print" data-id="${order.id}">
+                    <i class="fas fa-print"></i> Cetak Ulang
+                </button>
+            </div>
+            <div class="history-order-details" id="order-details-${order.id}">
+                <div class="history-order-items">
+                    ${order.items.map(item => `
+                        <div class="history-order-item">
+                            <span>${item.menu.name} (${item.quantity}x)</span>
+                            <span>${formatCurrency(item.menu.price * item.quantity)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span>${formatCurrency(order.subtotal)}</span>
+                </div>
+                ${order.discount > 0 ? `
+                <div class="summary-row">
+                    <span>Diskon:</span>
+                    <span>-${formatCurrency(order.discount)}</span>
+                </div>
+                ` : ''}
+                <div class="summary-row total-row">
+                    <span>Total:</span>
+                    <span>${formatCurrency(order.total)}</span>
+                </div>
+                ${order.note ? `
+                <div class="summary-row">
+                    <span>Catatan:</span>
+                    <span>${order.note}</span>
+                </div>
+                ` : ''}
+            </div>
+        ` : '';
         
         html += `
             <tr>
@@ -1471,8 +1551,11 @@ function loadTransactionHistory(searchTerm = '') {
                 <td>${moment(order.date).format('DD/MM/YY HH:mm')}</td>
                 <td>${customerName}</td>
                 <td>${formatCurrency(order.total)}</td>
-                <td>${order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod === 'transfer' ? 'Transfer' : 'E-Wallet'}</td>
+                <td>${paymentMethodText}</td>
                 <td>${order.cashier ? order.cashier.name : 'System'}</td>
+                <td class="no-print">
+                    ${canReprint ? actionButtons : 'Tidak ada aksi'}
+                </td>
             </tr>
         `;
     });
@@ -1486,6 +1569,7 @@ function loadTransactionHistory(searchTerm = '') {
                         <tr>
                             <td colspan="4" style="text-align: right; font-weight: bold;">TOTAL PENDAPATAN:</td>
                             <td colspan="3" style="font-weight: bold; color: var(--success);">${formatCurrency(totalRevenue)}</td>
+                            <td class="no-print"></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -1501,6 +1585,138 @@ function loadTransactionHistory(searchTerm = '') {
     $historyResults.html(html);
 }
 
+// PERBAIKAN: Fungsi untuk toggle detail pesanan
+function toggleOrderDetails(orderId) {
+    const $details = $(`#order-details-${orderId}`);
+    if ($details.length) {
+        $details.toggleClass('show');
+    }
+}
+
+// PERBAIKAN: Fungsi untuk cetak ulang struk dari histori transaksi
+function reprintReceipt(orderId) {
+    if (!checkPermission('reprint_receipt')) {
+        showToast('Anda tidak memiliki izin untuk mencetak ulang struk', 'error');
+        return;
+    }
+    
+    const order = orders.find(o => o.id === orderId);
+    if (!order) {
+        showToast('Transaksi tidak ditemukan', 'error');
+        return;
+    }
+    
+    // Tampilkan loading
+    showModalLoading('Mempersiapkan struk...');
+    
+    setTimeout(() => {
+        // Generate struk untuk transaksi yang dipilih
+        generateHistoryReceiptHTML(order);
+        
+        // Tampilkan modal struk
+        $('#historyReceiptModal').css('display', 'flex');
+        
+        // Simpan data order untuk keperluan download PDF
+        $('#downloadHistoryReceiptPdfBtn').data('order', order);
+        
+        hideModalLoading();
+    }, 500);
+}
+
+// PERBAIKAN: Fungsi untuk generate struk dari histori transaksi
+function generateHistoryReceiptHTML(order) {
+    const member = members.find(m => m.id === order.memberId);
+    const receiptHTML = `
+        <div id="receiptContent">
+            <div class="receipt-header">
+                <div class="receipt-title">${settings.umkmName} <span class="premium-badge">PREMIUM</span></div>
+                <div>${settings.storeAddress}</div>
+                <div>Telp: ${settings.storePhone}</div>
+                <div style="font-size: 10px; margin-top: 5px; color: #666;">
+                    <strong>STRUK CETAK ULANG</strong>
+                </div>
+            </div>
+            <div class="receipt-info">
+                <div><span>Tanggal:</span> <span>${moment(order.date).format('DD/MM/YY HH:mm')}</span></div>
+                <div><span>No. Trx:</span> <span>${order.id}</span></div>
+                <div><span>Kasir:</span> <span>${order.cashier.name}</span></div>
+                <div><span>Pelanggan:</span> <span>${order.customerName}</span></div>
+                ${member ? `<div><span>Member:</span> <span>${member.name} (${member.id})</span></div>` : ''}
+                <div><span>Tipe:</span> <span>${order.type === 'dinein' ? `Makan di Tempat (Meja ${order.tableNumber})` : 'Bungkus'}</span></div>
+                <div><span>Metode:</span> <span>${order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'transfer' ? 'Transfer Bank' : 'E-Wallet'}</span></div>
+            </div>
+            <div id="receiptItemsContainer">
+                ${order.items.map(item => `<div class="receipt-item"><div class="receipt-item-details"><div class="item-name">${item.menu.name}</div><div class="item-price-calc">${item.quantity} x ${formatCurrency(item.menu.price)}</div></div><span>${formatCurrency(item.menu.price * item.quantity)}</span></div>`).join('')}
+            </div>
+            ${order.note ? `<div style="font-size:10px; font-style:italic; padding: 5px 0; border-top: 1px dashed #000;">Catatan: ${order.note}</div>` : ''}
+            <div class="receipt-total">
+                <div class="receipt-item"><span>Subtotal</span> <span>${formatCurrency(order.subtotal)}</span></div>
+                ${order.discount > 0 ? `<div class="receipt-item"><span>Diskon</span> <span>-${formatCurrency(order.discount)}</span></div>` : ''}
+                <div class="receipt-item" style="font-weight:bold; font-size: 14px;"><span>TOTAL</span> <span>${formatCurrency(order.total)}</span></div>
+                <div class="receipt-item"><span>${order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'transfer' ? 'Transfer' : 'E-Wallet'}</span> <span>${formatCurrency(order.paymentAmount)}</span></div>
+                ${order.paymentMethod === 'cash' ? `<div class="receipt-item"><span>Kembali</span> <span>${formatCurrency(order.change)}</span></div>` : ''}
+            </div>
+            <div class="receipt-footer">
+                <p>*** STRUK CETAK ULANG ***</p>
+                <div id="historyReceiptQrcode" style="display: flex; justify-content: center; margin: 10px 0;"></div>
+                <p style="margin-top: 10px; border-top: 1px dashed #000; padding-top: 5px;">
+                    Aplikasi Kasir UMKM CASH - Cetak Ulang<br>
+                    <strong>Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</strong><br>
+                    Lentera Karya Situbondo &copy; 2025<br>
+                    www.anekamarket.my.id | WA: 087865614222
+                </p>
+            </div>
+        </div>
+    `;
+    
+    $('#historyReceiptModalBody').html(receiptHTML);
+    
+    // Generate QR Code untuk struk cetak ulang
+    const qrCodeData = JSON.stringify({ 
+        trxId: order.id, 
+        store: settings.umkmName, 
+        date: moment(order.date).toISOString(), 
+        total: order.total,
+        reprint: true,
+        reprintDate: new Date().toISOString()
+    });
+    $('#historyReceiptQrcode').empty();
+    new QRCode(document.getElementById("historyReceiptQrcode"), { 
+        text: qrCodeData, 
+        width: 80, 
+        height: 80, 
+        correctLevel: QRCode.CorrectLevel.M 
+    });
+}
+
+// PERBAIKAN: Fungsi untuk download struk cetak ulang sebagai PDF
+function downloadHistoryReceiptAsPdf() {
+    const order = $('#downloadHistoryReceiptPdfBtn').data('order');
+    if (!order) return;
+    
+    const element = document.getElementById('historyReceiptModalBody').querySelector('#receiptContent');
+    
+    html2canvas(element, { 
+        scale: 2, 
+        useCORS: true,
+        backgroundColor: '#eeeeee'
+    }).then(canvas => {
+        const pdf = new jsPDF({ 
+            orientation: 'portrait', 
+            unit: 'px', 
+            format: [canvas.width, canvas.height] 
+        });
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save(`Struk-Cetak-Ulang-${order.id}-${moment().format('DD-MM-YYYY-HHmm')}.pdf`);
+        hideLoading();
+        showToast('Struk cetak ulang berhasil diunduh', 'success');
+    }).catch(err => { 
+        hideLoading();
+        showToast('Gagal mengunduh PDF struk cetak ulang', 'error'); 
+        console.error("PDF download error:", err); 
+    });
+}
+
 // PERBAIKAN: Fungsi untuk download histori transaksi sebagai PDF
 function downloadHistoryAsPdf() {
     const element = document.querySelector('#historyResults .professional-pdf');
@@ -1510,7 +1726,38 @@ function downloadHistoryAsPdf() {
         return;
     }
     
-    html2canvas(element, { 
+    // Clone elemen untuk menghapus kolom aksi sebelum konversi ke PDF
+    const clonedElement = element.cloneNode(true);
+    
+    // Hapus kolom aksi (kolom terakhir) dari header dan body
+    clonedElement.querySelectorAll('thead tr, tbody tr').forEach(row => {
+        const cells = row.querySelectorAll('th, td');
+        if (cells.length > 0) {
+            // Hapus sel terakhir (kolom aksi)
+            cells[cells.length - 1].remove();
+        }
+    });
+    
+    // Hapus kolom aksi dari footer jika ada
+    clonedElement.querySelectorAll('tfoot tr').forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length > 0) {
+            // Hapus sel terakhir (kolom aksi)
+            cells[cells.length - 1].remove();
+        }
+    });
+    
+    // Sembunyikan detail pesanan di PDF
+    clonedElement.querySelectorAll('.history-order-details').forEach(detail => {
+        detail.remove();
+    });
+    
+    // Sembunyikan tombol aksi di PDF
+    clonedElement.querySelectorAll('.history-actions').forEach(action => {
+        action.remove();
+    });
+    
+    html2canvas(clonedElement, { 
         scale: 2, 
         useCORS: true,
         logging: false,
@@ -1626,7 +1873,7 @@ function initializeApp() {
                           checkPermission('kitchen_display') || checkPermission('control_panel') ||
                           checkPermission('backup_restore') || checkPermission('reset_data') ||
                           checkPermission('shift_management') || checkPermission('profit_calculation') ||
-                          checkPermission('delete_kitchen_history');
+                          checkPermission('delete_kitchen_history') || checkPermission('reprint_receipt');
     
     $('#adminPanel').toggle(showAdminPanel);
     
@@ -1723,6 +1970,7 @@ function loadKitchenOrders() {
     // FITUR BARU: Update notifikasi setelah load
     updateKitchenNotification();
 }
+
 
 function promptForProfitAccess(callback) {
     const title = 'Kode Keamanan Akses Laba';
