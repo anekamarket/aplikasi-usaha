@@ -1275,7 +1275,12 @@ $(document).ready(function() {
         }, 500);
     });
     $('#reportsModal .tabs .tab').click(function() { switchReportsModalTab($(this).data('tab')); });
-    $('#historySearchInput').on('input', function() { loadTransactionHistory($(this).val()); });
+    
+    // PERBAIKAN: Fix event handler untuk pencarian histori transaksi
+    $('#historySearchInput').on('input', function() { 
+        loadTransactionHistory($(this).val()); 
+    });
+    
     $('#printHistoryBtn').click(() => printElement('#historyResultsContainer .printable-area'));
     $('#downloadHistoryBtn').click(function() {
         showLoading('Mengunduh histori PDF...');
@@ -1402,6 +1407,130 @@ $(document).ready(function() {
         hideWelcomeToast();
     });
 });
+
+// PERBAIKAN UTAMA: Fungsi loadTransactionHistory yang sebelumnya hilang - DITAMBAHKAN
+function loadTransactionHistory(searchTerm = '') {
+    const $historyResults = $('#historyResults');
+    
+    if (orders.length === 0) {
+        $historyResults.html('<div class="empty-state"><i class="fas fa-history"></i><p>Tidak ada histori transaksi</p></div>');
+        return;
+    }
+    
+    // Filter transaksi berdasarkan searchTerm
+    let filteredOrders = orders;
+    if (searchTerm) {
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        filteredOrders = orders.filter(order => 
+            order.id.toLowerCase().includes(lowerSearchTerm) ||
+            (order.customerName && order.customerName.toLowerCase().includes(lowerSearchTerm)) ||
+            (order.memberId && order.memberId.toLowerCase().includes(lowerSearchTerm))
+        );
+    }
+    
+    if (filteredOrders.length === 0) {
+        $historyResults.html('<div class="empty-state"><i class="fas fa-search"></i><p>Tidak ada transaksi yang sesuai dengan pencarian</p></div>');
+        return;
+    }
+    
+    // Buat HTML untuk histori transaksi
+    let html = `
+        <div class="professional-pdf">
+            <div class="pdf-report-header">
+                <h2>HISTORI TRANSAKSI</h2>
+                <h3>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h3>
+                <div class="pdf-subtitle"><strong>Tanggal Cetak:</strong> ${moment().format('DD/MM/YYYY HH:mm')}</div>
+                <div class="pdf-subtitle"><strong>Total Transaksi:</strong> ${filteredOrders.length}</div>
+            </div>
+            
+            <div class="pdf-table-container">
+                <table class="pdf-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>ID Transaksi</th>
+                            <th>Tanggal/Waktu</th>
+                            <th>Pelanggan</th>
+                            <th>Total</th>
+                            <th>Metode Bayar</th>
+                            <th>Kasir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    `;
+    
+    // Tambahkan setiap transaksi ke tabel
+    filteredOrders.forEach((order, index) => {
+        const member = order.memberId ? members.find(m => m.id === order.memberId) : null;
+        const customerName = member ? member.name : (order.customerName || 'Pelanggan');
+        
+        html += `
+            <tr>
+                <td>${index + 1}</td>
+                <td><strong>${order.id}</strong></td>
+                <td>${moment(order.date).format('DD/MM/YY HH:mm')}</td>
+                <td>${customerName}</td>
+                <td>${formatCurrency(order.total)}</td>
+                <td>${order.paymentMethod === 'cash' ? 'Tunai' : order.paymentMethod === 'qris' ? 'QRIS' : order.paymentMethod === 'transfer' ? 'Transfer' : 'E-Wallet'}</td>
+                <td>${order.cashier ? order.cashier.name : 'System'}</td>
+            </tr>
+        `;
+    });
+    
+    // Hitung total dari semua transaksi yang difilter
+    const totalRevenue = filteredOrders.reduce((sum, order) => sum + order.total, 0);
+    
+    html += `
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="text-align: right; font-weight: bold;">TOTAL PENDAPATAN:</td>
+                            <td colspan="3" style="font-weight: bold; color: var(--success);">${formatCurrency(totalRevenue)}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <div class="pdf-footer">
+                <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
+            </div>
+        </div>
+    `;
+    
+    $historyResults.html(html);
+}
+
+// PERBAIKAN: Fungsi untuk download histori transaksi sebagai PDF
+function downloadHistoryAsPdf() {
+    const element = document.querySelector('#historyResults .professional-pdf');
+    if (!element) {
+        showToast('Tidak ada histori transaksi untuk diunduh', 'warning');
+        hideLoading();
+        return;
+    }
+    
+    html2canvas(element, { 
+        scale: 2, 
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff'
+    }).then(canvas => {
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgData = canvas.toDataURL('image/png', 1.0);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`Histori_Transaksi_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
+        hideLoading();
+        showToast('Histori transaksi PDF berhasil diunduh', 'success');
+    }).catch(err => { 
+        hideLoading();
+        showToast('Gagal mengunduh PDF histori transaksi', 'error'); 
+        console.error("PDF history download error:", err); 
+    });
+}
 
 // Fungsi untuk menampilkan modal input uang kas awal
 function showCashStartModal() {
