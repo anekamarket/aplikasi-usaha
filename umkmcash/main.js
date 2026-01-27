@@ -2191,7 +2191,6 @@ function loadKitchenOrders() {
     updateKitchenNotification();
 }
 
-
 function promptForProfitAccess(callback) {
     const title = 'Kode Keamanan Akses Laba';
     $('#passwordPromptTitle').text(title);
@@ -2199,6 +2198,16 @@ function promptForProfitAccess(callback) {
     passwordPromptCallback = callback;
     $('#passwordPromptInput').val('');
     $('#passwordPromptModal').css('display', 'flex').find('input').focus();
+}
+
+// PERBAIKAN UTAMA: Fungsi loadCategories yang diperbaiki untuk mencegah kategori muncul di footer
+function loadCategories() { 
+    // PERBAIKAN: Pastikan kita hanya memuat kategori ke elemen yang tepat
+    const $filterRow = $('#categoryFilterRow');
+    if ($filterRow.length) {
+        $filterRow.html('<div class="filter-chip active" data-category="all">Semua</div>'); 
+        categories.forEach(category => $filterRow.append(`<div class="filter-chip" data-category="${category.name}">${category.name}</div>`));
+    }
 }
 
 function generateCaptcha() {
@@ -3704,11 +3713,6 @@ function loadMenus(searchTerm = '', category = 'all') {
             $menuGrid.append(`<div class="menu-card" data-id="${menu.id}">${adminActions}<div class="menu-image">${menu.image ? `<img src="${menu.image}" alt="${menu.name}" onerror="this.parentElement.innerHTML = '<i class=\\'fas fa-utensils\\'></i>';">` : `<i class="fas fa-utensils"></i>`}</div><div class="menu-name">${menu.name}</div><div class="menu-price">${formatCurrency(menu.price)}</div><div class="menu-category">${menu.category}</div></div>`);
         });
     }
-}
-
-function loadCategories() { 
-    const $filterRow = $('.filter-row').html('<div class="filter-chip active" data-category="all">Semua</div>'); 
-    categories.forEach(category => $filterRow.append(`<div class="filter-chip" data-category="${category.name}">${category.name}</div>`)); 
 }
 
 function loadCategoriesForSelect() {
