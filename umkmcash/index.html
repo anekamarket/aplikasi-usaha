@@ -348,6 +348,84 @@
             border-radius: var(--rounded);
             border-left: 4px solid var(--warning);
         }
+
+        /* Styling untuk modal info aplikasi */
+        .app-info-container {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .app-info-logo {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .app-info-contact {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: var(--rounded);
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .app-info-contact h4 {
+            margin-bottom: 15px;
+            color: var(--dark);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
+        }
+        
+        .app-info-contact p {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .app-info-contact a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .app-info-contact a:hover {
+            text-decoration: underline;
+        }
+        
+        .app-info-features {
+            text-align: left;
+            margin: 20px 0;
+        }
+        
+        .app-info-features h4 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .app-info-features ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .app-info-features li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #ddd;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .app-info-features li:before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .app-info-footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
     </style>
 </head>
 <body>
@@ -564,6 +642,72 @@
         </div>
     </div>
 
+    <!-- Modal Info Aplikasi -->
+    <div id="appInfoModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Tentang Aplikasi</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="app-info-container">
+                    <div class="app-info-logo">
+                        <i class="fas fa-cash-register fa-3x"></i>
+                    </div>
+                    <h2>UMKM CASH - Aplikasi Kasir Digital Premium</h2>
+                    <p>Versi: <strong>PREMIUM</strong></p>
+                    <p>Dikembangkan oleh: <strong>Lentera Karya Situbondo</strong></p>
+                    
+                    <div class="app-info-contact">
+                        <h4>Kontak Developer:</h4>
+                        <p>
+                            <i class="fas fa-envelope"></i> Email: 
+                            <a href="mailto:info@aplikasiusaha.com" target="_blank">info@aplikasiusaha.com</a>
+                        </p>
+                        <p>
+                            <i class="fab fa-whatsapp"></i> WhatsApp: 
+                            <a href="https://wa.me/6285647709114" target="_blank">085647709114</a>
+                        </p>
+                        <p>
+                            <i class="fas fa-globe"></i> Website: 
+                            <a href="https://www.aplikasiusaha.com/umkmcash" target="_blank">www.aplikasiusaha.com/umkmcash</a>
+                        </p>
+                    </div>
+                    
+                    <div class="app-info-features">
+                        <h4>Fitur Utama Aplikasi:</h4>
+                        <ul>
+                            <li>Manajemen Menu dan Kategori</li>
+                            <li>Transaksi Penjualan (Dine-in & Takeaway)</li>
+                            <li>Manajemen Member dengan KTA Digital</li>
+                            <li>Laporan Penjualan Lengkap</li>
+                            <li>Histori Transaksi</li>
+                            <li>Info Pesanan Dapur Real-time</li>
+                            <li>Backup & Restore Data Terenkripsi</li>
+                            <li>Perhitungan Laba Otomatis</li>
+                            <li>Manajemen Shift Kasir</li>
+                            <li>Multi-User dengan Sistem Hak Akses</li>
+                            <li>Generate PDF untuk Menu dan Laporan</li>
+                            <li>Struk Digital dengan QR Code</li>
+                            <li>Notifikasi Pesanan Dapur</li>
+                            <li>Pengaturan Keamanan Berlapis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="app-info-footer">
+                        <p><strong>&copy; <span id="currentYear3"></span> UMKM CASH - Hak Cipta Dilindungi Undang-Undang</strong></p>
+                        <p class="fishery-support">
+                            <i class="fas fa-hands-helping"></i> Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+            </div>
+        </div>
+    </div>
+
     <div id="loginModal" class="modal" style="display: flex;">
         <div class="login-container">
             <div class="login-header">
@@ -669,8 +813,11 @@
                         <button id="openShiftBtn" class="btn btn-sm btn-shift">Buka Shift</button>
                         <button id="closeShiftBtn" class="btn btn-sm btn-shift">Tutup Shift</button>
                         <button id="profitCalculationBtn" class="btn btn-sm btn-profit">Hitung Laba</button>
-                        <!-- PERBAIKAN: Tambahkan tombol hapus histori pesanan makan di tempat -->
-                        <button id="deleteKitchenHistoryBtn" class="btn btn-sm btn-danger">Hapus Histori Pesanan Dapur</button>
+                        <!-- PERBAIKAN: Ganti nama tombol hapus histori pesanan makan di tempat -->
+                        <button id="resetKitchenInfoBtn" class="btn btn-sm btn-danger">Reset Info Pesanan</button>
+                        <!-- TAMBAHAN: Tombol Refresh dan Info Aplikasi -->
+                        <button id="refreshBtn" class="btn btn-sm">Refresh</button>
+                        <button id="appInfoBtn" class="btn btn-sm btn-info">Info Aplikasi</button>
                     </div>
                     
                     <div class="mt-3">
