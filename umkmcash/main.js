@@ -1,3 +1,5 @@
+[file name]: main (1).js
+[file content begin]
 // Set locale to Indonesian
 moment.locale('id');
 
@@ -1130,39 +1132,38 @@ $(document).ready(function() {
         }, 500);
     });
     
-    // PERBAIKAN: Tombol reset info pesanan dapur
+    // PERBAIKAN UTAMA: Perbaikan fungsi tombol reset info pesanan dapur
+    // Fungsi ini hanya mereset tampilan dapur dan notifikasi, TIDAK menghapus histori transaksi
     $('#resetKitchenInfoBtn').click(function() {
         if (!checkPermission('delete_kitchen_history')) {
             showToast('Anda tidak memiliki izin untuk mereset info pesanan dapur', 'error');
             return;
         }
         
-        // Hitung jumlah pesanan dine-in yang sudah diproses (completed) atau sudah selesai dari dapur
-        const kitchenProcessedOrders = orders.filter(order => 
+        // Hitung jumlah pesanan dine-in yang aktif (preparing atau ready) di dapur
+        const activeKitchenOrders = orders.filter(order => 
             order.type === 'dinein' && 
-            (order.status === 'completed' || order.kitchenArchived)
+            (order.status === 'preparing' || order.status === 'ready') &&
+            !order.kitchenArchived
         );
         
-        if (kitchenProcessedOrders.length === 0) {
+        if (activeKitchenOrders.length === 0) {
             showToast('Tidak ada info pesanan dapur yang dapat direset', 'info');
             return;
         }
         
         promptForPassword('item', () => {
             showConfirmation('Reset Info Pesanan Dapur', 
-                `Apakah Anda yakin ingin mereset ${kitchenProcessedOrders.length} info pesanan dapur yang sudah diproses? Tindakan ini hanya akan mereset tampilan dapur, tidak menghapus histori transaksi.`, 
+                `Apakah Anda yakin ingin mereset ${activeKitchenOrders.length} info pesanan dapur yang aktif? Tindakan ini hanya akan mereset tampilan dapur, tidak menghapus histori transaksi.`, 
                 () => {
                     showModalLoading('Mer reset info pesanan dapur...');
                     
                     setTimeout(() => {
-                        // Reset status pesanan dapur tanpa menghapus dari orders
-                        orders.forEach(order => {
-                            if (order.type === 'dinein' && (order.status === 'completed' || order.kitchenArchived)) {
-                                // Reset flag kitchenArchived agar tidak ditampilkan di dapur
-                                order.kitchenArchived = false;
-                                // Ubah status menjadi completed agar tidak muncul di daftar aktif
-                                order.status = 'completed';
-                            }
+                        // Reset hanya untuk pesanan aktif di dapur (preparing atau ready)
+                        // Kita ubah statusnya menjadi 'completed' dan set kitchenArchived = true
+                        activeKitchenOrders.forEach(order => {
+                            order.status = 'completed';
+                            order.kitchenArchived = true;
                         });
                         
                         // Simpan perubahan
@@ -1177,7 +1178,7 @@ $(document).ready(function() {
                         }
                         
                         hideModalLoading();
-                        showToast(`${kitchenProcessedOrders.length} info pesanan dapur berhasil direset`, 'success');
+                        showToast(`${activeKitchenOrders.length} info pesanan dapur berhasil direset`, 'success');
                     }, 1000);
                 }, 'warning');
         });
@@ -3567,3 +3568,4 @@ function saveProfitSettings() {
 function saveKitchenHistory() {
     localStorage.setItem(STORAGE_KEYS.KITCHEN_HISTORY, JSON.stringify(kitchenHistory));
 }
+[file content end]
