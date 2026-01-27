@@ -1116,35 +1116,40 @@ $(document).ready(function() {
         }, 500);
     });
     
-    // PERBAIKAN: Tombol hapus histori pesanan dapur
+    // PERBAIKAN: Tombol Reset Info Pesanan Dapur (dulunya Hapus Histori Pesanan Dapur)
     $('#deleteKitchenHistoryBtn').click(function() {
         if (!checkPermission('delete_kitchen_history')) {
-            showToast('Anda tidak memiliki izin untuk menghapus histori pesanan dapur', 'error');
+            showToast('Anda tidak memiliki izin untuk mereset info pesanan dapur', 'error');
             return;
         }
         
-        // Hitung jumlah pesanan dine-in yang sudah diproses (completed) atau sudah selesai dari dapur
-        const kitchenProcessedOrders = orders.filter(order => 
+        // Hitung pesanan dine-in yang sedang aktif (preparing atau ready dan belum di-archive)
+        const activeKitchenOrders = orders.filter(order => 
             order.type === 'dinein' && 
-            (order.status === 'completed' || order.kitchenArchived)
+            (order.status === 'preparing' || order.status === 'ready') &&
+            !order.kitchenArchived
         );
         
-        if (kitchenProcessedOrders.length === 0) {
-            showToast('Tidak ada histori pesanan dapur yang dapat dihapus', 'info');
+        if (activeKitchenOrders.length === 0) {
+            showToast('Tidak ada info pesanan dapur yang aktif untuk di-reset', 'info');
             return;
         }
         
         promptForPassword('item', () => {
-            showConfirmation('Hapus Histori Pesanan Dapur', 
-                `Apakah Anda yakin ingin menghapus ${kitchenProcessedOrders.length} histori pesanan dapur yang sudah diproses? Tindakan ini tidak dapat dibatalkan.`, 
+            showConfirmation('Reset Info Pesanan Dapur', 
+                `Apakah Anda yakin ingin mereset ${activeKitchenOrders.length} info pesanan dapur yang aktif? Tindakan ini akan mengarsipkan semua pesanan aktif.`, 
                 () => {
-                    showModalLoading('Menghapus histori pesanan dapur...');
+                    showModalLoading('Meriset info pesanan dapur...');
                     
                     setTimeout(() => {
-                        // Hapus pesanan dine-in yang sudah completed atau di-archive
-                        orders = orders.filter(order => 
-                            !(order.type === 'dinein' && (order.status === 'completed' || order.kitchenArchived))
-                        );
+                        // Arsipkan semua pesanan dine-in yang aktif
+                        orders.forEach(order => {
+                            if (order.type === 'dinein' && 
+                                (order.status === 'preparing' || order.status === 'ready') &&
+                                !order.kitchenArchived) {
+                                order.kitchenArchived = true;
+                            }
+                        });
                         
                         // Simpan perubahan
                         saveOrders();
@@ -1158,10 +1163,23 @@ $(document).ready(function() {
                         }
                         
                         hideModalLoading();
-                        showToast(`${kitchenProcessedOrders.length} histori pesanan dapur berhasil dihapus`, 'success');
+                        showToast(`${activeKitchenOrders.length} info pesanan dapur berhasil direset`, 'success');
                     }, 1000);
                 }, 'danger');
         });
+    });
+    
+    // TOMBOL BARU: Refresh Aplikasi
+    $('#refreshAppBtn').click(function() {
+        showModalLoading('Merefresh aplikasi...');
+        setTimeout(() => {
+            location.reload();
+        }, 500);
+    });
+    
+    // TOMBOL BARU: Info Aplikasi
+    $('#appInfoBtn').click(function() {
+        showAppInfoModal();
     });
     
     $('#saveMenuBtn').click(function() {
@@ -1377,14 +1395,82 @@ $(document).ready(function() {
         });
     });
     
-    // FIX: Inisialisasi button status berdasarkan isi pesanan
-    updateOrder();
-    
     // Event untuk tombol close welcome toast
     $('.welcome-toast-close').click(function() {
         hideWelcomeToast();
     });
+    
+    // FIX: Inisialisasi button status berdasarkan isi pesanan
+    updateOrder();
 });
+
+// FUNGSI BARU: Modal Info Aplikasi
+function showAppInfoModal() {
+    // Hapus modal jika sudah ada
+    if ($('#appInfoModal').length) {
+        $('#appInfoModal').remove();
+    }
+
+    const modalHtml = `
+        <div class="modal" id="appInfoModal" style="display: flex;">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3 class="modal-title">Tentang Aplikasi</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <i class="fas fa-cash-register" style="font-size: 48px; color: var(--primary);"></i>
+                        <h2>UMKM CASH</h2>
+                        <p>Aplikasi Kasir Digital <span class="premium-badge">PREMIUM</span></p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <p><strong>Versi:</strong> Premium 1.0</p>
+                        <p><strong>Dikembangkan oleh:</strong> ${settings.storeName || 'Lentera Karya Situbondo'}</p>
+                        <p><strong>Dukung oleh:</strong> Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
+                    </div>
+                    <div style="border-top: 1px solid #eee; padding-top: 15px;">
+                        <h4>Kontak Developer</h4>
+                        <p>
+                            <i class="fas fa-envelope"></i> 
+                            Email: <a href="mailto:info@aplikasiusaha.com" target="_blank" style="color: var(--primary);">info@aplikasiusaha.com</a>
+                        </p>
+                        <p>
+                            <i class="fab fa-whatsapp"></i> 
+                            WhatsApp: <a href="https://wa.me/6285647709114" target="_blank" style="color: var(--primary);">085647709114</a>
+                        </p>
+                        <p>
+                            <i class="fas fa-globe"></i> 
+                            Website: <a href="https://www.aplikasiusaha.com/umkmcash" target="_blank" style="color: var(--primary);">www.aplikasiusaha.com/umkmcash</a>
+                        </p>
+                    </div>
+                    <div style="border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px;">
+                        <h4>Fitur Utama</h4>
+                        <ul style="padding-left: 20px;">
+                            <li>Manajemen Menu dan Kategori</li>
+                            <li>Transaksi Penjualan Lengkap</li>
+                            <li>Manajemen Shift dan Perhitungan Laba</li>
+                            <li>Laporan Penjualan Profesional</li>
+                            <li>Manajemen Member dengan Kartu Anggota</li>
+                            <li>Backup dan Restore Data Terenkripsi</li>
+                            <li>Multi-user dengan Hak Akses Terkontrol</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning modal-close-btn">Tutup</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    $('body').append(modalHtml);
+
+    // Event handler untuk menutup modal
+    $('#appInfoModal .modal-close, #appInfoModal .modal-close-btn').click(function() {
+        $('#appInfoModal').remove();
+    });
+}
 
 // Fungsi untuk menampilkan modal input uang kas awal
 function showCashStartModal() {
