@@ -1180,48 +1180,63 @@
         </div>
     </div>
     
-    <!-- PERBAIKAN: Modal Histori Transaksi dengan tombol cetak ulang -->
-    <div id="historyModal" class="modal">
-        <div class="modal-content" style="max-width: 900px;">
-            <div class="modal-header">
-                <h3 class="modal-title">Histori Transaksi</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="search-container">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="historySearchInput" class="search-input" placeholder="Cari berdasarkan Kode Transaksi atau Nama Pelanggan...">
+    <!-- PERBAIKAN: Modal Histori Transaksi dengan filter periode -->
+<div id="historyModal" class="modal">
+    <div class="modal-content" style="max-width: 900px;">
+        <div class="modal-header">
+            <h3 class="modal-title">Histori Transaksi</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- PERBAIKAN: Tambah filter periode untuk pencarian -->
+            <div class="history-filter-container mb-3">
+                <div class="form-group">
+                    <label class="form-label">Filter Periode</label>
+                    <select id="historyPeriod" class="form-control">
+                        <option value="all">Semua Transaksi</option>
+                        <option value="today">Hari Ini</option>
+                        <option value="week">Minggu Ini</option>
+                        <option value="month">Bulan Ini</option>
+                        <option value="lastMonth">Bulan Lalu</option>
+                        <option value="custom">Rentang Tanggal Kustom</option>
+                    </select>
                 </div>
-                <div id="historyResultsContainer" style="max-height: 60vh; overflow-y: auto; margin-top: 15px;">
-                    <div id="historyResults" class="printable-area"></div>
+                
+                <div id="historyCustomDateRange" style="display: none; margin-top: 10px;">
+                    <div class="form-group">
+                        <label class="form-label">Dari Tanggal</label>
+                        <input type="date" id="historyStartDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Sampai Tanggal</label>
+                        <input type="date" id="historyEndDate" class="form-control">
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-warning modal-close-btn">Tutup</button>
-                <button class="btn btn-info" id="downloadHistoryBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
-                <button class="btn btn-primary" id="printHistoryBtn"><i class="fas fa-print"></i> Cetak Histori</button>
+
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="historySearchInput" class="search-input" 
+                       placeholder="Cari berdasarkan Kode Transaksi, Nama Pelanggan, atau Kasir...">
+            </div>
+            
+            <div id="historyResultsContainer" style="max-height: 60vh; overflow-y: auto; margin-top: 15px;">
+                <div id="historyResults" class="printable-area"></div>
             </div>
         </div>
-    </div>
-
-    <!-- Modal untuk Cetak Ulang Struk dari Histori -->
-    <div id="historyReceiptModal" class="modal">
-        <div class="modal-content" style="max-width: 350px;">
-            <div class="modal-header">
-                <h3 class="modal-title">Cetak Ulang Struk</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body" id="historyReceiptModalBody" style="background: #eee;">
-                <!-- Struk akan dimuat di sini -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-warning modal-close-btn">Tutup</button>
-                <button class="btn btn-info" id="downloadHistoryReceiptPdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
-                <button class="btn btn-success" id="printHistoryReceiptBtn"><i class="fas fa-print"></i> Cetak Struk</button>
-            </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning modal-close-btn">Tutup</button>
+            <button class="btn btn-info" id="downloadHistoryBtn">
+                <i class="fas fa-file-pdf"></i> Unduh PDF (sesuai filter)
+            </button>
+            <button class="btn btn-primary" id="printHistoryBtn">
+                <i class="fas fa-print"></i> Cetak Histori
+            </button>
         </div>
     </div>
+</div>
 
+        
     <!-- FITUR BARU: Modal untuk Info Pesanan Dapur tanpa Tab History -->
     <div id="kitchenDisplayModal" class="modal">
         <div class="modal-content" style="max-width: 800px;">
