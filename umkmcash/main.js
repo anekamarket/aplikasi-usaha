@@ -44,7 +44,7 @@ const DEFAULT_TRIAL_USER = {
         shift_management: true,
         profit_calculation: true,
         delete_kitchen_history: true,
-        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
+        reprint_receipt: true
     }
 };
 
@@ -70,7 +70,7 @@ const DEFAULT_CASHIER_USER = {
         shift_management: true,
         profit_calculation: false,
         delete_kitchen_history: false,
-        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
+        reprint_receipt: true
     }
 };
 
@@ -104,7 +104,7 @@ const DEFAULT_PERMISSIONS = {
         shift_management: true,
         profit_calculation: true,
         delete_kitchen_history: true,
-        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
+        reprint_receipt: true
     },
     cashier: {
         add_menu: false,
@@ -122,7 +122,7 @@ const DEFAULT_PERMISSIONS = {
         shift_management: true,
         profit_calculation: false,
         delete_kitchen_history: false,
-        reprint_receipt: true // PERBAIKAN: Tambah permission cetak ulang struk
+        reprint_receipt: true
     }
 };
 
@@ -135,7 +135,7 @@ let welcomeToastTimeout = null;
 let countdownInterval = null;
 let currentShift = null;
 
-// PERBAIKAN: Variabel untuk mengontrol interval kitchen
+// Variabel untuk mengontrol interval kitchen
 let kitchenRefreshInterval = null;
 let kitchenLastRefreshTime = null;
 
@@ -167,7 +167,6 @@ function togglePasswordVisibility(inputId, toggleBtn) {
     const type = input.attr('type') === 'password' ? 'text' : 'password';
     input.attr('type', type);
     
-    // Ubah ikon
     const icon = toggleBtn.find('i');
     if (type === 'text') {
         icon.removeClass('fa-eye').addClass('fa-eye-slash');
@@ -179,7 +178,6 @@ function togglePasswordVisibility(inputId, toggleBtn) {
 function initializeData() {
     let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
     
-    // Tambahkan user default jika belum ada
     if (!users_init.find(u => u.username === 'admin')) {
         users_init.push(DEFAULT_TRIAL_USER);
     }
@@ -239,7 +237,6 @@ function initializeData() {
         }));
     }
     
-    // FITUR BARU: Inisialisasi kitchen history jika belum ada
     if (!localStorage.getItem(STORAGE_KEYS.KITCHEN_HISTORY)) {
         localStorage.setItem(STORAGE_KEYS.KITCHEN_HISTORY, JSON.stringify([]));
     }
@@ -266,32 +263,24 @@ $(document).ready(function() {
     $('#currentYear').text(new Date().getFullYear());
     $('#currentYear3').text(new Date().getFullYear());
     
-    // PERBAIKAN: Cek apakah shift sudah dibuka
     currentShift = shiftData.currentShift;
     
     if (currentUser) {
         $('#loggedInUser').text(currentUser.name);
         $('#loginModal').hide();
         
-        // PERBAIKAN: Logika baru - Admin boleh mengabaikan shift
         if (currentUser.role === 'admin') {
-            // Admin langsung bisa masuk tanpa harus buka shift
             $('#mainApp').show();
             initializeApp();
             setTimeout(showWelcomeToast, 500);
         } else {
-            // Untuk kasir/non-admin, cek apakah shift sudah dibuka
             if (!currentShift && checkPermission('shift_management')) {
-                // Tampilkan modal input uang kas awal
                 showCashStartModal();
             } else if (currentShift) {
-                // Tampilkan aplikasi utama
                 $('#mainApp').show();
                 initializeApp();
-                // Tampilkan welcome toast setelah login
                 setTimeout(showWelcomeToast, 500);
             } else {
-                // User tidak punya permission untuk shift management, langsung tampilkan app
                 $('#mainApp').show();
                 initializeApp();
                 setTimeout(showWelcomeToast, 500);
@@ -301,18 +290,15 @@ $(document).ready(function() {
         generateCaptcha();
     }
     
-    // Inisialisasi jam real-time
     updateLiveClock();
     setInterval(updateLiveClock, 1000);
     
     setInterval(updateCurrentDate, 60000);
     
-    // FUNGSI BARU: Event handler untuk toggle password visibility
     $('#passwordToggle').click(function() {
         togglePasswordVisibility('#password', $(this));
     });
     
-    // FUNGSI BARU: Event handler untuk toggle password di kontrol panel
     $(document).on('click', '.user-password-toggle', function() {
         togglePasswordVisibility('#userPassword', $(this));
     });
@@ -322,7 +308,6 @@ $(document).ready(function() {
         const type = input.attr('type') === 'password' ? 'text' : 'password';
         input.attr('type', type);
         
-        // Ubah ikon
         const icon = $(this).find('i');
         if (type === 'text') {
             icon.removeClass('fa-eye').addClass('fa-eye-slash');
@@ -351,6 +336,21 @@ $(document).ready(function() {
         togglePasswordVisibility('#passwordPromptInput', $(this));
     });
     
+    // PERBAIKAN: Event handler untuk filter periode histori transaksi
+    $('#historyPeriod').change(function() {
+        const period = $(this).val();
+        if (period === 'custom') {
+            $('#historyCustomDateRange').show();
+        } else {
+            $('#historyCustomDateRange').hide();
+            applyHistoryFilter();
+        }
+    });
+    
+    $('#historyStartDate, #historyEndDate').change(function() {
+        applyHistoryFilter();
+    });
+    
     // Login form submission
     $('#loginForm').submit(function(e) {
         e.preventDefault();
@@ -358,7 +358,6 @@ $(document).ready(function() {
         const originalText = $loginBtn.html();
         setButtonLoading($loginBtn, true);
         
-        // Tampilkan loading
         showModalLoading('Memverifikasi login...');
 
         setTimeout(() => {
@@ -377,11 +376,9 @@ $(document).ready(function() {
                 const password = $('#password').val();
                 const passwordHash = CryptoJS.SHA256(password).toString();
                 
-                // Cari user berdasarkan username
                 const user = users.find(u => u.username === username);
                 
                 if (user && user.password === passwordHash) {
-                    // Set permissions default jika tidak ada
                     if (!user.permissions) {
                         user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
                     }
@@ -391,26 +388,20 @@ $(document).ready(function() {
                     $('#loggedInUser').text(currentUser.name);
                     $('#loginModal').hide();
                     
-                    // PERBAIKAN: Logika baru - Admin boleh mengabaikan shift
                     if (currentUser.role === 'admin') {
-                        // Admin langsung bisa masuk tanpa harus buka shift
                         $('#mainApp').fadeIn();
                         initializeApp();
                         setTimeout(showWelcomeToast, 300);
                     } else {
-                        // Untuk kasir/non-admin, cek apakah shift sudah dibuka
                         currentShift = shiftData.currentShift;
                         
                         if (!currentShift && checkPermission('shift_management')) {
-                            // Tampilkan modal input uang kas awal
                             showCashStartModal();
                         } else if (currentShift) {
-                            // Tampilkan aplikasi utama
                             $('#mainApp').fadeIn();
                             initializeApp();
                             setTimeout(showWelcomeToast, 300);
                         } else {
-                            // User tidak punya permission untuk shift management, langsung tampilkan app
                             $('#mainApp').fadeIn();
                             initializeApp();
                             setTimeout(showWelcomeToast, 300);
@@ -433,7 +424,6 @@ $(document).ready(function() {
         }, 800);
     });
     
-    // PERBAIKAN: Event handler untuk tombol skip shift (hanya admin)
     $('#skipShiftBtn').click(function() {
         $('#cashStartModal').hide();
         $('#mainApp').fadeIn();
@@ -441,7 +431,6 @@ $(document).ready(function() {
         showToast('Admin login tanpa membuka shift', 'info');
     });
     
-    // Event handlers untuk fitur shift baru
     $('#startShiftBtn').click(function() {
         const initialCash = parseFloat($('#initialCashAmount').val()) || 0;
         const cashNote = $('#cashNote').val().trim();
@@ -451,10 +440,8 @@ $(document).ready(function() {
             return;
         }
         
-        // Tampilkan loading
         showModalLoading('Membuka shift...');
         
-        // Buat shift baru
         currentShift = {
             id: 'SHIFT' + moment().format('YYYYMMDDHHmmss'),
             startTime: new Date(),
@@ -471,14 +458,11 @@ $(document).ready(function() {
             totalTransactions: 0
         };
         
-        // Simpan shift data
         shiftData.currentShift = currentShift;
         localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
         
-        // Update UI
         $('#shiftStatus').text('Aktif').removeClass('shift-closed').addClass('shift-open');
         
-        // Tampilkan aplikasi utama
         $('#cashStartModal').hide();
         $('#mainApp').fadeIn();
         initializeApp();
@@ -493,7 +477,6 @@ $(document).ready(function() {
         showToast('Pembukaan shift dibatalkan', 'info');
     });
     
-    // PERBAIKAN: Event handler untuk tombol Buka Shift di admin panel
     $('#openShiftBtn').click(function() {
         if (!checkPermission('shift_management')) {
             showToast('Anda tidak memiliki izin untuk membuka shift', 'error');
@@ -519,7 +502,6 @@ $(document).ready(function() {
             return;
         }
         
-        // Hitung total penjualan dari shift ini
         const shiftStartTime = new Date(currentShift.startTime);
         const shiftOrders = orders.filter(order => {
             const orderTime = new Date(order.date);
@@ -529,12 +511,10 @@ $(document).ready(function() {
         const totalSales = shiftOrders.reduce((sum, order) => sum + order.total, 0);
         const totalTransactions = shiftOrders.length;
         
-        // Update data shift
         currentShift.orders = shiftOrders;
         currentShift.totalSales = totalSales;
         currentShift.totalTransactions = totalTransactions;
         
-        // Update UI modal
         $('#initialCashDisplay').text(formatCurrency(currentShift.initialCash));
         $('#totalSalesAmount').val(totalSales);
         $('#actualCashCount').val('');
@@ -542,11 +522,9 @@ $(document).ready(function() {
         $('#otherIncome').val(0);
         $('#shiftCloseNote').val('');
         
-        // Hitung expected cash
         const expectedCash = currentShift.initialCash + totalSales;
         $('#expectedCash').text(formatCurrency(expectedCash));
         
-        // Tampilkan modal tutup shift
         $('#closeShiftModal').css('display', 'flex');
     });
     
@@ -576,7 +554,6 @@ $(document).ready(function() {
         $('#actualCash').text(formatCurrency(actualCash));
         $('#cashDifference').text(formatCurrency(difference));
         
-        // Warna berdasarkan selisih
         const $differenceElement = $('#cashDifference');
         if (difference > 0) {
             $differenceElement.css('color', 'var(--success)');
@@ -598,16 +575,13 @@ $(document).ready(function() {
             return;
         }
         
-        // Tampilkan loading
         showModalLoading('Menutup shift...');
         
-        // Hitung expected cash
         const initialCash = currentShift.initialCash || 0;
         const totalSales = currentShift.totalSales || 0;
         const expectedCash = initialCash + totalSales - expenses + otherIncome;
         const difference = actualCash - expectedCash;
         
-        // Tutup shift
         currentShift.endTime = new Date();
         currentShift.status = 'closed';
         currentShift.actualCash = actualCash;
@@ -616,39 +590,32 @@ $(document).ready(function() {
         currentShift.cashDifference = difference;
         currentShift.closeNote = closeNote;
         
-        // Tambahkan ke history
         if (!shiftData.shiftHistory) {
             shiftData.shiftHistory = [];
         }
         shiftData.shiftHistory.unshift(currentShift);
         
-        // Reset current shift
         shiftData.currentShift = null;
         currentShift = null;
         
-        // Simpan data
         localStorage.setItem(STORAGE_KEYS.SHIFT_DATA, JSON.stringify(shiftData));
         
-        // Update UI
         $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
         $('#closeShiftModal').hide();
         
         hideModalLoading();
         
-        // Tampilkan laporan shift
         generateShiftReport(currentShift);
         
         showToast('Shift berhasil ditutup', 'success');
     });
     
-    // Event handler untuk fitur perhitungan laba
     $('#profitCalculationBtn').click(function() {
         if (!checkPermission('profit_calculation')) {
             showToast('Anda tidak memiliki izin untuk mengakses fitur perhitungan laba', 'error');
             return;
         }
         
-        // Minta kode keamanan
         promptForProfitAccess(() => {
             $('#profitCalculationModal').css('display', 'flex');
             $('#profitPeriod').val('today');
@@ -692,7 +659,6 @@ $(document).ready(function() {
         }, 500);
     });
     
-    // Pengaturan shift dan laba di kontrol panel
     $('#saveShiftProfitSettingsBtn').click(function() {
         const defaultShiftHours = parseFloat($('#defaultShiftHours').val()) || 8;
         const autoCloseShift = $('#autoCloseShift').is(':checked');
@@ -720,7 +686,6 @@ $(document).ready(function() {
         showToast('Pengaturan shift dan laba berhasil disimpan', 'success');
     });
     
-    // PERBAIKAN: Event handler untuk tombol Refresh
     $('#refreshBtn').click(function() {
         showModalLoading('Merefresh halaman...');
         setTimeout(() => {
@@ -728,7 +693,6 @@ $(document).ready(function() {
         }, 500);
     });
     
-    // PERBAIKAN: Event handler untuk tombol Info Aplikasi
     $('#appInfoBtn').click(function() {
         $('#appInfoModal').css('display', 'flex');
     });
@@ -737,7 +701,6 @@ $(document).ready(function() {
     $('#logoutBtn').click(function(e) {
         e.preventDefault();
         
-        // Cek apakah shift masih terbuka
         if (currentShift && currentShift.status === 'open') {
             showConfirmation('Shift Masih Aktif', 'Shift penjualan masih aktif. Apakah Anda yakin ingin logout?', () => {
                 performLogout();
@@ -775,7 +738,6 @@ $(document).ready(function() {
         }
     });
     
-    // Cek permission untuk edit menu
     $(document).on('click', '.edit-menu', function(e) { 
         e.stopPropagation(); 
         if (checkPermission('edit_menu')) {
@@ -785,7 +747,6 @@ $(document).ready(function() {
         }
     });
     
-    // Cek permission untuk delete menu
     $(document).on('click', '.delete-menu', function(e) {
         e.stopPropagation();
         if (!checkPermission('delete_menu')) {
@@ -857,7 +818,6 @@ $(document).ready(function() {
 
     $(document).on('click', function(e) { if (!$(e.target).closest('.member-search-container').length) $('#memberSearchResults').hide(); });
     
-    // PROSES ORDER FIX: Perbaikan event handler untuk tombol proses pesanan
     $('#processOrderBtn').click(function() {
         if (currentOrder.items.length === 0) { 
             showToast('Pesanan kosong', 'warning'); 
@@ -870,19 +830,16 @@ $(document).ready(function() {
         updatePaymentTab(); 
         switchPaymentModalTab('payment');
         
-        // Reset payment method ke tunai setiap kali modal dibuka
         $('#paymentMethod').val('cash').trigger('change');
         $('#paymentAmount').val('').trigger('input');
         
         $('#processOrderModal').css('display', 'flex');
     });
     
-    // Fix: Tambahkan event handler untuk tabs di modal pembayaran
     $('#processOrderModal .tabs .tab').click(function() { 
         switchPaymentModalTab($(this).data('tab')); 
     });
     
-    // Handle payment method change
     $('#paymentMethod').change(function() {
         togglePaymentMethod();
         if ($(this).val() === 'cash') {
@@ -895,7 +852,6 @@ $(document).ready(function() {
         $('#paymentAmount').val($(this).data('amount')).trigger('input'); 
     });
     
-    // FIX: Perbaikan fungsi completePaymentBtn untuk menangani semua metode pembayaran
     $('#completePaymentBtn').click(function() {
         if ($(this).prop('disabled')) return;
         
@@ -903,7 +859,6 @@ $(document).ready(function() {
         let paymentAmount;
         
         if (paymentMethod === 'qris') {
-            // Untuk QRIS, payment amount sama dengan total
             paymentAmount = currentOrder.total;
         } else {
             paymentAmount = parseFloat($('#paymentAmount').val()) || 0;
@@ -916,7 +871,6 @@ $(document).ready(function() {
         const $btn = $(this), originalText = $btn.html();
         setButtonLoading($btn, true);
         
-        // Tampilkan loading
         showModalLoading('Memproses pembayaran...');
 
         setTimeout(() => {
@@ -933,13 +887,11 @@ $(document).ready(function() {
                     status: currentOrder.type === 'dinein' ? 'preparing' : 'completed', 
                     statusLocked: false,
                     shiftId: currentShift ? currentShift.id : null,
-                    // FITUR BARU: Tambahkan flag untuk history dapur
                     kitchenArchived: false
                 };
                 orders.unshift(order); 
                 saveOrders();
                 
-                // FITUR BARU: Update notifikasi pesanan dapur
                 updateKitchenNotification();
                 
                 if (order.memberId) {
@@ -970,7 +922,6 @@ $(document).ready(function() {
         loadMenus($('#menuSearch').val(), $(this).data('category')); 
     });
     
-    // Cek permission untuk add menu
     $('#addMenuBtn').click(() => { 
         if (checkPermission('add_menu')) {
             openEditMenuModal(null); 
@@ -979,7 +930,6 @@ $(document).ready(function() {
         }
     });
     
-    // Cek permission untuk manage categories
     $('#manageCategoriesBtn').click(() => { 
         if (checkPermission('manage_categories')) { 
             loadCategoriesForManagement(); 
@@ -989,7 +939,6 @@ $(document).ready(function() {
         }
     });
     
-    // PERBAIKAN: Event handler untuk tombol Generate Laporan yang diperbaiki
     $('#viewReportsBtn').click(() => { 
         if (checkPermission('view_reports')) { 
             $('#reportsModal .tabs .tab').removeClass('active').first().addClass('active');
@@ -1003,25 +952,30 @@ $(document).ready(function() {
         }
     });
     
-    // Cek permission untuk history
+    // PERBAIKAN: Event handler untuk tombol Histori Transaksi dengan filter default
     $('#historyBtn').click(() => { 
         if (checkPermission('transaction_history')) { 
-            loadTransactionHistory(); 
+            // Set filter default
+            $('#historyPeriod').val('all');
+            $('#historyCustomDateRange').hide();
+            $('#historySearchInput').val('');
+            // Set tanggal custom default (hari ini)
+            $('#historyStartDate').val(moment().format('YYYY-MM-DD'));
+            $('#historyEndDate').val(moment().format('YYYY-MM-DD'));
+            // Load transaksi dengan filter default
+            applyHistoryFilter();
             $('#historyModal').css('display', 'flex'); 
         } else {
             showToast('Anda tidak memiliki izin untuk melihat histori transaksi', 'error');
         }
     });
     
-    // FITUR BARU: Event handler untuk tombol Info Pesanan Dapur tanpa history
     $('#kitchenDisplayBtn').click(() => { 
         if (checkPermission('kitchen_display')) { 
             loadKitchenOrders(); 
-            // PERBAIKAN: Hapus interval sebelumnya jika ada untuk menghindari duplikasi
             if (kitchenRefreshInterval) {
                 clearInterval(kitchenRefreshInterval);
             }
-            // PERBAIKAN: Set interval yang lebih stabil
             kitchenRefreshInterval = setInterval(loadKitchenOrders, 30000);
             kitchenLastRefreshTime = new Date();
             
@@ -1031,7 +985,6 @@ $(document).ready(function() {
         }
     });
     
-    // Cek permission untuk manage members
     $('#manageMembersBtn').click(() => { 
         if (checkPermission('manage_members')) { 
             resetMemberForm(); 
@@ -1045,7 +998,6 @@ $(document).ready(function() {
     
     $('#manageMemberSearchInput').on('input', function() { loadMembersForManagement($(this).val()); });
     
-    // Cek permission untuk manage store info
     $('#manageStoreInfoBtn').click(() => { 
         if (checkPermission('manage_store_info')) { 
             loadStoreInfo(); 
@@ -1055,7 +1007,6 @@ $(document).ready(function() {
         }
     });
     
-    // Cek permission untuk control panel
     $('#controlPanelBtn').click(() => {
         if (!checkPermission('control_panel')) {
             showToast('Anda tidak memiliki izin untuk mengakses kontrol panel', 'error');
@@ -1070,7 +1021,6 @@ $(document).ready(function() {
             $('#memberDiscount').val(settings.memberDiscountPercent || 2);
             $('#nonMemberDiscount').val(settings.nonMemberDiscountPercent || 0);
             
-            // Load shift settings
             $('#defaultShiftHours').val(settings.defaultShiftHours || 8);
             $('#autoCloseShift').prop('checked', settings.autoCloseShift || false);
             $('#defaultProfitCOGS').val(settings.defaultCOGS || 60);
@@ -1079,7 +1029,6 @@ $(document).ready(function() {
         });
     });
     
-    // Cek permission untuk backup data
     $('#backupDataBtn').click(() => { 
         if (checkPermission('backup_restore')) { 
             showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.lksbackup). Lanjutkan?', backupData); 
@@ -1099,7 +1048,6 @@ $(document).ready(function() {
         }
     });
     
-    // Cek permission untuk reset data
     $('#resetDataBtn').click(() => { 
         if (checkPermission('reset_data')) { 
             promptForPassword('item', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', resetAllData, 'danger')); 
@@ -1108,7 +1056,6 @@ $(document).ready(function() {
         }
     });
     
-    // TOMBOL BARU: Generate Daftar Menu PDF
     $('#generateMenuPdfBtn').click(function() {
         if (menus.length === 0) {
             showToast('Tidak ada menu untuk digenerate', 'warning');
@@ -1134,14 +1081,12 @@ $(document).ready(function() {
         }, 500);
     });
     
-    // PERBAIKAN: Tombol reset info pesanan dapur - FUNGSI DIPERBAIKI
     $('#resetKitchenInfoBtn').click(function() {
         if (!checkPermission('delete_kitchen_history')) {
             showToast('Anda tidak memiliki izin untuk mereset info pesanan dapur', 'error');
             return;
         }
         
-        // PERBAIKAN: Hitung hanya pesanan yang masih aktif di dapur (status preparing atau ready)
         const activeKitchenOrders = orders.filter(order => 
             order.type === 'dinein' && 
             (order.status === 'preparing' || order.status === 'ready') &&
@@ -1160,20 +1105,14 @@ $(document).ready(function() {
                     showModalLoading('Mer reset info pesanan dapur...');
                     
                     setTimeout(() => {
-                        // Reset flag kitchenArchived untuk pesanan aktif di dapur
-                        // PERBAIKAN: Hanya set kitchenArchived = true, jangan ubah status atau data transaksi
                         activeKitchenOrders.forEach(order => {
                             order.kitchenArchived = true;
-                            // Status transaksi tetap utuh (preparing/ready), hanya tidak ditampilkan di dapur
                         });
                         
-                        // Simpan perubahan
                         saveOrders();
                         
-                        // Update notifikasi
                         updateKitchenNotification();
                         
-                        // Refresh tampilan jika modal sedang terbuka
                         if ($('#kitchenDisplayModal').is(':visible')) {
                             loadKitchenOrders();
                         }
@@ -1190,7 +1129,6 @@ $(document).ready(function() {
         if (!name || !category || price <= 0) { showToast('Nama, kategori, dan harga harus valid', 'error'); return; }
         const action = () => {
             if (id) {
-                // Cek permission untuk edit menu
                 if (!checkPermission('edit_menu')) {
                     showToast('Anda tidak memiliki izin untuk mengedit menu', 'error');
                     return;
@@ -1199,7 +1137,6 @@ $(document).ready(function() {
                 const menuIndex = menus.findIndex(m => m.id === id);
                 if (menuIndex > -1) menus[menuIndex] = { ...menus[menuIndex], name, category, price, image, description };
             } else {
-                // Cek permission untuk add menu
                 if (!checkPermission('add_menu')) {
                     showToast('Anda tidak memiliki izin untuk menambah menu', 'error');
                     return;
@@ -1262,7 +1199,6 @@ $(document).ready(function() {
     $(document).on('click', '.kta-member', function() { openKtaModal($(this).data('id')); });
     $('#downloadKtaPdfBtn').click(downloadKtaAsPdf);
     
-    // PERBAIKAN: Event handler untuk tombol Generate Laporan yang diperbaiki
     $('#generateReportBtn').click(function() {
         showModalLoading('Membuat laporan...');
         setTimeout(() => {
@@ -1280,12 +1216,14 @@ $(document).ready(function() {
     });
     $('#reportsModal .tabs .tab').click(function() { switchReportsModalTab($(this).data('tab')); });
     
-    // PERBAIKAN: Fix event handler untuk pencarian histori transaksi
+    // PERBAIKAN: Event handler untuk pencarian histori transaksi
     $('#historySearchInput').on('input', function() { 
-        loadTransactionHistory($(this).val()); 
+        applyHistoryFilter(); 
     });
     
     $('#printHistoryBtn').click(() => printElement('#historyResultsContainer .printable-area'));
+    
+    // PERBAIKAN: Event handler untuk tombol download PDF histori transaksi
     $('#downloadHistoryBtn').click(function() {
         showLoading('Mengunduh histori PDF...');
         setTimeout(() => {
@@ -1293,19 +1231,16 @@ $(document).ready(function() {
         }, 500);
     });
     
-    // PERBAIKAN: Event handler untuk tombol cetak ulang struk dari histori
     $(document).on('click', '.btn-history-print', function() {
         const orderId = $(this).data('id');
         reprintReceipt(orderId);
     });
     
-    // PERBAIKAN: Event handler untuk tombol detail transaksi dari histori
     $(document).on('click', '.btn-history-detail', function() {
         const orderId = $(this).data('id');
         toggleOrderDetails(orderId);
     });
     
-    // PERBAIKAN: Event handler untuk status-item dengan konfirmasi yang benar
     $(document).on('click', '.status-item', function() {
         const order = orders.find(o => o.id === $(this).data('id'));
         if (!order || order.statusLocked) return;
@@ -1351,7 +1286,6 @@ $(document).ready(function() {
         saveSettings(); showToast('Pengaturan diskon berhasil disimpan.', 'success');
     });
     
-    // Event untuk permissions
     $('#permissionUserSelect').change(function() {
         const userId = $(this).val();
         if (userId) {
@@ -1372,7 +1306,6 @@ $(document).ready(function() {
     $('.modal-close, .modal-close-btn').click(function() {
         const modal = $(this).closest('.modal');
         modal.hide();
-        // PERBAIKAN: Hapus interval kitchen saat modal ditutup
         if (modal.attr('id') === 'kitchenDisplayModal') {
             if (kitchenRefreshInterval) {
                 clearInterval(kitchenRefreshInterval);
@@ -1396,7 +1329,6 @@ $(document).ready(function() {
         }, 500);
     });
     
-    // PERBAIKAN: Event handler untuk tombol cetak ulang struk dari histori
     $('#printHistoryReceiptBtn').on('click', function() {
         printElement('#historyReceiptModalBody #receiptContent');
     });
@@ -1408,7 +1340,6 @@ $(document).ready(function() {
         }, 500);
     });
     
-    // PERBAIKAN: Event handler untuk tombol "Tandai Selesai" dengan konfirmasi
     $(document).on('click', '.mark-kitchen-done', function() {
         const orderId = $(this).data('id');
         const order = orders.find(o => o.id === orderId);
@@ -1416,31 +1347,59 @@ $(document).ready(function() {
         if (!order) return;
         
         showConfirmation('Tandai Selesai', `Apakah Anda yakin ingin menandai pesanan ${orderId} sebagai selesai?`, () => {
-            // Tandai sebagai selesai (archive)
             order.kitchenArchived = true;
             saveOrders();
             
-            // Update tampilan
             loadKitchenOrders();
             
-            // Update notifikasi
             updateKitchenNotification();
             
             showToast(`Pesanan ${orderId} telah ditandai selesai dari dapur`, 'success');
         });
     });
     
-    // FIX: Inisialisasi button status berdasarkan isi pesanan
     updateOrder();
     
-    // Event untuk tombol close welcome toast
     $('.welcome-toast-close').click(function() {
         hideWelcomeToast();
     });
 });
 
-// PERBAIKAN UTAMA: Fungsi loadTransactionHistory yang diperbaiki dengan tombol cetak ulang struk
-function loadTransactionHistory(searchTerm = '') {
+// PERBAIKAN: Fungsi untuk apply filter histori transaksi
+function applyHistoryFilter() {
+    const searchTerm = $('#historySearchInput').val();
+    const period = $('#historyPeriod').val();
+    let startDate, endDate;
+
+    if (period === 'today') {
+        startDate = moment().startOf('day');
+        endDate = moment().endOf('day');
+    } else if (period === 'week') {
+        startDate = moment().startOf('week');
+        endDate = moment().endOf('week');
+    } else if (period === 'month') {
+        startDate = moment().startOf('month');
+        endDate = moment().endOf('month');
+    } else if (period === 'lastMonth') {
+        startDate = moment().subtract(1, 'month').startOf('month');
+        endDate = moment().subtract(1, 'month').endOf('month');
+    } else if (period === 'custom') {
+        startDate = moment($('#historyStartDate').val());
+        endDate = moment($('#historyEndDate').val()).endOf('day');
+        if (!startDate.isValid() || !endDate.isValid()) {
+            startDate = null;
+            endDate = null;
+        }
+    } else {
+        startDate = null;
+        endDate = null;
+    }
+
+    loadTransactionHistory(searchTerm, period, startDate, endDate);
+}
+
+// PERBAIKAN UTAMA: Fungsi loadTransactionHistory yang diperbaiki dengan filter periode
+function loadTransactionHistory(searchTerm = '', period = 'all', startDate = null, endDate = null) {
     const $historyResults = $('#historyResults');
     
     if (orders.length === 0) {
@@ -1448,8 +1407,9 @@ function loadTransactionHistory(searchTerm = '') {
         return;
     }
     
-    // Filter transaksi berdasarkan searchTerm
     let filteredOrders = orders;
+    
+    // Filter berdasarkan pencarian
     if (searchTerm) {
         const lowerSearchTerm = searchTerm.toLowerCase();
         filteredOrders = orders.filter(order => 
@@ -1460,17 +1420,37 @@ function loadTransactionHistory(searchTerm = '') {
         );
     }
     
+    // Filter berdasarkan periode
+    if (startDate && endDate) {
+        filteredOrders = filteredOrders.filter(order => {
+            const orderDate = moment(order.date);
+            return orderDate.isBetween(startDate, endDate, null, '[]');
+        });
+    }
+    
     if (filteredOrders.length === 0) {
         $historyResults.html('<div class="empty-state"><i class="fas fa-search"></i><p>Tidak ada transaksi yang sesuai dengan pencarian</p></div>');
         return;
     }
     
-    // Buat HTML untuk histori transaksi
+    // Buat string periode untuk ditampilkan
+    let periodString = '';
+    if (period === 'today') periodString = 'Hari Ini';
+    else if (period === 'week') periodString = 'Minggu Ini';
+    else if (period === 'month') periodString = 'Bulan Ini';
+    else if (period === 'lastMonth') periodString = 'Bulan Lalu';
+    else if (period === 'custom') {
+        periodString = `${startDate.format('DD/MM/YYYY')} - ${endDate.format('DD/MM/YYYY')}`;
+    } else {
+        periodString = 'Semua Transaksi';
+    }
+    
     let html = `
         <div class="professional-pdf">
             <div class="pdf-report-header">
                 <h2>HISTORI TRANSAKSI</h2>
                 <h3>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h3>
+                <div class="pdf-subtitle"><strong>Periode:</strong> ${periodString}</div>
                 <div class="pdf-subtitle"><strong>Tanggal Cetak:</strong> ${moment().format('DD/MM/YYYY HH:mm')}</div>
                 <div class="pdf-subtitle"><strong>Total Transaksi:</strong> ${filteredOrders.length}</div>
             </div>
@@ -1492,7 +1472,6 @@ function loadTransactionHistory(searchTerm = '') {
                     <tbody>
     `;
     
-    // Tambahkan setiap transaksi ke tabel
     filteredOrders.forEach((order, index) => {
         const member = order.memberId ? members.find(m => m.id === order.memberId) : null;
         const customerName = member ? member.name : (order.customerName || 'Pelanggan');
@@ -1501,7 +1480,6 @@ function loadTransactionHistory(searchTerm = '') {
                                   order.paymentMethod === 'transfer' ? 'Transfer' : 
                                   order.paymentMethod === 'ewallet' ? 'E-Wallet' : order.paymentMethod;
         
-        // PERBAIKAN: Tambahkan tombol aksi untuk cetak ulang struk
         const canReprint = checkPermission('reprint_receipt');
         const actionButtons = canReprint ? `
             <div class="history-actions">
@@ -1560,7 +1538,6 @@ function loadTransactionHistory(searchTerm = '') {
         `;
     });
     
-    // Hitung total dari semua transaksi yang difilter
     const totalRevenue = filteredOrders.reduce((sum, order) => sum + order.total, 0);
     
     html += `
@@ -1585,7 +1562,191 @@ function loadTransactionHistory(searchTerm = '') {
     $historyResults.html(html);
 }
 
-// PERBAIKAN: Fungsi untuk toggle detail pesanan
+// PERBAIKAN: Fungsi untuk download histori transaksi sebagai PDF dengan filter periode
+function downloadHistoryAsPdf() {
+    // Ambil parameter filter yang sama dengan yang digunakan di tampilan
+    const searchTerm = $('#historySearchInput').val();
+    const period = $('#historyPeriod').val();
+    let startDate, endDate;
+
+    if (period === 'today') {
+        startDate = moment().startOf('day');
+        endDate = moment().endOf('day');
+    } else if (period === 'week') {
+        startDate = moment().startOf('week');
+        endDate = moment().endOf('week');
+    } else if (period === 'month') {
+        startDate = moment().startOf('month');
+        endDate = moment().endOf('month');
+    } else if (period === 'lastMonth') {
+        startDate = moment().subtract(1, 'month').startOf('month');
+        endDate = moment().subtract(1, 'month').endOf('month');
+    } else if (period === 'custom') {
+        startDate = moment($('#historyStartDate').val());
+        endDate = moment($('#historyEndDate').val()).endOf('day');
+        if (!startDate.isValid() || !endDate.isValid()) {
+            startDate = null;
+            endDate = null;
+        }
+    } else {
+        startDate = null;
+        endDate = null;
+    }
+
+    // Filter orders sesuai dengan parameter yang sama
+    let filteredOrders = orders;
+    if (searchTerm) {
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        filteredOrders = orders.filter(order => 
+            order.id.toLowerCase().includes(lowerSearchTerm) ||
+            (order.customerName && order.customerName.toLowerCase().includes(lowerSearchTerm)) ||
+            (order.memberId && order.memberId.toLowerCase().includes(lowerSearchTerm)) ||
+            (order.cashier && order.cashier.name && order.cashier.name.toLowerCase().includes(lowerSearchTerm))
+        );
+    }
+
+    if (startDate && endDate) {
+        filteredOrders = filteredOrders.filter(order => {
+            const orderDate = moment(order.date);
+            return orderDate.isBetween(startDate, endDate, null, '[]');
+        });
+    }
+
+    if (filteredOrders.length === 0) {
+        showToast('Tidak ada transaksi untuk diunduh', 'warning');
+        hideLoading();
+        return;
+    }
+
+    // Buat elemen sementara untuk PDF
+    const element = document.createElement('div');
+    element.innerHTML = generateHistoryPdfHtml(filteredOrders, period, startDate, endDate);
+    document.body.appendChild(element);
+
+    // Konversi ke PDF
+    setTimeout(() => {
+        html2canvas(element.querySelector('.professional-pdf'), {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            backgroundColor: '#ffffff'
+        }).then(canvas => {
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgData = canvas.toDataURL('image/png', 1.0);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            
+            // Nama file disesuaikan dengan periode
+            let fileName = `Histori_Transaksi_${settings.umkmName || 'UMKM'}`;
+            if (period !== 'all') {
+                if (period === 'custom') {
+                    fileName += `_${startDate.format('YYYYMMDD')}-${endDate.format('YYYYMMDD')}`;
+                } else {
+                    fileName += `_${period}_${moment().format('YYYY-MM-DD')}`;
+                }
+            } else {
+                fileName += `_${moment().format('YYYY-MM-DD')}`;
+            }
+            pdf.save(`${fileName}.pdf`);
+
+            document.body.removeChild(element);
+            hideLoading();
+            showToast('Histori transaksi PDF berhasil diunduh', 'success');
+        }).catch(err => {
+            document.body.removeChild(element);
+            hideLoading();
+            showToast('Gagal mengunduh PDF histori transaksi', 'error');
+            console.error("PDF history download error:", err);
+        });
+    }, 1000);
+}
+
+// FUNGSI BARU: Generate HTML untuk PDF histori transaksi
+function generateHistoryPdfHtml(filteredOrders, period, startDate, endDate) {
+    const totalRevenue = filteredOrders.reduce((sum, order) => sum + order.total, 0);
+    
+    let periodString = '';
+    if (period === 'today') periodString = 'Hari Ini';
+    else if (period === 'week') periodString = 'Minggu Ini';
+    else if (period === 'month') periodString = 'Bulan Ini';
+    else if (period === 'lastMonth') periodString = 'Bulan Lalu';
+    else if (period === 'custom') {
+        periodString = `${startDate.format('DD/MM/YYYY')} - ${endDate.format('DD/MM/YYYY')}`;
+    } else {
+        periodString = 'Semua Transaksi';
+    }
+
+    let html = `
+        <div class="professional-pdf">
+            <div class="pdf-report-header">
+                <h2>HISTORI TRANSAKSI</h2>
+                <h3>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h3>
+                <div class="pdf-subtitle"><strong>Periode:</strong> ${periodString}</div>
+                <div class="pdf-subtitle"><strong>Tanggal Cetak:</strong> ${moment().format('DD/MM/YYYY HH:mm')}</div>
+                <div class="pdf-subtitle"><strong>Total Transaksi:</strong> ${filteredOrders.length}</div>
+                <div class="pdf-subtitle"><strong>Total Pendapatan:</strong> ${formatCurrency(totalRevenue)}</div>
+            </div>
+            
+            <div class="pdf-table-container">
+                <table class="pdf-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>ID Transaksi</th>
+                            <th>Tanggal/Waktu</th>
+                            <th>Pelanggan</th>
+                            <th>Total</th>
+                            <th>Metode Bayar</th>
+                            <th>Kasir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    `;
+
+    filteredOrders.forEach((order, index) => {
+        const member = order.memberId ? members.find(m => m.id === order.memberId) : null;
+        const customerName = member ? member.name : (order.customerName || 'Pelanggan');
+        const paymentMethodText = order.paymentMethod === 'cash' ? 'Tunai' : 
+                                  order.paymentMethod === 'qris' ? 'QRIS' : 
+                                  order.paymentMethod === 'transfer' ? 'Transfer' : 
+                                  order.paymentMethod === 'ewallet' ? 'E-Wallet' : order.paymentMethod;
+
+        html += `
+            <tr>
+                <td>${index + 1}</td>
+                <td><strong>${order.id}</strong></td>
+                <td>${moment(order.date).format('DD/MM/YY HH:mm')}</td>
+                <td>${customerName}</td>
+                <td>${formatCurrency(order.total)}</td>
+                <td>${paymentMethodText}</td>
+                <td>${order.cashier ? order.cashier.name : 'System'}</td>
+            </tr>
+        `;
+    });
+
+    html += `
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="text-align: right; font-weight: bold;">TOTAL PENDAPATAN:</td>
+                            <td colspan="3" style="font-weight: bold; color: var(--success);">${formatCurrency(totalRevenue)}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <div class="pdf-footer">
+                <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
+            </div>
+        </div>
+    `;
+
+    return html;
+}
+
 function toggleOrderDetails(orderId) {
     const $details = $(`#order-details-${orderId}`);
     if ($details.length) {
@@ -1593,7 +1754,6 @@ function toggleOrderDetails(orderId) {
     }
 }
 
-// PERBAIKAN: Fungsi untuk cetak ulang struk dari histori transaksi
 function reprintReceipt(orderId) {
     if (!checkPermission('reprint_receipt')) {
         showToast('Anda tidak memiliki izin untuk mencetak ulang struk', 'error');
@@ -1606,24 +1766,19 @@ function reprintReceipt(orderId) {
         return;
     }
     
-    // Tampilkan loading
     showModalLoading('Mempersiapkan struk...');
     
     setTimeout(() => {
-        // Generate struk untuk transaksi yang dipilih
         generateHistoryReceiptHTML(order);
         
-        // Tampilkan modal struk
         $('#historyReceiptModal').css('display', 'flex');
         
-        // Simpan data order untuk keperluan download PDF
         $('#downloadHistoryReceiptPdfBtn').data('order', order);
         
         hideModalLoading();
     }, 500);
 }
 
-// PERBAIKAN: Fungsi untuk generate struk dari histori transaksi
 function generateHistoryReceiptHTML(order) {
     const member = members.find(m => m.id === order.memberId);
     const receiptHTML = `
@@ -1671,7 +1826,6 @@ function generateHistoryReceiptHTML(order) {
     
     $('#historyReceiptModalBody').html(receiptHTML);
     
-    // Generate QR Code untuk struk cetak ulang
     const qrCodeData = JSON.stringify({ 
         trxId: order.id, 
         store: settings.umkmName, 
@@ -1689,7 +1843,6 @@ function generateHistoryReceiptHTML(order) {
     });
 }
 
-// PERBAIKAN: Fungsi untuk download struk cetak ulang sebagai PDF
 function downloadHistoryReceiptAsPdf() {
     const order = $('#downloadHistoryReceiptPdfBtn').data('order');
     if (!order) return;
@@ -1717,76 +1870,12 @@ function downloadHistoryReceiptAsPdf() {
     });
 }
 
-// PERBAIKAN: Fungsi untuk download histori transaksi sebagai PDF
-function downloadHistoryAsPdf() {
-    const element = document.querySelector('#historyResults .professional-pdf');
-    if (!element) {
-        showToast('Tidak ada histori transaksi untuk diunduh', 'warning');
-        hideLoading();
-        return;
-    }
-    
-    // Clone elemen untuk menghapus kolom aksi sebelum konversi ke PDF
-    const clonedElement = element.cloneNode(true);
-    
-    // Hapus kolom aksi (kolom terakhir) dari header dan body
-    clonedElement.querySelectorAll('thead tr, tbody tr').forEach(row => {
-        const cells = row.querySelectorAll('th, td');
-        if (cells.length > 0) {
-            // Hapus sel terakhir (kolom aksi)
-            cells[cells.length - 1].remove();
-        }
-    });
-    
-    // Hapus kolom aksi dari footer jika ada
-    clonedElement.querySelectorAll('tfoot tr').forEach(row => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length > 0) {
-            // Hapus sel terakhir (kolom aksi)
-            cells[cells.length - 1].remove();
-        }
-    });
-    
-    // Sembunyikan detail pesanan di PDF
-    clonedElement.querySelectorAll('.history-order-details').forEach(detail => {
-        detail.remove();
-    });
-    
-    // Sembunyikan tombol aksi di PDF
-    clonedElement.querySelectorAll('.history-actions').forEach(action => {
-        action.remove();
-    });
-    
-    html2canvas(clonedElement, { 
-        scale: 2, 
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff'
-    }).then(canvas => {
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgData = canvas.toDataURL('image/png', 1.0);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-        
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Histori_Transaksi_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
-        hideLoading();
-        showToast('Histori transaksi PDF berhasil diunduh', 'success');
-    }).catch(err => { 
-        hideLoading();
-        showToast('Gagal mengunduh PDF histori transaksi', 'error'); 
-        console.error("PDF history download error:", err); 
-    });
-}
-
-// Fungsi untuk menampilkan modal input uang kas awal
 function showCashStartModal() {
     $('#shiftDateDisplay').text(moment().format('dddd, DD MMMM YYYY'));
     $('#shiftCashierName').text(currentUser.name);
     $('#initialCashAmount').val('');
     $('#cashNote').val('');
     
-    // PERBAIKAN: Tampilkan tombol Skip hanya untuk admin
     if (currentUser.role === 'admin') {
         $('#skipShiftBtn').show();
     } else {
@@ -1796,27 +1885,22 @@ function showCashStartModal() {
     $('#cashStartModal').css('display', 'flex');
 }
 
-// Fungsi untuk menampilkan jam real-time
 function updateLiveClock() {
     const now = new Date();
     const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
     $('#liveClock').text(timeString);
 }
 
-// Fungsi untuk menampilkan welcome toast setelah login
 function showWelcomeToast() {
     const $welcomeToast = $('#welcomeToast');
     $welcomeToast.addClass('show');
     
-    // Reset countdown
     let countdown = 15;
     $('#countdown').text(countdown);
     
-    // Clear existing intervals/timeouts
     if (countdownInterval) clearInterval(countdownInterval);
     if (welcomeToastTimeout) clearTimeout(welcomeToastTimeout);
     
-    // Start countdown
     countdownInterval = setInterval(function() {
         countdown--;
         $('#countdown').text(countdown);
@@ -1825,18 +1909,15 @@ function showWelcomeToast() {
         }
     }, 1000);
     
-    // Set timeout untuk auto-hide setelah 15 detik
     welcomeToastTimeout = setTimeout(() => {
         hideWelcomeToast();
     }, 15000);
 }
                 
-// Fungsi untuk menyembunyikan welcome toast
 function hideWelcomeToast() {
     const $welcomeToast = $('#welcomeToast');
     $welcomeToast.removeClass('show');
     
-    // Clear intervals/timeouts
     if (countdownInterval) {
         clearInterval(countdownInterval);
         countdownInterval = null;
@@ -1855,17 +1936,14 @@ function initializeApp() {
     updateStoreInfo(); 
     updateTableNumbers(); 
     
-    // Update shift status
     if (currentShift) {
         $('#shiftStatus').text('Aktif').removeClass('shift-closed').addClass('shift-open');
     } else {
         $('#shiftStatus').text('Tutup').removeClass('shift-open').addClass('shift-closed');
     }
     
-    // PERBAIKAN: Update tampilan tombol shift berdasarkan status shift
     updateShiftButtons();
     
-    // Tampilkan/hide admin panel berdasarkan permission
     const showAdminPanel = checkPermission('add_menu') || checkPermission('edit_menu') || 
                           checkPermission('delete_menu') || checkPermission('manage_categories') ||
                           checkPermission('manage_members') || checkPermission('manage_store_info') ||
@@ -1877,26 +1955,20 @@ function initializeApp() {
     
     $('#adminPanel').toggle(showAdminPanel);
     
-    // FITUR BARU: Update notifikasi pesanan dapur saat inisialisasi
     updateKitchenNotification();
 }
 
-// PERBAIKAN: Fungsi untuk update tampilan tombol shift
 function updateShiftButtons() {
     if (currentShift) {
-        // Shift sedang berjalan
         $('#openShiftBtn').prop('disabled', true).html('<i class="fas fa-cash-register"></i> Shift Berjalan');
         $('#closeShiftBtn').prop('disabled', false);
     } else {
-        // Tidak ada shift
         $('#openShiftBtn').prop('disabled', false).html('<i class="fas fa-cash-register"></i> Buka Shift');
         $('#closeShiftBtn').prop('disabled', true);
     }
 }
 
-// PERBAIKAN: Fungsi untuk update notifikasi pesanan dapur - LOGIKA DIPERBAIKI
 function updateKitchenNotification() {
-    // Hitung pesanan aktif (dine-in dengan status preparing atau ready dan belum di-archive)
     const activeOrders = orders.filter(order => 
         order.type === 'dinein' && 
         (order.status === 'preparing' || order.status === 'ready') &&
@@ -1912,17 +1984,14 @@ function updateKitchenNotification() {
         $badge.hide();
     }
     
-    // Juga update badge di tab jika modal kitchen sedang terbuka
     if ($('#kitchenDisplayModal').is(':visible')) {
         loadKitchenOrders();
     }
 }
 
-// PERBAIKAN UTAMA: Fungsi loadKitchenOrders yang diperbaiki
 function loadKitchenOrders() {
     const $kitchenOrders = $('#kitchenOrders');
     
-    // PERBAIKAN: Tampilkan loading indicator jika belum ada data
     if (orders.length === 0) {
         $kitchenOrders.html('<div class="kitchen-loading"><div class="kitchen-loading-spinner"></div><p>Memuat pesanan...</p></div>');
         return;
@@ -1939,7 +2008,6 @@ function loadKitchenOrders() {
             const statusClass = order.status === 'ready' ? (order.statusLocked ? 'status-locked' : 'status-ready') : 'status-preparing';
             const itemsSummary = order.items.slice(0, 2).map(item => `${item.menu.name} (${item.quantity}x)`).join(', ') + (order.items.length > 2 ? ` + ${order.items.length - 2} lainnya` : '');
             
-            // PERBAIKAN: Tombol "Tandai Selesai" hanya muncul jika status sudah 'ready'
             let actionButton = '';
             if (order.status === 'ready') {
                 actionButton = `<button class="btn btn-sm btn-success mark-kitchen-done" data-id="${order.id}" style="font-size: 0.7rem; padding: 3px 8px;"><i class="fas fa-check"></i> Tandai Selesai</button>`;
@@ -1964,13 +2032,10 @@ function loadKitchenOrders() {
         });
     }
     
-    // PERBAIKAN: Update waktu refresh terakhir
     kitchenLastRefreshTime = new Date();
     
-    // FITUR BARU: Update notifikasi setelah load
     updateKitchenNotification();
 }
-
 
 function promptForProfitAccess(callback) {
     const title = 'Kode Keamanan Akses Laba';
@@ -2017,13 +2082,11 @@ function generateCaptcha() {
     }
 }
 
-// Fungsi untuk mengecek permission user
 function checkPermission(permission) {
     if (!currentUser || !currentUser.permissions) {
         return false;
     }
     
-    // Admin memiliki semua permission
     if (currentUser.role === 'admin') {
         return true;
     }
@@ -2031,7 +2094,6 @@ function checkPermission(permission) {
     return currentUser.permissions[permission] === true;
 }
 
-// Fungsi untuk menghasilkan laporan shift
 function generateShiftReport(shift) {
     const shiftDuration = moment.duration(moment(shift.endTime).diff(moment(shift.startTime)));
     const hours = Math.floor(shiftDuration.asHours());
@@ -2160,7 +2222,6 @@ function generateShiftReport(shift) {
         </div>
     `;
     
-    // Tampilkan report dalam modal
     const modalContent = `
         <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header">
@@ -2178,11 +2239,9 @@ function generateShiftReport(shift) {
         </div>
     `;
     
-    // Buat modal sementara
     const tempModal = $('<div class="modal" style="display: flex;">' + modalContent + '</div>');
     $('body').append(tempModal);
     
-    // Event handlers untuk tombol di modal
     tempModal.find('.modal-close, .modal-close-btn').click(function() {
         tempModal.remove();
     });
@@ -2200,7 +2259,6 @@ function generateShiftReport(shift) {
     });
 }
 
-// PERBAIKAN: Fungsi untuk menghitung laba yang diperbaiki
 function calculateProfit() {
     let startDate, endDate;
     const period = $('#profitPeriod').val();
@@ -2237,32 +2295,26 @@ function calculateProfit() {
         return;
     }
     
-    // Hitung total penjualan
     const totalSales = filteredOrders.reduce((sum, order) => sum + order.total, 0);
     const totalTransactions = filteredOrders.length;
     const totalItemsSold = filteredOrders.reduce((sum, order) => sum + order.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0);
     
-    // Hitung HPP (Harga Pokok Penjualan)
     const defaultCOGS = profitSettings.defaultCOGS || 60;
     const cogsPercentage = defaultCOGS / 100;
     const totalCOGS = totalSales * cogsPercentage;
     
-    // Hitung laba kotor
     const grossProfit = totalSales - totalCOGS;
     const grossProfitMargin = totalSales > 0 ? (grossProfit / totalSales) * 100 : 0;
     
-    // Hitung biaya operasional (estimasi dari fixed cost bulanan)
     const monthlyFixedCost = profitSettings.monthlyFixedCost || 0;
     const daysInMonth = moment().daysInMonth();
     const dailyFixedCost = monthlyFixedCost / daysInMonth;
     const periodDays = Math.ceil(moment.duration(endDate.diff(startDate)).asDays()) || 1;
     const operationalCost = dailyFixedCost * periodDays;
     
-    // Hitung laba bersih
     const netProfit = grossProfit - operationalCost;
     const netProfitMargin = totalSales > 0 ? (netProfit / totalSales) * 100 : 0;
     
-    // Generate report HTML
     let reportHtml = `
         <div class="profit-calculation-container">
             <h4 class="panel-title">Laporan Laba ${period === 'today' ? 'Hari Ini' : period === 'week' ? 'Minggu Ini' : period === 'month' ? 'Bulan Ini' : 'Custom'}</h4>
@@ -2349,7 +2401,6 @@ function calculateProfit() {
     showToast('Perhitungan laba selesai', 'success');
 }
 
-// PERBAIKAN: Fungsi untuk generate laporan yang diperbaiki
 function generateReport() {
     let startDate, endDate;
     const period = $('#reportPeriod').val();
@@ -2380,11 +2431,9 @@ function generateReport() {
     
     const filteredOrders = orders.filter(o => moment(o.date).isBetween(startDate, endDate));
     
-    // Gunakan fungsi baru untuk generate laporan PDF yang profesional
     generateProfessionalSalesReport(filteredOrders, startDate, endDate, period);
 }
 
-// FUNGSI BARU: Generate laporan PDF yang lebih profesional
 function generateProfessionalSalesReport(filteredOrders, startDate, endDate, period) {
     const $resultsContainer = $('#reportResults');
     if (filteredOrders.length === 0) { 
@@ -2397,7 +2446,6 @@ function generateProfessionalSalesReport(filteredOrders, startDate, endDate, per
     const totalItemsSold = filteredOrders.reduce((s, o) => s + o.items.reduce((i, item) => i + item.quantity, 0), 0);
     const totalTransactions = filteredOrders.length;
     
-    // Hitung per metode pembayaran
     const paymentMethods = {};
     filteredOrders.forEach(o => {
         const method = o.paymentMethod === 'cash' ? 'Tunai' : 
@@ -2406,7 +2454,6 @@ function generateProfessionalSalesReport(filteredOrders, startDate, endDate, per
         paymentMethods[method] = (paymentMethods[method] || 0) + o.total;
     });
     
-    // Hitung menu terlaris
     const menuSales = {};
     filteredOrders.forEach(o => o.items.forEach(item => { 
         menuSales[item.menu.id] = menuSales[item.menu.id] || { 
@@ -2419,12 +2466,10 @@ function generateProfessionalSalesReport(filteredOrders, startDate, endDate, per
     }));
     const topMenus = Object.values(menuSales).sort((a, b) => b.quantity - a.quantity).slice(0, 10);
     
-    // PERBAIKAN: Pastikan periodText didefinisikan
     const periodText = period === 'today' ? 'Hari Ini' : 
                      period === 'week' ? 'Minggu Ini' : 
                      period === 'month' ? 'Bulan Ini' : 'Custom';
     
-    // Generate HTML laporan profesional
     let reportHtml = `
         <div class="professional-pdf">
             <div class="pdf-report-header">
@@ -2474,7 +2519,6 @@ function generateProfessionalSalesReport(filteredOrders, startDate, endDate, per
                     <tbody>
     `;
     
-    // Tampilkan data metode pembayaran
     Object.keys(paymentMethods).forEach(method => {
         const methodOrders = filteredOrders.filter(o => {
             const oMethod = o.paymentMethod === 'cash' ? 'Tunai' : 
@@ -2516,7 +2560,6 @@ function generateProfessionalSalesReport(filteredOrders, startDate, endDate, per
                     <tbody>
     `;
     
-    // Tampilkan menu terlaris
     topMenus.forEach((menu, index) => {
         const menuPercentage = totalRevenue > 0 ? (menu.total / totalRevenue * 100).toFixed(2) : 0;
         reportHtml += `
@@ -2581,12 +2624,10 @@ function generateProfessionalSalesReport(filteredOrders, startDate, endDate, per
     $('#printReportBtn, #downloadReportBtn').show();
 }
 
-// Fungsi untuk download laporan laba sebagai PDF
 function downloadProfitReportAsPdf() {
     const reportData = $('#downloadProfitReportBtn').data('reportData');
     if (!reportData) return;
     
-    // Buat HTML untuk PDF
     const periodText = reportData.period === 'today' ? 'Hari Ini' : 
                      reportData.period === 'week' ? 'Minggu Ini' : 
                      reportData.period === 'month' ? 'Bulan Ini' : 'Custom';
@@ -2714,12 +2755,10 @@ function downloadProfitReportAsPdf() {
         </div>
     `;
     
-    // Buat elemen sementara untuk render PDF
     const tempElement = document.createElement('div');
     tempElement.innerHTML = htmlContent;
     document.body.appendChild(tempElement);
     
-    // Konversi ke PDF
     setTimeout(() => {
         html2canvas(tempElement.querySelector('.professional-pdf'), {
             scale: 2,
@@ -2747,21 +2786,17 @@ function downloadProfitReportAsPdf() {
     }, 1000);
 }
 
-// Fungsi untuk download laporan shift sebagai PDF
 function downloadShiftReportAsPdf(shift) {
-    // Generate HTML untuk laporan shift (sama seperti di generateShiftReport)
     const shiftDuration = moment.duration(moment(shift.endTime).diff(moment(shift.startTime)));
     const hours = Math.floor(shiftDuration.asHours());
     const minutes = Math.floor(shiftDuration.asMinutes()) - (hours * 60);
     
     const htmlContent = generateShiftReportHTML(shift, hours, minutes);
     
-    // Buat elemen sementara untuk render PDF
     const tempElement = document.createElement('div');
     tempElement.innerHTML = `<div class="professional-pdf">${htmlContent}</div>`;
     document.body.appendChild(tempElement);
     
-    // Konversi ke PDF
     setTimeout(() => {
         html2canvas(tempElement.querySelector('.professional-pdf'), {
             scale: 2,
@@ -2789,7 +2824,6 @@ function downloadShiftReportAsPdf(shift) {
     }, 1000);
 }
 
-// Helper function untuk generate HTML laporan shift
 function generateShiftReportHTML(shift, hours, minutes) {
     return `
         <div class="pdf-report-header">
@@ -2907,9 +2941,7 @@ function generateShiftReportHTML(shift, hours, minutes) {
     `;
 }
 
-// PERBAIKAN UTAMA: Fungsi Generate Menu PDF Preview dengan layout 4x4
 function generateMenuPdfPreview() {
-    // Kelompokkan menu berdasarkan kategori
     const menuByCategory = {};
     menus.forEach(menu => {
         if (!menuByCategory[menu.category]) {
@@ -2918,13 +2950,11 @@ function generateMenuPdfPreview() {
         menuByCategory[menu.category].push(menu);
     });
     
-    // Hitung total menu
     let totalMenus = 0;
     Object.keys(menuByCategory).forEach(category => {
         totalMenus += menuByCategory[category].length;
     });
     
-    // Buat HTML untuk preview dengan grid 4x4
     let html = `
         <div id="menuPdfContainer">
             <div class="pdf-a4-wrapper">
@@ -2949,13 +2979,11 @@ function generateMenuPdfPreview() {
                 </div>
     `;
     
-    // Loop melalui setiap kategori
     let categoryIndex = 0;
     Object.keys(menuByCategory).forEach(category => {
         const categoryMenus = menuByCategory[category];
         
-        // Hitung berapa halaman yang diperlukan untuk kategori ini (maks 16 menu per halaman)
-        const menusPerPage = 16; // 4x4 grid
+        const menusPerPage = 16;
         const pages = Math.ceil(categoryMenus.length / menusPerPage);
         
         for (let page = 0; page < pages; page++) {
@@ -2963,7 +2991,6 @@ function generateMenuPdfPreview() {
             const endIndex = Math.min(startIndex + menusPerPage, categoryMenus.length);
             const pageMenus = categoryMenus.slice(startIndex, endIndex);
             
-            // Tambahkan page break jika bukan halaman pertama dari kategori
             if (page > 0 || categoryIndex > 0) {
                 html += `<div class="pdf-page-break"></div>`;
             }
@@ -2976,7 +3003,6 @@ function generateMenuPdfPreview() {
                     <div class="pdf-menu-grid">
             `;
             
-            // Loop melalui setiap menu dalam halaman ini
             pageMenus.forEach(menu => {
                 html += `
                     <div class="pdf-menu-item">
@@ -2994,7 +3020,6 @@ function generateMenuPdfPreview() {
                 `;
             });
             
-            // Tambahkan item kosong jika kurang dari 16 untuk menjaga grid
             const emptyItems = menusPerPage - pageMenus.length;
             for (let i = 0; i < emptyItems; i++) {
                 html += `<div class="pdf-menu-item" style="visibility: hidden;"></div>`;
@@ -3009,7 +3034,6 @@ function generateMenuPdfPreview() {
         categoryIndex++;
     });
     
-    // Footer dengan QRCode untuk website
     html += `
             <div class="pdf-footer">
                 <h4><i class="fas fa-info-circle"></i> Informasi Restoran</h4>
@@ -3031,16 +3055,13 @@ function generateMenuPdfPreview() {
                     </div>
                 </div>
             </div>
-            </div> <!-- tutup pdf-a4-wrapper -->
-        </div> <!-- tutup menuPdfContainer -->
+            </div>
+        </div>
         `;
     
-    // Set HTML ke modal
     $('#menuPdfContainer').html(html);
     
-    // Generate QRCode setelah HTML dimuat
     setTimeout(() => {
-        // QRCode untuk pemesanan
         const qrOrderContainer = document.getElementById('qrOrderPdf');
         if (qrOrderContainer) {
             $(qrOrderContainer).empty();
@@ -3052,7 +3073,6 @@ function generateMenuPdfPreview() {
             });
         }
         
-        // QRCode untuk website
         const qrWebsiteContainer = document.getElementById('qrWebsitePdf');
         if (qrWebsiteContainer) {
             $(qrWebsiteContainer).empty();
@@ -3064,7 +3084,6 @@ function generateMenuPdfPreview() {
             });
         }
         
-        // QRCode untuk kontak
         const qrContactContainer = document.getElementById('qrContactPdf');
         if (qrContactContainer) {
             $(qrContactContainer).empty();
@@ -3078,17 +3097,13 @@ function generateMenuPdfPreview() {
         }
     }, 100);
     
-    // Tampilkan modal
     $('#menuPdfModal').css('display', 'flex');
 }
 
-// PERBAIKAN UTAMA: Download Menu PDF dengan layout 4x4
 function downloadMenuPdf() {
     const element = document.getElementById('menuPdfContainer');
     
-    // Pastikan QRCode sudah tergenerate
     setTimeout(() => {
-        // Pastikan semua gambar dimuat sebelum konversi
         const images = element.getElementsByTagName('img');
         let loadedImages = 0;
         const totalImages = images.length;
@@ -3098,7 +3113,6 @@ function downloadMenuPdf() {
             return;
         }
         
-        // Tunggu semua gambar dimuat
         Array.from(images).forEach(img => {
             if (img.complete) {
                 loadedImages++;
@@ -3118,11 +3132,9 @@ function downloadMenuPdf() {
             }
         });
         
-        // Jika semua gambar sudah dimuat
         if (loadedImages === totalImages) {
             generatePdfFromElement(element);
         } else {
-            // Timeout untuk kasus gambar gagal dimuat
             setTimeout(() => {
                 generatePdfFromElement(element);
             }, 2000);
@@ -3130,7 +3142,6 @@ function downloadMenuPdf() {
     }, 1000);
 }
 
-// Fungsi bantu untuk generate PDF dari element dengan layout 4x4
 function generatePdfFromElement(element) {
     html2canvas(element, {
         scale: 2,
@@ -3138,11 +3149,10 @@ function generatePdfFromElement(element) {
         logging: false,
         allowTaint: true,
         backgroundColor: '#ffffff',
-        width: 210 * 3.78, // Convert mm to pixels (210mm * 3.78px/mm)
+        width: 210 * 3.78,
         height: element.scrollHeight,
         windowWidth: 210 * 3.78,
         onclone: function(clonedDoc) {
-            // Pastikan QRCode terlihat di clone
             const qrCodes = clonedDoc.querySelectorAll('.pdf-qr-code');
             qrCodes.forEach(qrCode => {
                 if (qrCode.children.length > 0) {
@@ -3150,7 +3160,6 @@ function generatePdfFromElement(element) {
                 }
             });
             
-            // Pastikan grid 4x4 tetap terjaga
             const menuGrids = clonedDoc.querySelectorAll('.pdf-menu-grid');
             menuGrids.forEach(grid => {
                 grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
@@ -3164,18 +3173,15 @@ function generatePdfFromElement(element) {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
         
-        // Hitung rasio untuk menyesuaikan gambar dengan halaman PDF
-        const imgWidth = pdfWidth - 15; // Margin 7.5mm kiri-kanan
+        const imgWidth = pdfWidth - 15;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         
         let heightLeft = imgHeight;
         let position = 0;
         
-        // Halaman pertama
         pdf.addImage(imgData, 'PNG', 7.5, position, imgWidth, imgHeight);
         heightLeft -= pdfHeight;
         
-        // Halaman tambahan jika konten lebih panjang
         let pageCount = 1;
         while (heightLeft > 0) {
             position = heightLeft - imgHeight;
@@ -3185,7 +3191,6 @@ function generatePdfFromElement(element) {
             pageCount++;
         }
         
-        // Simpan PDF
         const fileName = `Daftar_Menu_${settings.umkmName || 'UMKM'}_${moment().format('YYYYMMDD_HHmm')}.pdf`;
         pdf.save(fileName);
         hideLoading();
@@ -3280,12 +3285,10 @@ function loadUserPermissions(userId) {
     const user = users.find(u => u.id === userId);
     if (!user) return;
     
-    // Inisialisasi permissions jika belum ada
     if (!user.permissions) {
         user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
     }
     
-    // Set semua checkbox berdasarkan permissions user
     $('.permission-checkbox').each(function() {
         const permission = $(this).data('permission');
         $(this).prop('checked', user.permissions[permission] === true);
@@ -3299,22 +3302,19 @@ function saveUserPermissions() {
     const userIndex = users.findIndex(u => u.id === userId);
     if (userIndex === -1) return;
     
-    // Kumpulkan semua permission dari checkbox
     const permissions = {};
     $('.permission-checkbox').each(function() {
         const permission = $(this).data('permission');
         permissions[permission] = $(this).prop('checked');
     });
     
-    // Update user permissions
     users[userIndex].permissions = permissions;
     saveUsers();
     
-    // Update currentUser jika yang diubah adalah user yang sedang login
     if (currentUser.id === userId) {
         currentUser.permissions = permissions;
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
-        initializeApp(); // Refresh tampilan untuk update permission
+        initializeApp();
     }
     
     showToast('Hak akses berhasil disimpan', 'success');
@@ -3327,15 +3327,13 @@ function resetUserPermissions() {
     const user = users.find(u => u.id === userId);
     if (!user) return;
     
-    // Reset ke default permissions berdasarkan role
     user.permissions = DEFAULT_PERMISSIONS[user.role] || DEFAULT_PERMISSIONS.cashier;
     saveUsers();
     
-    // Update currentUser jika yang diubah adalah user yang sedang login
     if (currentUser.id === userId) {
         currentUser.permissions = user.permissions;
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
-        initializeApp(); // Refresh tampilan untuk update permission
+        initializeApp();
     }
     
     loadUserPermissions(userId);
@@ -3357,7 +3355,6 @@ function saveUser(e) {
             users[userIndex].role = role; 
             if (password) users[userIndex].password = CryptoJS.SHA256(password).toString(); 
             
-            // Reset permissions jika role berubah
             if (role !== users[userIndex].role) {
                 users[userIndex].permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
             }
@@ -3366,7 +3363,6 @@ function saveUser(e) {
         if (!password) { showToast('Password harus diisi untuk pengguna baru.', 'error'); return; }
         if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) { showToast('Username sudah digunakan.', 'error'); return; }
         
-        // Set default permissions berdasarkan role
         const permissions = DEFAULT_PERMISSIONS[role] || DEFAULT_PERMISSIONS.cashier;
         
         users.push({ 
@@ -3465,7 +3461,6 @@ function loadMenus(searchTerm = '', category = 'all') {
     if (filteredMenus.length === 0) { $menuGrid.html('<div class="empty-state"><i class="fas fa-utensils"></i><p>Tidak ada menu ditemukan</p></div>'); }
     else {
         filteredMenus.forEach(menu => {
-            // Tampilkan tombol edit/hapus hanya jika user memiliki permission
             const canEdit = checkPermission('edit_menu');
             const canDelete = checkPermission('delete_menu');
             
@@ -3574,10 +3569,8 @@ function updatePaymentTab() {
     $('#paymentAmount').val('').trigger('input');
     $('#qrisTotal').text(formatCurrency(currentOrder.total));
     
-    // Generate quick cash buttons untuk tunai
     generateQuickCashButtons(currentOrder.total);
     
-    // Tampilkan metode pembayaran yang sesuai
     togglePaymentMethod();
 }
 
@@ -3606,7 +3599,6 @@ function togglePaymentMethod() {
         $('#completePaymentBtn').prop('disabled', true);
     }
     
-    // Hitung kembalian untuk metode yang memerlukan
     calculateChange();
 }
 
@@ -3614,7 +3606,6 @@ function generateQuickCashButtons(total) {
     const $quickCash = $('#quickCashButtons').empty();
     let buttons = [];
     
-    // PERBAIKAN: Logika tombol cerdas yang responsif untuk mobile
     if (total <= 12000) {
         buttons = [15000, 20000, 50000, 100000];
     } else if (total <= 15000) {
@@ -3624,36 +3615,28 @@ function generateQuickCashButtons(total) {
     } else if (total <= 25000) {
         buttons = [25000, 30000, 50000, 100000];
     } else {
-        // Untuk total di atas 25000, buat tombol dengan nilai yang logis
         const next = Math.ceil(total / 5000) * 5000;
         buttons = [next, next + 5000, next + 10000, next + 20000];
     }
     
-    // Hapus duplikat dan urutkan
     buttons = [...new Set(buttons)].sort((a, b) => a - b);
     
-    // Batasi hanya 4 tombol
     buttons.slice(0, 4).forEach(amount => {
         $quickCash.append(`<button class="btn btn-sm btn-outline-primary quick-cash-btn" data-amount="${amount}">${formatCurrency(amount)}</button>`);
     });
 }
 
-// FIX: Perbaikan fungsi calculateChange untuk mengaktifkan/menonaktifkan tombol pembayaran
 function calculateChange() { 
     const method = $('#paymentMethod').val();
     if (method === 'qris') {
-        // Untuk QRIS, tidak perlu menghitung kembalian
         $('#changeContainer').hide();
-        // Untuk QRIS, tombol selalu aktif
         $('#completePaymentBtn').prop('disabled', false);
         return;
     }
     
-    // Untuk metode tunai, transfer, dan e-wallet
     const amount = parseFloat($('#paymentAmount').val()) || 0; 
     const change = amount - currentOrder.total; 
     
-    // Tampilkan/sembunyikan container kembalian
     if (change >= 0) {
         $('#changeContainer').show();
         $('#paymentChange').text(formatCurrency(change));
@@ -3661,7 +3644,6 @@ function calculateChange() {
         $('#changeContainer').hide();
     }
     
-    // Aktifkan/nonaktifkan tombol pembayaran
     if (amount >= currentOrder.total) {
         $('#completePaymentBtn').prop('disabled', false);
     } else {
@@ -3804,7 +3786,6 @@ function printReport() {
     printElement('#reportResults .professional-pdf');
 }
 
-// PERBAIKAN: Fungsi download report PDF yang lebih profesional
 function downloadReportAsPdf() {
     const element = document.querySelector('#reportResults .professional-pdf');
     if (!element) {
@@ -3882,14 +3863,11 @@ function setButtonLoading($button, isLoading, originalText = 'Loading...') {
     else $button.prop('disabled', false).html(originalText);
 }
 
-// PERBAIKAN: Fungsi showConfirmation yang benar-benar menutup modal setelah aksi
 function showConfirmation(title, message, callback, btnClass = 'btn-success') {
     $('#confirmTitle').text(title);
     $('#confirmMessage').html(message);
     const $confirmBtn = $('#confirmAction');
-    // PERBAIKAN: Hapus semua event listener sebelumnya untuk menghindari duplikasi
     $confirmBtn.off('click');
-    // PERBAIKAN: Pastikan modal ditutup setelah callback dijalankan
     $confirmBtn.on('click', function() {
         try {
             callback();
