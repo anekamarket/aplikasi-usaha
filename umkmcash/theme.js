@@ -1,4 +1,4 @@
-// theme.js - Fitur Pengaturan Tema Warna
+// theme.js - Fitur Pengaturan Tema Warna (PERBAIKAN)
 
 // Konstanta untuk tema
 const THEME_KEY = 'umkmcash_theme';
@@ -201,16 +201,88 @@ function updateThemeSelector(selectedTheme) {
     });
 }
 
-// Fungsi untuk membuka modal tema
+// Fungsi untuk membuka modal tema - PERBAIKAN: Ditambahkan parameter fallback
 function openThemeModal() {
+    // Coba muat tema yang disimpan
     const savedTheme = loadSavedTheme();
+    
+    // Buat modal tema jika belum ada
+    if (!$('#themeModal').length) {
+        createThemeModal();
+    }
+    
+    // Update selector tema
     updateThemeSelector(savedTheme);
+    
+    // Tampilkan modal
     $('#themeModal').css('display', 'flex');
 }
 
-// Fungsi untuk membuat tema selector di modal kontrol panel
+// Fungsi untuk membuat modal tema
+function createThemeModal() {
+    const themeModalHTML = `
+        <div id="themeModal" class="modal">
+            <div class="modal-content" style="max-width: 800px;">
+                <div class="modal-header">
+                    <h3 class="modal-title"><i class="fas fa-palette"></i> Pengaturan Tema Aplikasi</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="theme-options-container">
+                        <p class="modal-subtitle">Pilih tema warna untuk antarmuka aplikasi:</p>
+                        <div class="theme-options-grid" id="themeOptionsGrid">
+                            <!-- Options akan diisi oleh JavaScript -->
+                        </div>
+                        <div class="theme-preview-section mt-3">
+                            <h5>Pratinjau Warna:</h5>
+                            <div class="theme-preview-colors">
+                                <div class="color-preview" style="background-color: var(--primary);">
+                                    <span>Primary</span>
+                                </div>
+                                <div class="color-preview" style="background-color: var(--success);">
+                                    <span>Success</span>
+                                </div>
+                                <div class="color-preview" style="background-color: var(--danger);">
+                                    <span>Danger</span>
+                                </div>
+                                <div class="color-preview" style="background-color: var(--warning);">
+                                    <span>Warning</span>
+                                </div>
+                                <div class="color-preview" style="background-color: var(--info);">
+                                    <span>Info</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary modal-close-btn">Tutup</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Tambahkan modal ke body
+    $('body').append(themeModalHTML);
+    
+    // Buat tema selector
+    createThemeSelector();
+    
+    // Event untuk memilih tema
+    $(document).on('click', '.theme-option', function() {
+        const themeKey = $(this).data('theme');
+        applyTheme(themeKey);
+    });
+    
+    // Event untuk menutup modal
+    $('#themeModal .modal-close, #themeModal .modal-close-btn').click(function() {
+        $('#themeModal').hide();
+    });
+}
+
+// Fungsi untuk membuat tema selector di modal
 function createThemeSelector() {
-    const themeOptionsContainer = document.querySelector('.theme-options');
+    const themeOptionsContainer = document.getElementById('themeOptionsGrid');
     if (!themeOptionsContainer) return;
     
     themeOptionsContainer.innerHTML = '';
@@ -220,34 +292,42 @@ function createThemeSelector() {
         themeOption.className = 'theme-option';
         themeOption.setAttribute('data-theme', key);
         
+        // Periksa apakah tema ini aktif
+        const isActive = localStorage.getItem(THEME_KEY) === key;
+        
         themeOption.innerHTML = `
             <div class="theme-preview" style="background: ${theme.colors['--primary']}"></div>
             <div class="theme-name">${theme.name}</div>
-            <div class="theme-check" style="display: none;">
+            <div class="theme-check" style="display: ${isActive ? 'block' : 'none'}">
                 <i class="fas fa-check"></i>
             </div>
         `;
-        
-        themeOption.addEventListener('click', () => {
-            applyTheme(key);
-        });
         
         themeOptionsContainer.appendChild(themeOption);
     });
 }
 
+// Fungsi untuk update preview warna tema
+function updateThemePreview() {
+    const root = getComputedStyle(document.documentElement);
+    const colors = ['primary', 'success', 'danger', 'warning', 'info'];
+    
+    colors.forEach(color => {
+        const value = root.getPropertyValue(`--${color}`).trim();
+        $(`.color-preview[style*="${color}"]`).css('background-color', value);
+    });
+}
+
 // Inisialisasi tema saat halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
     // Muat tema yang disimpan
     loadSavedTheme();
     
-    // Buat tema selector
-    createThemeSelector();
+    // Update preview tema
+    updateThemePreview();
     
-    // Event listener untuk tombol tema di admin panel
-    $(document).on('click', '#themeSettingsBtn', function() {
-        openThemeModal();
-    });
+    // Buat modal tema (jika belum ada)
+    createThemeModal();
     
     // Event listener untuk tab tema di kontrol panel
     $(document).on('click', '[data-tab="theme"]', function() {
@@ -256,10 +336,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Fungsi bantu untuk showToast (jika belum ada)
+function showToast(message, type = 'success') {
+    if (typeof window.showToast === 'function') {
+        window.showToast(message, type);
+    } else {
+        // Fallback toast sederhana
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : type === 'warning' ? '#ffc107' : '#17a2b8'};
+            color: white;
+            border-radius: 4px;
+            z-index: 9999;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+}
+
 // Ekspor fungsi untuk digunakan di main.js jika diperlukan
 window.ThemeManager = {
     applyTheme,
     loadSavedTheme,
     openThemeModal,
+    updateThemePreview,
     getAvailableThemes: () => AVAILABLE_THEMES
 };
