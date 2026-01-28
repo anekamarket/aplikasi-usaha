@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="theme.css">
      <style>
         /* Styling tambahan untuk fitur baru */
         .password-input-container {
@@ -490,6 +490,9 @@
                         <button id="resetKitchenInfoBtn" class="btn btn-sm btn-danger">Reset Info Pesanan</button>
                         <button id="refreshBtn" class="btn btn-sm">Refresh</button>
                         <button id="appInfoBtn" class="btn btn-sm btn-info">Info Aplikasi</button>
+                        <button id="themeSettingsBtn" class="btn btn-sm btn-theme">
+                        <i class="fas fa-palette"></i> Tema Aplikasi
+                    </button>
                     </div>
                     
                     <div class="mt-3">
@@ -953,6 +956,7 @@
                     <div class="tab" data-tab="security"><i class="fas fa-shield-alt"></i> Keamanan</div>
                     <div class="tab" data-tab="permissions"><i class="fas fa-key"></i> Hak Akses</div>
                     <div class="tab" data-tab="shiftSettings"><i class="fas fa-cash-register"></i> Pengaturan Shift & Laba</div>
+                    <div class="tab" data-tab="theme"><i class="fas fa-palette"></i> Tema</div>
                 </div>
 
                 <div class="tab-content active" id="usersTab">
@@ -1258,9 +1262,48 @@
                     </div>
                 </div>
                 
-                <div class="tab-content" id="shiftSettingsTab">
-                    <h4 class="mt-3">Pengaturan Shift & Perhitungan Laba</h4>
-                    
+                <div class="tab-content" id="themeTab">
+                <h4 class="mt-3">Pengaturan Tema Aplikasi</h4>
+                
+                <div class="theme-info">
+                    <h5><i class="fas fa-info-circle"></i> Informasi Tema</h5>
+                    <p>Pilih tema warna yang sesuai dengan preferensi Anda. Tema akan mempengaruhi warna utama, latar belakang, dan elemen UI lainnya.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Pilih Tema Warna</label>
+                    <div class="theme-options">
+                        <!-- Theme options akan di-generate oleh theme.js -->
+                    </div>
+                </div>
+                
+                <div class="form-group mt-4">
+                    <label class="form-label">Preview Warna Tema</label>
+                    <div class="theme-preview-grid">
+                        <div class="preview-item">
+                            <div class="preview-color" style="background: var(--primary);"></div>
+                            <div class="preview-label">Warna Utama</div>
+                        </div>
+                        <div class="preview-item">
+                            <div class="preview-color" style="background: var(--success);"></div>
+                            <div class="preview-label">Success</div>
+                        </div>
+                        <div class="preview-item">
+                            <div class="preview-color" style="background: var(--danger);"></div>
+                            <div class="preview-label">Danger</div>
+                        </div>
+                        <div class="preview-item">
+                            <div class="preview-color" style="background: var(--warning);"></div>
+                            <div class="preview-label">Warning</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-4">
+                    <i class="fas fa-lightbulb"></i> <strong>Tips:</strong> Tema yang dipilih akan disimpan otomatis dan diterapkan di semua perangkat Anda.
+                </div>
+            </div>
+                                
                     <div class="cash-management-container">
                         <h5 class="panel-title">Pengaturan Shift</h5>
                         <div class="form-group">
@@ -1415,5 +1458,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="main.js"></script>
+    <script src="theme.js"></script>
 </body>
 </html>
