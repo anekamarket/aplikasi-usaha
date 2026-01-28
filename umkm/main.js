@@ -16,7 +16,8 @@ const STORAGE_KEYS = {
     MEMBERS: 'warungmakan_members',
     SHIFT_DATA: 'warungmakan_shift_data',
     PROFIT_SETTINGS: 'warungmakan_profit_settings',
-    KITCHEN_HISTORY: 'warungmakan_kitchen_history'
+    KITCHEN_HISTORY: 'warungmakan_kitchen_history',
+    THEME: 'warungmakan_theme' // Key baru untuk tema
 };
 
 // Kunci rahasia untuk enkripsi dan dekripsi file backup.
@@ -126,6 +127,122 @@ const DEFAULT_PERMISSIONS = {
     }
 };
 
+// Tema warna yang tersedia
+const THEMES = {
+    default: {
+        name: 'Default (Hijau)',
+        primary: '#28a745',
+        primaryLight: '#86e29b',
+        primaryDark: '#1e7e34',
+        secondary: '#6c757d',
+        success: '#28a745',
+        danger: '#dc3545',
+        warning: '#ffc107',
+        info: '#17a2b8',
+        light: '#f8f9fa',
+        dark: '#343a40',
+        gray: '#6c757d',
+        white: '#ffffff',
+        black: '#000000'
+    },
+    blue: {
+        name: 'Biru',
+        primary: '#2196F3',
+        primaryLight: '#64B5F6',
+        primaryDark: '#0D47A1',
+        secondary: '#6c757d',
+        success: '#4CAF50',
+        danger: '#F44336',
+        warning: '#FF9800',
+        info: '#00BCD4',
+        light: '#f8f9fa',
+        dark: '#343a40',
+        gray: '#6c757d',
+        white: '#ffffff',
+        black: '#000000'
+    },
+    purple: {
+        name: 'Ungu',
+        primary: '#9C27B0',
+        primaryLight: '#BA68C8',
+        primaryDark: '#6A1B9A',
+        secondary: '#6c757d',
+        success: '#4CAF50',
+        danger: '#F44336',
+        warning: '#FF9800',
+        info: '#00BCD4',
+        light: '#f8f9fa',
+        dark: '#343a40',
+        gray: '#6c757d',
+        white: '#ffffff',
+        black: '#000000'
+    },
+    orange: {
+        name: 'Oranye',
+        primary: '#FF9800',
+        primaryLight: '#FFB74D',
+        primaryDark: '#EF6C00',
+        secondary: '#6c757d',
+        success: '#4CAF50',
+        danger: '#F44336',
+        warning: '#FF9800',
+        info: '#00BCD4',
+        light: '#f8f9fa',
+        dark: '#343a40',
+        gray: '#6c757d',
+        white: '#ffffff',
+        black: '#000000'
+    },
+    red: {
+        name: 'Merah',
+        primary: '#F44336',
+        primaryLight: '#EF9A9A',
+        primaryDark: '#C62828',
+        secondary: '#6c757d',
+        success: '#4CAF50',
+        danger: '#F44336',
+        warning: '#FF9800',
+        info: '#00BCD4',
+        light: '#f8f9fa',
+        dark: '#343a40',
+        gray: '#6c757d',
+        white: '#ffffff',
+        black: '#000000'
+    },
+    dark: {
+        name: 'Gelap',
+        primary: '#343a40',
+        primaryLight: '#6c757d',
+        primaryDark: '#212529',
+        secondary: '#6c757d',
+        success: '#28a745',
+        danger: '#dc3545',
+        warning: '#ffc107',
+        info: '#17a2b8',
+        light: '#f8f9fa',
+        dark: '#343a40',
+        gray: '#6c757d',
+        white: '#ffffff',
+        black: '#000000'
+    },
+    teal: {
+        name: 'Teal',
+        primary: '#009688',
+        primaryLight: '#4DB6AC',
+        primaryDark: '#00695C',
+        secondary: '#6c757d',
+        success: '#4CAF50',
+        danger: '#F44336',
+        warning: '#FF9800',
+        info: '#00BCD4',
+        light: '#f8f9fa',
+        dark: '#343a40',
+        gray: '#6c757d',
+        white: '#ffffff',
+        black: '#000000'
+    }
+};
+
 let menus, categories, orders, settings, users, members, currentUser, currentOrder;
 let shiftData, profitSettings, kitchenHistory;
 let kitchenInterval;
@@ -134,6 +251,7 @@ let captchaText = '';
 let welcomeToastTimeout = null;
 let countdownInterval = null;
 let currentShift = null;
+let currentTheme = 'default'; // Variabel untuk tema saat ini
 
 // PERBAIKAN: Variabel untuk mengontrol interval kitchen
 let kitchenRefreshInterval = null;
@@ -173,6 +291,69 @@ function togglePasswordVisibility(inputId, toggleBtn) {
         icon.removeClass('fa-eye').addClass('fa-eye-slash');
     } else {
         icon.removeClass('fa-eye-slash').addClass('fa-eye');
+    }
+}
+
+// FUNGSI BARU: Terapkan tema
+function applyTheme(themeName) {
+    // Validasi tema
+    if (!THEMES[themeName]) {
+        themeName = 'default';
+    }
+    
+    currentTheme = themeName;
+    const theme = THEMES[themeName];
+    
+    // Simpan tema ke localStorage
+    localStorage.setItem(STORAGE_KEYS.THEME, themeName);
+    
+    // Update CSS variables
+    const root = document.documentElement;
+    Object.keys(theme).forEach(key => {
+        if (key !== 'name') {
+            root.style.setProperty(`--${key}`, theme[key]);
+        }
+    });
+    
+    // Update nama tema di modal
+    $('#currentThemeName').text(theme.name);
+    
+    // Update tombol tema aktif
+    $('.theme-option').removeClass('active');
+    $(`.theme-option[data-theme="${themeName}"]`).addClass('active');
+    
+    // Update loading spinner color
+    $('.loading-spinner').css('border-top-color', theme.primary);
+    $('.modal-loading-spinner').css('border-top-color', theme.primary);
+    
+    // Update warna badge premium
+    $('.premium-badge').css('background', `linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryLight} 100%)`);
+}
+
+// FUNGSI BARU: Load tema saat inisialisasi
+function loadTheme() {
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'default';
+    applyTheme(savedTheme);
+}
+
+// FUNGSI BARU: Buka modal pengaturan tema
+function openThemeSettingsModal() {
+    $('#themeSettingsModal').css('display', 'flex');
+    
+    // Tandai tema yang aktif
+    $('.theme-option').removeClass('active');
+    $(`.theme-option[data-theme="${currentTheme}"]`).addClass('active');
+    
+    // Update nama tema
+    $('#currentThemeName').text(THEMES[currentTheme].name);
+}
+
+// FUNGSI BARU: Terapkan tema yang dipilih
+function applySelectedTheme() {
+    const selectedTheme = $('.theme-option.active').data('theme');
+    if (selectedTheme) {
+        applyTheme(selectedTheme);
+        showToast(`Tema "${THEMES[selectedTheme].name}" berhasil diterapkan`, 'success');
     }
 }
 
@@ -243,6 +424,11 @@ function initializeData() {
     if (!localStorage.getItem(STORAGE_KEYS.KITCHEN_HISTORY)) {
         localStorage.setItem(STORAGE_KEYS.KITCHEN_HISTORY, JSON.stringify([]));
     }
+    
+    // Inisialisasi tema jika belum ada
+    if (!localStorage.getItem(STORAGE_KEYS.THEME)) {
+        localStorage.setItem(STORAGE_KEYS.THEME, 'default');
+    }
 }
 
 $(document).ready(function() {
@@ -265,6 +451,9 @@ $(document).ready(function() {
 
     $('#currentYear').text(new Date().getFullYear());
     $('#currentYear3').text(new Date().getFullYear());
+    
+    // Load tema saat aplikasi dimulai
+    loadTheme();
     
     // PERBAIKAN: Cek apakah shift sudah dibuka
     currentShift = shiftData.currentShift;
@@ -349,6 +538,21 @@ $(document).ready(function() {
     
     $(document).on('click', '.prompt-password-toggle', function() {
         togglePasswordVisibility('#passwordPromptInput', $(this));
+    });
+    
+    // FITUR BARU: Event handler untuk pengaturan tema
+    $('#themeSettingsBtn').click(function() {
+        openThemeSettingsModal();
+    });
+    
+    $(document).on('click', '.theme-option', function() {
+        $('.theme-option').removeClass('active');
+        $(this).addClass('active');
+    });
+    
+    $('#applyThemeBtn').click(function() {
+        applySelectedTheme();
+        $('#themeSettingsModal').hide();
     });
     
     // Login form submission
@@ -1385,6 +1589,11 @@ $(document).ready(function() {
         }
         if (modal.attr('id') === 'historyReceiptModal') {
             $('#historyReceiptModalBody').empty();
+        }
+        if (modal.attr('id') === 'themeSettingsModal') {
+            // Reset ke tema yang sedang aktif
+            $('.theme-option').removeClass('active');
+            $(`.theme-option[data-theme="${currentTheme}"]`).addClass('active');
         }
     });
     $('#reportPeriod').change(() => $('#customDateRange').toggle($('#reportPeriod').val() === 'custom'));
@@ -3446,7 +3655,7 @@ function restoreData(data) {
 
 function resetAllData() { 
     Object.values(STORAGE_KEYS).forEach(key => { 
-        if (key !== STORAGE_KEYS.USER) localStorage.removeItem(key); 
+        if (key !== STORAGE_KEYS.USER && key !== STORAGE_KEYS.THEME) localStorage.removeItem(key); 
     }); 
     location.reload(); 
 }
