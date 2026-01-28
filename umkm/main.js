@@ -389,7 +389,7 @@ function initializeData() {
     
     if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
         localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify({
-            storeName: 'MITRA ANEKAMARKET',
+            storeName: 'LENTERA KARYA SITUBONDO',
             umkmName: 'Cafe Virgo',
             storeAddress: 'Jl. Cinta No. 8899, Kota Abadi', 
             storePhone: '081234567890', 
