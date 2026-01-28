@@ -733,27 +733,15 @@ $(document).ready(function() {
         $('#appInfoModal').css('display', 'flex');
     });
     
+    // PERBAIKAN: Event handler untuk tombol Pengaturan Tema
+    $('#themeSettingsBtn').click(function() {
+        openThemeModal();
+    });
+    
     $('#reloadCaptchaBtn').click(generateCaptcha);
+    
     $('#logoutBtn').click(function(e) {
         e.preventDefault();
-
-        // Tambahkan di bagian event handlers di main.js, setelah #appInfoBtn
-$('#themeSettingsBtn').click(function() {
-    openThemeModal();
-});
-        // Fungsi untuk membuka modal tema
-function openThemeModal() {
-    if (typeof ThemeManager !== 'undefined' && ThemeManager.openThemeModal) {
-        ThemeManager.openThemeModal();
-    } else {
-        // Fallback jika theme.js belum dimuat
-        $('#controlPanelModal').css('display', 'flex');
-        $('#controlPanelModal .tabs .tab').removeClass('active');
-        $('#controlPanelModal .tab-content').removeClass('active');
-        $('[data-tab="theme"]').addClass('active');
-        $('#themeTab').addClass('active');
-    }
-}
         
         // Cek apakah shift masih terbuka
         if (currentShift && currentShift.status === 'open') {
@@ -1457,6 +1445,277 @@ function openThemeModal() {
     });
 });
 
+// PERBAIKAN: Fungsi untuk membuka modal tema - DIPINDAHKAN KE LUAR DAN DIPERBAIKI
+function openThemeModal() {
+    // Cek apakah ThemeManager sudah dimuat
+    if (typeof ThemeManager !== 'undefined' && typeof ThemeManager.openThemeModal === 'function') {
+        ThemeManager.openThemeModal();
+    } else {
+        // Fallback: load tema dari localStorage dan tampilkan modal
+        const savedTheme = localStorage.getItem('umkmcash_theme') || 'default';
+        applyTheme(savedTheme);
+        
+        // Buat modal tema sederhana
+        const themeModalHTML = `
+            <div id="themeModal" class="modal">
+                <div class="modal-content" style="max-width: 800px;">
+                    <div class="modal-header">
+                        <h3 class="modal-title"><i class="fas fa-palette"></i> Pengaturan Tema Aplikasi</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="theme-options-container">
+                            <p class="modal-subtitle">Pilih tema warna untuk antarmuka aplikasi:</p>
+                            <div class="theme-options-grid" id="themeOptionsGrid">
+                                <!-- Options akan diisi oleh JavaScript -->
+                            </div>
+                            <div class="theme-preview-section mt-3">
+                                <h5>Pratinjau Warna:</h5>
+                                <div class="theme-preview-colors">
+                                    <div class="color-preview" style="background-color: var(--primary);">
+                                        <span>Primary</span>
+                                    </div>
+                                    <div class="color-preview" style="background-color: var(--success);">
+                                        <span>Success</span>
+                                    </div>
+                                    <div class="color-preview" style="background-color: var(--danger);">
+                                        <span>Danger</span>
+                                    </div>
+                                    <div class="color-preview" style="background-color: var(--warning);">
+                                        <span>Warning</span>
+                                    </div>
+                                    <div class="color-preview" style="background-color: var(--info);">
+                                        <span>Info</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary modal-close-btn">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Jika modal belum ada, buat modal
+        if ($('#themeModal').length === 0) {
+            $('body').append(themeModalHTML);
+            
+            // Load tema options
+            const themes = {
+                'default': { name: 'Biru Default', primary: '#4a6bff' },
+                'green': { name: 'Hijau Segar', primary: '#10b981' },
+                'purple': { name: 'Ungu Royal', primary: '#8b5cf6' },
+                'dark': { name: 'Gelap Elegan', primary: '#3b82f6' },
+                'red': { name: 'Merah Energik', primary: '#ef4444' },
+                'orange': { name: 'Oranye Cerah', primary: '#f97316' },
+                'teal': { name: 'Teal Modern', primary: '#14b8a6' }
+            };
+            
+            const $grid = $('#themeOptionsGrid');
+            Object.entries(themes).forEach(([key, theme]) => {
+                const isActive = localStorage.getItem('umkmcash_theme') === key;
+                $grid.append(`
+                    <div class="theme-option ${isActive ? 'active' : ''}" data-theme="${key}">
+                        <div class="theme-preview" style="background-color: ${theme.primary};"></div>
+                        <div class="theme-name">${theme.name}</div>
+                        ${isActive ? '<div class="theme-check"><i class="fas fa-check"></i></div>' : ''}
+                    </div>
+                `);
+            });
+            
+            // Event untuk memilih tema
+            $grid.on('click', '.theme-option', function() {
+                const themeKey = $(this).data('theme');
+                applyTheme(themeKey);
+                
+                // Update UI
+                $('.theme-option').removeClass('active').find('.theme-check').remove();
+                $(this).addClass('active').append('<div class="theme-check"><i class="fas fa-check"></i></div>');
+                
+                // Update preview colors
+                updateThemePreview();
+            });
+            
+            // Event untuk menutup modal
+            $('#themeModal .modal-close, #themeModal .modal-close-btn').click(function() {
+                $('#themeModal').hide();
+            });
+        }
+        
+        // Tampilkan modal
+        $('#themeModal').css('display', 'flex');
+        
+        // Update preview
+        updateThemePreview();
+    }
+}
+
+// PERBAIKAN: Fungsi untuk menerapkan tema
+function applyTheme(themeName) {
+    const themes = {
+        'default': {
+            '--primary': '#4a6bff',
+            '--primary-light': '#6a8aff',
+            '--primary-dark': '#3a5af9',
+            '--secondary': '#6c757d',
+            '--success': '#28a745',
+            '--danger': '#dc3545',
+            '--warning': '#ffc107',
+            '--info': '#17a2b8',
+            '--light': '#f8f9fa',
+            '--dark': '#343a40',
+            '--gray': '#6c757d',
+            '--body-bg': '#f5f7ff',
+            '--card-bg': '#ffffff',
+            '--text-color': '#333333',
+            '--border-color': '#dee2e6',
+            '--modal-bg': '#ffffff',
+            '--shadow-color': 'rgba(0, 0, 0, 0.1)'
+        },
+        'green': {
+            '--primary': '#10b981',
+            '--primary-light': '#34d399',
+            '--primary-dark': '#059669',
+            '--secondary': '#6b7280',
+            '--success': '#10b981',
+            '--danger': '#ef4444',
+            '--warning': '#f59e0b',
+            '--info': '#0ea5e9',
+            '--light': '#f9fafb',
+            '--dark': '#111827',
+            '--gray': '#6b7280',
+            '--body-bg': '#f0fdf4',
+            '--card-bg': '#ffffff',
+            '--text-color': '#1f2937',
+            '--border-color': '#d1d5db',
+            '--modal-bg': '#ffffff',
+            '--shadow-color': 'rgba(16, 185, 129, 0.1)'
+        },
+        'purple': {
+            '--primary': '#8b5cf6',
+            '--primary-light': '#a78bfa',
+            '--primary-dark': '#7c3aed',
+            '--secondary': '#6b7280',
+            '--success': '#10b981',
+            '--danger': '#ef4444',
+            '--warning': '#f59e0b',
+            '--info': '#0ea5e9',
+            '--light': '#faf5ff',
+            '--dark': '#1e1b4b',
+            '--gray': '#6b7280',
+            '--body-bg': '#faf5ff',
+            '--card-bg': '#ffffff',
+            '--text-color': '#1e1b4b',
+            '--border-color': '#ddd6fe',
+            '--modal-bg': '#ffffff',
+            '--shadow-color': 'rgba(139, 92, 246, 0.1)'
+        },
+        'dark': {
+            '--primary': '#3b82f6',
+            '--primary-light': '#60a5fa',
+            '--primary-dark': '#2563eb',
+            '--secondary': '#6b7280',
+            '--success': '#10b981',
+            '--danger': '#ef4444',
+            '--warning': '#f59e0b',
+            '--info': '#0ea5e9',
+            '--light': '#374151',
+            '--dark': '#111827',
+            '--gray': '#6b7280',
+            '--body-bg': '#111827',
+            '--card-bg': '#1f2937',
+            '--text-color': '#f9fafb',
+            '--border-color': '#374151',
+            '--modal-bg': '#1f2937',
+            '--shadow-color': 'rgba(0, 0, 0, 0.3)'
+        },
+        'red': {
+            '--primary': '#ef4444',
+            '--primary-light': '#f87171',
+            '--primary-dark': '#dc2626',
+            '--secondary': '#6b7280',
+            '--success': '#10b981',
+            '--danger': '#ef4444',
+            '--warning': '#f59e0b',
+            '--info': '#0ea5e9',
+            '--light': '#fef2f2',
+            '--dark': '#7f1d1d',
+            '--gray': '#6b7280',
+            '--body-bg': '#fef2f2',
+            '--card-bg': '#ffffff',
+            '--text-color': '#1f2937',
+            '--border-color': '#fecaca',
+            '--modal-bg': '#ffffff',
+            '--shadow-color': 'rgba(239, 68, 68, 0.1)'
+        },
+        'orange': {
+            '--primary': '#f97316',
+            '--primary-light': '#fb923c',
+            '--primary-dark': '#ea580c',
+            '--secondary': '#6b7280',
+            '--success': '#10b981',
+            '--danger': '#ef4444',
+            '--warning': '#f59e0b',
+            '--info': '#0ea5e9',
+            '--light': '#fff7ed',
+            '--dark': '#7c2d12',
+            '--gray': '#6b7280',
+            '--body-bg': '#fff7ed',
+            '--card-bg': '#ffffff',
+            '--text-color': '#1f2937',
+            '--border-color': '#fed7aa',
+            '--modal-bg': '#ffffff',
+            '--shadow-color': 'rgba(249, 115, 22, 0.1)'
+        },
+        'teal': {
+            '--primary': '#14b8a6',
+            '--primary-light': '#2dd4bf',
+            '--primary-dark': '#0d9488',
+            '--secondary': '#6b7280',
+            '--success': '#10b981',
+            '--danger': '#ef4444',
+            '--warning': '#f59e0b',
+            '--info': '#0ea5e9',
+            '--light': '#f0fdfa',
+            '--dark': '#134e4a',
+            '--gray': '#6b7280',
+            '--body-bg': '#f0fdfa',
+            '--card-bg': '#ffffff',
+            '--text-color': '#1f2937',
+            '--border-color': '#99f6e4',
+            '--modal-bg': '#ffffff',
+            '--shadow-color': 'rgba(20, 184, 166, 0.1)'
+        }
+    };
+    
+    const theme = themes[themeName] || themes['default'];
+    const root = document.documentElement;
+    
+    // Terapkan semua variabel warna
+    Object.entries(theme).forEach(([property, value]) => {
+        root.style.setProperty(property, value);
+    });
+    
+    // Simpan ke localStorage
+    localStorage.setItem('umkmcash_theme', themeName);
+    
+    // Tampilkan notifikasi
+    showToast(`Tema "${themeName}" diterapkan`, 'success');
+}
+
+// PERBAIKAN: Fungsi untuk update preview tema
+function updateThemePreview() {
+    const root = getComputedStyle(document.documentElement);
+    const colors = ['primary', 'success', 'danger', 'warning', 'info'];
+    
+    colors.forEach(color => {
+        const value = root.getPropertyValue(`--${color}`).trim();
+        $(`.color-preview[style*="${color}"]`).css('background-color', value);
+    });
+}
+
 // PERBAIKAN UTAMA: Fungsi loadTransactionHistory yang diperbaiki dengan tombol cetak ulang struk
 function loadTransactionHistory(searchTerm = '') {
     const $historyResults = $('#historyResults');
@@ -1988,7 +2247,6 @@ function loadKitchenOrders() {
     // FITUR BARU: Update notifikasi setelah load
     updateKitchenNotification();
 }
-
 
 function promptForProfitAccess(callback) {
     const title = 'Kode Keamanan Akses Laba';
