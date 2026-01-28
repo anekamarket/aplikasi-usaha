@@ -9,7 +9,375 @@
     <link rel="stylesheet" href="style.css">
     <link id="themeStyle" rel="stylesheet" href="themes/default.css">
 
-   
+    <style>
+        /* Styling tambahan untuk fitur baru */
+        .password-input-container {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+            padding: 5px;
+            z-index: 10;
+        }
+        
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            flex-direction: column;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* PERBAIKAN: Tambah styling untuk modal loading */
+        .modal-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            flex-direction: column;
+        }
+        
+        .modal-loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+        }
+        
+        .modal-loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        .modal-loading-text {
+            color: var(--dark);
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        /* PERBAIKAN UTAMA: Perbaiki styling untuk app info agar lebih rapi di smartphone */
+        .app-info-container {
+            padding: 15px;
+            background: #fff;
+            border-radius: 10px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .app-info-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .app-info-logo {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+        
+        .app-info-header h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            line-height: 1.3;
+            color: var(--primary);
+        }
+        
+        .app-info-header p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .app-info-contact {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .app-info-contact h4 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .app-info-contact h4 i {
+            font-size: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 12px 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .contact-item i {
+            color: var(--primary);
+            margin-right: 10px;
+            margin-top: 2px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .contact-item a {
+            color: var(--primary);
+            text-decoration: none;
+            word-break: break-all;
+        }
+        
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .app-info-features {
+            margin: 20px 0;
+        }
+        
+        .app-info-features h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 10px;
+        }
+        
+        @media (max-width: 480px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .feature-item {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            transition: all 0.2s ease;
+            border-left: 3px solid var(--primary-light);
+        }
+        
+        .feature-item:hover {
+            background: #eef5ff;
+            transform: translateX(3px);
+        }
+        
+        .feature-item i {
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        
+        .app-info-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .app-info-footer p {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .fishery-support {
+            font-size: 0.8rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        /* Responsif khusus untuk modal app info di smartphone */
+        @media (max-width: 768px) {
+            #appInfoModal .modal-content {
+                margin: 10px;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+            
+            .app-info-container {
+                padding: 12px;
+            }
+            
+            .app-info-header h2 {
+                font-size: 1.2rem;
+            }
+            
+            .app-info-contact {
+                padding: 12px;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .contact-item i {
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .app-info-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .app-info-contact h4,
+            .app-info-features h4 {
+                font-size: 1rem;
+            }
+            
+            .feature-item {
+                font-size: 0.8rem;
+                padding: 8px 10px;
+            }
+            
+            .fishery-support {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* PERBAIKAN: Hapus filter di histori transaksi */
+        #historyModal .filter-row {
+            display: none !important;
+        }
+        
+        /* Styling untuk tema */
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .theme-option {
+            cursor: pointer;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            background: #f8f9fa;
+        }
+        
+        .theme-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .theme-option.active {
+            border-color: var(--primary);
+            background: rgba(var(--primary-rgb), 0.1);
+        }
+        
+        .theme-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            overflow: hidden;
+        }
+        
+        .theme-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .theme-color-samples {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .theme-color-sample {
+            flex: 1;
+            height: 100%;
+        }
+
+    </style>
 </head>
 <body>
     <!-- Loading Overlay Global -->
