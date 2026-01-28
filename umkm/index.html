@@ -105,6 +105,74 @@
             font-size: 16px;
             font-weight: 500;
         }
+        
+        /* PERBAIKAN: Tambah styling untuk app info */
+        .app-info-container {
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+        }
+        
+        .app-info-logo {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .app-info-contact {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .app-info-contact h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .app-info-contact p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .app-info-features {
+            margin: 20px 0;
+        }
+        
+        .app-info-features h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .app-info-features ul {
+            columns: 2;
+            column-gap: 20px;
+        }
+        
+        .app-info-features li {
+            margin-bottom: 8px;
+            font-size: 14px;
+            break-inside: avoid;
+        }
+        
+        .app-info-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .fishery-support {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* PERBAIKAN: Hapus filter di histori transaksi */
+        #historyModal .filter-row {
+            display: none !important;
+        }
 
     </style>
     </head>
@@ -777,18 +845,7 @@
                     <i class="fas fa-search"></i>
                     <input type="text" id="historySearchInput" class="search-input" placeholder="Cari berdasarkan Kode Transaksi atau Nama Pelanggan...">
                 </div>
-                <div class="filter-row" style="margin: 10px 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px; background: #f8f9fa; border-radius: var(--rounded);">
-                    <div style="display: flex; align-items: center; gap: 5px;">
-                        <label for="historyStartDate" style="margin-bottom: 0; font-weight: 500;">Dari:</label>
-                        <input type="date" id="historyStartDate" class="form-control" style="width: 150px;">
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 5px;">
-                        <label for="historyEndDate" style="margin-bottom: 0; font-weight: 500;">Sampai:</label>
-                        <input type="date" id="historyEndDate" class="form-control" style="width: 150px;">
-                    </div>
-                    <button class="btn btn-sm btn-info" id="applyHistoryFilter" style="padding: 5px 15px;">Terapkan Filter</button>
-                    <button class="btn btn-sm btn-warning" id="resetHistoryFilter" style="padding: 5px 15px;">Reset Filter</button>
-                </div>
+                <!-- PERBAIKAN: Hapus filter kategori yang tidak perlu -->
                 <div id="historyFilterDisplay" style="font-size: 12px; color: #666; margin: 5px 0; font-style: italic;"></div>
                 <div id="historyResultsContainer" style="max-height: 60vh; overflow-y: auto; margin-top: 15px;">
                     <div id="historyResults" class="printable-area"></div>
