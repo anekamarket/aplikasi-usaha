@@ -736,6 +736,24 @@ $(document).ready(function() {
     $('#reloadCaptchaBtn').click(generateCaptcha);
     $('#logoutBtn').click(function(e) {
         e.preventDefault();
+
+        // Tambahkan di bagian event handlers di main.js, setelah #appInfoBtn
+$('#themeSettingsBtn').click(function() {
+    openThemeModal();
+});
+        // Fungsi untuk membuka modal tema
+function openThemeModal() {
+    if (typeof ThemeManager !== 'undefined' && ThemeManager.openThemeModal) {
+        ThemeManager.openThemeModal();
+    } else {
+        // Fallback jika theme.js belum dimuat
+        $('#controlPanelModal').css('display', 'flex');
+        $('#controlPanelModal .tabs .tab').removeClass('active');
+        $('#controlPanelModal .tab-content').removeClass('active');
+        $('[data-tab="theme"]').addClass('active');
+        $('#themeTab').addClass('active');
+    }
+}
         
         // Cek apakah shift masih terbuka
         if (currentShift && currentShift.status === 'open') {
