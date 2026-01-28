@@ -1465,12 +1465,13 @@ function loadTransactionHistory(searchTerm = '') {
         return;
     }
     
+    // PERBAIKAN: Hilangkan filter kategori yang tidak perlu
     // Buat HTML untuk histori transaksi
     let html = `
         <div class="professional-pdf">
             <div class="pdf-report-header">
                 <h2>HISTORI TRANSAKSI</h2>
-                <h3>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h3>
+                <h3>${settings.umkmName || 'UMKM LINK'} <span class="premium-badge">PREMIUM</span></h3>
                 <div class="pdf-subtitle"><strong>Tanggal Cetak:</strong> ${moment().format('DD/MM/YYYY HH:mm')}</div>
                 <div class="pdf-subtitle"><strong>Total Transaksi:</strong> ${filteredOrders.length}</div>
             </div>
@@ -1576,7 +1577,7 @@ function loadTransactionHistory(searchTerm = '') {
             </div>
             
             <div class="pdf-footer">
-                <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                <p><strong>&copy; ${new Date().getFullYear()} UMKM LINK - Lentera Karya Situbondo</strong></p>
                 <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
             </div>
         </div>
@@ -1660,7 +1661,7 @@ function generateHistoryReceiptHTML(order) {
                 <p>*** STRUK CETAK ULANG ***</p>
                 <div id="historyReceiptQrcode" style="display: flex; justify-content: center; margin: 10px 0;"></div>
                 <p style="margin-top: 10px; border-top: 1px dashed #000; padding-top: 5px;">
-                    Aplikasi Kasir UMKM CASH - Cetak Ulang<br>
+                    Aplikasi Kasir UMKM LINK - Cetak Ulang<br>
                     <strong>Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</strong><br>
                     Lentera Karya Situbondo &copy; 2025<br>
                     www.anekamarket.my.id | WA: 087865614222
@@ -1769,7 +1770,7 @@ function downloadHistoryAsPdf() {
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
         
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Histori_Transaksi_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
+        pdf.save(`Histori_Transaksi_${settings.umkmName || 'UMKM LINK'}_${moment().format('YYYY-MM-DD')}.pdf`);
         hideLoading();
         showToast('Histori transaksi PDF berhasil diunduh', 'success');
     }).catch(err => { 
@@ -2041,7 +2042,7 @@ function generateShiftReport(shift) {
         <div class="professional-pdf">
             <div class="pdf-report-header">
                 <h1>LAPORAN PENUTUPAN SHIFT</h1>
-                <h2>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h2>
+                <h2>${settings.umkmName || 'UMKM LINK'} <span class="premium-badge">PREMIUM</span></h2>
             </div>
             
             <div class="pdf-report-info">
@@ -2154,7 +2155,7 @@ function generateShiftReport(shift) {
             </div>
             
             <div class="pdf-footer">
-                <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                <p><strong>&copy; ${new Date().getFullYear()} UMKM LINK - Lentera Karya Situbondo</strong></p>
                 <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
             </div>
         </div>
@@ -2429,7 +2430,7 @@ function generateProfessionalSalesReport(filteredOrders, startDate, endDate, per
         <div class="professional-pdf">
             <div class="pdf-report-header">
                 <h1>LAPORAN PENJUALAN PROFESIONAL</h1>
-                <h2>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h2>
+                <h2>${settings.umkmName || 'UMKM LINK'} <span class="premium-badge">PREMIUM</span></h2>
             </div>
             
             <div class="pdf-report-info">
@@ -2571,7 +2572,7 @@ function generateProfessionalSalesReport(filteredOrders, startDate, endDate, per
             </div>
             
             <div class="pdf-footer">
-                <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                <p><strong>&copy; ${new Date().getFullYear()} UMKM LINK - Lentera Karya Situbondo</strong></p>
                 <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
             </div>
         </div>
@@ -2595,7 +2596,7 @@ function downloadProfitReportAsPdf() {
         <div class="professional-pdf">
             <div class="pdf-report-header">
                 <h1>LAPORAN PERHITUNGAN LABA</h1>
-                <h2>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h2>
+                <h2>${settings.umkmName || 'UMKM LINK'} <span class="premium-badge">PREMIUM</span></h2>
             </div>
             
             <div class="pdf-report-info">
@@ -2708,7 +2709,7 @@ function downloadProfitReportAsPdf() {
             </div>
             
             <div class="pdf-footer">
-                <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+                <p><strong>&copy; ${new Date().getFullYear()} UMKM LINK - Lentera Karya Situbondo</strong></p>
                 <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
             </div>
         </div>
@@ -2733,7 +2734,7 @@ function downloadProfitReportAsPdf() {
             const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
             
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`Laporan_Laba_${settings.umkmName || 'UMKM'}_${moment().format('YYYYMMDD_HHmm')}.pdf`);
+            pdf.save(`Laporan_Laba_${settings.umkmName || 'UMKM LINK'}_${moment().format('YYYYMMDD_HHmm')}.pdf`);
             
             document.body.removeChild(tempElement);
             hideLoading();
@@ -2794,7 +2795,7 @@ function generateShiftReportHTML(shift, hours, minutes) {
     return `
         <div class="pdf-report-header">
             <h1>LAPORAN PENUTUPAN SHIFT</h1>
-            <h2>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h2>
+            <h2>${settings.umkmName || 'UMKM LINK'} <span class="premium-badge">PREMIUM</span></h2>
         </div>
         
         <div class="pdf-report-info">
@@ -2901,7 +2902,7 @@ function generateShiftReportHTML(shift, hours, minutes) {
         </div>
         
         <div class="pdf-footer">
-            <p><strong>&copy; ${new Date().getFullYear()} UMKM CASH - Lentera Karya Situbondo</strong></p>
+            <p><strong>&copy; ${new Date().getFullYear()} UMKM LINK - Lentera Karya Situbondo</strong></p>
             <p class="fishery-support">Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</p>
         </div>
     `;
@@ -2930,7 +2931,7 @@ function generateMenuPdfPreview() {
             <div class="pdf-a4-wrapper">
                 <div class="pdf-header">
                     <h1>DAFTAR MENU LENGKAP</h1>
-                    <h2>${settings.umkmName || 'UMKM CASH'} <span class="premium-badge">PREMIUM</span></h2>
+                    <h2>${settings.umkmName || 'UMKM LINK'} <span class="premium-badge">PREMIUM</span></h2>
                     <div class="pdf-subtitle"><strong>Alamat:</strong> ${settings.storeAddress || ''}</div>
                     <div class="pdf-subtitle"><strong>Telepon/WA:</strong> ${settings.storePhone || ''}</div>
                     <div class="pdf-subtitle"><strong>Email:</strong> ${settings.storeEmail || ''}</div>
@@ -3013,7 +3014,7 @@ function generateMenuPdfPreview() {
     html += `
             <div class="pdf-footer">
                 <h4><i class="fas fa-info-circle"></i> Informasi Restoran</h4>
-                <p><strong>Aplikasi Kasir UMKM CASH - ${settings.storeName || 'Lentera Karya Situbondo'}</strong></p>
+                <p><strong>Aplikasi Kasir UMKM LINK - ${settings.storeName || 'Lentera Karya Situbondo'}</strong></p>
                 <p>Dikembangkan untuk mendukung UMKM Indonesia</p>
                 <div class="pdf-support-info" style="max-width: 100%; margin: 15px auto;">
                     <i class="fas fa-hands-helping"></i> Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan
@@ -3045,7 +3046,7 @@ function generateMenuPdfPreview() {
         if (qrOrderContainer) {
             $(qrOrderContainer).empty();
             new QRCode(qrOrderContainer, {
-                text: `https://www.aplikasiusaha.com/orderform?resto=${encodeURIComponent(settings.umkmName || 'UMKM')}`,
+                text: `https://www.aplikasiusaha.com/orderform?resto=${encodeURIComponent(settings.umkmName || 'UMKM LINK')}`,
                 width: 100,
                 height: 100,
                 correctLevel: QRCode.CorrectLevel.H
@@ -3068,7 +3069,7 @@ function generateMenuPdfPreview() {
         const qrContactContainer = document.getElementById('qrContactPdf');
         if (qrContactContainer) {
             $(qrContactContainer).empty();
-            const contactInfo = `Nama: ${settings.umkmName || 'UMKM'}\nAlamat: ${settings.storeAddress || ''}\nTelepon: ${settings.storePhone || ''}\nEmail: ${settings.storeEmail || ''}`;
+            const contactInfo = `Nama: ${settings.umkmName || 'UMKM LINK'}\nAlamat: ${settings.storeAddress || ''}\nTelepon: ${settings.storePhone || ''}\nEmail: ${settings.storeEmail || ''}`;
             new QRCode(qrContactContainer, {
                 text: contactInfo,
                 width: 100,
@@ -3186,7 +3187,7 @@ function generatePdfFromElement(element) {
         }
         
         // Simpan PDF
-        const fileName = `Daftar_Menu_${settings.umkmName || 'UMKM'}_${moment().format('YYYYMMDD_HHmm')}.pdf`;
+        const fileName = `Daftar_Menu_${settings.umkmName || 'UMKM LINK'}_${moment().format('YYYYMMDD_HHmm')}.pdf`;
         pdf.save(fileName);
         hideLoading();
         showToast(`PDF berhasil diunduh: ${fileName} (${pageCount} halaman)`, 'success');
@@ -3393,7 +3394,7 @@ function backupData() {
             const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
             const linkElement = document.createElement('a');
             linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
-            linkElement.download = `backup_umkm_cash_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
+            linkElement.download = `backup_umkm_link_${moment().format('YYYYMMDD_HHmmss')}.lksbackup`;
             linkElement.click();
             hideLoading();
             showToast('Backup data terenkripsi berhasil', 'success');
@@ -3727,7 +3728,7 @@ function generateReceiptHTML(order) {
             <p>Terima kasih telah berkunjung</p>
             <div id="receiptQrcode" style="display: flex; justify-content: center; margin: 10px 0;"></div>
             <p style="margin-top: 10px; border-top: 1px dashed #000; padding-top: 5px;">
-                Aplikasi Kasir UMKM CASH<br>
+                Aplikasi Kasir UMKM LINK<br>
                 <strong>Supported by Dinas Perikanan Situbondo - Bidang Pemberdayaan Nelayan</strong><br>
                 Lentera Karya Situbondo &copy; 2025<br>
                 www.anekamarket.my.id | WA: 087865614222
@@ -3825,7 +3826,7 @@ function downloadReportAsPdf() {
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
         
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Laporan_Penjualan_Profesional_${settings.umkmName || 'UMKM'}_${moment().format('YYYY-MM-DD')}.pdf`);
+        pdf.save(`Laporan_Penjualan_Profesional_${settings.umkmName || 'UMKM LINK'}_${moment().format('YYYY-MM-DD')}.pdf`);
         hideLoading();
         showToast('Laporan PDF berhasil diunduh', 'success');
     }).catch(err => { 
@@ -3836,8 +3837,8 @@ function downloadReportAsPdf() {
 }
 
 function updateStoreInfo() { 
-    $('#storeNameHeader').text(settings.umkmName || 'UMKM CASH'); 
-    document.title = settings.umkmName + ' - UMKM CASH' || 'UMKM CASH - Aplikasi Kasir Digital'; 
+    $('#storeNameHeader').text(settings.umkmName || 'UMKM LINK'); 
+    document.title = settings.umkmName + ' - UMKM LINK' || 'UMKM LINK - Aplikasi Kasir Digital'; 
 }
 
 function loadStoreInfo() { 
