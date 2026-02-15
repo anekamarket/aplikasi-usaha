@@ -2,1287 +2,397 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Management System | Lentera Karya Situbondo</title>
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="NOS (Network Ojek Situbondo) – Layanan ojek online profesional di Situbondo dengan driver berpengalaman dan tarif terjangkau.">
+    <meta name="keywords" content="ojek online, transportasi, ojek, situbondo, angkutan, nos, network ojek situbondo">
+    <meta name="author" content="NOS - Lentera Karya">
+    <meta property="og:title" content="NOS | Network Ojek Situbondo">
+    <meta property="og:description" content="Layanan ojek online profesional di Situbondo.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lenterakarya.github.io/nos-ojek/">
+    <meta property="og:image" content="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/nos/logo-nos-update.png">
+    <title>NOS | Network Ojek Situbondo</title>
+
+    <!-- CSS Eksternal -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/nos/logo-nos-update.png" type="image/png">
 </head>
 <body>
-    <!-- LOGIN OVERLAY -->
-    <div id="loginOverlay">
-        <div class="login-box">
-            <div class="app-logo">
-                <i class="fas fa-hotel"></i>
-            </div>
-            <h2>Hotel Management System Login</h2>
-            <form id="loginForm">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="username" placeholder="Username" required autocomplete="off">
-                    <label for="username">Username</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="password" placeholder="Password" required>
-                    <label for="password">Password</label>
-                </div>
-                
-                <div class="mb-3 text-center">
-                    <label for="captchaInput" class="form-label">Verifikasi Keamanan</label>
-                    <div class="d-flex justify-content-center align-items-center gap-2">
-                        <canvas id="captchaCanvas" width="150" height="50" style="border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9;"></canvas>
-                        <button type="button" id="reloadCaptchaBtn" class="btn btn-secondary" style="height: 50px; width: 50px;" title="Muat Ulang Captcha" aria-label="Muat Ulang Captcha">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
-                    </div>
-                </div>
+    <!-- Audio Elements (disembunyikan) -->
+    <audio id="bgMusic" loop preload="none">
+        <source src="https://github.com/LenteraKarya/jualan-kita/blob/main/assets/audio/Musik%20website.mp3?raw=true" type="audio/mpeg">
+    </audio>
+    <audio id="buttonSound" preload="none">
+        <source src="https://github.com/LenteraKarya/homestay/blob/main/assets/audio/audiotombol.mp3?raw=true" type="audio/mpeg">
+    </audio>
 
-                <div class="form-floating mb-4">
-                    <input type="text" class="form-control" id="captchaInput" placeholder="Masukkan Captcha" required autocomplete="off">
-                    <label for="captchaInput">Masukkan Kode di Atas</label>
-                </div>
+    <!-- Partikel Latar -->
+    <div class="particles" id="particles"></div>
 
-                <button type="submit" class="btn btn-primary w-100 btn-lg">Login</button>
-                <div id="loginError" class="error-message mt-3" style="display: none;"></div>
-            </form>
-            <div class="developer-info">
-                Developed by <strong>Lentera Karya Situbondo</strong><br>
-                <a href="https://wa.me/6287865614222" target="_blank">WhatsApp: 087865614222</a> | 
-                <a href="http://www.anekamarket.my.id" target="_blank">www.anekamarket.my.id</a><br>
-                &copy; Hak Cipta Sejak 2025
+    <!-- HEADER -->
+    <header id="home">
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/nos/logo-nos-update.png" alt="NOS Logo">
+                <span>NOS</span>
             </div>
+            <p class="tagline">Transportasi Nyaman, Tarif Terjangkau</p>
+
+            <div class="header-search">
+                <input type="text" id="headerSearchInput" placeholder="Cari lokasi tujuan...">
+                <button id="headerSearchBtn" aria-label="Cari"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="header-buttons">
+                <a href="#order" class="btn btn-primary"><i class="fas fa-motorcycle"></i> Pesan Sekarang</a>
+                <a href="#drivers" class="btn btn-outline"><i class="fas fa-users"></i> Lihat Driver Kami</a>
+            </div>
+            <a href="#services" class="scroll-down" aria-label="Scroll ke bawah"><i class="fas fa-chevron-down"></i></a>
         </div>
-    </div>
+    </header>
 
-    <!-- MAIN APP (tersembunyi sampai login sukses) -->
-    <main id="mainApp" style="display: none;">
-        <button class="mobile-menu-btn no-print" id="mobileMenuBtn" aria-label="Buka Menu">
-            <i class="fas fa-bars"></i>
-        </button>
-        
-        <div class="sidebar-overlay no-print" id="sidebarOverlay"></div>
-        
-        <div class="app-container">
-            <div class="app-header no-print">
-                <div class="app-logo">
-                    <i class="fas fa-hotel"></i>
+    <!-- NAVIGASI STICKY -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <img src="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/nos/logo-nos-update.png" alt="NOS Logo">
+                <span>NOS</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#order">Pesan Ojek</a></li>
+                <li><a href="#services">Layanan</a></li>
+                <li><a href="#drivers">Driver Kami</a></li>
+                <li><a href="#contact">Kontak</a></li>
+                <li><a href="#register">Daftar Driver</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Buka menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- KONTEN UTAMA -->
+    <main>
+        <!-- Layanan -->
+        <section class="services" id="services">
+            <h2 class="section-title">Layanan Kami</h2>
+            <p class="section-intro">Kami menyediakan berbagai layanan transportasi yang nyaman dan aman untuk memenuhi kebutuhan perjalanan Anda di Situbondo.</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-motorcycle"></i></div>
+                    <h3 class="service-title">Ojek Reguler</h3>
+                    <p>Layanan ojek harian untuk perjalanan jarak pendek dan menengah di seluruh wilayah Situbondo dengan tarif terjangkau.</p>
                 </div>
-                <h1 class="app-title">HOTEL MANAGEMENT SYSTEM</h1>
-                <p class="app-subtitle">Sistem Manajemen Hotel Terintegrasi</p>
-                <div class="watermark-container">
-                    <div class="watermark-item">v2.5 Full Version</div>
-                    <div class="watermark-item" style="font-size: 0.7rem;">By Lentera Karya Situbondo</div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-car"></i></div>
+                    <h3 class="service-title">Ojek Antar Jemput</h3>
+                    <p>Layanan antar jemput khusus dengan jadwal yang bisa disesuaikan kebutuhan Anda, termasuk bandara dan stasiun.</p>
                 </div>
-                <!-- User info header -->
-                <div class="user-info">
-                    <span>Halo, <span id="loggedInUserDisplay"></span> (<span id="userRoleDisplay"></span>)</span>
-                    <button class="btn btn-sm btn-outline-light" id="logoutBtnHeader"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-box"></i></div>
+                    <h3 class="service-title">Ojek Kirim Barang</h3>
+                    <p>Pengiriman barang cepat dan aman ke seluruh Situbondo dengan berbagai pilihan kendaraan sesuai ukuran barang.</p>
                 </div>
             </div>
-            
-            <div class="row g-0">
-                <!-- Sidebar -->
-                <div class="col-md-3 col-lg-2 bg-light p-3 no-print" id="sidebar">
-                    <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="true">
-                                <i class="fas fa-tachometer-alt feature-icon"></i>Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="reservation-tab" data-bs-toggle="tab" href="#reservation" role="tab" aria-controls="reservation" aria-selected="false">
-                                <i class="fas fa-calendar-check feature-icon"></i>Reservasi
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="checkin-tab" data-bs-toggle="tab" href="#checkin" role="tab" aria-controls="checkin" aria-selected="false">
-                                <i class="fas fa-sign-in-alt feature-icon"></i>Check-In
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="checkout-tab" data-bs-toggle="tab" href="#checkout" role="tab" aria-controls="checkout" aria-selected="false">
-                                <i class="fas fa-sign-out-alt feature-icon"></i>Check-Out
-                            </a>
-                        </li>
-                         <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="history-tab" data-bs-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false">
-                                <i class="fas fa-history feature-icon"></i>Histori Check-Out
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="room-tab" data-bs-toggle="tab" href="#room" role="tab" aria-controls="room" aria-selected="false">
-                                <i class="fas fa-bed feature-icon"></i>Manajemen Kamar
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="guest-tab" data-bs-toggle="tab" href="#guest" role="tab" aria-controls="guest" aria-selected="false">
-                                <i class="fas fa-users feature-icon"></i>Data Tamu
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="report-tab" data-bs-toggle="tab" href="#report" role="tab" aria-controls="report" aria-selected="false">
-                                <i class="fas fa-chart-bar feature-icon"></i>Laporan
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">
-                                <i class="fas fa-cog feature-icon"></i>Pengaturan
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Main Content -->
-                <div class="col-md-9 col-lg-10 p-4 main-content">
-                    <div class="tab-content" id="myTabContent">
-                        <!-- Dashboard -->
-                        <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <h2 class="section-title">Dashboard</h2>
-                            <div class="row">
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="stats-box">
-                                        <div class="stats-number" id="totalGuests">0</div>
-                                        <div class="stats-label">Total Tamu</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="stats-box">
-                                        <div class="stats-number" id="availableRooms">0</div>
-                                        <div class="stats-label">Kamar Tersedia</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="stats-box">
-                                        <div class="stats-number" id="todayCheckins">0</div>
-                                        <div class="stats-label">Check-In Hari Ini</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="stats-box">
-                                        <div class="stats-number" id="todayCheckouts">0</div>
-                                        <div class="stats-label">Check-Out Hari Ini</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header">Status Kamar</div>
-                                        <div class="card-body">
-                                            <canvas id="roomStatusChart" style="height: 250px;"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header">Aktivitas Terkini</div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-sm data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Waktu</th>
-                                                            <th>Tamu</th>
-                                                            <th>Kamar</th>
-                                                            <th>Aktivitas</th>
-                                                            <th>Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="recentActivities">
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Reservation Tab -->
-                        <div class="tab-pane fade" id="reservation" role="tabpanel" aria-labelledby="reservation-tab">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h2 class="section-title mb-0">Daftar Reservasi</h2>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReservationModal"><i class="fas fa-plus"></i> Reservasi Baru</button>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID Reservasi</th>
-                                            <th>Nama Tamu</th>
-                                            <th>Kamar</th>
-                                            <th>Check-In</th>
-                                            <th>Check-Out</th>
-                                            <th>Status</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="reservationList">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- Check-In Tab -->
-                        <div class="tab-pane fade" id="checkin" role="tabpanel" aria-labelledby="checkin-tab">
-                            <h2 class="section-title">Daftar Reservasi Siap Check-In</h2>
-                            <div class="table-responsive">
-                                <table class="table table-bordered data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID Reservasi</th>
-                                            <th>Nama Tamu</th>
-                                            <th>Kamar</th>
-                                            <th>Check-In</th>
-                                            <th>Check-Out</th>
-                                            <th>Status</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="checkinList">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- Check-Out Tab -->
-                        <div class="tab-pane fade" id="checkout" role="tabpanel" aria-labelledby="checkout-tab">
-                            <h2 class="section-title">Tamu Aktif (Check-In)</h2>
-                            <div class="table-responsive">
-                                <table class="table table-bordered data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID Reservasi</th>
-                                            <th>Nama Tamu</th>
-                                            <th>Kamar</th>
-                                            <th>Check-In</th>
-                                            <th>Check-Out</th>
-                                            <th>Total Tagihan</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="checkoutList">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+        </section>
 
-                        <!-- History Tab -->
-                        <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
-                            <h2 class="section-title">Histori Check-Out</h2>
-                            <div class="table-responsive">
-                                <table class="table table-bordered data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID Reservasi</th>
-                                            <th>Nama Tamu</th>
-                                            <th>Kamar</th>
-                                            <th>Waktu Check-Out</th>
-                                            <th>Total</th>
-                                            <th>Pembayaran</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="checkoutHistoryList">
-                                    </tbody>
-                                </table>
-                            </div>
+        <!-- Pemesanan -->
+        <section class="booking" id="order">
+            <h2 class="section-title">Pesan Ojek Sekarang</h2>
+            <p class="section-intro">Pesan ojek Anda dengan mudah dalam beberapa langkah sederhana. Kami siap mengantarkan Anda dengan nyaman dan aman.</p>
+            <div class="booking-form-container">
+                <form id="orderForm">
+                    <div class="progress-steps">
+                        <div class="progress-step active" id="step1">
+                            <div class="step-number">1</div><div class="step-label">Lokasi</div>
                         </div>
-                        
-                        <!-- Room Management Tab -->
-                        <div class="tab-pane fade" id="room" role="tabpanel" aria-labelledby="room-tab">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h2 class="section-title mb-0">Manajemen Kamar</h2>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal"><i class="fas fa-plus"></i> Tambah Kamar</button>
-                            </div>
-                            
-                            <div class="filter-section mb-3" id="roomStatusFilter">
-                                <label class="form-label me-2">Filter Status:</label>
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-outline-secondary active" data-status="all">Semua</button>
-                                    <button type="button" class="btn btn-outline-success" data-status="available">Tersedia</button>
-                                    <button type="button" class="btn btn-outline-danger" data-status="occupied">Terisi</button>
-                                    <button type="button" class="btn btn-outline-warning" data-status="maintenance">Pemeliharaan</button>
-                                    <button type="button" class="btn btn-outline-info" data-status="reserved">Dipesan</button>
-                                </div>
-                            </div>
-                            
-                            <div class="table-responsive">
-                                <table class="table table-bordered data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Nomor Kamar</th>
-                                            <th>Tipe</th>
-                                            <th>Harga/Malam</th>
-                                            <th>Fasilitas</th>
-                                            <th>Status</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="roomList">
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="progress-step" id="step2">
+                            <div class="step-number">2</div><div class="step-label">Kendaraan</div>
                         </div>
-                        
-                        <!-- Guest Management Tab -->
-                        <div class="tab-pane fade" id="guest" role="tabpanel" aria-labelledby="guest-tab">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h2 class="section-title mb-0">Data Tamu</h2>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGuestModal"><i class="fas fa-plus"></i> Tambah Tamu</button>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nama Lengkap</th>
-                                            <th>Email</th>
-                                            <th>Telepon</th>
-                                            <th>Alamat</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="guestList">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- Report Tab -->
-                        <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
-                            <h2 class="section-title">Laporan</h2>
-                            <div class="card">
-                                <div class="card-body">
-                                    <form id="reportForm">
-                                        <div class="row">
-                                            <div class="col-md-3 mb-3">
-                                                <label class="form-label">Jenis Laporan</label>
-                                                <select class="form-select" id="reportType">
-                                                    <option value="revenue">Pendapatan</option>
-                                                    <option value="occupancy">Okupansi</option>
-                                                    <option value="guests">Tamu Baru</option>
-                                                    <option value="reservations">Reservasi Baru</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 mb-3">
-                                                <label class="form-label">Tanggal Mulai</label>
-                                                <input type="date" class="form-control" id="reportStartDate">
-                                            </div>
-                                            <div class="col-md-3 mb-3">
-                                                <label class="form-label">Tanggal Akhir</label>
-                                                <input type="date" class="form-control" id="reportEndDate">
-                                            </div>
-                                            <div class="col-md-3 mb-3 d-flex align-items-end">
-                                                <button type="button" class="btn btn-primary w-100" id="generateReportBtn">Generate</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-4" id="reportSummary" style="display: none;"></div>
-                            
-                            <div class="d-flex gap-2 mt-3" id="reportActions" style="display: none;">
-                                <button class="btn btn-info" id="printReportBtn"><i class="fas fa-print"></i> Cetak</button>
-                                <button class="btn btn-danger" id="downloadReportPdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
-                            </div>
-                            
-                            <div class="table-responsive mt-3">
-                                <table class="table table-bordered data-table">
-                                    <thead id="reportTableHeader">
-                                    </thead>
-                                    <tbody id="reportTableBody">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- Settings Tab -->
-                        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                            <!-- Sub-tab -->
-                            <ul class="nav nav-tabs mb-3" id="settingsSubTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="general-settings-tab" data-bs-toggle="tab" data-bs-target="#generalSettings" type="button" role="tab">Umum</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="other-settings-tab" data-bs-toggle="tab" data-bs-target="#otherSettings" type="button" role="tab">Lainnya</button>
-                                </li>
-                                <li class="nav-item" role="presentation" id="userManagementTabNav">
-                                    <button class="nav-link" id="user-management-tab" data-bs-toggle="tab" data-bs-target="#userManagement" type="button" role="tab">Manajemen User</button>
-                                </li>
-                            </ul>
-                            <div class="tab-content" id="settingsSubTabContent">
-                                <!-- General Settings -->
-                                <div class="tab-pane active" id="generalSettings" role="tabpanel">
-                                    <form id="generalSettingsForm">
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="hotelName" class="form-label">Nama Hotel</label>
-                                                <input type="text" class="form-control" id="hotelName">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="hotelAddress" class="form-label">Alamat</label>
-                                                <input type="text" class="form-control" id="hotelAddress">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="hotelPhone" class="form-label">Telepon</label>
-                                                <input type="text" class="form-control" id="hotelPhone">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="hotelEmail" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="hotelEmail">
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="pricePijat" class="form-label">Harga Pijat</label>
-                                                <input type="number" class="form-control" id="pricePijat">
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="priceMakanMalam" class="form-label">Harga Makan Malam</label>
-                                                <input type="number" class="form-control" id="priceMakanMalam">
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="priceMeetingRoom" class="form-label">Harga Meeting Room</label>
-                                                <input type="number" class="form-control" id="priceMeetingRoom">
-                                            </div>
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-primary">Simpan Pengaturan Umum</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <!-- Other Settings -->
-                                <div class="tab-pane" id="otherSettings" role="tabpanel">
-                                    <form id="otherSettingsForm">
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="currency" class="form-label">Mata Uang</label>
-                                                <select class="form-select" id="currency">
-                                                    <option value="IDR">IDR (Rupiah)</option>
-                                                    <option value="USD">USD (Dolar)</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="taxRate" class="form-label">Pajak (%)</label>
-                                                <input type="number" class="form-control" id="taxRate" step="0.1">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="defaultCheckinTime" class="form-label">Waktu Check-In Default</label>
-                                                <input type="time" class="form-control" id="defaultCheckinTime">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="defaultCheckoutTime" class="form-label">Waktu Check-Out Default</label>
-                                                <input type="time" class="form-control" id="defaultCheckoutTime">
-                                            </div>
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-primary">Simpan Pengaturan Lainnya</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <!-- User Management -->
-                                <div class="tab-pane" id="userManagement" role="tabpanel">
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <h5>Daftar User</h5>
-                                        <button class="btn btn-primary btn-sm" id="addUserBtn" data-bs-toggle="modal" data-bs-target="#userModal"><i class="fas fa-plus"></i> Tambah User</button>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered data-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Username</th>
-                                                    <th>Nama Lengkap</th>
-                                                    <th>Role</th>
-                                                    <th>Dibuat</th>
-                                                    <th>Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="userTableBody">
-                                                <!-- diisi js -->
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="progress-step" id="step3">
+                            <div class="step-number">3</div><div class="step-label">Selesai</div>
                         </div>
                     </div>
+
+                    <!-- Step 1: Lokasi -->
+                    <div class="form-step active" data-step="1">
+                        <div class="map-container">
+                            <div id="map"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pickupLocation">Lokasi Penjemputan *</label>
+                            <input type="text" id="pickupLocation" name="pickupLocation" required autocomplete="street-address" placeholder="Contoh: Alun-alun Situbondo">
+                            <button type="button" class="location-btn" id="currentLocationBtn"><i class="fas fa-map-marker-alt"></i> Gunakan Lokasi Saya</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="destination">Tujuan *</label>
+                            <input type="text" id="destination" name="destination" required placeholder="Contoh: Pelabuhan Panarukan">
+                        </div>
+                        <input type="hidden" id="pickupCoords" name="pickupCoords">
+                        <input type="hidden" id="distance" name="distance">
+                        <button type="button" class="btn btn-primary" data-next="2"><i class="fas fa-arrow-right"></i> Lanjut</button>
+                    </div>
+
+                    <!-- Step 2: Data Pribadi & Kendaraan -->
+                    <div class="form-step" data-step="2">
+                        <div class="form-group">
+                            <label for="name">Nama Lengkap *</label>
+                            <input type="text" id="name" name="name" required autocomplete="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Nomor WhatsApp *</label>
+                            <input type="tel" id="phone" name="phone" required pattern="^(\+62|0)8[1-9][0-9]{7,10}$" title="Format nomor Indonesia (contoh: 081234567890)" autocomplete="tel">
+                        </div>
+                        <div class="form-group">
+                            <label>Pilih Kendaraan *</label>
+                            <div class="vehicle-options">
+                                <div class="vehicle-option" data-value="Motor">
+                                    <div class="vehicle-icon"><i class="fas fa-motorcycle"></i></div>
+                                    <div class="vehicle-name">Motor</div>
+                                </div>
+                                <div class="vehicle-option" data-value="Motor Premium">
+                                    <div class="vehicle-icon"><i class="fas fa-biking"></i></div>
+                                    <div class="vehicle-name">Motor Premium</div>
+                                </div>
+                                <div class="vehicle-option" data-value="Mobil">
+                                    <div class="vehicle-icon"><i class="fas fa-car"></i></div>
+                                    <div class="vehicle-name">Mobil</div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="selectedVehicle" name="selectedVehicle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Catatan untuk Driver (Opsional)</label>
+                            <textarea id="notes" name="notes" placeholder="Contoh: Tolong bawa helm tambahan"></textarea>
+                        </div>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-outline" data-back="1"><i class="fas fa-arrow-left"></i> Kembali</button>
+                            <button type="submit" class="btn btn-primary" id="submitOrderBtn"><i class="fas fa-paper-plane"></i> Pesan Sekarang</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Konfirmasi -->
+                    <div class="form-step" data-step="3">
+                        <div class="ride-status">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h3 style="margin:0;">Pemesanan Anda Segera Diproses!</h3>
+                                <p>Anda akan diarahkan ke WhatsApp untuk mengirim detail pesanan kepada admin kami. Mohon tunggu sebentar.</p>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="newOrderBtn" style="margin-top: 2rem;"><i class="fas fa-plus"></i> Buat Pesanan Baru</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Driver -->
+        <section class="drivers" id="drivers">
+            <h2 class="section-title">Driver Profesional Kami</h2>
+            <p class="section-intro">Driver profesional kami siap mengantarkan Anda dengan aman dan nyaman ke tujuan.</p>
+            <div class="drivers-grid">
+                <div class="driver-card">
+                    <img src="https://github.com/LenteraKarya/NOS/blob/main/assets/images/driver1.jpeg?raw=true" alt="Budi Santoso" class="driver-avatar" loading="lazy">
+                    <div class="driver-badge">Terdaftar</div>
+                    <h3 class="service-title">Budi Santoso</h3>
+                    <div class="driver-rating"><i class="fas fa-star"></i> 4.7 (127)</div>
+                    <div class="driver-specs">
+                        <div class="spec-item"><span class="spec-label">Kendaraan:</span><span class="spec-value">Honda Beat</span></div>
+                        <div class="spec-item"><span class="spec-label">Layanan:</span><span class="spec-value">Semua</span></div>
+                        <div class="spec-item"><span class="spec-label">Pengalaman:</span><span class="spec-value">5 Tahun</span></div>
+                        <div class="spec-item"><span class="spec-label">Wilayah:</span><span class="spec-value">Situbondo Kota</span></div>
+                    </div>
+                    <button class="btn btn-primary btn-small order-btn" data-driver="Budi Santoso (Honda Beat)">Pesan Sekarang</button>
+                </div>
+                <div class="driver-card">
+                    <img src="https://github.com/LenteraKarya/NOS/blob/main/assets/images/driver2.jpeg?raw=true" alt="Ani Wijaya" class="driver-avatar" loading="lazy">
+                    <div class="driver-badge">Terdaftar</div>
+                    <h3 class="service-title">Ani Wijaya</h3>
+                    <div class="driver-rating"><i class="fas fa-star"></i> 5.0 (89)</div>
+                    <div class="driver-specs">
+                        <div class="spec-item"><span class="spec-label">Kendaraan:</span><span class="spec-value">Yamaha NMax</span></div>
+                        <div class="spec-item"><span class="spec-label">Layanan:</span><span class="spec-value">Premium</span></div>
+                        <div class="spec-item"><span class="spec-label">Pengalaman:</span><span class="spec-value">3 Tahun</span></div>
+                        <div class="spec-item"><span class="spec-label">Wilayah:</span><span class="spec-value">Panarukan</span></div>
+                    </div>
+                    <button class="btn btn-primary btn-small order-btn" data-driver="Ani Wijaya (Yamaha NMax)">Pesan Sekarang</button>
+                </div>
+                <div class="driver-card">
+                    <img src="https://github.com/LenteraKarya/NOS/blob/main/assets/images/driver3.jpeg?raw=true" alt="Joko Prasetyo" class="driver-avatar" loading="lazy">
+                    <div class="driver-badge inactive">Berhenti</div>
+                    <h3 class="service-title">Joko Prasetyo</h3>
+                    <div class="driver-rating"><i class="fas fa-star"></i> 4.2 (203)</div>
+                    <div class="driver-specs">
+                        <div class="spec-item"><span class="spec-label">Kendaraan:</span><span class="spec-value">Honda CB150</span></div>
+                        <div class="spec-item"><span class="spec-label">Layanan:</span><span class="spec-value">Barang</span></div>
+                        <div class="spec-item"><span class="spec-label">Pengalaman:</span><span class="spec-value">7 Tahun</span></div>
+                        <div class="spec-item"><span class="spec-label">Wilayah:</span><span class="spec-value">Semua</span></div>
+                    </div>
+                    <button class="btn btn-primary btn-small" disabled>Tidak Tersedia</button>
                 </div>
             </div>
-            
-            <div class="copyright no-print">
-                Developed by <strong><a href="http://www.anekamarket.my.id" target="_blank">Lentera Karya Situbondo</a></strong> &copy; Hak Cipta Sejak 2025. All rights reserved.<br>
-                Contact: <a href="https://wa.me/6287865614222" target="_blank">WhatsApp (087865614222)</a>
+        </section>
+
+        <!-- Registrasi Driver -->
+        <section class="registration" id="register">
+            <h2 class="section-title">Daftar Menjadi Driver NOS</h2>
+            <p class="section-intro">Bergabunglah dengan jaringan driver profesional kami dan dapatkan penghasilan tambahan.</p>
+            <div class="registration-section">
+                <form id="driverRegistrationForm">
+                    <div class="form-group">
+                        <label for="driverName">Nama Lengkap *</label>
+                        <input type="text" id="driverName" name="Nama" required pattern="[A-Za-z\s]+" title="Hanya huruf dan spasi">
+                    </div>
+                    <div class="form-group">
+                        <label for="driverPhone">Nomor WhatsApp *</label>
+                        <input type="tel" id="driverPhone" name="WhatsApp" required pattern="^(\+62|0)8[1-9][0-9]{7,10}$" title="Format nomor Indonesia">
+                    </div>
+                    <div class="form-group">
+                        <label for="driverPlate">Nomor Polisi Kendaraan *</label>
+                        <input type="text" id="driverPlate" name="No Polisi" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Jenis Kendaraan *</label>
+                        <div class="option-group" data-for="vehicleType">
+                            <button type="button" class="option-btn" data-value="Motor">Motor</button>
+                            <button type="button" class="option-btn" data-value="Mobil">Mobil</button>
+                        </div>
+                        <input type="hidden" id="vehicleType" name="Jenis Kendaraan" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Memiliki SIM Aktif? *</label>
+                        <div class="option-group" data-for="licenseStatus">
+                            <button type="button" class="option-btn" data-value="Ya">Ya, Punya</button>
+                            <button type="button" class="option-btn" data-value="Tidak">Tidak</button>
+                        </div>
+                        <input type="hidden" id="licenseStatus" name="SIM Aktif" required>
+                    </div>
+                    <div class="conditional-field" data-condition="licenseStatus" data-condition-value="Tidak">
+                        <p style="color: var(--danger);">Maaf, pendaftaran memerlukan SIM yang aktif.</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Siap menjadi DRIVER NOS yang jujur dan bertanggung jawab? *</label>
+                        <div class="option-group" data-for="readiness">
+                            <button type="button" class="option-btn" data-value="Ya, Siap">Iya, Siap</button>
+                            <button type="button" class="option-btn" data-value="Tidak">Tidak Siap</button>
+                        </div>
+                        <input type="hidden" id="readiness" name="Kesiapan" required>
+                    </div>
+                    <div class="conditional-field" data-condition="readiness" data-condition-value="Tidak">
+                        <p style="color: var(--danger);">Terima kasih atas minat Anda.</p>
+                    </div>
+                    <div class="conditional-field" id="termsField" data-condition="readiness" data-condition-value="Ya, Siap">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Kirim Pendaftaran</button>
+                    </div>
+                </form>
             </div>
-        </div>
-        
-        <div class="floating-action-btn no-print" data-bs-toggle="modal" data-bs-target="#quickActionModal" aria-label="Buka Aksi Cepat">
-            <i class="fas fa-plus"></i>
-        </div>
+        </section>
+
+        <!-- Kontak -->
+        <section class="contact" id="contact">
+            <h2 class="section-title">Hubungi Kami</h2>
+            <p class="section-intro">Kami siap membantu Anda 24/7. Hubungi kami untuk pertanyaan, masukan, atau bantuan.</p>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Informasi Kontak</h3>
+                    <div class="contact-detail">
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                        <div><h4>Alamat</h4><p>Jl. PB Sudirman, Wringin Anom, Panarukan, Situbondo (68351), Jawa Timur</p></div>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-phone-alt contact-icon"></i>
+                        <div><h4>Telepon</h4><p>+62 878 6561 4222</p></div>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <div><h4>Email</h4><p>lenterakaryasitubondo@gmail.com</p></div>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-clock contact-icon"></i>
+                        <div><h4>Jam Operasional</h4><p>Setiap Hari: 08.00 - 22.00</p></div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Kirim Pesan</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">Nama Anda</label>
+                            <input type="text" id="contactName" name="Nama" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Pesan</label>
+                            <textarea id="contactMessage" name="Pesan" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Kirim via WhatsApp</button>
+                    </form>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- MODAL QUICK ACTION -->
-    <div class="modal fade" id="quickActionModal" tabindex="-1" aria-labelledby="quickActionModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="quickActionModalLabel">Aksi Cepat</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReservationModal">
-                            <i class="fas fa-calendar-plus me-2"></i>Tambah Reservasi
-                        </button>
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addGuestModal">
-                            <i class="fas fa-user-plus me-2"></i>Tambah Tamu
-                        </button>
-                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addRoomModal">
-                            <i class="fas fa-bed me-2"></i>Tambah Kamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Floating Contact Buttons -->
+    <div class="contact-bar">
+        <a href="https://wa.me/6285647709114" class="contact-btn whatsapp" target="_blank" aria-label="Hubungi via WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="tel:+6287865614222" class="contact-btn phone" aria-label="Telepon Kami"><i class="fas fa-phone"></i></a>
+        <a href="#order" class="contact-btn order" aria-label="Pesan Cepat"><i class="fas fa-motorcycle"></i></a>
     </div>
 
-    <!-- MODAL TAMBAH RESERVASI -->
-    <div class="modal fade" id="addReservationModal" tabindex="-1" aria-labelledby="addReservationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addReservationModalLabel">Tambah Reservasi Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col footer-about">
+                <div class="footer-logo">
+                    <img src="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/nos/logo-nos-update.png" alt="NOS Logo">
+                    <span>NOS</span>
                 </div>
-                <div class="modal-body">
-                    <form id="addReservationForm">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="reservationGuestName" class="form-label">Nama Tamu</label>
-                                <div class="position-relative">
-                                    <input type="text" class="form-control" id="reservationGuestName" placeholder="Ketik nama tamu...">
-                                    <input type="hidden" id="reservationGuestId">
-                                    <div id="guestSearchResults" class="list-group guest-search-results position-absolute w-100" style="z-index: 1000; max-height: 200px; overflow-y: auto;"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="reservationRoom" class="form-label">Kamar</label>
-                                <select class="form-select" id="reservationRoom" required>
-                                    <option value="">Pilih Kamar</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="reservationCheckin" class="form-label">Tanggal Check-In</label>
-                                <input type="date" class="form-control" id="reservationCheckin" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="reservationCheckout" class="form-label">Tanggal Check-Out</label>
-                                <input type="date" class="form-control" id="reservationCheckout" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="reservationGuests" class="form-label">Jumlah Tamu</label>
-                                <input type="number" class="form-control" id="reservationGuests" value="1" min="1" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="reservationStatus" class="form-label">Status Reservasi</label>
-                                <select class="form-select" id="reservationStatus">
-                                    <option value="confirmed">Dikonfirmasi</option>
-                                    <option value="pending">Menunggu</option>
-                                </select>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Layanan Premium</label>
-                                <div class="form-facilities-columns">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="servicePijat" value="Pijat">
-                                        <label class="form-check-label" for="servicePijat">Pijat</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="serviceMakanMalam" value="Makan Malam">
-                                        <label class="form-check-label" for="serviceMakanMalam">Makan Malam</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="serviceMeetingRoom" value="Meeting Room">
-                                        <label class="form-check-label" for="serviceMeetingRoom">Meeting Room</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="reservationNotes" class="form-label">Catatan</label>
-                                <textarea class="form-control" id="reservationNotes" rows="2"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="saveReservationBtn">Simpan</button>
-                </div>
+                <p>Network Ojek Situbondo (NOS) adalah layanan ojek online profesional di Situbondo dengan driver berpengalaman dan tarif terjangkau.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Tautan Cepat</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Beranda</a></li>
+                    <li><a href="#order">Pesan Ojek</a></li>
+                    <li><a href="#drivers">Driver Kami</a></li>
+                    <li><a href="#contact">Kontak</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Layanan</h3>
+                <ul class="footer-links">
+                    <li><a href="#services">Ojek Reguler</a></li>
+                    <li><a href="#services">Ojek Antar Jemput</a></li>
+                    <li><a href="#services">Ojek Kirim Barang</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Dapatkan promo dan info terbaru dari kami.</p>
+                <form id="newsletterForm" class="newsletter-form">
+                    <input type="email" name="Email" placeholder="Alamat email Anda" required>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-envelope"></i> Berlangganan</button>
+                </form>
             </div>
         </div>
-    </div>
-
-    <!-- MODAL TAMBAH TAMU -->
-    <div class="modal fade" id="addGuestModal" tabindex="-1" aria-labelledby="addGuestModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addGuestModalLabel">Tambah Tamu Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addGuestForm">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="guestFirstName" class="form-label">Nama Depan</label>
-                                <input type="text" class="form-control" id="guestFirstName" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="guestLastName" class="form-label">Nama Belakang</label>
-                                <input type="text" class="form-control" id="guestLastName" required>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="guestEmail" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="guestEmail" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="guestPhone" class="form-label">Telepon</label>
-                                <input type="tel" class="form-control" id="guestPhone">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="guestNationality" class="form-label">Kewarganegaraan</label>
-                                <input type="text" class="form-control" id="guestNationality" value="Indonesia">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="guestIdType" class="form-label">Jenis Identitas</label>
-                                <select class="form-select" id="guestIdType">
-                                    <option value="KTP">KTP</option>
-                                    <option value="Paspor">Paspor</option>
-                                    <option value="SIM">SIM</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="guestIdNumber" class="form-label">Nomor Identitas</label>
-                                <input type="text" class="form-control" id="guestIdNumber">
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="guestAddress" class="form-label">Alamat</label>
-                                <textarea class="form-control" id="guestAddress" rows="2"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="saveGuestBtn">Simpan</button>
-                </div>
-            </div>
+        <div class="copyright">
+            &copy; 2025 NOS - Network Ojek Situbondo. Didukung oleh Lentera Karya.
         </div>
-    </div>
+    </footer>
 
-    <!-- MODAL TAMBAH KAMAR -->
-    <div class="modal fade" id="addRoomModal" tabindex="-1" aria-labelledby="addRoomModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addRoomModalLabel">Tambah Kamar Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addRoomForm">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="roomNumber" class="form-label">Nomor Kamar</label>
-                                <input type="text" class="form-control" id="roomNumber" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="roomType" class="form-label">Tipe Kamar</label>
-                                <select class="form-select" id="roomType">
-                                    <option value="Standard">Standard</option>
-                                    <option value="Deluxe">Deluxe</option>
-                                    <option value="Suite">Suite</option>
-                                    <option value="Family">Family</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="roomPrice" class="form-label">Harga per Malam</label>
-                                <input type="number" class="form-control" id="roomPrice" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="roomStatus" class="form-label">Status</label>
-                                <select class="form-select" id="roomStatus">
-                                    <option value="available">Tersedia</option>
-                                    <option value="occupied">Terisi</option>
-                                    <option value="maintenance">Pemeliharaan</option>
-                                    <option value="reserved">Dipesan</option>
-                                </select>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Fasilitas</label>
-                                <div class="form-facilities-columns">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="facilityAC" value="AC">
-                                        <label class="form-check-label" for="facilityAC">AC</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="facilityTV" value="TV">
-                                        <label class="form-check-label" for="facilityTV">TV</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="facilityWifi" value="WiFi">
-                                        <label class="form-check-label" for="facilityWifi">WiFi</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="facilityBreakfast" value="Sarapan">
-                                        <label class="form-check-label" for="facilityBreakfast">Sarapan</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="facilityBathtub" value="Bathtub">
-                                        <label class="form-check-label" for="facilityBathtub">Bathtub</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="facilityBalcony" value="Balkon">
-                                        <label class="form-check-label" for="facilityBalcony">Balkon</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="saveRoomBtn">Simpan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL EDIT RESERVASI -->
-    <div class="modal fade" id="editReservationModal" tabindex="-1" aria-labelledby="editReservationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editReservationModalLabel">Edit Reservasi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editReservationForm">
-                        <input type="hidden" id="editReservationId">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="editReservationGuestName" class="form-label">Nama Tamu</label>
-                                <div class="position-relative">
-                                    <input type="text" class="form-control" id="editReservationGuestName" placeholder="Ketik nama tamu...">
-                                    <input type="hidden" id="editReservationGuestId">
-                                    <div id="editGuestSearchResults" class="list-group guest-search-results position-absolute w-100" style="z-index: 1000; max-height: 200px; overflow-y: auto;"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editReservationRoom" class="form-label">Kamar</label>
-                                <select class="form-select" id="editReservationRoom" required>
-                                    <option value="">Pilih Kamar</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editReservationCheckin" class="form-label">Tanggal Check-In</label>
-                                <input type="date" class="form-control" id="editReservationCheckin" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editReservationCheckout" class="form-label">Tanggal Check-Out</label>
-                                <input type="date" class="form-control" id="editReservationCheckout" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editReservationGuests" class="form-label">Jumlah Tamu</label>
-                                <input type="number" class="form-control" id="editReservationGuests" min="1">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editReservationStatus" class="form-label">Status</label>
-                                <select class="form-select" id="editReservationStatus">
-                                    <option value="confirmed">Dikonfirmasi</option>
-                                    <option value="pending">Menunggu</option>
-                                    <option value="checked-in">Check-In</option>
-                                    <option value="cancelled">Dibatalkan</option>
-                                </select>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Layanan Premium</label>
-                                <div class="form-facilities-columns">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="editServicePijat" value="Pijat">
-                                        <label class="form-check-label" for="editServicePijat">Pijat</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="editServiceMakanMalam" value="Makan Malam">
-                                        <label class="form-check-label" for="editServiceMakanMalam">Makan Malam</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="editServiceMeetingRoom" value="Meeting Room">
-                                        <label class="form-check-label" for="editServiceMeetingRoom">Meeting Room</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="editReservationNotes" class="form-label">Catatan</label>
-                                <textarea class="form-control" id="editReservationNotes" rows="2"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="updateReservationBtn">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL EDIT TAMU -->
-    <div class="modal fade" id="editGuestModal" tabindex="-1" aria-labelledby="editGuestModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editGuestModalLabel">Edit Data Tamu</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editGuestForm">
-                        <input type="hidden" id="editGuestId">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="editGuestFirstName" class="form-label">Nama Depan</label>
-                                <input type="text" class="form-control" id="editGuestFirstName" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editGuestLastName" class="form-label">Nama Belakang</label>
-                                <input type="text" class="form-control" id="editGuestLastName" required>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="editGuestEmail" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="editGuestEmail" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editGuestPhone" class="form-label">Telepon</label>
-                                <input type="tel" class="form-control" id="editGuestPhone">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editGuestNationality" class="form-label">Kewarganegaraan</label>
-                                <input type="text" class="form-control" id="editGuestNationality">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editGuestIdType" class="form-label">Jenis Identitas</label>
-                                <select class="form-select" id="editGuestIdType">
-                                    <option value="KTP">KTP</option>
-                                    <option value="Paspor">Paspor</option>
-                                    <option value="SIM">SIM</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editGuestIdNumber" class="form-label">Nomor Identitas</label>
-                                <input type="text" class="form-control" id="editGuestIdNumber">
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="editGuestAddress" class="form-label">Alamat</label>
-                                <textarea class="form-control" id="editGuestAddress" rows="2"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="updateGuestBtn">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL EDIT KAMAR -->
-    <div class="modal fade" id="editRoomModal" tabindex="-1" aria-labelledby="editRoomModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editRoomModalLabel">Edit Data Kamar</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editRoomForm">
-                        <input type="hidden" id="editRoomId">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="editRoomNumber" class="form-label">Nomor Kamar</label>
-                                <input type="text" class="form-control" id="editRoomNumber" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editRoomType" class="form-label">Tipe Kamar</label>
-                                <select class="form-select" id="editRoomType">
-                                    <option value="Standard">Standard</option>
-                                    <option value="Deluxe">Deluxe</option>
-                                    <option value="Suite">Suite</option>
-                                    <option value="Family">Family</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editRoomPrice" class="form-label">Harga per Malam</label>
-                                <input type="number" class="form-control" id="editRoomPrice" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editRoomStatus" class="form-label">Status</label>
-                                <select class="form-select" id="editRoomStatus">
-                                    <option value="available">Tersedia</option>
-                                    <option value="occupied">Terisi</option>
-                                    <option value="maintenance">Pemeliharaan</option>
-                                    <option value="reserved">Dipesan</option>
-                                </select>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Fasilitas</label>
-                                <div class="form-facilities-columns">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="editFacilityAC" value="AC">
-                                        <label class="form-check-label" for="editFacilityAC">AC</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="editFacilityTV" value="TV">
-                                        <label class="form-check-label" for="editFacilityTV">TV</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="editFacilityWifi" value="WiFi">
-                                        <label class="form-check-label" for="editFacilityWifi">WiFi</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="editFacilityBreakfast" value="Sarapan">
-                                        <label class="form-check-label" for="editFacilityBreakfast">Sarapan</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="editFacilityBathtub" value="Bathtub">
-                                        <label class="form-check-label" for="editFacilityBathtub">Bathtub</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="editFacilityBalcony" value="Balkon">
-                                        <label class="form-check-label" for="editFacilityBalcony">Balkon</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="updateRoomBtn">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL CHECK-IN -->
-    <div class="modal fade" id="checkinModal" tabindex="-1" aria-labelledby="checkinModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="checkinModalLabel">Proses Check-In</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="checkinForm">
-                        <input type="hidden" id="checkinReservationId">
-                        <div class="mb-3">
-                            <label for="checkinReservationCode" class="form-label">Kode Reservasi</label>
-                            <input type="text" class="form-control" id="checkinReservationCode" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="checkinGuestName" class="form-label">Nama Tamu</label>
-                            <input type="text" class="form-control" id="checkinGuestName" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="checkinRoom" class="form-label">Kamar</label>
-                            <input type="text" class="form-control" id="checkinRoom" readonly>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="checkinDate" class="form-label">Tanggal Check-In</label>
-                                <input type="date" class="form-control" id="checkinDate" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="checkinTime" class="form-label">Waktu Check-In</label>
-                                <input type="time" class="form-control" id="checkinTime" required>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-success" id="confirmCheckinBtn">Konfirmasi Check-In</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL CHECK-OUT & INVOICE -->
-    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="checkoutModalLabel">Proses Check-Out & Invoice</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="invoice-container" id="checkoutInvoice">
-                        <div class="invoice-watermark"></div>
-                        <div class="invoice-header">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="invoice-logo">
-                                        <i class="fas fa-hotel"></i>
-                                    </div>
-                                    <h3 id="invoiceHotelName"></h3>
-                                    <p id="invoiceHotelAddress"></p>
-                                    <p id="invoiceHotelPhone"></p>
-                                </div>
-                                <div class="col-md-6 text-end">
-                                    <h2>INVOICE</h2>
-                                    <p>No: <span id="invoiceNumber"></span></p>
-                                    <p>Tanggal: <span id="invoiceDate"></span></p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="invoice-details">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h5>Detail Tamu</h5>
-                                    <p id="invoiceGuestName"></p>
-                                    <p id="invoiceGuestPhone"></p>
-                                    <p id="invoiceGuestEmail"></p>
-                                </div>
-                                <div class="col-md-6 text-end">
-                                    <h5>Detail Reservasi</h5>
-                                    <p>Kamar: <span id="invoiceRoom"></span></p>
-                                    <p>Check-In: <span id="invoiceCheckin"></span></p>
-                                    <p>Check-Out: <span id="invoiceCheckout"></span></p>
-                                    <p>Lama Menginap: <span id="invoiceNights"></span></p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="table-responsive mt-4">
-                            <table class="table table-bordered invoice-table">
-                                <thead>
-                                    <tr>
-                                        <th>Deskripsi</th>
-                                        <th>Jumlah</th>
-                                        <th>Harga Satuan</th>
-                                        <th>Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="invoiceItems">
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="text-end"><strong>Subtotal</strong></td>
-                                        <td><strong id="invoiceSubtotal"></strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="text-end">Pajak (<span id="invoiceTaxRate"></span>%)</td>
-                                        <td id="invoiceTax"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="text-end"><strong>Total</strong></td>
-                                        <td><strong id="invoiceTotal"></strong></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        
-                        <div class="row mt-4" id="checkoutPaymentSection">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="checkoutPaymentMethod" class="form-label">Metode Pembayaran</label>
-                                    <select class="form-select" id="checkoutPaymentMethod">
-                                        <option value="cash">Tunai</option>
-                                        <option value="credit_card">Kartu Kredit</option>
-                                        <option value="debit_card">Kartu Debit</option>
-                                        <option value="transfer">Transfer Bank</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="checkoutPaymentStatus" class="form-label">Status Pembayaran</label>
-                                    <select class="form-select" id="checkoutPaymentStatus">
-                                        <option value="paid">Lunas</option>
-                                        <option value="pending">Belum Lunas</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="checkoutTotalBill" class="form-label">Total Tagihan</label>
-                                    <input type="text" class="form-control" id="checkoutTotalBill" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="amountPaid" class="form-label">Jumlah Dibayar</label>
-                                    <input type="number" class="form-control" id="amountPaid" min="0">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="changeDue" class="form-label">Kembalian</label>
-                                    <input type="text" class="form-control" id="changeDue" readonly>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="invoice-footer">
-                            <p>Hormat kami,</p>
-                            <p id="invoiceFrontOfficeName"></p>
-                            <p class="mt-4">Hormat Tamu,</p>
-                            <p id="signatureGuestName"></p>
-                        </div>
-                    </div>
-                    <input type="hidden" id="checkoutReservationId">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-info" id="printInvoiceBtn"><i class="fas fa-print"></i> Cetak</button>
-                    <button type="button" class="btn btn-danger" id="downloadInvoicePdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
-                    <button type="button" class="btn btn-success" id="confirmCheckoutBtn">Proses Check-Out</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL KONFIRMASI HAPUS -->
-    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmModalLabel">Konfirmasi Hapus</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Apakah Anda yakin ingin menghapus data ini?</p>
-                    <input type="hidden" id="deleteItemId">
-                    <input type="hidden" id="deleteItemType">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL IMPORT DATA -->
-    <div class="modal fade" id="importDataModal" tabindex="-1" aria-labelledby="importDataModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="importDataModalLabel">Import Data (JSON)</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="importForm">
-                        <div class="mb-3">
-                            <label for="importDataFile" class="form-label">Pilih File JSON</label>
-                            <input type="file" class="form-control" id="importDataFile" accept=".json">
-                        </div>
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="importOverwrite">
-                            <label class="form-check-label" for="importOverwrite">
-                                Timpa data yang ada (jika tidak dicentang, data akan digabung)
-                            </label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="confirmImportBtn">Import</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL PASSWORD SETTINGS -->
-    <div class="modal fade" id="settingsPasswordModal" tabindex="-1" aria-labelledby="settingsPasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="settingsPasswordModalLabel">Konfirmasi Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Masukkan password untuk menyimpan pengaturan:</p>
-                    <input type="password" class="form-control" id="settingsPassword" placeholder="Password">
-                    <div id="settingsPasswordError" class="error-message mt-2" style="display: none;">Password salah!</div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="confirmSettingsSaveBtn">Simpan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL USER (TAMBAH/EDIT) -->
-    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="userModalLabel">Tambah/Edit User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="userForm">
-                        <input type="hidden" id="editUserId">
-                        <div class="mb-3">
-                            <label for="userUsername" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="userUsername" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="userPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="userPassword" placeholder="Kosongkan jika tidak ingin mengubah (saat edit)">
-                            <small class="text-muted">Minimal 6 karakter</small>
-                        </div>
-                        <div class="mb-3">
-                            <label for="userName" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="userName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="userRole" class="form-label">Role</label>
-                            <select class="form-select" id="userRole">
-                                <option value="operator">Operator</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="saveUserBtn">Simpan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- NOTIFIKASI TOAST -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 2051">
-        <div id="notificationToast" class="toast text-white" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <strong class="me-auto" id="toastTitle">System Notification</strong>
-                <small>Just now</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body" id="toastMessage">
-                Operation completed successfully.
-            </div>
-        </div>
-    </div>
-
-    <!-- EXTERNAL SCRIPTS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <!-- CUSTOM JS -->
-    <script src="main.js" defer></script>
+    <!-- Leaflet & JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
