@@ -11,7 +11,8 @@ $(document).ready(function() {
         SETTINGS: 'travel_settings',
         USERS: 'travel_users',
         DRIVERS: 'travel_drivers',
-        SHIFT: 'travel_shift' // tambahan untuk shift
+        SHIFT: 'travel_shift',
+        MAINTENANCE: 'travel_maintenance' // Tambahan untuk catatan servis
     };
 
     const ENCRYPTION_KEY = 'LenteraKaryaSitubondo-Travel-2025';
@@ -19,10 +20,10 @@ $(document).ready(function() {
     const DEFAULT_ADMIN = { id: 'U001', username: 'Admin', password: CryptoJS.SHA256('Admin.12345').toString(), name: 'Administrator', role: 'admin' };
     const DEFAULT_OPERATOR = { id: 'U002', username: 'Operator', password: CryptoJS.SHA256('Gratis12345').toString(), name: 'Operator', role: 'operator' };
     
-    let vehicles, categories, bookings, settings, users, drivers, currentUser, currentBooking;
+    let vehicles, categories, bookings, settings, users, drivers, maintenanceRecords, currentUser, currentBooking;
     let passwordPromptCallback = null;
     let captchaText = '';
-    let shiftActive = localStorage.getItem(STORAGE_KEYS.SHIFT) === 'true'; // status shift
+    let shiftActive = localStorage.getItem(STORAGE_KEYS.SHIFT) === 'true';
     
     function initializeData() {
         let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
@@ -34,6 +35,7 @@ $(document).ready(function() {
         if (!localStorage.getItem(STORAGE_KEYS.CATEGORIES)) localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify([]));
         if (!localStorage.getItem(STORAGE_KEYS.DRIVERS)) localStorage.setItem(STORAGE_KEYS.DRIVERS, JSON.stringify([]));
         if (!localStorage.getItem(STORAGE_KEYS.BOOKINGS)) localStorage.setItem(STORAGE_KEYS.BOOKINGS, JSON.stringify([]));
+        if (!localStorage.getItem(STORAGE_KEYS.MAINTENANCE)) localStorage.setItem(STORAGE_KEYS.MAINTENANCE, JSON.stringify([]));
         
         if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
             const initialSettings = {
@@ -53,6 +55,7 @@ $(document).ready(function() {
     settings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS)) || {};
     users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
     drivers = JSON.parse(localStorage.getItem(STORAGE_KEYS.DRIVERS)) || [];
+    maintenanceRecords = JSON.parse(localStorage.getItem(STORAGE_KEYS.MAINTENANCE)) || [];
     currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER)) || null;
     
     resetBooking();
@@ -68,6 +71,22 @@ $(document).ready(function() {
         generateCaptcha();
     }
     
+    // --- Fungsi Toggle Password (Mata) ---
+    function initPasswordToggles() {
+        $('.password-wrapper').each(function() {
+            const $wrapper = $(this);
+            const $input = $wrapper.find('input[type="password"], input[type="text"]');
+            const $toggle = $wrapper.find('.password-toggle');
+            $toggle.off('click').on('click', function() {
+                const type = $input.attr('type') === 'password' ? 'text' : 'password';
+                $input.attr('type', type);
+                $(this).toggleClass('fa-eye fa-eye-slash');
+            });
+        });
+    }
+    // Panggil setiap kali modal baru muncul atau form direset
+    $(document).on('shown', function() { initPasswordToggles(); });
+    
     // Event Listeners
     setInterval(updateCurrentDate, 60000);
     
@@ -79,7 +98,7 @@ $(document).ready(function() {
     $(document).on('click', '.edit-vehicle', handleEditVehicleClick);
     $(document).on('click', '.delete-vehicle', handleDeleteVehicleClick);
     $('#tripFare').on('input', updateBookingSummary);
-    $('#shiftActionBtn').click(toggleShift); // handler shift
+    $('#shiftActionBtn').click(toggleShift);
 
     // Modals & Forms
     $('#createBookingBtn').click(openBookingConfirmationModal);
@@ -95,7 +114,7 @@ $(document).ready(function() {
     $('#manageDriversBtn').click(openManageDriversModal);
     $('#manageStoreInfoBtn').click(openManageStoreInfoModal);
     $('#controlPanelBtn').click(openControlPanel);
-    $('#manageMaintenanceBtn').click(() => showToast('Fitur dalam pengembangan', 'info'));
+    $('#manageMaintenanceBtn').click(openMaintenanceModal); // Sekarang berfungsi
     $('#cancelBookingBtn').click(() => showToast('Fitur dalam pengembangan', 'info'));
     
     // Save/Update actions
@@ -112,6 +131,26 @@ $(document).ready(function() {
     $('#backupDataBtn').click(() => showConfirmation('Backup Data', 'Data akan di-backup ke file terenkripsi (.travelbackup). Lanjutkan?', backupData));
     $('#restoreFile').change(function() { promptForPassword('panel', () => { restoreFromFile(this.files[0]); $(this).val(''); }); });
     $('#resetDataBtn').click(() => promptForPassword('panel', () => showConfirmation('Reset Data', 'Semua data akan dihapus permanen. Lanjutkan?', resetAllData, 'danger')));
+    
+    // Maintenance actions
+    $('#addMaintenanceBtn').click(() => openEditMaintenanceModal());
+    $(document).on('click', '.edit-maintenance', function() {
+        const id = $(this).data('id');
+        const record = maintenanceRecords.find(r => r.id === id);
+        if (record) openEditMaintenanceModal(record);
+    });
+    $(document).on('click', '.delete-maintenance', function() {
+        const id = $(this).data('id');
+        promptForPassword('item', () => {
+            showConfirmation('Hapus Catatan Servis', 'Yakin ingin menghapus catatan ini?', () => {
+                maintenanceRecords = maintenanceRecords.filter(r => r.id !== id);
+                saveMaintenance();
+                loadMaintenanceRecords();
+                showToast('Catatan servis dihapus', 'success');
+            }, 'danger');
+        });
+    });
+    $('#saveMaintenanceBtn').click(saveMaintenanceRecord);
     
     // Other UI interactions
     $(document).on('click', '.filter-chip', function() {
@@ -161,14 +200,14 @@ $(document).ready(function() {
         loadCategories(); 
         updateCurrentDate();
         updateStoreInfo();
-        updateShiftUI(); // tampilkan status shift
+        updateShiftUI();
         configureUIAccess();
         resetBookingUI();
+        initPasswordToggles(); // Inisialisasi toggle untuk field yang sudah ada
     }
     
     function configureUIAccess() {
-        // SEMUA PENGGUNA MENDAPAT AKSES PREMIUM PENUH
-        $('#adminPanel').show(); // Panel admin selalu tampil
+        $('#adminPanel').show();
     }
 
     function handleLogin(e) {
@@ -239,7 +278,7 @@ $(document).ready(function() {
         if (!vehicle || vehicle.status !== 'available') {
             return showToast(`Kendaraan ${vehicle.name} tidak tersedia.`, 'error');
         }
-        const availableDrivers = drivers.filter(d => true); // sementara semua driver dianggap tersedia
+        const availableDrivers = drivers.filter(d => true);
 
         if (availableDrivers.length === 0) {
             return showToast('Tidak ada pengemudi yang tersedia saat ini.', 'error');
@@ -259,10 +298,9 @@ $(document).ready(function() {
                     change: paymentAmount - currentBooking.total,
                     operator: currentUser.name,
                     status: 'booked',
-                    driver: availableDrivers[0] // Assign first available driver
+                    driver: availableDrivers[0]
                 };
                 
-                // Update vehicle status
                 const vehicleIndex = vehicles.findIndex(v => v.id === booking.vehicle.id);
                 if(vehicleIndex > -1) {
                     vehicles[vehicleIndex].status = 'in_use';
@@ -310,7 +348,7 @@ $(document).ready(function() {
         $('#createBookingBtn').prop('disabled', true);
     }
 
-    // --- SHIFT MANAGEMENT (sederhana) ---
+    // --- SHIFT MANAGEMENT ---
     function toggleShift() {
         shiftActive = !shiftActive;
         localStorage.setItem(STORAGE_KEYS.SHIFT, shiftActive);
@@ -381,6 +419,7 @@ $(document).ready(function() {
         }
         loadCategoriesForSelect();
         $('#vehicleModal').css('display', 'flex');
+        initPasswordToggles(); // jika ada password di modal ini (tidak ada, tapi aman)
     }
     
     function saveVehicle() {
@@ -419,6 +458,7 @@ $(document).ready(function() {
         resetDriverForm();
         loadDriversForManagement();
         $('#manageDriversModal').css('display', 'flex');
+        initPasswordToggles();
     }
 
     function loadDriversForManagement(searchTerm = '') {
@@ -527,6 +567,7 @@ $(document).ready(function() {
         const $qrContainer = $('#ktaQrcodeImg').empty();
         new QRCode($qrContainer[0], { text: qrData, width: 80, height: 80 });
         $('#ktaModal').css('display', 'flex');
+        initPasswordToggles();
     }
     
     function downloadKtaAsPdf() {
@@ -542,6 +583,99 @@ $(document).ready(function() {
         }).catch(err => { showToast('Gagal mengunduh PDF: ' + err, 'error'); });
     }
     
+    // --- MAINTENANCE MANAGEMENT (Fitur Baru) ---
+    function openMaintenanceModal() {
+        loadMaintenanceRecords();
+        $('#maintenanceModal').css('display', 'flex');
+        initPasswordToggles();
+    }
+
+    function loadMaintenanceRecords() {
+        const $list = $('#maintenanceRecordsList').empty();
+        if (maintenanceRecords.length === 0) {
+            $list.html('<div class="empty-state"><i class="fas fa-tools"></i><p>Belum ada catatan servis.</p></div>');
+            return;
+        }
+        // Urutkan dari yang terbaru
+        maintenanceRecords.sort((a,b) => new Date(b.date) - new Date(a.date));
+        maintenanceRecords.forEach(record => {
+            const vehicle = vehicles.find(v => v.id === record.vehicleId) || { name: 'Unknown', licensePlate: '-' };
+            $list.append(`
+                <div class="maintenance-item">
+                    <div class="header">
+                        <span class="vehicle-info">${vehicle.name} (${vehicle.licensePlate})</span>
+                        <span class="date">${moment(record.date).format('DD/MM/YYYY')}</span>
+                    </div>
+                    <div class="description">${record.description}</div>
+                    <div class="cost">Biaya: ${formatCurrency(record.cost)}</div>
+                    <div class="maintenance-actions" style="text-align:right;">
+                        <i class="fas fa-edit edit-maintenance" data-id="${record.id}" title="Edit"></i>
+                        <i class="fas fa-trash delete-maintenance" data-id="${record.id}" title="Hapus" style="margin-left:10px;"></i>
+                    </div>
+                </div>
+            `);
+        });
+    }
+
+    function openEditMaintenanceModal(record = null) {
+        $('#maintenanceForm')[0].reset();
+        $('#maintenanceId').val(record ? record.id : '');
+        if (record) {
+            $('#maintenanceVehicleId').val(record.vehicleId);
+            $('#maintenanceDate').val(moment(record.date).format('YYYY-MM-DD'));
+            $('#maintenanceDescription').val(record.description);
+            $('#maintenanceCost').val(record.cost);
+        } else {
+            // Set default date to today
+            $('#maintenanceDate').val(moment().format('YYYY-MM-DD'));
+        }
+        // Populate vehicle dropdown
+        const $select = $('#maintenanceVehicleId').empty();
+        vehicles.forEach(v => {
+            $select.append(`<option value="${v.id}">${v.name} (${v.licensePlate})</option>`);
+        });
+        $('#editMaintenanceModal').css('display', 'flex');
+        initPasswordToggles();
+    }
+
+    function saveMaintenanceRecord() {
+        const id = $('#maintenanceId').val();
+        const vehicleId = $('#maintenanceVehicleId').val();
+        const date = $('#maintenanceDate').val();
+        const description = $('#maintenanceDescription').val().trim();
+        const cost = parseFloat($('#maintenanceCost').val()) || 0;
+
+        if (!vehicleId || !date || !description || cost <= 0) {
+            return showToast('Semua kolom harus diisi dengan valid', 'error');
+        }
+
+        const action = () => {
+            if (id) {
+                const index = maintenanceRecords.findIndex(r => r.id === id);
+                if (index > -1) {
+                    maintenanceRecords[index] = { ...maintenanceRecords[index], vehicleId, date, description, cost };
+                }
+            } else {
+                const newRecord = {
+                    id: 'MNT' + moment().format('x'),
+                    vehicleId,
+                    date,
+                    description,
+                    cost,
+                    createdBy: currentUser.name,
+                    createdAt: new Date().toISOString()
+                };
+                maintenanceRecords.unshift(newRecord);
+            }
+            saveMaintenance();
+            loadMaintenanceRecords();
+            $('#editMaintenanceModal').hide();
+            showToast(`Catatan servis ${id ? 'diperbarui' : 'ditambahkan'}`, 'success');
+        };
+
+        promptForPassword('item', action);
+    }
+
     // --- OTHER UTILITIES & HELPERS ---
     function generateTicketHTML(booking) {
         const vehicle = booking.vehicle;
@@ -599,6 +733,7 @@ $(document).ready(function() {
         $('#paymentTotal').text(formatCurrency(currentBooking.total));
         $('#paymentAmount').val(currentBooking.total).trigger('input');
         $('#bookingConfirmationModal').css('display', 'flex');
+        initPasswordToggles();
     }
 
     function calculateChange() {
@@ -608,7 +743,7 @@ $(document).ready(function() {
         $('#paymentChange').text(formatCurrency(change));
     }
 
-    function openManageCategoriesModal() { loadCategoriesForManagement(); $('#manageCategoriesModal').css('display', 'flex'); }
+    function openManageCategoriesModal() { loadCategoriesForManagement(); $('#manageCategoriesModal').css('display', 'flex'); initPasswordToggles(); }
     function loadCategories() {
         const $filterRow = $('.filter-row').html('<div class="filter-chip active" data-category="all">Semua</div>');
         categories.forEach(category => $filterRow.append(`<div class="filter-chip" data-category="${category.name}">${category.name}</div>`));
@@ -645,7 +780,7 @@ $(document).ready(function() {
     }
     function backupData() {
         try {
-            const backup = { vehicles, categories, bookings, settings, users, drivers, backupDate: new Date().toISOString() };
+            const backup = { vehicles, categories, bookings, settings, users, drivers, maintenanceRecords, backupDate: new Date().toISOString() };
             const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(backup), ENCRYPTION_KEY).toString();
             const linkElement = document.createElement('a');
             linkElement.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData);
@@ -677,6 +812,7 @@ $(document).ready(function() {
             localStorage.setItem(STORAGE_KEYS.BOOKINGS, JSON.stringify(data.bookings || []));
             localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(data.users || []));
             localStorage.setItem(STORAGE_KEYS.DRIVERS, JSON.stringify(data.drivers || []));
+            localStorage.setItem(STORAGE_KEYS.MAINTENANCE, JSON.stringify(data.maintenanceRecords || []));
             localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(data.settings));
             showToast('Data berhasil direstore. Aplikasi akan dimuat ulang.', 'success');
             setTimeout(() => location.reload(), 1500);
@@ -690,6 +826,7 @@ $(document).ready(function() {
         passwordPromptCallback = callback;
         $('#passwordPromptInput').val('');
         $('#passwordPromptModal').css('display', 'flex').find('input').focus();
+        initPasswordToggles();
     }
     function submitPasswordPrompt() {
         const password = $('#passwordPromptInput').val();
@@ -709,6 +846,7 @@ $(document).ready(function() {
         $('#ticketModalBody').html(ticketHTML);
         $('#downloadTicketPdfBtn').data('booking', booking);
         $('#ticketModal').css('display', 'flex');
+        initPasswordToggles();
     }
     function downloadTicketAsPdf() {
         const booking = $('#downloadTicketPdfBtn').data('booking'); if (!booking) return;
@@ -745,6 +883,7 @@ $(document).ready(function() {
         $('#reportPeriod').val('today').trigger('change');
         $('#reportResults').empty();
         $('#reportsModal').css('display', 'flex');
+        initPasswordToggles();
     }
 
     function generateReport() {
@@ -785,6 +924,7 @@ $(document).ready(function() {
     function openHistoryModal() {
         loadBookingHistory();
         $('#historyModal').css('display', 'flex');
+        initPasswordToggles();
     }
 
     function loadBookingHistory(searchTerm = '') {
@@ -815,6 +955,7 @@ $(document).ready(function() {
         $('#storePhone').val(settings.storePhone);
         $('#storeEmail').val(settings.storeEmail);
         $('#manageStoreInfoModal').css('display', 'flex');
+        initPasswordToggles();
     }
     
     function updateStoreInfo() {
@@ -836,6 +977,7 @@ $(document).ready(function() {
         promptForPassword('panel', () => {
             loadUsers();
             $('#controlPanelModal').css('display', 'flex');
+            initPasswordToggles();
         });
     }
     
@@ -983,4 +1125,5 @@ $(document).ready(function() {
     function saveSettings() { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); }
     function saveUsers() { localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users)); }
     function saveDrivers() { localStorage.setItem(STORAGE_KEYS.DRIVERS, JSON.stringify(drivers)); }
+    function saveMaintenance() { localStorage.setItem(STORAGE_KEYS.MAINTENANCE, JSON.stringify(maintenanceRecords)); }
 });
