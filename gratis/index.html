@@ -12,17 +12,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <style>
-        /* --- Variabel Warna & Gaya Global (ORANYE DOMINAN) --- */
+        /* --- Variabel Warna & Gaya Global (Latar gelap, aksen warna-warni) --- */
         :root {
-            --bg-color-1: #3b1e0a;      /* coklat tua */
-            --bg-color-2: #b45f2a;      /* oranye kecoklatan */
-            --bg-color-3: #ff8c42;      /* oranye terang */
-            --primary-glow: #ff7b00;     /* oranye murni */
-            --secondary-glow: #ffaa33;   /* oranye kekuningan */
+            --bg-color-1: #0f0c29;      /* ungu tua */
+            --bg-color-2: #302b63;      /* ungu kebiruan */
+            --bg-color-3: #24243e;      /* biru tua */
+            --primary-glow: #00c6ff;     /* biru terang */
+            --secondary-glow: #da22ff;   /* ungu terang */
+            --accent-green: #00ff9d;     /* hijau neon */
+            --accent-yellow: #ffd700;    /* kuning emas */
+            --accent-pink: #ff66b2;      /* pink */
             --card-bg: rgba(255, 255, 255, 0.04);
-            --border-color: rgba(255, 140, 0, 0.2);
+            --border-color: rgba(255, 255, 255, 0.1);
             --text-primary: #f9fafb;
-            --text-secondary: #ffd8b2;   /* krem oranye */
+            --text-secondary: #d1d5db;
         }
 
         * {
@@ -32,9 +35,9 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* --- Latar Belakang Animasi Gradien (oranye) --- */
+        /* --- Latar Belakang Animasi Gradien (gelap) --- */
         body {
-            background: linear-gradient(-45deg, var(--bg-color-1), var(--bg-color-2), var(--bg-color-3), #ff5500);
+            background: linear-gradient(-45deg, var(--bg-color-1), var(--bg-color-2), var(--bg-color-3), #1a1a2e);
             background-size: 400% 400%;
             animation: gradient-bg 25s ease infinite;
             color: var(--text-primary);
@@ -54,14 +57,14 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Partikel Bercahaya (dibuat oleh JS) --- */
+        /* --- Partikel Bercahaya (warna-warni) --- */
         .particle {
             position: absolute;
             border-radius: 50%;
-            background: var(--secondary-glow);
+            background: var(--primary-glow);
             opacity: 0;
             pointer-events: none;
-            box-shadow: 0 0 10px var(--secondary-glow), 0 0 20px var(--secondary-glow);
+            box-shadow: 0 0 10px var(--primary-glow), 0 0 20px var(--secondary-glow);
             animation: floatUp 25s linear infinite;
         }
 
@@ -83,25 +86,25 @@
             background: rgba(0,0,0,0.3);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--primary-glow);
+            border: 1px solid var(--accent-green);
             border-radius: 50px;
             padding: 8px 25px;
             margin-bottom: 20px;
             display: inline-block;
-            box-shadow: 0 0 20px var(--primary-glow);
+            box-shadow: 0 0 20px var(--accent-green);
         }
 
         .region-badge h2 {
             font-size: 1.8rem;
             font-weight: 700;
             letter-spacing: 2px;
-            background: linear-gradient(90deg, #fff, var(--primary-glow), #fff);
+            background: linear-gradient(90deg, #fff, var(--accent-green), var(--accent-yellow), #fff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255,140,0,0.5);
+            text-shadow: 0 0 10px rgba(0,255,200,0.5);
         }
 
-        /* --- Gaya Judul dengan Gradien Warna --- */
+        /* --- Gaya Judul dengan Gradien Warna-warni --- */
         .gallery-title {
             margin-bottom: 50px;
             animation: fadeInDown 1s ease-out;
@@ -110,16 +113,17 @@
         .gallery-title h1 {
             font-size: 3rem;
             font-weight: 700;
-            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), #fff);
-            background-size: 200% auto;
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--accent-green), var(--accent-yellow));
+            background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: text-gradient-animation 5s linear infinite;
+            animation: text-gradient-animation 8s linear infinite;
             margin-bottom: 15px;
         }
 
         @keyframes text-gradient-animation {
-            to { background-position: 200% center; }
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
         }
 
         .gallery-title p {
@@ -176,7 +180,7 @@
         .app-grid .app-card:nth-child(15) { animation-delay: 1.5s; }
         .app-grid .app-card:nth-child(16) { animation-delay: 1.6s; }
 
-        /* SUPER EFEK: Bingkai gradien animasi saat hover (oranye) */
+        /* SUPER EFEK: Bingkai gradien animasi saat hover (warna-warni) */
         .app-card::before {
             content: '';
             position: absolute;
@@ -185,7 +189,7 @@
             transform: translate(-50%, -50%);
             width: 150%;
             height: 300%;
-            background: conic-gradient(from 0deg, transparent 50%, var(--primary-glow), var(--secondary-glow), var(--primary-glow), transparent 50%);
+            background: conic-gradient(from 0deg, transparent 50%, var(--primary-glow), var(--secondary-glow), var(--accent-green), var(--accent-yellow), transparent 50%);
             opacity: 0;
             transition: opacity 0.4s ease;
             animation: rotate-border 6s linear infinite;
@@ -205,11 +209,10 @@
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* --- Ikon dengan Gradien Baru (oranye) --- */
+        /* --- Ikon dengan Gradien warna-warni (setiap kartu bisa berbeda jika ingin, di sini dibuat acak via JS atau tetap bervariasi) --- */
         .app-icon {
             font-size: 2.5rem;
             margin-bottom: 20px;
-            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
             width: 70px;
             height: 70px;
             border-radius: 50%;
@@ -217,13 +220,14 @@
             justify-content: center;
             align-items: center;
             color: var(--text-primary);
-            box-shadow: 0 0 20px rgba(255, 140, 0, 0.5);
+            box-shadow: 0 0 20px currentColor;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Akan diisi warna latar via JavaScript agar bervariasi */
         }
 
         .app-card:hover .app-icon {
             transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(255, 123, 0, 0.8);
+            box-shadow: 0 0 30px currentColor;
         }
 
         .app-card h3 {
@@ -253,10 +257,10 @@
         }
 
         .app-card:hover .app-card-header-link h3 {
-            color: var(--secondary-glow);
+            color: var(--accent-green);
         }
 
-        /* --- Gaya Tombol Aksi (hanya satu tombol sekarang) --- */
+        /* --- Gaya Tombol Aksi (hanya satu tombol) --- */
         .app-card-buttons {
             display: flex;
             justify-content: center;
@@ -281,7 +285,7 @@
         }
 
         .btn-trial {
-            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--accent-green));
             background-size: 200% auto;
             color: var(--text-primary);
             border-color: transparent;
@@ -290,7 +294,7 @@
 
         .btn-trial:hover {
             background-position: right center;
-            box-shadow: 0 0 25px var(--primary-glow);
+            box-shadow: 0 0 25px var(--primary-glow), 0 0 25px var(--accent-green);
             transform: translateY(-2px);
         }
 
@@ -302,12 +306,12 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 30px;
-            border: 1px solid var(--primary-glow);
+            border: 1px solid var(--accent-green);
             width: 100%;
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
-            box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
+            box-shadow: 0 0 30px rgba(0,255,200,0.3);
         }
 
         .footer-support p {
@@ -319,7 +323,7 @@
         .footer-support .support-title {
             font-size: 1.5rem;
             font-weight: 600;
-            background: linear-gradient(90deg, #fff, var(--primary-glow));
+            background: linear-gradient(90deg, #fff, var(--accent-green), var(--accent-yellow));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
@@ -338,8 +342,8 @@
             text-decoration: none;
             padding: 8px 20px;
             border-radius: 40px;
-            background: rgba(255, 140, 0, 0.2);
-            border: 1px solid var(--primary-glow);
+            background: rgba(0, 255, 200, 0.2);
+            border: 1px solid var(--accent-green);
             transition: 0.3s;
             display: inline-flex;
             align-items: center;
@@ -347,9 +351,9 @@
         }
 
         .footer-support .contact-info a:hover {
-            background: var(--primary-glow);
+            background: var(--accent-green);
             color: #000;
-            box-shadow: 0 0 20px var(--primary-glow);
+            box-shadow: 0 0 20px var(--accent-green);
             transform: translateY(-2px);
         }
 
@@ -357,7 +361,7 @@
             margin-top: 20px;
             font-size: 1rem;
             color: var(--text-secondary);
-            border-top: 1px dashed var(--primary-glow);
+            border-top: 1px dashed var(--accent-green);
             padding-top: 20px;
         }
 
@@ -403,7 +407,7 @@
             <p>Jelajahi koleksi aplikasi kami yang dirancang untuk memberdayakan dan menyederhanakan berbagai kebutuhan bisnis Anda.</p>
         </div>
         
-        <div class="app-grid">
+        <div class="app-grid" id="appGrid">
             <!-- Kartu 1 -->
             <div class="app-card">
                 <a href="https://aplikasiusaha.com/bantuansosial/" target="_blank" class="app-card-header-link">
@@ -606,7 +610,7 @@
                 <a href="mailto:info@aplikasiusaha.com"><i class="far fa-envelope"></i> info@aplikasiusaha.com</a>
             </div>
             <div class="developer">
-                <i class="fas fa-map-marker-alt" style="color: var(--primary-glow);"></i> Situbondo, Jawa Timur — Membangun Ekosistem Digital Nelayan & UMKM
+                <i class="fas fa-map-marker-alt" style="color: var(--accent-green);"></i> Situbondo, Jawa Timur — Membangun Ekosistem Digital Nelayan & UMKM
             </div>
         </footer>
     </main>
@@ -636,6 +640,21 @@
                     particleContainer.appendChild(particle);
                 }
             }
+
+            // Memberi warna acak pada ikon setiap kartu agar lebih hidup
+            const icons = document.querySelectorAll('.app-icon');
+            const colors = [
+                'linear-gradient(45deg, #00c6ff, #da22ff)', // biru-ungu
+                'linear-gradient(45deg, #ffd700, #ff66b2)', // kuning-pink
+                'linear-gradient(45deg, #00ff9d, #00c6ff)', // hijau-biru
+                'linear-gradient(45deg, #ff8c42, #ffd700)', // oranye-kuning
+                'linear-gradient(45deg, #da22ff, #ff66b2)', // ungu-pink
+                'linear-gradient(45deg, #00c6ff, #00ff9d)'  // biru-hijau
+            ];
+            icons.forEach(icon => {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                icon.style.background = randomColor;
+            });
         });
     </script>
 </body>
