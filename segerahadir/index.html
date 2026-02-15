@@ -4,267 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inovasi Segera Tiba | Lentera Karya Situbondo</title>
-
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-
+    
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <style>
-        /* === General Setup === */
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden; /* Mencegah scroll */
-        }
-
-        body {
-            font-family: 'Lato', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* === ANIMASI GRADIEN LATAR BELAKANG === */
-            background: linear-gradient(-45deg, #84fab0, #8fd3f4, #a18cd1, #fad0c4);
-            background-size: 400% 400%;
-            animation: gradientAnimation 15s ease infinite;
-        }
-
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* === Container untuk Partikel === */
-        #particles-js {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Di atas gradien, di bawah konten */
-        }
-
-        /* === Kartu Konten Utama === */
-        .card {
-            position: relative;
-            z-index: 2; /* Selalu paling atas */
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-            padding: 60px 70px;
-            border-radius: 20px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 
-                        0 10px 30px rgba(0, 0, 0, 0.1),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            text-align: center;
-            max-width: 700px;
-            width: 85%;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            opacity: 0;
-            transform: scale(0.95) translateY(20px);
-            animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards;
-            overflow: hidden;
-        }
-        
-        /* Efek cahaya di sudut kartu */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            z-index: -1;
-            transform: rotate(30deg);
-        }
-        
-        @keyframes popIn {
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        /* === Tipografi === */
-        h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3.2rem;
-            color: #1a1a1a;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            position: relative;
-            display: inline-block;
-        }
-
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 25%;
-            width: 50%;
-            height: 3px;
-            background: linear-gradient(to right, transparent, #84fab0, transparent);
-            border-radius: 3px;
-        }
-
-        p {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: #555;
-            margin-bottom: 40px;
-            font-weight: 300;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        }
-        
-        strong {
-            font-weight: 400;
-            color: #1a1a1a;
-            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* === Tombol Aksi === */
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 32px;
-            border-radius: 50px;
-            color: white;
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 1rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border: none;
-            cursor: pointer;
-        }
-        
-        .button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.7s;
-        }
-        
-        .button:hover::before {
-            left: 100%;
-        }
-        
-        .button.whatsapp {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-        }
-        
-        .button.website {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .button:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        
-        .button:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-        
-        .button i {
-            font-size: 1.2rem;
-        }
-        
-        /* Ikon animasi untuk menarik perhatian */
-        .pulse-icon {
-            animation: pulse 2s infinite;
-            display: inline-block;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        /* === Footer === */
-        .footer {
-            position: absolute;
-            bottom: 20px;
-            z-index: 2;
-            font-size: 0.9rem;
-            color: rgba(0, 0, 0, 0.6);
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 8px 20px;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        /* === Desain Responsif === */
-        @media (max-width: 768px) {
-            .card {
-                padding: 40px 30px;
-                width: 80%;
-            }
-            h1 {
-                font-size: 2.4rem;
-            }
-            p {
-                font-size: 1.05rem;
-            }
-            .contact-links {
-                flex-direction: column;
-                align-items: center;
-            }
-            .button {
-                width: 80%;
-                justify-content: center;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .card {
-                padding: 30px 20px;
-                width: 85%;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            p {
-                font-size: 1rem;
-                margin-bottom: 30px;
-            }
-            .button {
-                width: 90%;
-                padding: 12px 24px;
-            }
-        }
-    </style>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+    <!-- Particles background -->
     <div id="particles-js"></div>
-
+    
+    <!-- Main content card -->
     <main class="card">
+        <!-- Logo added above the heading -->
+        <img src="https://raw.githubusercontent.com/pemberdayaannelayan/situbondo/refs/heads/main/logo-air.png" alt="Lentera Karya Situbondo Logo" class="logo">
         <h1>Sebuah Era Baru Akan Segera Dimulai</h1>
         <p>
             Dengan gembira kami kabarkan, <strong>Lentera Karya Situbondo</strong> sedang dalam tahap akhir persiapan aplikasi revolusioner untuk kebutuhan kerja dan bisnis Anda. Bersiaplah untuk menyambut efisiensi dan kemudahan yang belum pernah ada sebelumnya.
@@ -282,38 +41,32 @@
     <footer class="footer">
         &copy; 2025 Lentera Karya Situbondo. All Rights Reserved.
     </footer>
-
+    
+    <!-- Particles.js library and configuration -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        /* === Konfigurasi Particles.js === */
         particlesJS('particles-js', {
             "particles": {
                 "number": {
-                    "value": 80, // Jumlah partikel
+                    "value": 80,
                     "density": {
                         "enable": true,
                         "value_area": 800
                     }
                 },
                 "color": {
-                    "value": "#ffffff" // Warna partikel
+                    "value": "#ffffff"
                 },
                 "shape": {
-                    "type": "circle",
+                    "type": "circle"
                 },
                 "opacity": {
                     "value": 0.6,
-                    "random": false,
-                    "anim": {
-                        "enable": false
-                    }
+                    "random": false
                 },
                 "size": {
-                    "value": 3, // Ukuran partikel
-                    "random": true,
-                    "anim": {
-                        "enable": false
-                    }
+                    "value": 3,
+                    "random": true
                 },
                 "line_linked": {
                     "enable": true,
@@ -324,12 +77,12 @@
                 },
                 "move": {
                     "enable": true,
-                    "speed": 2, // Kecepatan gerak
+                    "speed": 2,
                     "direction": "none",
                     "random": false,
                     "straight": false,
                     "out_mode": "out",
-                    "bounce": false,
+                    "bounce": false
                 }
             },
             "interactivity": {
@@ -337,11 +90,11 @@
                 "events": {
                     "onhover": {
                         "enable": true,
-                        "mode": "repulse" // Partikel menjauh saat didekati mouse
+                        "mode": "repulse"
                     },
                     "onclick": {
                         "enable": true,
-                        "mode": "push" // Menambah partikel saat di-klik
+                        "mode": "push"
                     },
                     "resize": true
                 },
@@ -358,6 +111,5 @@
             "retina_detect": true
         });
     </script>
-
 </body>
 </html>
