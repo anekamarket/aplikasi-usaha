@@ -1,22 +1,26 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // ==================== KONSTANTA & VARIABEL GLOBAL ====================
+    const WHATSAPP_NUMBER = '6285647709114'; // Nomor WA Admin
+    const NOMINATIM_USER_AGENT = 'NOS-Ojek-App/1.0 (lenterakaryasitubondo@gmail.com)'; // Patuhi kebijakan Nominatim
 
-    // --- KONSTANTA & VARIABEL GLOBAL ---
-    const WHATSAPP_NUMBER = '6285647709114'; // Nomor WA Driver/Admin
+    // Audio elements
     const bgMusic = document.getElementById('bgMusic');
     const buttonSound = document.getElementById('buttonSound');
-    let isMusicPlaying = false;
     let userInteracted = false;
-    
-    // Variabel untuk menyimpan data lokasi
-    let pickupCoords = null;
-    let destinationCoords = null;
-    let calculatedDistance = null;
-    let map, pickupMarker;
 
+    // State pemesanan
+    let pickupCoords = null;          // { lat, lon }
+    let destinationCoords = null;     // { lat, lon }
+    let calculatedDistance = null;    // string "X.XX km"
 
-    // --- INISIALISASI ---
+    // Map & marker
+    let map = null;
+    let pickupMarker = null;
+    let destinationMarker = null;
+
+    // ==================== INISIALISASI ====================
     initNavbar();
     initMobileMenu();
     initParticles();
@@ -28,13 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
     initNewsletterForm();
     initAudio();
     initSmoothScroll();
+    initHeaderSearch();
 
-    // --- FUNGSI-FUNGSI ---
-    
+    // ==================== FUNGSI INISIALISASI ====================
+
     function initNavbar() {
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
     }
 
@@ -45,29 +54,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         menuToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            navLinks.classList.toggle('active');
-            menuIcon.className = navLinks.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+            const isActive = navLinks.classList.toggle('active');
+            menuIcon.className = isActive ? 'fas fa-times' : 'fas fa-bars';
             playButtonSound();
         });
-        
+
+        // Tutup menu jika klik di luar
         document.addEventListener('click', (e) => {
-            if (navLinks.classList.contains('active') && !navLinks.contains(e.target)) {
-                 navLinks.classList.remove('active');
-                 menuIcon.className = 'fas fa-bars';
+            if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                navLinks.classList.remove('active');
+                menuIcon.className = 'fas fa-bars';
             }
         });
+
+        // Tutup menu jika link diklik
         navLinks.addEventListener('click', () => {
-             navLinks.classList.remove('active');
-             menuIcon.className = 'fas fa-bars';
+            navLinks.classList.remove('active');
+            menuIcon.className = 'fas fa-bars';
         });
     }
 
     function initParticles() {
         const particlesContainer = document.getElementById('particles');
         if (!particlesContainer) return;
-        
+
         const particleCount = window.innerWidth < 768 ? 20 : 40;
-        
+
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
@@ -85,73 +97,102 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initMap() {
+        const mapElement = document.getElementById('map');
+        if (!mapElement) return;
+
         try {
+            // Koordinat Situbondo
             const situbondoCoords = [-7.7058, 113.9947];
+
             map = L.map('map').setView(situbondoCoords, 13);
+
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap'
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                maxZoom: 19
             }).addTo(map);
-            L.marker(situbondoCoords).addTo(map).bindPopup('Pusat Operasi NOS Situbondo').openPopup();
+
+            // Marker awal di pusat kota
+            L.marker(situbondoCoords).addTo(map)
+                .bindPopup('Pusat Operasi NOS Situbondo')
+                .openPopup();
         } catch (e) {
-            console.error("Gagal memuat peta Leaflet:", e);
-            document.getElementById('map').innerHTML = '<p style="text-align:center; padding-top: 50px;">Peta tidak dapat dimuat. Mohon masukkan lokasi secara manual.</p>';
+            console.error('Gagal memuat peta:', e);
+            mapElement.innerHTML = '<p style="text-align:center; padding: 50px;">Peta tidak dapat dimuat. Silakan masukkan lokasi secara manual.</p>';
         }
     }
 
     function initOrderForm() {
         const form = document.getElementById('orderForm');
+        if (!form) return;
+
         const steps = form.querySelectorAll('.form-step');
         const progressSteps = document.querySelectorAll('.progress-step');
         const currentLocationBtn = document.getElementById('currentLocationBtn');
 
-        currentLocationBtn.addEventListener('click', getUserLocation);
+        // Tombol gunakan lokasi saya
+        if (currentLocationBtn) {
+            currentLocationBtn.addEventListener('click', getUserLocation);
+        }
 
-        form.addEventListener('click', async e => {
-            if (e.target.matches('[data-next]')) {
-                const nextButton = e.target;
+        // Delegasi event untuk tombol next/back
+        form.addEventListener('click', async (e) => {
+            const target = e.target;
+
+            if (target.matches('[data-next]')) {
+                const nextButton = target;
                 const currentStep = nextButton.closest('.form-step');
-                
+                const nextStepNumber = parseInt(nextButton.dataset.next);
+
+                // Nonaktifkan tombol sementara
                 nextButton.disabled = true;
                 nextButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
 
                 const validationResult = await validateAndProcessStep1(currentStep);
                 if (validationResult) {
-                    navigateToStep(parseInt(nextButton.dataset.next));
+                    navigateToStep(nextStepNumber);
                 }
-                
+
                 nextButton.disabled = false;
                 nextButton.innerHTML = '<i class="fas fa-arrow-right"></i> Lanjut';
+            }
 
-            } else if (e.target.matches('[data-back]')) {
-                navigateToStep(parseInt(e.target.dataset.back));
+            if (target.matches('[data-back]')) {
+                navigateToStep(parseInt(target.dataset.back));
             }
         });
-        
+
+        // Pilihan kendaraan
         form.querySelectorAll('.vehicle-option').forEach(opt => {
-            opt.addEventListener('click', function() {
+            opt.addEventListener('click', function () {
                 form.querySelectorAll('.vehicle-option').forEach(el => el.classList.remove('selected'));
                 this.classList.add('selected');
                 form.querySelector('#selectedVehicle').value = this.dataset.value;
+                playButtonSound();
             });
         });
 
+        // Submit form (step 2)
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             if (validateStep(form.querySelector('.form-step[data-step="2"]'))) {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
-                const pickupCoordsArray = data.pickupCoords.split(',');
-                
-                const googleMapsLink = `https://maps.google.com/?q=${pickupCoordsArray[0]},${pickupCoordsArray[1]}`;
 
-                let message = `*PESANAN BARU NOS*\n\n` +
+                // Buat link Google Maps dari koordinat penjemputan
+                let googleMapsLink = '';
+                if (data.pickupCoords) {
+                    const [lat, lon] = data.pickupCoords.split(',');
+                    googleMapsLink = `https://maps.google.com/?q=${lat},${lon}`;
+                }
+
+                const message = `*PESANAN BARU NOS*\n\n` +
                     `*Nama:* ${data.name}\n` +
                     `*No. WhatsApp:* ${data.phone}\n` +
                     `*Lokasi Jemput:* ${data.pickupLocation}\n` +
                     `*Tujuan:* ${data.destination}\n` +
-                    `*Kendaraan:* ${data.selectedVehicle}\n\n` +
+                    `*Kendaraan:* ${data.selectedVehicle}\n` +
                     `*Estimasi Jarak:* ${data.distance || 'Tidak terhitung'}\n` +
-                    `*Titik Jemput (Google Maps):*\n${googleMapsLink}\n\n` +
+                    `*Titik Jemput (Google Maps):*\n${googleMapsLink || 'Tidak tersedia'}\n` +
                     `*Catatan:* ${data.notes || '-'}`;
 
                 sendWhatsAppMessage(message);
@@ -159,17 +200,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        document.getElementById('newOrderBtn').addEventListener('click', () => {
-            form.reset();
-            pickupCoords = null;
-            destinationCoords = null;
-            calculatedDistance = null;
-            form.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
-            navigateToStep(1);
-        });
+        // Tombol pesanan baru (step 3)
+        const newOrderBtn = document.getElementById('newOrderBtn');
+        if (newOrderBtn) {
+            newOrderBtn.addEventListener('click', () => {
+                form.reset();
+                pickupCoords = null;
+                destinationCoords = null;
+                calculatedDistance = null;
+                form.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
 
+                // Reset hidden fields
+                document.getElementById('pickupCoords').value = '';
+                document.getElementById('distance').value = '';
+
+                // Hapus marker dari peta
+                if (pickupMarker) {
+                    map.removeLayer(pickupMarker);
+                    pickupMarker = null;
+                }
+                if (destinationMarker) {
+                    map.removeLayer(destinationMarker);
+                    destinationMarker = null;
+                }
+
+                navigateToStep(1);
+                playButtonSound();
+            });
+        }
+
+        // Fungsi navigasi antar step
         function navigateToStep(stepNumber) {
-            steps.forEach(step => step.classList.toggle('active', parseInt(step.dataset.step) === stepNumber));
+            steps.forEach(step => {
+                step.classList.toggle('active', parseInt(step.dataset.step) === stepNumber);
+            });
             progressSteps.forEach((step, index) => {
                 step.classList.remove('active', 'completed');
                 if (index < stepNumber - 1) step.classList.add('completed');
@@ -181,32 +245,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initDriverOrderButtons() {
         document.querySelectorAll('.order-btn').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 if (this.disabled) return;
-                const driverInfo = this.dataset.driver;
+                const driverInfo = this.dataset.driver || 'Driver';
                 const message = `Halo NOS, saya ingin memesan ojek dengan driver *${driverInfo}*. Mohon info ketersediaannya.`;
                 sendWhatsAppMessage(message);
             });
         });
     }
-    
+
     function initRegistrationForm() {
         const form = document.getElementById('driverRegistrationForm');
-        
+        if (!form) return;
+
+        // Menangani klik pada tombol opsi (Ya/Tidak dll)
         form.querySelectorAll('.option-group').forEach(group => {
             group.addEventListener('click', (e) => {
-                if(e.target.classList.contains('option-btn')) {
+                if (e.target.classList.contains('option-btn')) {
                     const hiddenInputId = group.dataset.for;
                     const hiddenInput = document.getElementById(hiddenInputId);
-                    
+
                     group.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
                     e.target.classList.add('selected');
                     hiddenInput.value = e.target.dataset.value;
-                    
+
+                    // Tampilkan/sembunyikan field kondisional
                     document.querySelectorAll(`.conditional-field[data-condition="${hiddenInputId}"]`).forEach(field => {
                         field.classList.toggle('active', field.dataset.conditionValue === hiddenInput.value);
                     });
-                     playButtonSound();
+                    playButtonSound();
                 }
             });
         });
@@ -230,69 +297,96 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initContactForm() {
         const form = document.getElementById('contactForm');
+        if (!form) return;
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             if (validateForm(form)) {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
                 const message = `*Pesan dari Website NOS*\n\n` +
-                                `*Nama:* ${data.Nama}\n` +
-                                `*Pesan:* ${data.Pesan}`;
+                    `*Nama:* ${data.Nama}\n` +
+                    `*Pesan:* ${data.Pesan}`;
                 sendWhatsAppMessage(message);
-                 alert('Pesan Anda telah terkirim via WhatsApp. Terima kasih!');
+                alert('Pesan Anda telah terkirim via WhatsApp. Terima kasih!');
                 form.reset();
             }
         });
     }
 
     function initNewsletterForm() {
-         const form = document.getElementById('newsletterForm');
-         form.addEventListener('submit', (e) => {
+        const form = document.getElementById('newsletterForm');
+        if (!form) return;
+
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
-            if(validateForm(form)) {
+            if (validateForm(form)) {
                 const email = form.querySelector('input[type="email"]').value;
                 const message = `*Berlangganan Newsletter NOS*\n\nEmail: ${email}`;
                 sendWhatsAppMessage(message);
                 alert('Terima kasih telah berlangganan!');
                 form.reset();
             }
-         });
+        });
     }
 
     function initAudio() {
-        bgMusic.volume = 0.3;
+        if (bgMusic) bgMusic.volume = 0.3;
+        // Interaksi pertama pengguna akan memulai musik (jika diizinkan browser)
         document.body.addEventListener('click', handleFirstInteraction, { once: true });
         document.body.addEventListener('scroll', handleFirstInteraction, { once: true });
     }
-    
+
     function handleFirstInteraction() {
         if (userInteracted) return;
         userInteracted = true;
-        if (bgMusic.paused && !isMusicPlaying) {
-            bgMusic.play().then(() => { isMusicPlaying = true; }).catch(e => console.log("Autoplay musik dicegah oleh browser."));
+        if (bgMusic && bgMusic.paused) {
+            bgMusic.play().catch(e => console.log('Autoplay dicegah browser:', e));
         }
     }
 
     function initSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
-                if (href !== '#' && href.startsWith('#')) {
+                if (href === '#') return;
+                const target = document.querySelector(href);
+                if (target) {
                     e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        const offsetTop = target.offsetTop - 80;
-                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                    }
+                    const offsetTop = target.offsetTop - 80; // kompensasi navbar sticky
+                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                 }
             });
         });
     }
 
-    // --- FUNGSI HELPER & GPS ---
+    function initHeaderSearch() {
+        const searchInput = document.getElementById('headerSearchInput');
+        const searchBtn = document.getElementById('headerSearchBtn');
+
+        if (!searchInput || !searchBtn) return;
+
+        const performSearch = () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                // Arahkan ke bagian pemesanan dan isi field tujuan (opsional)
+                document.getElementById('destination').value = query;
+                window.location.href = '#order';
+            }
+        };
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+    }
+
+    // ==================== FUNGSI GEOLOKASI & GEOCODING ====================
 
     function getUserLocation() {
         const btn = document.getElementById('currentLocationBtn');
+        if (!btn) return;
+
         const originalText = btn.innerHTML;
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mencari...';
@@ -308,41 +402,42 @@ document.addEventListener('DOMContentLoaded', () => {
             async (position) => {
                 const { latitude, longitude } = position.coords;
                 pickupCoords = { lat: latitude, lon: longitude };
-                
+
                 document.getElementById('pickupCoords').value = `${latitude},${longitude}`;
-                
-                if(map) {
+
+                if (map) {
                     map.setView([latitude, longitude], 16);
                     if (pickupMarker) map.removeLayer(pickupMarker);
-                    pickupMarker = L.marker([latitude, longitude]).addTo(map).bindPopup('Lokasi Jemput Anda').openPopup();
+                    pickupMarker = L.marker([latitude, longitude]).addTo(map)
+                        .bindPopup('Lokasi Jemput Anda')
+                        .openPopup();
                 }
-                
+
                 try {
                     const address = await reverseGeocode(latitude, longitude);
                     document.getElementById('pickupLocation').value = address;
                 } catch (error) {
-                    console.error('Error reverse geocoding:', error);
+                    console.error('Reverse geocoding error:', error);
                     alert('Gagal mendapatkan nama alamat dari lokasi Anda. Silakan isi manual.');
                 } finally {
-                     btn.disabled = false;
-                     btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
                 }
             },
             (error) => {
                 let message = 'Gagal mendapatkan lokasi Anda. ';
-                switch(error.code) {
+                switch (error.code) {
                     case error.PERMISSION_DENIED:
-                        message += "Anda menolak permintaan izin lokasi.";
+                        message += 'Anda menolak permintaan izin lokasi.';
                         break;
                     case error.POSITION_UNAVAILABLE:
-                        message += "Informasi lokasi tidak tersedia.";
+                        message += 'Informasi lokasi tidak tersedia.';
                         break;
                     case error.TIMEOUT:
-                        message += "Permintaan lokasi timed out.";
+                        message += 'Permintaan lokasi timed out.';
                         break;
                     default:
-                        message += "Terjadi kesalahan tidak diketahui.";
-                        break;
+                        message += 'Terjadi kesalahan tidak diketahui.';
                 }
                 alert(message);
                 btn.disabled = false;
@@ -353,15 +448,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function reverseGeocode(lat, lon) {
         const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: { 'User-Agent': NOMINATIM_USER_AGENT }
+        });
         if (!response.ok) throw new Error('Network response was not ok.');
         const data = await response.json();
         return data.display_name || 'Alamat tidak ditemukan';
     }
 
     async function geocodeAddress(address) {
-        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&countrycodes=id`; // Prioritaskan Indonesia
-        const response = await fetch(url);
+        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&countrycodes=id`;
+        const response = await fetch(url, {
+            headers: { 'User-Agent': NOMINATIM_USER_AGENT }
+        });
         if (!response.ok) throw new Error('Network response was not ok.');
         const data = await response.json();
         if (data.length > 0) {
@@ -369,12 +468,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         throw new Error('Alamat tidak ditemukan.');
     }
-    
-    function haversineDistance(coords1, coords2) {
-        function toRad(x) {
-            return x * Math.PI / 180;
-        }
 
+    function haversineDistance(coords1, coords2) {
+        const toRad = (x) => x * Math.PI / 180;
         const R = 6371; // km
         const dLat = toRad(coords2.lat - coords1.lat);
         const dLon = toRad(coords2.lon - coords1.lon);
@@ -384,8 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
             Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const d = R * c;
-        return d.toFixed(2) + ' km'; // Jarak dalam km dengan 2 desimal
+        return (R * c).toFixed(2) + ' km';
     }
 
     async function validateAndProcessStep1(step) {
@@ -395,26 +490,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const destinationInput = document.getElementById('destination');
 
         try {
-            // Jika koordinat penjemputan belum ada (pengguna input manual), geocode alamatnya
+            // Jika pickupCoords belum ada, geocode dari input
             if (!pickupCoords || document.getElementById('pickupCoords').value === '') {
                 pickupCoords = await geocodeAddress(pickupInput.value);
-                 document.getElementById('pickupCoords').value = `${pickupCoords.lat},${pickupCoords.lon}`;
+                document.getElementById('pickupCoords').value = `${pickupCoords.lat},${pickupCoords.lon}`;
+
+                // Tampilkan marker di peta
+                if (map) {
+                    map.setView([pickupCoords.lat, pickupCoords.lon], 15);
+                    if (pickupMarker) map.removeLayer(pickupMarker);
+                    pickupMarker = L.marker([pickupCoords.lat, pickupCoords.lon]).addTo(map)
+                        .bindPopup('Lokasi Jemput').openPopup();
+                }
             }
-            
-            // Geocode alamat tujuan
+
+            // Geocode tujuan
             destinationCoords = await geocodeAddress(destinationInput.value);
+            if (map) {
+                if (destinationMarker) map.removeLayer(destinationMarker);
+                destinationMarker = L.marker([destinationCoords.lat, destinationCoords.lon]).addTo(map)
+                    .bindPopup('Tujuan');
+            }
 
             // Hitung jarak
             calculatedDistance = haversineDistance(pickupCoords, destinationCoords);
             document.getElementById('distance').value = calculatedDistance;
-            
-            return true; // Semua berhasil
+
+            return true;
         } catch (error) {
             alert(`Validasi alamat gagal: ${error.message}. Mohon periksa kembali alamat penjemputan dan tujuan.`);
-            return false; // Ada yang gagal
+            return false;
         }
     }
-    
+
+    // ==================== FUNGSI VALIDASI UMUM ====================
+
     function validateStep(step) {
         const fields = step.querySelectorAll('input[required], textarea[required]');
         let isValid = true;
@@ -435,17 +545,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validateForm(form) {
         const fields = form.querySelectorAll('input[required], textarea[required]');
-         let isValid = true;
-         fields.forEach(field => {
+        let isValid = true;
+        fields.forEach(field => {
             field.classList.remove('invalid');
             if (!field.value.trim()) {
                 field.classList.add('invalid');
                 isValid = false;
             }
         });
-         if (!isValid) alert('Mohon isi semua kolom yang ditandai *.');
-         return isValid;
+        if (!isValid) alert('Mohon isi semua kolom yang ditandai *.');
+        return isValid;
     }
+
+    // ==================== FUNGSI KIRIM WHATSAPP ====================
 
     function sendWhatsAppMessage(message) {
         const encodedMessage = encodeURIComponent(message);
@@ -455,7 +567,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playButtonSound() {
-        buttonSound.currentTime = 0;
-        buttonSound.play().catch(e => {});
+        if (buttonSound) {
+            buttonSound.currentTime = 0;
+            buttonSound.play().catch(e => { });
+        }
     }
 });
