@@ -1,7 +1,7 @@
 :root {
-    --primary: #1a365d; /* Deep blue */
-    --secondary: #4299e1; /* Light blue */
-    --accent: #e67e22; /* Warm orange */
+    --primary: #1a365d; 
+    --secondary: #4299e1;
+    --accent: #e67e22;
     --light: #f8f9fa;
     --dark: #1a202c;
     --text: #4a5568;
@@ -9,12 +9,12 @@
     --success: #38a169;
     --warning: #dd6b20;
     --danger: #e53e3e;
+    --gold: #d4af37;
     --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.12);
     --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
     --shadow-lg: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05);
     --shadow-xl: 0 20px 50px rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.1);
-    --gold: #d4af37; /* Gold color for premium accents */
     --section-padding: 8rem 0;
     --section-padding-sm: 6rem 0;
 }
@@ -28,6 +28,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* kompensasi navbar sticky */
 }
 
 body {
@@ -43,7 +44,7 @@ h1, h2, h3, h4 {
     color: var(--dark);
 }
 
-/* Premium Particle Animation */
+/* --- Partikel --- */
 .particles {
     position: absolute;
     top: 0;
@@ -52,6 +53,7 @@ h1, h2, h3, h4 {
     height: 100%;
     z-index: 0;
     overflow: hidden;
+    pointer-events: none;
 }
 
 .particle {
@@ -64,23 +66,13 @@ h1, h2, h3, h4 {
 }
 
 @keyframes float {
-    0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.6;
-    }
-    90% {
-        opacity: 0.6;
-    }
-    100% {
-        transform: translateY(-20vh) rotate(360deg);
-        opacity: 0;
-    }
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
 }
 
-/* Header */
+/* --- Header --- */
 header {
     background: linear-gradient(135deg, var(--primary), var(--dark));
     color: white;
@@ -115,14 +107,8 @@ header {
 }
 
 @keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(30px) scale(0.98);
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0) scale(1);
-    }
+    from { opacity: 0; transform: translateY(30px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .logo {
@@ -175,7 +161,6 @@ header {
     font-family: 'Playfair Display', serif;
 }
 
-/* Search Bar in Header */
 .header-search {
     max-width: 600px;
     margin: 0 auto 3rem;
@@ -229,6 +214,7 @@ header {
     gap: 1.5rem;
     justify-content: center;
     margin-top: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .scroll-down {
@@ -257,13 +243,14 @@ header {
     60% { transform: translateY(-7px) translateX(-50%); }
 }
 
+/* --- Container umum --- */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1.5rem;
 }
 
-/* Navigation */
+/* --- Navigasi --- */
 nav {
     background-color: rgba(255, 255, 255, 0.98);
     box-shadow: 0 2px 30px rgba(0, 0, 0, 0.1);
@@ -350,7 +337,7 @@ nav.scrolled {
     z-index: 1001;
 }
 
-/* Sections */
+/* --- Sections --- */
 section {
     padding: var(--section-padding);
     position: relative;
@@ -383,7 +370,7 @@ section {
     line-height: 1.8;
 }
 
-/* Services Section */
+/* --- Layanan Cards --- */
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -443,7 +430,7 @@ section {
     line-height: 1.8;
 }
 
-/* Booking Form Section */
+/* --- Booking Form --- */
 .booking-form-container {
     background: white;
     border-radius: 16px;
@@ -567,7 +554,7 @@ section {
     text-decoration: underline;
 }
 
-/* Buttons */
+/* --- Tombol --- */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -611,7 +598,7 @@ section {
     transform: translateY(-3px);
 }
 
-/* Contact Section */
+/* --- Kontak Section --- */
 .contact-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -667,7 +654,7 @@ section {
     font-size: 1.05rem;
 }
 
-/* Floating Contact Buttons */
+/* --- Floating Contact Buttons --- */
 .contact-bar {
     position: fixed;
     bottom: 3rem;
@@ -716,7 +703,7 @@ section {
     100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
 }
 
-/* Footer */
+/* --- Footer --- */
 footer {
     background: linear-gradient(135deg, var(--primary), var(--dark));
     color: white;
@@ -862,7 +849,7 @@ footer {
     color: white;
 }
 
-/* Modal */
+/* --- Modal (tidak digunakan tapi tetap) --- */
 .modal {
     display: none;
     position: fixed;
@@ -921,7 +908,7 @@ footer {
     text-align: center;
 }
 
-/* Custom Styles for NOS Ojek */
+/* --- Custom untuk NOS --- */
 .map-container {
     height: 400px;
     border-radius: 16px;
@@ -1120,7 +1107,7 @@ footer {
 
 .ride-status i { font-size: 1.5rem; margin-right: 1rem; }
 
-/* Registration Form */
+/* --- Registration Form --- */
 .registration-section {
     background: white;
     border-radius: 16px;
@@ -1173,7 +1160,7 @@ footer {
 
 .cancel-btn:hover { background: #c53030; }
 
-/* Responsive */
+/* --- Responsive --- */
 @media (max-width: 992px) {
     .nav-links {
         position: fixed;
@@ -1217,6 +1204,7 @@ footer {
     .section-title { font-size: 1.8rem; }
     .contact-bar { bottom: 1.5rem; right: 1.5rem; }
     .booking-form-container, .registration-section { padding: 2.5rem; }
+    .map-container { height: 300px; }
 }
 
 @media (max-width: 576px) {
