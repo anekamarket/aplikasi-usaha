@@ -37,7 +37,7 @@
                 </div>
                 <div class="form-group mt-3">
                     <label for="captcha" class="form-label">Verifikasi Keamanan</label>
-                    <div class="d-flex align-center gap-2">
+                    <div class="d-flex align-center gap-2" style="display: flex; gap: 8px;">
                         <canvas id="captchaCanvas" width="150" height="40" style="border: 1px solid #ddd; border-radius: var(--rounded-sm);"></canvas>
                         <button type="button" id="reloadCaptchaBtn" class="btn btn-sm" style="width: auto; background-color: var(--gray);"><i class="fas fa-sync-alt"></i></button>
                     </div>
@@ -163,25 +163,431 @@
         </footer>
     </div>
 
-    <!-- Modals (konten perlu dilengkapi sesuai dengan yang ada di main.js, namun secara default ditampilkan kosong) -->
-    <div id="bookingConfirmationModal" class="modal"></div>
-    <div id="vehicleModal" class="modal"></div>
-    <div id="manageCategoriesModal" class="modal"></div>
-    <div id="reportsModal" class="modal"></div>
-    <div id="historyModal" class="modal"></div>
-    <div id="manageDriversModal" class="modal"></div>
-    <div id="manageStoreInfoModal" class="modal"></div>
-    <div id="controlPanelModal" class="modal"></div>
-    <div id="passwordPromptModal" class="modal"></div>
-    <div id="confirmationModal" class="modal"></div>
-    <div id="ticketModal" class="modal"></div>
-    <div id="ktaModal" class="modal"></div>
-    <div id="startShiftModal" class="modal"></div>
-    <div id="endShiftModal" class="modal"></div>
-    <div id="recapReportModal" class="modal"></div>
-    <div id="stockManagementModal" class="modal"></div>
-    <div id="manageSuppliersModal" class="modal"></div>
-    <div id="processReturnModal" class="modal"></div>
+    <!-- ========== MODAL LENGKAP ========== -->
+
+    <!-- Booking Confirmation Modal -->
+    <div id="bookingConfirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Konfirmasi Pembayaran</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="payment-total-display">
+                    <p>Total yang harus dibayar</p>
+                    <h3 id="paymentTotal">Rp 0</h3>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Metode Pembayaran</label>
+                    <select id="paymentMethod" class="form-control">
+                        <option value="cash">Tunai</option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Jumlah Dibayar</label>
+                    <input type="number" id="paymentAmount" class="form-control" min="0" step="1000">
+                </div>
+                <div id="changeContainer" style="display: none;">
+                    <p>Kembali: <strong id="paymentChange">Rp 0</strong></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close-btn">Batal</button>
+                <button id="completePaymentBtn" class="btn btn-success">Konfirmasi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vehicle Modal (Tambah/Edit Kendaraan) -->
+    <div id="vehicleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Kendaraan</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="vehicleForm">
+                    <input type="hidden" id="vehicleId">
+                    <div class="form-group">
+                        <label class="form-label">Nama Kendaraan</label>
+                        <input type="text" id="vehicleName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Plat Nomor</label>
+                        <input type="text" id="vehiclePlate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kapasitas (orang)</label>
+                        <input type="number" id="vehicleCapacity" class="form-control" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">URL Gambar (opsional)</label>
+                        <input type="url" id="vehicleImage" class="form-control" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tipe Kendaraan</label>
+                        <select id="vehicleCategory" class="form-control" required>
+                            <option value="">Pilih Tipe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select id="vehicleStatus" class="form-control">
+                            <option value="available">Tersedia</option>
+                            <option value="in_use">Sedang Jalan</option>
+                            <option value="maintenance">Perbaikan</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close-btn">Batal</button>
+                <button id="saveVehicleBtn" class="btn btn-success">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Categories Modal -->
+    <div id="manageCategoriesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Kelola Tipe Kendaraan</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Tambah Tipe Baru</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="newCategoryName" class="form-control" placeholder="Nama tipe">
+                        <button id="addCategoryBtn" class="btn btn-sm" style="width: auto;">Tambah</button>
+                    </div>
+                </div>
+                <div id="categoriesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports Modal -->
+    <div id="reportsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Laporan</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Periode</label>
+                    <select id="reportPeriod" class="form-control">
+                        <option value="today">Hari Ini</option>
+                        <option value="week">Minggu Ini</option>
+                        <option value="month">Bulan Ini</option>
+                        <option value="custom">Kustom</option>
+                    </select>
+                </div>
+                <div id="customDateRange" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Tanggal Mulai</label>
+                        <input type="date" id="reportStartDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tanggal Akhir</label>
+                        <input type="date" id="reportEndDate" class="form-control">
+                    </div>
+                </div>
+                <button id="generateReportBtn" class="btn btn-primary">Generate</button>
+                <div id="reportResults" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Histori Booking</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" id="historySearchInput" class="form-control" placeholder="Cari nomor booking atau nama...">
+                </div>
+                <div id="historyResults" class="data-table-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Drivers Modal -->
+    <div id="manageDriversModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Kelola Pengemudi</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <button id="showAddDriverFormBtn" class="btn btn-sm btn-success mb-2"><i class="fas fa-plus"></i> Tambah Pengemudi</button>
+                <div id="driverFormContainer" style="display: none;">
+                    <h4 id="driverFormTitle">Tambah Pengemudi Baru</h4>
+                    <form id="driverForm">
+                        <input type="hidden" id="driverIdInput">
+                        <div class="form-group">
+                            <label class="form-label">Nama Lengkap</label>
+                            <input type="text" id="driverName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">NIK</label>
+                            <input type="text" id="driverNik" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nomor SIM</label>
+                            <input type="text" id="driverSimId" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Jenis SIM</label>
+                            <select id="driverSimType" class="form-control">
+                                <option value="A">A</option>
+                                <option value="B1">B1</option>
+                                <option value="B2">B2</option>
+                                <option value="C">C</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nomor HP</label>
+                            <input type="tel" id="driverPhone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Alamat</label>
+                            <textarea id="driverAddress" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">URL Foto</label>
+                            <input type="url" id="driverPhotoUrl" class="form-control" placeholder="https://...">
+                        </div>
+                        <div class="modal-footer" style="padding: 0; margin-top: 16px;">
+                            <button type="button" id="cancelDriverFormBtn" class="btn btn-secondary">Batal</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
+                            <button type="button" id="deleteDriverBtn" class="btn btn-danger" style="display: none;">Hapus</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="driversList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Store Info Modal -->
+    <div id="manageStoreInfoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Info Perusahaan</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="storeInfoForm">
+                    <div class="form-group">
+                        <label class="form-label">Nama Perusahaan</label>
+                        <input type="text" id="storeName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Alamat</label>
+                        <textarea id="storeAddress" class="form-control" rows="2" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telepon</label>
+                        <input type="tel" id="storePhone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email/Website</label>
+                        <input type="email" id="storeEmail" class="form-control" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close-btn">Batal</button>
+                <button id="saveStoreInfoBtn" class="btn btn-success">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Control Panel Modal (User Management & Security) -->
+    <div id="controlPanelModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Kontrol Panel</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <ul class="tabs">
+                    <li class="tab active" data-tab="users">Pengguna</li>
+                    <li class="tab" data-tab="security">Keamanan</li>
+                </ul>
+                <div class="tab-content active" id="tab-users">
+                    <button id="showAddUserFormBtn" class="btn btn-sm btn-success mb-2"><i class="fas fa-plus"></i> Tambah Pengguna</button>
+                    <div id="userFormContainer" style="display: none;">
+                        <h4 id="userFormTitle">Tambah Pengguna Baru</h4>
+                        <form id="userForm">
+                            <input type="hidden" id="userIdInput">
+                            <div class="form-group">
+                                <label class="form-label">Nama Lengkap</label>
+                                <input type="text" id="userName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Username</label>
+                                <input type="text" id="userUsername" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" id="userPassword" class="form-control" placeholder="Kosongkan jika tidak diubah">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Role</label>
+                                <select id="userRole" class="form-control">
+                                    <option value="admin">Admin</option>
+                                    <option value="operator">Operator</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer" style="padding: 0; margin-top: 16px;">
+                                <button type="button" id="cancelUserFormBtn" class="btn btn-secondary">Batal</button>
+                                <button type="submit" class="btn btn-success">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="usersList"></div>
+                </div>
+                <div class="tab-content" id="tab-security">
+                    <h5>Ubah Password Keamanan Item</h5>
+                    <form id="itemSecurityForm">
+                        <div class="form-group">
+                            <label class="form-label">Password Baru (min. 4 karakter)</label>
+                            <input type="password" id="itemSecurityCode" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary">Ubah</button>
+                    </form>
+                    <hr>
+                    <h5>Ubah Password Keamanan Panel Kontrol</h5>
+                    <form id="panelSecurityForm">
+                        <div class="form-group">
+                            <label class="form-label">Password Baru (min. 4 karakter)</label>
+                            <input type="password" id="panelSecurityCode" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary">Ubah</button>
+                    </form>
+                    <hr>
+                    <h5>Ubah Password Login Anda</h5>
+                    <form id="changeOwnPasswordForm">
+                        <div class="form-group">
+                            <label class="form-label">Password Saat Ini</label>
+                            <input type="password" id="currentPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password Baru (min. 6 karakter)</label>
+                            <input type="password" id="newPassword" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary">Ubah Password Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Prompt Modal -->
+    <div id="passwordPromptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="passwordPromptTitle" class="modal-title">Verifikasi Keamanan</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="passwordPromptMessage">Masukkan password keamanan:</p>
+                <input type="password" id="passwordPromptInput" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close-btn">Batal</button>
+                <button id="passwordPromptSubmit" class="btn btn-primary">Konfirmasi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="confirmTitle" class="modal-title">Konfirmasi</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Apakah Anda yakin?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close-btn">Tidak</button>
+                <button id="confirmAction" class="btn btn-success">Ya</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket Modal -->
+    <div id="ticketModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Tiket Booking</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body" id="ticketModalBody">
+                <!-- Ticket will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close-btn">Tutup</button>
+                <button id="printTicketBtn" class="btn btn-info"><i class="fas fa-print"></i> Cetak</button>
+                <button id="downloadTicketPdfBtn" class="btn btn-success"><i class="fas fa-download"></i> PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- KTA Modal (Driver ID Card) -->
+    <div id="ktaModal" class="modal">
+        <div class="modal-content" style="max-width: 360px;">
+            <div class="modal-header">
+                <h3 class="modal-title">KTA Pengemudi</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="ktaCard">
+                    <div class="kta-header">
+                        <div class="kta-store-info">
+                            <h3 id="ktaStoreName">TRAVEL JAYA</h3>
+                            <p id="ktaStoreContact">Jl. Raya No. 1 | 081234567890</p>
+                        </div>
+                    </div>
+                    <div class="kta-body">
+                        <img id="ktaDriverPhoto" src="https://via.placeholder.com/120" alt="Driver Photo">
+                        <h2 id="ktaDriverName">Nama Driver</h2>
+                        <span id="ktaDriverId">ID: DRV123</span>
+                        <div class="kta-driver-details">
+                            <p><strong>NIK:</strong> <span id="ktaDriverNik">123456789</span></p>
+                            <p><strong>SIM:</strong> <span id="ktaDriverSim">123456 (A)</span></p>
+                            <p><strong>WA:</strong> <span id="ktaDriverWhatsapp">08123456789</span></p>
+                        </div>
+                        <div id="ktaQrcodeImg" class="kta-qrcode"></div>
+                    </div>
+                    <div class="kta-footer">
+                        Kartu Tanda Anggota - Berlaku selama menjadi mitra
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close-btn">Tutup</button>
+                <button id="downloadKtaPdfBtn" class="btn btn-success"><i class="fas fa-download"></i> Unduh KTA</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dummy modals for features not yet implemented (to avoid errors) -->
+    <div id="startShiftModal" class="modal"><div class="modal-content"><div class="modal-header"><span class="modal-close">&times;</span><h3>Mulai Shift</h3></div><div class="modal-body">Fitur dalam pengembangan.</div></div></div>
+    <div id="endShiftModal" class="modal"><div class="modal-content"><div class="modal-header"><span class="modal-close">&times;</span><h3>Akhiri Shift</h3></div><div class="modal-body">Fitur dalam pengembangan.</div></div></div>
+    <div id="recapReportModal" class="modal"><div class="modal-content"><div class="modal-header"><span class="modal-close">&times;</span><h3>Rekap Laporan</h3></div><div class="modal-body">Fitur dalam pengembangan.</div></div></div>
+    <div id="stockManagementModal" class="modal"><div class="modal-content"><div class="modal-header"><span class="modal-close">&times;</span><h3>Manajemen Stok</h3></div><div class="modal-body">Fitur dalam pengembangan.</div></div></div>
+    <div id="manageSuppliersModal" class="modal"><div class="modal-content"><div class="modal-header"><span class="modal-close">&times;</span><h3>Supplier</h3></div><div class="modal-body">Fitur dalam pengembangan.</div></div></div>
+    <div id="processReturnModal" class="modal"><div class="modal-content"><div class="modal-header"><span class="modal-close">&times;</span><h3>Proses Retur</h3></div><div class="modal-body">Fitur dalam pengembangan.</div></div></div>
 
     <div id="print-container" style="display:none;"></div>
 
