@@ -475,6 +475,27 @@ textarea.form-control {
     resize: vertical;
 }
 
+/* Password Toggle */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.password-wrapper .form-control {
+    padding-right: 40px;
+}
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    cursor: pointer;
+    color: var(--gray);
+    font-size: 1.2rem;
+    user-select: none;
+}
+.password-toggle:hover {
+    color: var(--dark);
+}
+
 /* Login Design */
 #loginModal {
     background: linear-gradient(45deg, #f0f2f5, #e6e9ed);
@@ -628,6 +649,42 @@ textarea.form-control {
     color: var(--primary);
     margin: 0;
 }
+
+/* Maintenance Styles */
+.maintenance-item {
+    border: 1px solid #eee;
+    border-radius: var(--rounded-sm);
+    padding: 12px;
+    margin-bottom: 8px;
+}
+.maintenance-item .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.maintenance-item .vehicle-info {
+    font-weight: 600;
+    color: var(--primary);
+}
+.maintenance-item .date {
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+.maintenance-item .description {
+    margin-bottom: 4px;
+}
+.maintenance-item .cost {
+    font-weight: 600;
+    color: var(--success);
+}
+.maintenance-actions i {
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.maintenance-actions .fa-edit { color: var(--info); }
+.maintenance-actions .fa-trash { color: var(--danger); }
 
 /* Responsive Adjustments */
 @media (min-width: 768px) {
