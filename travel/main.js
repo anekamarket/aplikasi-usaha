@@ -11,6 +11,7 @@ $(document).ready(function() {
         SETTINGS: 'travel_settings',
         USERS: 'travel_users',
         DRIVERS: 'travel_drivers',
+        SHIFT: 'travel_shift' // tambahan untuk shift
     };
 
     const ENCRYPTION_KEY = 'LenteraKaryaSitubondo-Travel-2025';
@@ -21,6 +22,7 @@ $(document).ready(function() {
     let vehicles, categories, bookings, settings, users, drivers, currentUser, currentBooking;
     let passwordPromptCallback = null;
     let captchaText = '';
+    let shiftActive = localStorage.getItem(STORAGE_KEYS.SHIFT) === 'true'; // status shift
     
     function initializeData() {
         let users_init = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
@@ -77,21 +79,24 @@ $(document).ready(function() {
     $(document).on('click', '.edit-vehicle', handleEditVehicleClick);
     $(document).on('click', '.delete-vehicle', handleDeleteVehicleClick);
     $('#tripFare').on('input', updateBookingSummary);
+    $('#shiftActionBtn').click(toggleShift); // handler shift
 
     // Modals & Forms
     $('#createBookingBtn').click(openBookingConfirmationModal);
-    $('#paymentAmount').on('input', calculateChange);
+    $(document).on('input', '#paymentAmount', calculateChange);
     $('#completePaymentBtn').click(confirmBooking);
     $('.modal-close, .modal-close-btn').click(function() { $(this).closest('.modal').hide(); });
 
     // Admin Panel Buttons
-    $('#addVehicleBtn').click(openEditVehicleModal);
+    $('#addVehicleBtn').click(() => openEditVehicleModal());
     $('#manageCategoriesBtn').click(openManageCategoriesModal);
     $('#viewReportsBtn').click(openReportsModal);
     $('#historyBtn').click(openHistoryModal);
     $('#manageDriversBtn').click(openManageDriversModal);
     $('#manageStoreInfoBtn').click(openManageStoreInfoModal);
     $('#controlPanelBtn').click(openControlPanel);
+    $('#manageMaintenanceBtn').click(() => showToast('Fitur dalam pengembangan', 'info'));
+    $('#cancelBookingBtn').click(() => showToast('Fitur dalam pengembangan', 'info'));
     
     // Save/Update actions
     $('#saveVehicleBtn').click(saveVehicle);
@@ -137,12 +142,26 @@ $(document).ready(function() {
     $('#passwordPromptForm').submit(e => e.preventDefault());
     $('#passwordPromptSubmit').click(submitPasswordPrompt);
 
+    // Tabs in Control Panel
+    $('.tab').click(function() {
+        $('.tab').removeClass('active');
+        $(this).addClass('active');
+        $('.tab-content').removeClass('active');
+        $('#tab-' + $(this).data('tab')).addClass('active');
+    });
+
+    // Custom date range toggle
+    $('#reportPeriod').change(function() {
+        $('#customDateRange').toggle($(this).val() === 'custom');
+    });
+
     // --- CORE APP FLOW ---
     function initializeApp() {
         loadVehicles(); 
         loadCategories(); 
         updateCurrentDate();
         updateStoreInfo();
+        updateShiftUI(); // tampilkan status shift
         configureUIAccess();
         resetBookingUI();
     }
@@ -163,7 +182,8 @@ $(document).ready(function() {
                 if ($('#captchaInput').val().trim().toLowerCase() !== captchaText.toLowerCase()) {
                     showToast('Kode verifikasi (CAPTCHA) salah.', 'error');
                     generateCaptcha(); $('#captchaInput').val('');
-                    return setButtonLoading($loginBtn, false, originalText);
+                    setButtonLoading($loginBtn, false, originalText);
+                    return;
                 }
                 const username = $('#username').val().trim();
                 const password = $('#password').val().trim();
@@ -184,7 +204,7 @@ $(document).ready(function() {
             } catch (err) {
                 showToast('Error: Gagal memuat library penting. Cek koneksi internet.', 'error');
             } finally {
-                if ($loginBtn.prop('disabled')) setButtonLoading($loginBtn, false, originalText);
+                setButtonLoading($loginBtn, false, originalText);
             }
         }, 500);
     }
@@ -219,13 +239,10 @@ $(document).ready(function() {
         if (!vehicle || vehicle.status !== 'available') {
             return showToast(`Kendaraan ${vehicle.name} tidak tersedia.`, 'error');
         }
-         const availableDrivers = drivers.filter(d => {
-            // Logic to check driver availability, for now just pick one
-            return true; 
-        });
+        const availableDrivers = drivers.filter(d => true); // sementara semua driver dianggap tersedia
 
         if (availableDrivers.length === 0) {
-             return showToast(`Tidak ada pengemudi yang tersedia saat ini.`, 'error');
+            return showToast('Tidak ada pengemudi yang tersedia saat ini.', 'error');
         }
         
         const $btn = $(this), originalText = $btn.html();
@@ -293,6 +310,24 @@ $(document).ready(function() {
         $('#createBookingBtn').prop('disabled', true);
     }
 
+    // --- SHIFT MANAGEMENT (sederhana) ---
+    function toggleShift() {
+        shiftActive = !shiftActive;
+        localStorage.setItem(STORAGE_KEYS.SHIFT, shiftActive);
+        updateShiftUI();
+        showToast(shiftActive ? 'Shift dimulai' : 'Shift diakhiri', 'info');
+    }
+
+    function updateShiftUI() {
+        if (shiftActive) {
+            $('#shiftStatusBadge').text('Shift Aktif').addClass('active');
+            $('#shiftActionBtn').text('Akhiri Shift').removeClass('btn-warning').addClass('btn-danger');
+        } else {
+            $('#shiftStatusBadge').text('Tidak Ada Shift Aktif').removeClass('active');
+            $('#shiftActionBtn').text('Mulai Shift').removeClass('btn-danger').addClass('btn-warning');
+        }
+    }
+
     // --- VEHICLE & CATEGORY MANAGEMENT ---
     function loadVehicles(searchTerm = '', category = 'all') {
         const lowerSearchTerm = searchTerm.toLowerCase();
@@ -305,8 +340,7 @@ $(document).ready(function() {
         if (filteredVehicles.length === 0) {
             $vehicleGrid.html('<div class="empty-state"><i class="fas fa-car"></i><p>Belum ada kendaraan. Tambahkan melalui Admin Panel.</p></div>');
         } else {
-            // SEMUA PENGGUNA BISA MELIHAT TOMBOL EDIT/DELETE
-            const isAdmin = true; // Selalu true agar semua user dapat akses
+            const isAdmin = true;
             filteredVehicles.forEach(vehicle => {
                 const statusText = { available: 'Tersedia', in_use: 'Sedang Jalan', maintenance: 'Perbaikan' };
                 const adminActions = isAdmin ? `
@@ -393,13 +427,13 @@ $(document).ready(function() {
         if (filtered.length === 0) return $list.html('<div class="empty-state"><p>Belum ada pengemudi terdaftar.</p></div>');
         filtered.forEach(d => {
             $list.append(`
-                <div class="order-item" style="align-items: center;">
+                <div class="order-item" style="display: flex; align-items: center; padding: 8px; border-bottom: 1px solid #eee;">
                     <img src="${d.photoUrl}" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/40'">
-                    <div class="order-item-info">
-                        <div class="order-item-name" style="font-weight: 600;">${d.name} <span style="font-size: 0.7rem; color: var(--gray); font-weight: 400;">(${d.id})</span></div>
-                        <div class="order-item-price" style="font-size: 0.8rem;">${d.phone} | SIM: ${d.simType}</div>
+                    <div style="flex:1;">
+                        <div style="font-weight: 600;">${d.name} <span style="font-size: 0.7rem; color: var(--gray);">(${d.id})</span></div>
+                        <div style="font-size: 0.8rem;">${d.phone} | SIM: ${d.simType}</div>
                     </div>
-                    <div class="order-item-qty gap-2" style="display: flex; gap: 12px;">
+                    <div style="display: flex; gap: 12px;">
                         <i class="fas fa-id-card kta-driver" style="cursor:pointer; color: var(--success); font-size: 1.2rem;" data-id="${d.id}" title="Cetak KTA"></i>
                         <i class="fas fa-edit edit-driver" style="cursor:pointer; color: var(--info); font-size: 1.2rem;" data-id="${d.id}" title="Edit Data"></i>
                     </div>
@@ -511,7 +545,7 @@ $(document).ready(function() {
     // --- OTHER UTILITIES & HELPERS ---
     function generateTicketHTML(booking) {
         const vehicle = booking.vehicle;
-        const driver = booking.driver;
+        const driver = booking.driver || { name: 'Belum ditugaskan' };
         return `
         <div id="ticketContent">
             <div class="ticket-header">
@@ -543,7 +577,7 @@ $(document).ready(function() {
             <div class="ticket-total">
                 <div class="ticket-details">
                     <p style="font-size: 14px;"><strong>TOTAL BIAYA</strong>: <span>${formatCurrency(booking.total)}</span></p>
-                    <p><span>${{ cash: 'Tunai', transfer: 'Transfer' }[booking.paymentMethod]}</span> <span>${formatCurrency(booking.paymentAmount)}</span></p>
+                    <p><span>${booking.paymentMethod === 'cash' ? 'Tunai' : 'Transfer'}</span> <span>${formatCurrency(booking.paymentAmount)}</span></p>
                     <p><span>Kembali</span> <span>${formatCurrency(booking.change)}</span></p>
                 </div>
             </div>
@@ -590,7 +624,7 @@ $(document).ready(function() {
         else {
             categories.forEach(category => {
                 const vehicleCount = vehicles.filter(v => v.category === category.name).length;
-                $list.append(`<div class="order-item"><div class="order-item-info"><div class="order-item-name">${category.name}</div><div class="order-item-price">${vehicleCount} kendaraan</div></div><div class="order-item-qty"><i class="fas fa-trash remove-item remove-category" data-id="${category.id}" style="cursor:pointer; color: var(--danger);"></i></div></div>`);
+                $list.append(`<div class="order-item" style="display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee;"><span>${category.name}</span><span><i class="fas fa-trash remove-category" data-id="${category.id}" style="cursor:pointer; color: var(--danger);"></i> (${vehicleCount} kendaraan)</span></div>`);
             });
         }
     }
@@ -809,12 +843,9 @@ $(document).ready(function() {
         const $list = $('#usersList').empty();
         users.forEach(u => {
             $list.append(`
-                <div class="order-item">
-                    <div class="order-item-info">
-                        <div class="order-item-name">${u.name}</div>
-                        <div class="order-item-price">${u.username} | ${u.role}</div>
-                    </div>
-                    <div class="order-item-qty gap-2">
+                <div class="order-item" style="display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee;">
+                    <div><strong>${u.name}</strong><br><small>${u.username} | ${u.role}</small></div>
+                    <div style="display: flex; gap: 8px;">
                         ${u.username !== 'Admin' ? `
                         <i class="fas fa-edit edit-user" style="cursor:pointer; color: var(--info);" data-id="${u.id}"></i>
                         <i class="fas fa-trash delete-user" style="cursor:pointer; color: var(--danger);" data-id="${u.id}"></i>
