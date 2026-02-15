@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let uploadedLogo = null;
     let activeTab = 'url';
     const defaultLogo = "https://raw.githubusercontent.com/anekamarket/my.id/refs/heads/main/logo-anekamarket.png";
-    
-    // Inisialisasi particles.js
+
+    // Inisialisasi tsParticles
     tsParticles.load("particles-js", {
         fpsLimit: 60,
         interactivity: {
@@ -39,53 +39,53 @@ document.addEventListener('DOMContentLoaded', () => {
         detectRetina: true
     });
 
-    // Helper function untuk mendapatkan elemen
+    // Helper untuk mengambil elemen
     const getEl = (id) => document.getElementById(id);
 
-    // Elemen utama
-    const generateBtn = getEl('generate-btn'),
-        downloadBtn = getEl('download-btn'),
-        messageBox = getEl('message-box'),
-        presentationFrame = getEl('presentation-frame'),
-        qrCodeDisplayFrame = getEl('qr-code-display-frame'),
-        frameFooterUrl = getEl('frame-footer-url'),
-        dotStyleSelector = getEl('dot-style-select'),
-        cornerSquareStyleSelector = getEl('corner-square-style-select'),
-        cornerDotStyleSelector = getEl('corner-dot-style-select'),
-        frameDesignSelector = getEl('frame-design-select'),
-        logoUploadInput = getEl('logo-upload'),
-        colorModeSelector = getEl('color-mode-select'),
-        colorStartInput = getEl('color-start'),
-        colorStartHexInput = getEl('color-start-hex'),
-        colorStartLabel = getEl('color-start-label'),
-        colorEndInput = getEl('color-end'),
-        colorEndHexInput = getEl('color-end-hex'),
-        colorEndGroup = getEl('color-end-group'),
-        gradientOptions = getEl('gradient-options'),
-        gradientTypeSelector = getEl('gradient-type-select'),
-        gradientRotationInput = getEl('gradient-rotation'),
-        frameStyleSelector = getEl('frame-style-select'),
-        frameColorControl = getEl('frame-color-control'),
-        frameColorInput = getEl('frame-color'),
-        frameColorHexInput = getEl('frame-color-hex'),
-        frameColorLabel = getEl('frame-color-label'),
-        frameColor2Control = getEl('frame-color-2-control'),
-        frameColor2Input = getEl('frame-color-2'),
-        frameColor2HexInput = getEl('frame-color-2-hex'),
-        frameColor2Label = getEl('frame-color-2-label'),
-        frameColorInnerControl = getEl('frame-color-inner-control'),
-        frameColorInnerInput = getEl('frame-color-inner'),
-        frameColorInnerHexInput = getEl('frame-color-inner-hex'),
-        frameCtaControl = getEl('frame-cta-control'),
-        frameCtaTextInput = getEl('frame-cta-text'),
-        frameWidthControl = getEl('frame-width-control'),
-        frameWidthInput = getEl('frame-width'),
-        frameWidthValue = getEl('frame-width-value'),
-        qrSizeControl = getEl('qr-size-control'),
-        qrSizeInput = getEl('qr-size'),
-        qrSizeValue = getEl('qr-size-value'),
-        logoSizeInput = getEl('logo-size'),
-        logoSizeValue = getEl('logo-size-value');
+    // Elemen UI
+    const generateBtn = getEl('generate-btn');
+    const downloadBtn = getEl('download-btn');
+    const messageBox = getEl('message-box');
+    const presentationFrame = getEl('presentation-frame');
+    const qrCodeDisplayFrame = getEl('qr-code-display-frame');
+    const frameFooterUrl = getEl('frame-footer-url');
+    const dotStyleSelector = getEl('dot-style-select');
+    const cornerSquareStyleSelector = getEl('corner-square-style-select');
+    const cornerDotStyleSelector = getEl('corner-dot-style-select');
+    const frameDesignSelector = getEl('frame-design-select');
+    const logoUploadInput = getEl('logo-upload');
+    const colorModeSelector = getEl('color-mode-select');
+    const colorStartInput = getEl('color-start');
+    const colorStartHexInput = getEl('color-start-hex');
+    const colorStartLabel = getEl('color-start-label');
+    const colorEndInput = getEl('color-end');
+    const colorEndHexInput = getEl('color-end-hex');
+    const colorEndGroup = getEl('color-end-group');
+    const gradientOptions = getEl('gradient-options');
+    const gradientTypeSelector = getEl('gradient-type-select');
+    const gradientRotationInput = getEl('gradient-rotation');
+    const frameStyleSelector = getEl('frame-style-select');
+    const frameColorControl = getEl('frame-color-control');
+    const frameColorInput = getEl('frame-color');
+    const frameColorHexInput = getEl('frame-color-hex');
+    const frameColorLabel = getEl('frame-color-label');
+    const frameColor2Control = getEl('frame-color-2-control');
+    const frameColor2Input = getEl('frame-color-2');
+    const frameColor2HexInput = getEl('frame-color-2-hex');
+    const frameColor2Label = getEl('frame-color-2-label');
+    const frameColorInnerControl = getEl('frame-color-inner-control');
+    const frameColorInnerInput = getEl('frame-color-inner');
+    const frameColorInnerHexInput = getEl('frame-color-inner-hex');
+    const frameCtaControl = getEl('frame-cta-control');
+    const frameCtaTextInput = getEl('frame-cta-text');
+    const frameWidthControl = getEl('frame-width-control');
+    const frameWidthInput = getEl('frame-width');
+    const frameWidthValue = getEl('frame-width-value');
+    const qrSizeControl = getEl('qr-size-control');
+    const qrSizeInput = getEl('qr-size');
+    const qrSizeValue = getEl('qr-size-value');
+    const logoSizeInput = getEl('logo-size');
+    const logoSizeValue = getEl('logo-size-value');
 
     // Tab switching
     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -93,12 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
         tabButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
         activeTab = button.dataset.tab;
-        document.querySelectorAll('.data-input-panel').forEach(panel =>
-            panel.classList.toggle('active', panel.id === `panel-${activeTab}`)
-        );
+        document.querySelectorAll('.data-input-panel').forEach(panel => {
+            panel.classList.toggle('active', panel.id === `panel-${activeTab}`);
+        });
     }));
 
-    // Daftar kata terlarang
+    // Daftar hitam URL
     const forbiddenCategories = {
         "Konten Judi Online": ['judi', 'slot', 'poker', 'casino', 'togel', 'sbo', 'bet', 'sbobet'],
         "Konten Dewasa/Pornografi": ['porn', 'sex', 'xxx', 'bokep', 'adult', 'nude', 'bugil'],
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         messageBox.innerHTML = `<strong>${title}</strong><br>${text}`;
     };
 
-    // Sinkronisasi input warna
+    // Sinkronisasi input color & text
     const syncColorInputs = (colorPicker, hexInput) => {
         hexInput.addEventListener('input', e => {
             let hex = e.target.value.toUpperCase();
@@ -134,19 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Sinkronkan semua pasangan warna
-    [
-        [colorStartInput, colorStartHexInput],
-        [colorEndInput, colorEndHexInput],
-        [frameColorInput, frameColorHexInput],
-        [frameColor2Input, frameColor2HexInput],
-        [frameColorInnerInput, frameColorInnerHexInput]
-    ].forEach(p => syncColorInputs(p[0], p[1]));
+    syncColorInputs(colorStartInput, colorStartHexInput);
+    syncColorInputs(colorEndInput, colorEndHexInput);
+    syncColorInputs(frameColorInput, frameColorHexInput);
+    syncColorInputs(frameColor2Input, frameColor2HexInput);
+    syncColorInputs(frameColorInnerInput, frameColorInnerHexInput);
 
-    // Peringatan pintar untuk gaya titik & gradien
+    // Smart warning untuk dot style
     const checkSmartWarning = () => {
-        getEl('dot-style-warning').style.display =
-            (dotStyleSelector.value === 'dots' && colorModeSelector.value === 'gradient') ? 'block' : 'none';
+        getEl('dot-style-warning').style.display = (dotStyleSelector.value === 'dots' && colorModeSelector.value === 'gradient') ? 'block' : 'none';
     };
 
     colorModeSelector.addEventListener('change', () => {
@@ -159,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     dotStyleSelector.addEventListener('change', checkSmartWarning);
 
-    // Slider nilai
+    // Slider display
     frameWidthInput.addEventListener('input', e => frameWidthValue.textContent = e.target.value);
     qrSizeInput.addEventListener('input', e => qrSizeValue.textContent = e.target.value);
     logoSizeInput.addEventListener('input', e => logoSizeValue.textContent = e.target.value);
@@ -175,17 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Kontrol visibilitas kontrol frame berdasarkan gaya
+    // Update kontrol frame sesuai gaya
     const updateFrameControls = () => {
         const style = frameStyleSelector.value;
-        const controls = {
-            frameColorControl,
-            frameColor2Control,
-            frameColorInnerControl,
-            frameCtaControl,
-            frameWidthControl,
-            qrSizeControl
-        };
+        const controls = { frameColorControl, frameColor2Control, frameColorInnerControl, frameCtaControl, frameWidthControl, qrSizeControl };
         Object.values(controls).forEach(c => c.classList.add('is-hidden'));
 
         const showCommonControls = () => {
@@ -236,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     frameStyleSelector.addEventListener('change', updateFrameControls);
     updateFrameControls();
 
-    // Membangun struktur frame untuk tampilan atau download
+    // Membangun struktur frame
     const buildFrameStructure = (targetElement, isDownload = false) => {
         targetElement.innerHTML = '';
         const style = frameStyleSelector.value;
@@ -284,14 +273,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mengambil data dari tab aktif
     const getQrData = () => {
         let data = '', displayData = '', isValid = true;
-        const url = getEl('url-input').value.trim(),
-            text = getEl('text-input').value,
-            ssid = getEl('wifi-ssid').value,
-            pass = getEl('wifi-pass').value,
-            enc = getEl('wifi-encryption').value,
-            to = getEl('email-to').value,
-            subj = encodeURIComponent(getEl('email-subject').value),
-            body = encodeURIComponent(getEl('email-body').value);
+        const url = getEl('url-input').value.trim();
+        const text = getEl('text-input').value;
+        const ssid = getEl('wifi-ssid').value;
+        const pass = getEl('wifi-pass').value;
+        const enc = getEl('wifi-encryption').value;
+        const to = getEl('email-to').value;
+        const subj = encodeURIComponent(getEl('email-subject').value);
+        const body = encodeURIComponent(getEl('email-body').value);
 
         switch (activeTab) {
             case 'url':
@@ -365,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const qrHolder = buildFrameStructure(qrCodeDisplayFrame, false);
 
-            // Hitung ukuran QR dinamis
+            // Hitung ukuran QR dinamis dengan skala
             let baseQrSize;
             const selectedStyle = frameStyleSelector.value;
             const framePadding = parseInt(frameWidthInput.value, 10);
@@ -385,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const displayQrInstance = new QRCodeStyling({ ...sharedOptions, width: qrSize, height: qrSize, margin: 0 });
             displayQrInstance.append(qrHolder);
 
-            // Instance untuk download dengan ukuran besar
+            // Instance untuk download ukuran besar
             qrCodeInstance = new QRCodeStyling({ ...sharedOptions, width: 900, height: 900, margin: 0 });
 
             presentationFrame.className = frameDesignSelector.value;
@@ -418,19 +407,17 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(downloadWrapper);
 
         setTimeout(() => {
-            html2canvas(downloadWrapper, { backgroundColor: null, scale: 2 })
-                .then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `qr-code-pro-${Date.now()}.png`;
-                    link.href = canvas.toDataURL("image/png");
-                    link.click();
-                    document.body.removeChild(downloadWrapper);
-                })
-                .catch(error => {
-                    displayMessage('error', 'Gagal Mengunduh', 'Terjadi kesalahan saat membuat file gambar.');
-                    console.error("Download Error:", error);
-                    document.body.removeChild(downloadWrapper);
-                });
+            html2canvas(downloadWrapper, { backgroundColor: null, scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `qr-code-pro-${Date.now()}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                document.body.removeChild(downloadWrapper);
+            }).catch(error => {
+                displayMessage('error', 'Gagal Mengunduh', 'Terjadi kesalahan saat membuat file gambar.');
+                console.error("Download Error:", error);
+                document.body.removeChild(downloadWrapper);
+            });
         }, 500);
     });
 });
