@@ -9,8 +9,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initApp() {
-    checkLoginState();
     setupPasswordToggle(); // Pasang toggle password
+
+    // Pasang event listener login dan reload captcha (hanya sekali)
+    const loginForm = document.getElementById('loginForm');
+    const reloadBtn = document.getElementById('reloadCaptchaBtn');
+    if (loginForm) loginForm.addEventListener('submit', handleLogin);
+    if (reloadBtn) reloadBtn.addEventListener('click', generateCaptcha);
+
+    checkLoginState();
 }
 
 // --- FUNGSI HASH PASSWORD (SHA-256) ---
@@ -79,23 +86,7 @@ function checkLoginState() {
     } else {
         loginOverlay.style.display = 'flex';
         mainApp.style.display = 'none';
-        
-        // Pasang event listener login dengan cara mengganti elemen untuk menghindari duplikasi
-        const loginForm = document.getElementById('loginForm');
-        const reloadBtn = document.getElementById('reloadCaptchaBtn');
-        
-        // Clone dan replace
-        const newLoginForm = loginForm.cloneNode(true);
-        loginForm.parentNode.replaceChild(newLoginForm, loginForm);
-        
-        const newReloadBtn = reloadBtn.cloneNode(true);
-        reloadBtn.parentNode.replaceChild(newReloadBtn, reloadBtn);
-        
-        // Pasang listener baru
-        document.getElementById('loginForm').addEventListener('submit', handleLogin);
-        document.getElementById('reloadCaptchaBtn').addEventListener('click', generateCaptcha);
-        
-        generateCaptcha();
+        generateCaptcha(); // gambar captcha saat login ditampilkan
     }
 }
 
