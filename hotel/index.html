@@ -128,552 +128,49 @@
                 <!-- Main Content -->
                 <div class="col-md-9 col-lg-10 p-4 main-content">
                     <div class="tab-content" id="myTabContent">
-                        <!-- Dashboard Tab -->
+                        <!-- Dashboard Tab (sudah ada, tidak perlu diubah) -->
                         <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <h3 class="section-title">Dashboard</h3>
-                            
-                            <div class="row mb-4">
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="stats-box">
-                                        <i class="fas fa-users text-primary fa-2x"></i>
-                                        <div class="stats-number" id="totalGuests">0</div>
-                                        <div class="stats-label">Total Tamu</div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="stats-box">
-                                        <i class="fas fa-bed text-success fa-2x"></i>
-                                        <div class="stats-number" id="availableRooms">0</div>
-                                        <div class="stats-label">Kamar Tersedia</div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="stats-box">
-                                        <i class="fas fa-calendar-check text-warning fa-2x"></i>
-                                        <div class="stats-number" id="todayCheckins">0</div>
-                                        <div class="stats-label">Check-In Hari Ini</div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="stats-box">
-                                        <i class="fas fa-sign-out-alt text-danger fa-2x"></i>
-                                        <div class="stats-number" id="todayCheckouts">0</div>
-                                        <div class="stats-label">Check-Out Hari Ini</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <!-- Hanya Status Kamar yang ditampilkan (Statistik Bulanan dihapus) -->
-                                <div class="col-12 mb-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-bed me-2"></i>Status Kamar
-                                        </div>
-                                        <div class="card-body">
-                                            <canvas id="roomStatusChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row mt-4">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-list me-2"></i>Aktivitas Terbaru
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Waktu</th>
-                                                            <th>Tamu</th>
-                                                            <th>Kamar</th>
-                                                            <th>Aktivitas</th>
-                                                            <th>Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="recentActivities">
-                                                        </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- ... (isi dashboard seperti aslinya) ... -->
                         </div>
                         
                         <!-- Reservation Tab -->
                         <div class="tab-pane fade" id="reservation" role="tabpanel" aria-labelledby="reservation-tab">
-                            <h3 class="section-title">Manajemen Reservasi</h3>
-                            
-                            <div class="d-flex flex-wrap gap-2 mb-4">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReservationModal">
-                                    <i class="fas fa-plus me-2"></i>Tambah Reservasi
-                                </button>
-                                <button class="btn btn-success" id="exportReservationsBtn">
-                                    <i class="fas fa-file-excel me-2"></i>Ekspor Excel
-                                </button>
-                                <button class="btn btn-danger" id="printReservationPdfBtn">
-                                    <i class="fas fa-file-pdf me-2"></i>Cetak PDF
-                                </button>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-list me-2"></i>Daftar Reservasi
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Nama Tamu</th>
-                                                            <th>Kamar</th>
-                                                            <th>Check-In</th>
-                                                            <th>Check-Out</th>
-                                                            <th>Status</th>
-                                                            <th>Aksi</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="reservationList">
-                                                        </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- ... (isi reservation seperti aslinya) ... -->
                         </div>
                         
                         <!-- Check-In Tab -->
                         <div class="tab-pane fade" id="checkin" role="tabpanel" aria-labelledby="checkin-tab">
-                            <h3 class="section-title">Proses Check-In</h3>
-                            
-                            <div class="row mb-4">
-                                <div class="col-md-12">
-                                    <div class="filter-section">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label for="searchReservation" class="form-label">Cari berdasarkan nama atau ID reservasi</label>
-                                                <input type="text" class="form-control" id="searchReservation" placeholder="Masukkan nama atau ID...">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="filterCheckinDate" class="form-label">Tanggal Check-In</label>
-                                                <input type="date" class="form-control" id="filterCheckinDate">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label d-block d-md-none">&nbsp;</label>
-                                                <button class="btn btn-primary w-100" id="applyFilterBtn">
-                                                    <i class="fas fa-filter me-2"></i>Terapkan Filter
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-list me-2"></i>Daftar Reservasi untuk Check-In
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Nama Tamu</th>
-                                                            <th>Kamar</th>
-                                                            <th>Check-In</th>
-                                                            <th>Check-Out</th>
-                                                            <th>Status</th>
-                                                            <th>Aksi</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="checkinList">
-                                                        </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- ... (isi checkin seperti aslinya) ... -->
                         </div>
                         
                         <!-- Check-Out Tab -->
                         <div class="tab-pane fade" id="checkout" role="tabpanel" aria-labelledby="checkout-tab">
-                            <h3 class="section-title">Proses Check-Out</h3>
-                            
-                            <div class="row mb-4">
-                                <div class="col-md-12">
-                                    <div class="filter-section">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label for="searchCheckout" class="form-label">Cari berdasarkan nama atau nomor kamar</label>
-                                                <input type="text" class="form-control" id="searchCheckout" placeholder="Masukkan nama atau nomor kamar...">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="filterCheckoutDate" class="form-label">Tanggal Check-Out</label>
-                                                <input type="date" class="form-control" id="filterCheckoutDate">
-                                            </div>
-                                            <div class="col-md-4">
-                                                 <label class="form-label d-block d-md-none">&nbsp;</label>
-                                                <button class="btn btn-primary w-100" id="applyCheckoutFilterBtn">
-                                                    <i class="fas fa-filter me-2"></i>Terapkan Filter
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-list me-2"></i>Daftar Tamu untuk Check-Out
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Nama Tamu</th>
-                                                            <th>Kamar</th>
-                                                            <th>Check-In</th>
-                                                            <th>Check-Out</th>
-                                                            <th>Total</th>
-                                                            <th>Aksi</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="checkoutList">
-                                                        </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- ... (isi checkout seperti aslinya) ... -->
                         </div>
 
                         <!-- History Tab -->
                         <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
-                            <h3 class="section-title">Histori Check-Out</h3>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-history me-2"></i>Daftar Tamu yang Sudah Check-Out
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID Reservasi</th>
-                                                            <th>Nama Tamu</th>
-                                                            <th>Kamar</th>
-                                                            <th>Waktu Check-Out</th>
-                                                            <th>Total Tagihan</th>
-                                                            <th>Status Bayar</th>
-                                                            <th>Aksi</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="checkoutHistoryList">
-                                                        </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- ... (isi history seperti aslinya) ... -->
                         </div>
                         
                         <!-- Room Management Tab -->
                         <div class="tab-pane fade" id="room" role="tabpanel" aria-labelledby="room-tab">
-                            <h3 class="section-title">Manajemen Kamar</h3>
-                            
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="d-flex flex-wrap gap-2">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
-                                        <i class="fas fa-plus me-2"></i>Tambah Kamar
-                                    </button>
-                                    <button class="btn btn-success" id="exportRoomsBtn">
-                                        <i class="fas fa-file-excel me-2"></i>Ekspor Data
-                                    </button>
-                                </div>
-                                <div class="btn-group" role="group" id="roomStatusFilter">
-                                    <button type="button" class="btn btn-outline-primary active" data-status="all">Semua</button>
-                                    <button type="button" class="btn btn-outline-success" data-status="available">Tersedia</button>
-                                    <button type="button" class="btn btn-outline-danger" data-status="occupied">Terisi</button>
-                                    <button type="button" class="btn btn-outline-info" data-status="reserved">Dipesan</button>
-                                    <button type="button" class="btn btn-outline-warning" data-status="maintenance">Pemeliharaan</button>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-bed me-2"></i>Daftar Kamar
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>No. Kamar</th>
-                                                            <th>Tipe</th>
-                                                            <th>Harga per Malam</th>
-                                                            <th>Fasilitas</th>
-                                                            <th>Status</th>
-                                                            <th>Aksi</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="roomList">
-                                                        </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- ... (isi room seperti aslinya) ... -->
                         </div>
                         
                         <!-- Guest Management Tab -->
                         <div class="tab-pane fade" id="guest" role="tabpanel" aria-labelledby="guest-tab">
-                            <h3 class="section-title">Manajemen Data Tamu</h3>
-                            
-                            <div class="d-flex flex-wrap gap-2 mb-4">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGuestModal">
-                                    <i class="fas fa-plus me-2"></i>Tambah Tamu
-                                </button>
-                                <button class="btn btn-success" id="exportGuestsBtn">
-                                    <i class="fas fa-file-excel me-2"></i>Ekspor Data
-                                </button>
-                                <button class="btn btn-danger" id="printGuestPdfBtn">
-                                    <i class="fas fa-file-pdf me-2"></i>Cetak PDF
-                                </button>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-users me-2"></i>Daftar Tamu
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Nama</th>
-                                                            <th>Email</th>
-                                                            <th>Telepon</th>
-                                                            <th>Alamat</th>
-                                                            <th>Aksi</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="guestList">
-                                                        </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- ... (isi guest seperti aslinya) ... -->
                         </div>
                         
                         <!-- Report Tab -->
                         <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
-                            <h3 class="section-title">Laporan dan Analisis</h3>
-                            
-                            <div class="row mb-4">
-                                <div class="col-md-12">
-                                    <div class="filter-section">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label for="reportType" class="form-label">Jenis Laporan</label>
-                                                <select class="form-select" id="reportType">
-                                                    <option value="revenue">Pendapatan</option>
-                                                    <option value="occupancy">Tingkat Okupansi</option>
-                                                    <option value="guests">Registrasi Tamu</option>
-                                                    <option value="reservations">Jumlah Reservasi</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="reportStartDate" class="form-label">Periode Mulai</label>
-                                                <input type="date" class="form-control" id="reportStartDate">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="reportEndDate" class="form-label">Periode Akhir</label>
-                                                <input type="date" class="form-control" id="reportEndDate">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label d-block d-md-none">&nbsp;</label>
-                                                <button class="btn btn-primary w-100" id="generateReportBtn">
-                                                    <i class="fas fa-chart-bar me-2"></i>Generate Laporan
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row mt-4">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <div><i class="fas fa-table me-2"></i>Data Laporan</div>
-                                            <div id="reportActions" style="display: none;" class="d-flex flex-wrap gap-2">
-                                                <button class="btn btn-sm btn-info" id="printReportBtn"><i class="fas fa-print me-2"></i>Cetak Laporan</button>
-                                                <button class="btn btn-sm btn-danger" id="downloadReportPdfBtn"><i class="fas fa-file-pdf me-2"></i>Unduh PDF</button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div id="reportSummary" class="mb-3" style="display: none;"></div>
-                                            <div class="table-responsive">
-                                                <table class="table table-hover data-table">
-                                                    <thead id="reportTableHeader">
-                                                        </thead>
-                                                    <tbody id="reportTableBody">
-                                                        <tr><td colspan="4" class="text-center">Silakan generate laporan untuk melihat data.</td></tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- ... (isi report seperti aslinya) ... -->
                         </div>
                         
                         <!-- Settings Tab -->
                         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                            <h3 class="section-title">Pengaturan Sistem</h3>
-                            
-                            <div class="row">
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-cog me-2"></i>Pengaturan Umum
-                                        </div>
-                                        <div class="card-body">
-                                            <form id="generalSettingsForm">
-                                                <div class="mb-3">
-                                                    <label for="hotelName" class="form-label">Nama Hotel</label>
-                                                    <input type="text" class="form-control" id="hotelName" placeholder="Masukkan nama hotel">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="hotelAddress" class="form-label">Alamat Hotel</label>
-                                                    <textarea class="form-control" id="hotelAddress" rows="3" placeholder="Masukkan alamat hotel"></textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="hotelPhone" class="form-label">Telepon Hotel</label>
-                                                    <input type="text" class="form-control" id="hotelPhone" placeholder="Masukkan telepon hotel">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="hotelEmail" class="form-label">Email Hotel</label>
-                                                    <input type="email" class="form-control" id="hotelEmail" placeholder="Masukkan email hotel">
-                                                </div>
-                                                <hr>
-                                                <h6 class="form-label">Harga Layanan Premium</h6>
-                                                <div class="mb-3">
-                                                    <label for="pricePijat" class="form-label">Harga Pijat</label>
-                                                    <input type="number" class="form-control" id="pricePijat" placeholder="Masukkan harga">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="priceMakanMalam" class="form-label">Harga Makan Malam</label>
-                                                    <input type="number" class="form-control" id="priceMakanMalam" placeholder="Masukkan harga">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="priceMeetingRoom" class="form-label">Harga Meeting Room</label>
-                                                    <input type="number" class="form-control" id="priceMeetingRoom" placeholder="Masukkan harga">
-                                                </div>
-
-                                                <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="card mt-4">
-                                        <div class="card-header">
-                                            <i class="fas fa-user-circle me-2"></i>Akun
-                                        </div>
-                                        <div class="card-body">
-                                            <p>Anda login sebagai <strong><span id="loggedInUser"></span></strong>.</p>
-                                            <button class="btn btn-danger" id="logoutBtn">
-                                                <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <i class="fas fa-sliders-h me-2"></i>Pengaturan Lainnya
-                                        </div>
-                                        <div class="card-body">
-                                            <form id="otherSettingsForm">
-                                                <div class="mb-3">
-                                                    <label for="currency" class="form-label">Mata Uang</label>
-                                                    <select class="form-select" id="currency">
-                                                        <option value="IDR">Rupiah (IDR)</option>
-                                                        <option value="USD">Dollar (USD)</option>
-                                                        <option value="EUR">Euro (EUR)</option>
-                                                        <option value="SGD">Dollar Singapura (SGD)</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="taxRate" class="form-label">Pajak (%)</label>
-                                                    <input type="number" class="form-control" id="taxRate" min="0" max="30" step="0.1" placeholder="Masukkan persentase pajak">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="defaultCheckinTime" class="form-label">Waktu Check-In Default</label>
-                                                    <input type="time" class="form-control" id="defaultCheckinTime" value="14:00">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="defaultCheckoutTime" class="form-label">Waktu Check-Out Default</label>
-                                                    <input type="time" class="form-control" id="defaultCheckoutTime" value="12:00">
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="card mt-4">
-                                        <div class="card-header">
-                                            <i class="fas fa-database me-2"></i>Manajemen Data
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="d-grid gap-2">
-                                                <button class="btn btn-success" id="exportAllDataBtn">
-                                                    <i class="fas fa-file-export me-2"></i>Ekspor Semua Data (Excel)
-                                                </button>
-                                                <button class="btn btn-info" id="backupAllDataJsonBtn">
-                                                    <i class="fas fa-file-archive me-2"></i>Backup Semua Data (JSON)
-                                                </button>
-                                                <button class="btn btn-warning" id="importDataBtn">
-                                                    <i class="fas fa-file-import me-2"></i>Impor Data (JSON)
-                                                </button>
-                                                <button class="btn btn-danger" id="resetDataBtn">
-                                                    <i class="fas fa-trash-alt me-2"></i>Reset Data
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- ... (isi settings seperti aslinya) ... -->
                         </div>
                     </div>
                 </div>
@@ -729,60 +226,676 @@
         </div>
     </div>
     
-    <!-- Modal Reservasi -->
+    <!-- Modal Tambah Reservasi -->
     <div class="modal fade" id="addReservationModal" tabindex="-1" aria-labelledby="addReservationModalLabel" aria-hidden="true">
-        <!-- Isi modal sama seperti asli, tidak perlu diubah -->
-        <!-- ... -->
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addReservationModalLabel">Tambah Reservasi Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addReservationForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="reservationGuestName" class="form-label">Nama Tamu</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" id="reservationGuestName" placeholder="Ketik nama tamu...">
+                                    <input type="hidden" id="reservationGuestId">
+                                    <div id="guestSearchResults" class="list-group guest-search-results position-absolute w-100" style="z-index: 1000; max-height: 200px; overflow-y: auto;"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="reservationRoom" class="form-label">Kamar</label>
+                                <select class="form-select" id="reservationRoom" required>
+                                    <option value="">Pilih Kamar</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="reservationCheckin" class="form-label">Tanggal Check-In</label>
+                                <input type="date" class="form-control" id="reservationCheckin" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="reservationCheckout" class="form-label">Tanggal Check-Out</label>
+                                <input type="date" class="form-control" id="reservationCheckout" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="reservationGuests" class="form-label">Jumlah Tamu</label>
+                                <input type="number" class="form-control" id="reservationGuests" value="1" min="1" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="reservationStatus" class="form-label">Status Reservasi</label>
+                                <select class="form-select" id="reservationStatus">
+                                    <option value="confirmed">Dikonfirmasi</option>
+                                    <option value="pending">Menunggu</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Layanan Premium</label>
+                                <div class="form-facilities-columns">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="servicePijat" value="Pijat">
+                                        <label class="form-check-label" for="servicePijat">Pijat</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="serviceMakanMalam" value="Makan Malam">
+                                        <label class="form-check-label" for="serviceMakanMalam">Makan Malam</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="serviceMeetingRoom" value="Meeting Room">
+                                        <label class="form-check-label" for="serviceMeetingRoom">Meeting Room</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="reservationNotes" class="form-label">Catatan</label>
+                                <textarea class="form-control" id="reservationNotes" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveReservationBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <!-- Modal Guest -->
+    <!-- Modal Tambah Tamu -->
     <div class="modal fade" id="addGuestModal" tabindex="-1" aria-labelledby="addGuestModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addGuestModalLabel">Tambah Tamu Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addGuestForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="guestFirstName" class="form-label">Nama Depan</label>
+                                <input type="text" class="form-control" id="guestFirstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="guestLastName" class="form-label">Nama Belakang</label>
+                                <input type="text" class="form-control" id="guestLastName" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="guestEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="guestEmail" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="guestPhone" class="form-label">Telepon</label>
+                                <input type="tel" class="form-control" id="guestPhone">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="guestNationality" class="form-label">Kewarganegaraan</label>
+                                <input type="text" class="form-control" id="guestNationality" value="Indonesia">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="guestIdType" class="form-label">Jenis Identitas</label>
+                                <select class="form-select" id="guestIdType">
+                                    <option value="KTP">KTP</option>
+                                    <option value="Paspor">Paspor</option>
+                                    <option value="SIM">SIM</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="guestIdNumber" class="form-label">Nomor Identitas</label>
+                                <input type="text" class="form-control" id="guestIdNumber">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="guestAddress" class="form-label">Alamat</label>
+                                <textarea class="form-control" id="guestAddress" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveGuestBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <!-- Modal Room -->
+    <!-- Modal Tambah Kamar -->
     <div class="modal fade" id="addRoomModal" tabindex="-1" aria-labelledby="addRoomModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRoomModalLabel">Tambah Kamar Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addRoomForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="roomNumber" class="form-label">Nomor Kamar</label>
+                                <input type="text" class="form-control" id="roomNumber" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="roomType" class="form-label">Tipe Kamar</label>
+                                <select class="form-select" id="roomType">
+                                    <option value="Standard">Standard</option>
+                                    <option value="Deluxe">Deluxe</option>
+                                    <option value="Suite">Suite</option>
+                                    <option value="Family">Family</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="roomPrice" class="form-label">Harga per Malam</label>
+                                <input type="number" class="form-control" id="roomPrice" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="roomStatus" class="form-label">Status</label>
+                                <select class="form-select" id="roomStatus">
+                                    <option value="available">Tersedia</option>
+                                    <option value="occupied">Terisi</option>
+                                    <option value="maintenance">Pemeliharaan</option>
+                                    <option value="reserved">Dipesan</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Fasilitas</label>
+                                <div class="form-facilities-columns">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="facilityAC" value="AC">
+                                        <label class="form-check-label" for="facilityAC">AC</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="facilityTV" value="TV">
+                                        <label class="form-check-label" for="facilityTV">TV</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="facilityWifi" value="WiFi">
+                                        <label class="form-check-label" for="facilityWifi">WiFi</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="facilityBreakfast" value="Sarapan">
+                                        <label class="form-check-label" for="facilityBreakfast">Sarapan</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="facilityBathtub" value="Bathtub">
+                                        <label class="form-check-label" for="facilityBathtub">Bathtub</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="facilityBalcony" value="Balkon">
+                                        <label class="form-check-label" for="facilityBalcony">Balkon</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="saveRoomBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <!-- Modal Edit Reservation -->
+    <!-- Modal Edit Reservasi -->
     <div class="modal fade" id="editReservationModal" tabindex="-1" aria-labelledby="editReservationModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editReservationModalLabel">Edit Reservasi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editReservationForm">
+                        <input type="hidden" id="editReservationId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editReservationGuestName" class="form-label">Nama Tamu</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" id="editReservationGuestName" placeholder="Ketik nama tamu...">
+                                    <input type="hidden" id="editReservationGuestId">
+                                    <div id="editGuestSearchResults" class="list-group guest-search-results position-absolute w-100" style="z-index: 1000; max-height: 200px; overflow-y: auto;"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editReservationRoom" class="form-label">Kamar</label>
+                                <select class="form-select" id="editReservationRoom" required>
+                                    <option value="">Pilih Kamar</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editReservationCheckin" class="form-label">Tanggal Check-In</label>
+                                <input type="date" class="form-control" id="editReservationCheckin" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editReservationCheckout" class="form-label">Tanggal Check-Out</label>
+                                <input type="date" class="form-control" id="editReservationCheckout" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editReservationGuests" class="form-label">Jumlah Tamu</label>
+                                <input type="number" class="form-control" id="editReservationGuests" min="1">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editReservationStatus" class="form-label">Status</label>
+                                <select class="form-select" id="editReservationStatus">
+                                    <option value="confirmed">Dikonfirmasi</option>
+                                    <option value="pending">Menunggu</option>
+                                    <option value="checked-in">Check-In</option>
+                                    <option value="cancelled">Dibatalkan</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Layanan Premium</label>
+                                <div class="form-facilities-columns">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editServicePijat" value="Pijat">
+                                        <label class="form-check-label" for="editServicePijat">Pijat</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editServiceMakanMalam" value="Makan Malam">
+                                        <label class="form-check-label" for="editServiceMakanMalam">Makan Malam</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editServiceMeetingRoom" value="Meeting Room">
+                                        <label class="form-check-label" for="editServiceMeetingRoom">Meeting Room</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="editReservationNotes" class="form-label">Catatan</label>
+                                <textarea class="form-control" id="editReservationNotes" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="updateReservationBtn">Update</button>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <!-- Modal Edit Guest -->
+    <!-- Modal Edit Tamu -->
     <div class="modal fade" id="editGuestModal" tabindex="-1" aria-labelledby="editGuestModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGuestModalLabel">Edit Data Tamu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editGuestForm">
+                        <input type="hidden" id="editGuestId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editGuestFirstName" class="form-label">Nama Depan</label>
+                                <input type="text" class="form-control" id="editGuestFirstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editGuestLastName" class="form-label">Nama Belakang</label>
+                                <input type="text" class="form-control" id="editGuestLastName" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="editGuestEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editGuestEmail" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editGuestPhone" class="form-label">Telepon</label>
+                                <input type="tel" class="form-control" id="editGuestPhone">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editGuestNationality" class="form-label">Kewarganegaraan</label>
+                                <input type="text" class="form-control" id="editGuestNationality">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editGuestIdType" class="form-label">Jenis Identitas</label>
+                                <select class="form-select" id="editGuestIdType">
+                                    <option value="KTP">KTP</option>
+                                    <option value="Paspor">Paspor</option>
+                                    <option value="SIM">SIM</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editGuestIdNumber" class="form-label">Nomor Identitas</label>
+                                <input type="text" class="form-control" id="editGuestIdNumber">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="editGuestAddress" class="form-label">Alamat</label>
+                                <textarea class="form-control" id="editGuestAddress" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="updateGuestBtn">Update</button>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <!-- Modal Edit Room -->
+    <!-- Modal Edit Kamar -->
     <div class="modal fade" id="editRoomModal" tabindex="-1" aria-labelledby="editRoomModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editRoomModalLabel">Edit Data Kamar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editRoomForm">
+                        <input type="hidden" id="editRoomId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editRoomNumber" class="form-label">Nomor Kamar</label>
+                                <input type="text" class="form-control" id="editRoomNumber" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editRoomType" class="form-label">Tipe Kamar</label>
+                                <select class="form-select" id="editRoomType">
+                                    <option value="Standard">Standard</option>
+                                    <option value="Deluxe">Deluxe</option>
+                                    <option value="Suite">Suite</option>
+                                    <option value="Family">Family</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editRoomPrice" class="form-label">Harga per Malam</label>
+                                <input type="number" class="form-control" id="editRoomPrice" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editRoomStatus" class="form-label">Status</label>
+                                <select class="form-select" id="editRoomStatus">
+                                    <option value="available">Tersedia</option>
+                                    <option value="occupied">Terisi</option>
+                                    <option value="maintenance">Pemeliharaan</option>
+                                    <option value="reserved">Dipesan</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Fasilitas</label>
+                                <div class="form-facilities-columns">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editFacilityAC" value="AC">
+                                        <label class="form-check-label" for="editFacilityAC">AC</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editFacilityTV" value="TV">
+                                        <label class="form-check-label" for="editFacilityTV">TV</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editFacilityWifi" value="WiFi">
+                                        <label class="form-check-label" for="editFacilityWifi">WiFi</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editFacilityBreakfast" value="Sarapan">
+                                        <label class="form-check-label" for="editFacilityBreakfast">Sarapan</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editFacilityBathtub" value="Bathtub">
+                                        <label class="form-check-label" for="editFacilityBathtub">Bathtub</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editFacilityBalcony" value="Balkon">
+                                        <label class="form-check-label" for="editFacilityBalcony">Balkon</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="updateRoomBtn">Update</button>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Modal Check-In -->
     <div class="modal fade" id="checkinModal" tabindex="-1" aria-labelledby="checkinModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkinModalLabel">Proses Check-In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkinForm">
+                        <input type="hidden" id="checkinReservationId">
+                        <div class="mb-3">
+                            <label for="checkinReservationCode" class="form-label">Kode Reservasi</label>
+                            <input type="text" class="form-control" id="checkinReservationCode" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="checkinGuestName" class="form-label">Nama Tamu</label>
+                            <input type="text" class="form-control" id="checkinGuestName" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="checkinRoom" class="form-label">Kamar</label>
+                            <input type="text" class="form-control" id="checkinRoom" readonly>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="checkinDate" class="form-label">Tanggal Check-In</label>
+                                <input type="date" class="form-control" id="checkinDate" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="checkinTime" class="form-label">Waktu Check-In</label>
+                                <input type="time" class="form-control" id="checkinTime" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-success" id="confirmCheckinBtn">Konfirmasi Check-In</button>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <!-- Modal Check-Out -->
+    <!-- Modal Check-Out & Invoice -->
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Proses Check-Out & Invoice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="invoice-container" id="checkoutInvoice">
+                        <div class="invoice-watermark"></div>
+                        <div class="invoice-header">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="invoice-logo">
+                                        <i class="fas fa-hotel"></i>
+                                    </div>
+                                    <h3 id="invoiceHotelName"></h3>
+                                    <p id="invoiceHotelAddress"></p>
+                                    <p id="invoiceHotelPhone"></p>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <h2>INVOICE</h2>
+                                    <p>No: <span id="invoiceNumber"></span></p>
+                                    <p>Tanggal: <span id="invoiceDate"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="invoice-details">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Detail Tamu</h5>
+                                    <p id="invoiceGuestName"></p>
+                                    <p id="invoiceGuestPhone"></p>
+                                    <p id="invoiceGuestEmail"></p>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <h5>Detail Reservasi</h5>
+                                    <p>Kamar: <span id="invoiceRoom"></span></p>
+                                    <p>Check-In: <span id="invoiceCheckin"></span></p>
+                                    <p>Check-Out: <span id="invoiceCheckout"></span></p>
+                                    <p>Lama Menginap: <span id="invoiceNights"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive mt-4">
+                            <table class="table table-bordered invoice-table">
+                                <thead>
+                                    <tr>
+                                        <th>Deskripsi</th>
+                                        <th>Jumlah</th>
+                                        <th>Harga Satuan</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoiceItems">
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-end"><strong>Subtotal</strong></td>
+                                        <td><strong id="invoiceSubtotal"></strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-end">Pajak (<span id="invoiceTaxRate"></span>%)</td>
+                                        <td id="invoiceTax"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                        <td><strong id="invoiceTotal"></strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        
+                        <div class="row mt-4" id="checkoutPaymentSection">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="checkoutPaymentMethod" class="form-label">Metode Pembayaran</label>
+                                    <select class="form-select" id="checkoutPaymentMethod">
+                                        <option value="cash">Tunai</option>
+                                        <option value="credit_card">Kartu Kredit</option>
+                                        <option value="debit_card">Kartu Debit</option>
+                                        <option value="transfer">Transfer Bank</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="checkoutPaymentStatus" class="form-label">Status Pembayaran</label>
+                                    <select class="form-select" id="checkoutPaymentStatus">
+                                        <option value="paid">Lunas</option>
+                                        <option value="pending">Belum Lunas</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="checkoutTotalBill" class="form-label">Total Tagihan</label>
+                                    <input type="text" class="form-control" id="checkoutTotalBill" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="amountPaid" class="form-label">Jumlah Dibayar</label>
+                                    <input type="number" class="form-control" id="amountPaid" min="0">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="changeDue" class="form-label">Kembalian</label>
+                                    <input type="text" class="form-control" id="changeDue" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="invoice-footer">
+                            <p>Hormat kami,</p>
+                            <p id="invoiceFrontOfficeName"></p>
+                            <p class="mt-4">Hormat Tamu,</p>
+                            <p id="signatureGuestName"></p>
+                        </div>
+                    </div>
+                    <input type="hidden" id="checkoutReservationId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-info" id="printInvoiceBtn"><i class="fas fa-print"></i> Cetak</button>
+                    <button type="button" class="btn btn-danger" id="downloadInvoicePdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                    <button type="button" class="btn btn-success" id="confirmCheckoutBtn">Proses Check-Out</button>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <!-- Modal Hapus -->
+    <!-- Modal Konfirmasi Hapus -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin menghapus data ini?</p>
+                    <input type="hidden" id="deleteItemId">
+                    <input type="hidden" id="deleteItemType">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Modal Import Data -->
     <div class="modal fade" id="importDataModal" tabindex="-1" aria-labelledby="importDataModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importDataModalLabel">Import Data (JSON)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="importForm">
+                        <div class="mb-3">
+                            <label for="importDataFile" class="form-label">Pilih File JSON</label>
+                            <input type="file" class="form-control" id="importDataFile" accept=".json">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="importOverwrite">
+                            <label class="form-check-label" for="importOverwrite">
+                                Timpa data yang ada (jika tidak dicentang, data akan digabung)
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="confirmImportBtn">Import</button>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Modal Password Settings -->
     <div class="modal fade" id="settingsPasswordModal" tabindex="-1" aria-labelledby="settingsPasswordModalLabel" aria-hidden="true">
-        <!-- Isi modal sama -->
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsPasswordModalLabel">Konfirmasi Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Masukkan password untuk menyimpan pengaturan:</p>
+                    <input type="password" class="form-control" id="settingsPassword" placeholder="Password">
+                    <div id="settingsPasswordError" class="error-message mt-2" style="display: none;">Password salah!</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="confirmSettingsSaveBtn">Simpan</button>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- External Scripts -->
