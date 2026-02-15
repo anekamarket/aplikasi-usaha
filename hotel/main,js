@@ -12,6 +12,11 @@ function initApp() {
     checkLoginState();
 }
 
+// --- FUNGSI HASH PASSWORD (SHA-256) ---
+function hashPassword(password) {
+    return CryptoJS.SHA256(password).toString();
+}
+
 // --- LOGIN FUNCTIONS ---
 function generateCaptcha() {
     const canvas = document.getElementById('captchaCanvas');
@@ -50,68 +55,99 @@ function checkLoginState() {
     if (sessionStorage.getItem('isLoggedIn') === 'true') {
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
+        // Tampilkan info user di header
+        document.getElementById('loggedInUserDisplay').textContent = sessionStorage.getItem('userName') || sessionStorage.getItem('username');
+        document.getElementById('userRoleDisplay').textContent = sessionStorage.getItem('userRole');
         initializeAppCore();
     } else {
         document.getElementById('loginOverlay').style.display = 'flex';
         document.getElementById('mainApp').style.display = 'none';
         
-        // Hindari multiple event listener
         const loginForm = document.getElementById('loginForm');
         const reloadBtn = document.getElementById('reloadCaptchaBtn');
         
-        // Hapus listener lama jika ada
         loginForm.removeEventListener('submit', handleLogin);
         reloadBtn.removeEventListener('click', generateCaptcha);
         
-        // Tambahkan listener baru
         loginForm.addEventListener('submit', handleLogin);
         reloadBtn.addEventListener('click', generateCaptcha);
         
-        generateCaptcha(); // Generate first captcha
+        generateCaptcha();
     }
 }
 
 function handleLogin(e) {
     e.preventDefault();
-    const frontOfficeName = document.getElementById('frontOfficeName').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
     const captchaInput = document.getElementById('captchaInput').value;
     const errorEl = document.getElementById('loginError');
 
-    if (!frontOfficeName.trim()) {
-        errorEl.textContent = 'Nama Front Office wajib diisi.';
+    if (!username || !password) {
+        errorEl.textContent = 'Username dan Password wajib diisi.';
         errorEl.style.display = 'block';
         return;
     }
 
-    if (captchaInput.toLowerCase() === captchaText.toLowerCase()) {
-        sessionStorage.setItem('isLoggedIn', 'true');
-        sessionStorage.setItem('frontOfficeName', frontOfficeName);
-        errorEl.style.display = 'none';
-        checkLoginState();
-    } else {
+    if (captchaInput.toLowerCase() !== captchaText.toLowerCase()) {
         errorEl.textContent = 'Kode verifikasi tidak sesuai. Silakan coba lagi.';
         errorEl.style.display = 'block';
         document.getElementById('captchaInput').value = '';
+        generateCaptcha();
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('hotel_users') || '[]');
+    const hashedInput = hashPassword(password);
+    const user = users.find(u => u.username === username && u.password === hashedInput);
+
+    if (user) {
+        sessionStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('username', user.username);
+        sessionStorage.setItem('userRole', user.role);
+        sessionStorage.setItem('userName', user.name || user.username);
+        errorEl.style.display = 'none';
+        checkLoginState();
+    } else {
+        errorEl.textContent = 'Username atau Password salah.';
+        errorEl.style.display = 'block';
+        document.getElementById('password').value = '';
         generateCaptcha();
     }
 }
 
 function handleLogout() {
     sessionStorage.removeItem('isLoggedIn');
-    sessionStorage.removeItem('frontOfficeName');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('userRole');
+    sessionStorage.removeItem('userName');
     window.location.reload();
 }
 
 // --- CORE APP INITIALIZATION ---
 function initializeAppCore() {
+    initUsers(); // pastikan data user default ada
     initStorage();
     loadInitialData();
     setupEventListeners();
     initDashboardCharts();
     updateDashboardStats();
-    const frontOfficeName = sessionStorage.getItem('frontOfficeName');
-    document.getElementById('loggedInUser').textContent = frontOfficeName;
-    showNotification('Akses Diterima', `Sesi login Anda sebagai ${frontOfficeName} telah berhasil diautentikasi.`, 'success');
+    // Sembunyikan tab manajemen user jika bukan admin
+    if (sessionStorage.getItem('userRole') !== 'admin') {
+        document.getElementById('userManagementTabNav').style.display = 'none';
+    } else {
+        loadUsers(); // load tabel user
+    }
+    showNotification('Akses Diterima', `Selamat datang, ${sessionStorage.getItem('userName')}`, 'success');
+}
+
+function initUsers() {
+    if (!localStorage.getItem('hotel_users')) {
+        const defaultUsers = [
+            { username: 'Admin', password: hashPassword('Gratis12345'), role: 'admin', name: 'Administrator', createdAt: new Date().toISOString() }
+        ];
+        localStorage.setItem('hotel_users', JSON.stringify(defaultUsers));
+    }
 }
 
 function initStorage() {
@@ -145,7 +181,10 @@ function loadInitialData() {
 }
 
 function setupEventListeners() {
-    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+    // Logout dari header
+    document.getElementById('logoutBtnHeader').addEventListener('click', handleLogout);
+    // Logout dari sidebar (jika ada)
+    document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
 
     document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
     document.getElementById('sidebarOverlay').addEventListener('click', toggleMobileMenu);
@@ -236,6 +275,130 @@ function setupEventListeners() {
             }
         });
     }
+
+    // User management listeners
+    document.getElementById('saveUserBtn').addEventListener('click', saveUser);
+    document.getElementById('addUserBtn').addEventListener('click', () => {
+        document.getElementById('userModalLabel').textContent = 'Tambah User';
+        document.getElementById('editUserId').value = '';
+        document.getElementById('userForm').reset();
+    });
+    // Delegasi untuk tombol edit/hapus user (karena dinamis)
+    document.getElementById('userTableBody').addEventListener('click', function(e) {
+        const target = e.target.closest('button');
+        if (!target) return;
+        const userId = target.getAttribute('data-id');
+        if (target.classList.contains('edit-user')) {
+            editUser(userId);
+        } else if (target.classList.contains('delete-user')) {
+            deleteUser(userId);
+        }
+    });
+}
+
+// --- FUNGSI USER MANAGEMENT ---
+function loadUsers() {
+    const users = JSON.parse(localStorage.getItem('hotel_users') || '[]');
+    const tbody = document.getElementById('userTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    users.forEach(user => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${user.username}</td>
+            <td>${user.name || '-'}</td>
+            <td>${user.role === 'admin' ? 'Admin' : 'Operator'}</td>
+            <td>${formatDate(user.createdAt)}</td>
+            <td>
+                <button class="btn btn-sm btn-warning edit-user" data-id="${user.username}" title="Edit"><i class="fas fa-edit"></i></button>
+                ${user.username !== sessionStorage.getItem('username') ? `<button class="btn btn-sm btn-danger delete-user" data-id="${user.username}" title="Hapus"><i class="fas fa-trash"></i></button>` : ''}
+            </td>
+        `;
+    });
+}
+
+function saveUser() {
+    const editId = document.getElementById('editUserId').value;
+    const isEdit = editId !== '';
+    const username = document.getElementById('userUsername').value.trim();
+    const password = document.getElementById('userPassword').value;
+    const name = document.getElementById('userName').value.trim();
+    const role = document.getElementById('userRole').value;
+
+    if (!username) {
+        showNotification('Error', 'Username harus diisi', 'error');
+        return;
+    }
+    if (!isEdit && password.length < 6) {
+        showNotification('Error', 'Password minimal 6 karakter', 'error');
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('hotel_users') || '[]');
+    
+    if (!isEdit) {
+        // Tambah baru
+        if (users.some(u => u.username === username)) {
+            showNotification('Error', 'Username sudah digunakan', 'error');
+            return;
+        }
+        const newUser = {
+            username: username,
+            password: hashPassword(password),
+            name: name,
+            role: role,
+            createdAt: new Date().toISOString()
+        };
+        users.push(newUser);
+        showNotification('Sukses', 'User berhasil ditambahkan', 'success');
+    } else {
+        // Edit
+        const index = users.findIndex(u => u.username === editId);
+        if (index === -1) return;
+        // Cek username baru jika diubah
+        if (username !== editId && users.some(u => u.username === username)) {
+            showNotification('Error', 'Username sudah digunakan', 'error');
+            return;
+        }
+        users[index].username = username;
+        if (password) {
+            users[index].password = hashPassword(password);
+        }
+        users[index].name = name;
+        users[index].role = role;
+        showNotification('Sukses', 'User berhasil diperbarui', 'success');
+    }
+
+    localStorage.setItem('hotel_users', JSON.stringify(users));
+    bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
+    document.getElementById('userForm').reset();
+    document.getElementById('editUserId').value = '';
+    loadUsers();
+}
+
+function editUser(username) {
+    const users = JSON.parse(localStorage.getItem('hotel_users') || '[]');
+    const user = users.find(u => u.username === username);
+    if (!user) return;
+
+    document.getElementById('editUserId').value = username;
+    document.getElementById('userUsername').value = user.username;
+    document.getElementById('userPassword').value = ''; // kosongkan password
+    document.getElementById('userName').value = user.name || '';
+    document.getElementById('userRole').value = user.role;
+    
+    document.getElementById('userModalLabel').textContent = 'Edit User';
+    new bootstrap.Modal(document.getElementById('userModal')).show();
+}
+
+function deleteUser(username) {
+    if (!confirm(`Hapus user ${username}?`)) return;
+    const users = JSON.parse(localStorage.getItem('hotel_users') || '[]');
+    const filtered = users.filter(u => u.username !== username);
+    if (filtered.length === users.length) return;
+    localStorage.setItem('hotel_users', JSON.stringify(filtered));
+    loadUsers();
+    showNotification('Sukses', 'User dihapus', 'success');
 }
 
 function toggleMobileMenu() {
@@ -869,7 +1032,7 @@ function populateInvoiceModal(reservation) {
     const guests = JSON.parse(localStorage.getItem('hotel_guests') || '[]');
     const rooms = JSON.parse(localStorage.getItem('hotel_rooms') || '[]');
     const settings = JSON.parse(localStorage.getItem('hotel_settings') || '{}');
-    const frontOfficeName = sessionStorage.getItem('frontOfficeName') || 'Staff';
+    const frontOfficeName = sessionStorage.getItem('userName') || 'Staff';
     
     const guest = guests.find(g => g.id === reservation.guestId) || {};
     const room = rooms.find(r => r.id === reservation.roomId) || {};
@@ -1245,7 +1408,7 @@ function urlToBas64(url) {
 async function downloadInvoicePdf() {
     const checkoutModal = document.getElementById('checkoutModal');
     const reservationId = checkoutModal.dataset.reprintId;
-    const frontOfficeName = sessionStorage.getItem('frontOfficeName') || 'Staff';
+    const frontOfficeName = sessionStorage.getItem('userName') || 'Staff';
 
     if (!reservationId) {
         showNotification('Error', 'Tidak ada data reservasi untuk diunduh.', 'error');
