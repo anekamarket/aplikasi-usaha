@@ -2,12 +2,12 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
-    <meta name="description" content="NOS (Network Ojek Situbondo) - Layanan ojek online profesional di Situbondo dengan driver berpengalaman dan tarif terjangkau.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="NOS (Network Ojek Situbondo) – Layanan ojek online profesional di Situbondo dengan driver berpengalaman dan tarif terjangkau.">
     <meta name="keywords" content="ojek online, transportasi, ojek, situbondo, angkutan, nos, network ojek situbondo">
-    <meta name="author" content="NOS - Network Ojek Situbondo">
+    <meta name="author" content="NOS - Lentera Karya">
     <meta property="og:title" content="NOS | Network Ojek Situbondo">
-    <meta property="og:description" content="Layanan ojek online profesional di Situbondo dengan driver berpengalaman dan tarif terjangkau.">
+    <meta property="og:description" content="Layanan ojek online profesional di Situbondo.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lenterakarya.github.io/nos-ojek/">
     <meta property="og:image" content="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/nos/logo-nos-update.png">
@@ -16,28 +16,31 @@
     <!-- CSS Eksternal -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Font & Icons -->
+    <!-- Font Awesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/nos/logo-nos-update.png" type="image/png">
-    
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/nos/logo-nos-update.png" type="image/png">
 </head>
 <body>
-    
-    <!-- Audio Elements -->
-    <audio id="bgMusic" loop>
+    <!-- Audio Elements (disembunyikan) -->
+    <audio id="bgMusic" loop preload="none">
         <source src="https://github.com/LenteraKarya/jualan-kita/blob/main/assets/audio/Musik%20website.mp3?raw=true" type="audio/mpeg">
     </audio>
-    <audio id="buttonSound" src="https://github.com/LenteraKarya/homestay/blob/main/assets/audio/audiotombol.mp3?raw=true"></audio>
-    
-    <!-- Particles Container -->
+    <audio id="buttonSound" preload="none">
+        <source src="https://github.com/LenteraKarya/homestay/blob/main/assets/audio/audiotombol.mp3?raw=true" type="audio/mpeg">
+    </audio>
+
+    <!-- Partikel Latar -->
     <div class="particles" id="particles"></div>
-    
-    <!-- Header -->
+
+    <!-- HEADER -->
     <header id="home">
         <div class="header-overlay"></div>
         <div class="header-content">
@@ -46,12 +49,12 @@
                 <span>NOS</span>
             </div>
             <p class="tagline">Transportasi Nyaman, Tarif Terjangkau</p>
-            
+
             <div class="header-search">
                 <input type="text" id="headerSearchInput" placeholder="Cari lokasi tujuan...">
                 <button id="headerSearchBtn" aria-label="Cari"><i class="fas fa-search"></i></button>
             </div>
-            
+
             <div class="header-buttons">
                 <a href="#order" class="btn btn-primary"><i class="fas fa-motorcycle"></i> Pesan Sekarang</a>
                 <a href="#drivers" class="btn btn-outline"><i class="fas fa-users"></i> Lihat Driver Kami</a>
@@ -59,15 +62,14 @@
             <a href="#services" class="scroll-down" aria-label="Scroll ke bawah"><i class="fas fa-chevron-down"></i></a>
         </div>
     </header>
-    
-    <!-- Navigation -->
+
+    <!-- NAVIGASI STICKY -->
     <nav id="navbar">
         <div class="nav-container">
             <a href="#home" class="nav-logo">
                 <img src="https://raw.githubusercontent.com/anekamarket/aplikasi-usaha/refs/heads/main/nos/logo-nos-update.png" alt="NOS Logo">
                 <span>NOS</span>
             </a>
-            
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home">Beranda</a></li>
                 <li><a href="#order">Pesan Ojek</a></li>
@@ -76,15 +78,15 @@
                 <li><a href="#contact">Kontak</a></li>
                 <li><a href="#register">Daftar Driver</a></li>
             </ul>
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Buka menu">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
-    
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Layanan Section -->
+
+    <!-- KONTEN UTAMA -->
+    <main>
+        <!-- Layanan -->
         <section class="services" id="services">
             <h2 class="section-title">Layanan Kami</h2>
             <p class="section-intro">Kami menyediakan berbagai layanan transportasi yang nyaman dan aman untuk memenuhi kebutuhan perjalanan Anda di Situbondo.</p>
@@ -106,8 +108,8 @@
                 </div>
             </div>
         </section>
-        
-        <!-- Pemesanan Section -->
+
+        <!-- Pemesanan -->
         <section class="booking" id="order">
             <h2 class="section-title">Pesan Ojek Sekarang</h2>
             <p class="section-intro">Pesan ojek Anda dengan mudah dalam beberapa langkah sederhana. Kami siap mengantarkan Anda dengan nyaman dan aman.</p>
@@ -125,7 +127,7 @@
                         </div>
                     </div>
 
-                    <!-- Step 1 -->
+                    <!-- Step 1: Lokasi -->
                     <div class="form-step active" data-step="1">
                         <div class="map-container">
                             <div id="map"></div>
@@ -144,7 +146,7 @@
                         <button type="button" class="btn btn-primary" data-next="2"><i class="fas fa-arrow-right"></i> Lanjut</button>
                     </div>
 
-                    <!-- Step 2 -->
+                    <!-- Step 2: Data Pribadi & Kendaraan -->
                     <div class="form-step" data-step="2">
                         <div class="form-group">
                             <label for="name">Nama Lengkap *</label>
@@ -176,13 +178,13 @@
                             <label for="notes">Catatan untuk Driver (Opsional)</label>
                             <textarea id="notes" name="notes" placeholder="Contoh: Tolong bawa helm tambahan"></textarea>
                         </div>
-                        <div style="display: flex; gap: 1rem;">
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                             <button type="button" class="btn btn-outline" data-back="1"><i class="fas fa-arrow-left"></i> Kembali</button>
                             <button type="submit" class="btn btn-primary" id="submitOrderBtn"><i class="fas fa-paper-plane"></i> Pesan Sekarang</button>
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
+                    <!-- Step 3: Konfirmasi -->
                     <div class="form-step" data-step="3">
                         <div class="ride-status">
                             <i class="fas fa-check-circle"></i>
@@ -196,8 +198,8 @@
                 </form>
             </div>
         </section>
-        
-        <!-- Driver Section -->
+
+        <!-- Driver -->
         <section class="drivers" id="drivers">
             <h2 class="section-title">Driver Profesional Kami</h2>
             <p class="section-intro">Driver profesional kami siap mengantarkan Anda dengan aman dan nyaman ke tujuan.</p>
@@ -206,9 +208,7 @@
                     <img src="https://github.com/LenteraKarya/NOS/blob/main/assets/images/driver1.jpeg?raw=true" alt="Budi Santoso" class="driver-avatar" loading="lazy">
                     <div class="driver-badge">Terdaftar</div>
                     <h3 class="service-title">Budi Santoso</h3>
-                    <div class="driver-rating">
-                        <i class="fas fa-star"></i> 4.7 (127)
-                    </div>
+                    <div class="driver-rating"><i class="fas fa-star"></i> 4.7 (127)</div>
                     <div class="driver-specs">
                         <div class="spec-item"><span class="spec-label">Kendaraan:</span><span class="spec-value">Honda Beat</span></div>
                         <div class="spec-item"><span class="spec-label">Layanan:</span><span class="spec-value">Semua</span></div>
@@ -221,9 +221,7 @@
                     <img src="https://github.com/LenteraKarya/NOS/blob/main/assets/images/driver2.jpeg?raw=true" alt="Ani Wijaya" class="driver-avatar" loading="lazy">
                     <div class="driver-badge">Terdaftar</div>
                     <h3 class="service-title">Ani Wijaya</h3>
-                    <div class="driver-rating">
-                        <i class="fas fa-star"></i> 5.0 (89)
-                    </div>
+                    <div class="driver-rating"><i class="fas fa-star"></i> 5.0 (89)</div>
                     <div class="driver-specs">
                         <div class="spec-item"><span class="spec-label">Kendaraan:</span><span class="spec-value">Yamaha NMax</span></div>
                         <div class="spec-item"><span class="spec-label">Layanan:</span><span class="spec-value">Premium</span></div>
@@ -236,9 +234,7 @@
                     <img src="https://github.com/LenteraKarya/NOS/blob/main/assets/images/driver3.jpeg?raw=true" alt="Joko Prasetyo" class="driver-avatar" loading="lazy">
                     <div class="driver-badge inactive">Berhenti</div>
                     <h3 class="service-title">Joko Prasetyo</h3>
-                    <div class="driver-rating">
-                        <i class="fas fa-star"></i> 4.2 (203)
-                    </div>
+                    <div class="driver-rating"><i class="fas fa-star"></i> 4.2 (203)</div>
                     <div class="driver-specs">
                         <div class="spec-item"><span class="spec-label">Kendaraan:</span><span class="spec-value">Honda CB150</span></div>
                         <div class="spec-item"><span class="spec-label">Layanan:</span><span class="spec-value">Barang</span></div>
@@ -249,7 +245,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Registrasi Driver -->
         <section class="registration" id="register">
             <h2 class="section-title">Daftar Menjadi Driver NOS</h2>
@@ -304,7 +300,7 @@
                 </form>
             </div>
         </section>
-        
+
         <!-- Kontak -->
         <section class="contact" id="contact">
             <h2 class="section-title">Hubungi Kami</h2>
@@ -345,16 +341,16 @@
                 </div>
             </div>
         </section>
-    </div>
-    
+    </main>
+
     <!-- Floating Contact Buttons -->
     <div class="contact-bar">
         <a href="https://wa.me/6285647709114" class="contact-btn whatsapp" target="_blank" aria-label="Hubungi via WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <a href="tel:+6287865614222" class="contact-btn phone" aria-label="Telepon Kami"><i class="fas fa-phone"></i></a>
         <a href="#order" class="contact-btn order" aria-label="Pesan Cepat"><i class="fas fa-motorcycle"></i></a>
     </div>
-    
-    <!-- Footer -->
+
+    <!-- FOOTER -->
     <footer>
         <div class="footer-container">
             <div class="footer-col footer-about">
@@ -394,10 +390,9 @@
             &copy; 2025 NOS - Network Ojek Situbondo. Didukung oleh Lentera Karya.
         </div>
     </footer>
-    
-    <!-- Library Leaflet (harus sebelum main.js) -->
+
+    <!-- Leaflet & JavaScript -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <!-- JavaScript Utama -->
     <script src="main.js"></script>
 </body>
 </html>
