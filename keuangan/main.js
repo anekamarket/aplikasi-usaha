@@ -1,7 +1,6 @@
 // ============================================
 // KOPERASI DIGITAL - SISTEM KEUANGAN PREMIUM
-// Versi Penuh - Tanpa Batasan
-// Fitur keamanan & hak akses tetap dipertahankan
+// Versi Final - Semua Fitur Berfungsi
 // ============================================
 
 moment.locale('id');
@@ -367,7 +366,7 @@ function loadMembersList(searchTerm = '') {
     const $list = $('#membersList').empty();
     const term = searchTerm.toLowerCase();
     const filtered = members.filter(m =>
-        m.name.toLowerCase().includes(term) || m.id.toLowerCase().includes(term) || m.phone.includes(term)
+        m.name.toLowerCase().includes(term) || m.id.toLowerCase().includes(term) || (m.phone && m.phone.includes(term))
     );
 
     if (filtered.length === 0) {
@@ -382,7 +381,7 @@ function loadMembersList(searchTerm = '') {
             <tr>
                 <td>${m.id}</td>
                 <td>${m.name}</td>
-                <td>${m.phone}</td>
+                <td>${m.phone || '-'}</td>
                 <td class="d-flex gap-2">
                     <button class="btn btn-sm btn-info edit-member" data-id="${m.id}"><i class="fas fa-pencil-alt"></i></button>
                     <button class="btn btn-sm profile-member" style="background-color: #6c757d;" data-id="${m.id}"><i class="fas fa-address-book"></i></button>
@@ -628,7 +627,7 @@ function openLoanDetailsModal(loanId) {
     let paymentsHtml = '<tr><td colspan="4" class="text-center">Belum ada pembayaran.</td></tr>';
     if (loan.payments.length > 0) {
         paymentsHtml = loan.payments.map((p, i) => `
-            <tr><td>Angsuran ke-${i + 1}</td><td>${moment(p.date).format('DD MMM YYYY')}</td><td>${formatCurrency(p.amount)}</td><td>${p.paidBy}</td></tr>
+            <tr><td>Angsuran ke-${i + 1}</td><td>${moment(p.date).format('DD MMM YYYY')}</td><td>${formatCurrency(p.amount)}</td><td>${p.paidBy || '-'}</td></tr>
         `).join('');
     }
 
@@ -1044,7 +1043,7 @@ function changeSecurityCode(e) {
     settings.panelSecurityCode = CryptoJS.SHA256(newCode).toString();
     saveData('settings');
     showToast('Password keamanan berhasil diubah.', 'success');
-    $(e.target).find('input').val('');
+    $('#panelSecurityCode').val('');
 }
 
 function changeOwnPassword(e) {
@@ -1256,7 +1255,7 @@ function exportMembersToExcel() {
         'Nama': m.name,
         'Telepon': m.phone,
         'Alamat': m.address,
-        'Tanggal Bergabung': moment(m.joinDate).format('YYYY-MM-DD')
+        'Tanggal Bergabung': m.joinDate ? moment(m.joinDate).format('YYYY-MM-DD') : ''
     }));
     exportToExcel(data, 'Daftar_Anggota');
 }
@@ -1352,6 +1351,17 @@ function openMemberProfileModal(memberId) {
     $('#profileTotalSimpanan').text(formatCurrency(memberSavings.reduce((sum, s) => sum + s.amount, 0)));
 
     $('#memberProfileModal').css('display', 'flex');
+}
+
+// ============= FUNGSI TAMBAHAN UNTUK SEARCH =============
+function selectMemberForLoan(memberId) {
+    // Fungsi ini dipanggil setelah memilih anggota di modal pinjaman
+    $('#loanMemberSearch').data('selected-id', memberId);
+    // Bisa ditambahkan info singkat jika diperlukan
+}
+
+function selectMemberForPawn(memberId) {
+    $('#pawnMemberSearch').data('selected-id', memberId);
 }
 
 // ============= EVENT LISTENERS & INIT =============
@@ -1507,7 +1517,3 @@ $(document).ready(function () {
     });
     $('#passwordPromptSubmit').click(submitPasswordPrompt);
 });
-
-// Placeholder functions (untuk menghindari error)
-function selectMemberForLoan() { /* opsional */ }
-function selectMemberForPawn() { /* opsional */ }
