@@ -39,8 +39,8 @@ $(document).ready(function() {
         
         if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
             const initialSettings = {
-                storeName: 'TRAVEL JAYA', storeAddress: 'Jl. Raya No. 1, Kota Maju',
-                storePhone: '081234567890', storeEmail: 'www.traveljaya.com',
+                storeName: 'CENDHANU TRAVEL', storeAddress: 'Jl. Raya No. 1, Kota Maju',
+                storePhone: '081234567890', storeEmail: 'www.aplikasiusaha.com/travel',
                 itemSecurityCode: CryptoJS.SHA256('17081945').toString(), panelSecurityCode: CryptoJS.SHA256('LKS.1945').toString(),
             };
             localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(initialSettings));
