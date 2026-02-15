@@ -16,8 +16,8 @@ $(document).ready(function() {
 
     const ENCRYPTION_KEY = 'LenteraKaryaSitubondo-Travel-2025';
 
-    const DEFAULT_ADMIN = { id: 'U001', username: 'Admin', password: CryptoJS.SHA256('Admin.1945').toString(), name: 'Administrator', role: 'admin' };
-    const DEFAULT_OPERATOR = { id: 'U002', username: 'operator', password: CryptoJS.SHA256('operator123').toString(), name: 'Operator', role: 'operator' };
+    const DEFAULT_ADMIN = { id: 'U001', username: 'Admin', password: CryptoJS.SHA256('Admin.12345').toString(), name: 'Administrator', role: 'admin' };
+    const DEFAULT_OPERATOR = { id: 'U002', username: 'Operator', password: CryptoJS.SHA256('Gratis12345').toString(), name: 'Operator', role: 'operator' };
     
     let vehicles, categories, bookings, settings, users, drivers, currentUser, currentBooking;
     let passwordPromptCallback = null;
