@@ -119,23 +119,492 @@
         </footer>
     </div>
 
-    <!-- Modal Structures (disalin dari file asli tanpa perubahan) -->
-    <div id="savingsModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="loansModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="addLoanModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="loanDetailsModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="pawnModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="addPawnModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="manageMembersModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="memberProfileModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="historyModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="recapReportModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="manageKoperasiInfoModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="controlPanelModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="roleManagementModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="ktaModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="passwordPromptModal" class="modal"><!-- ... konten modal ... --></div>
-    <div id="confirmationModal" class="modal"><!-- ... konten modal ... --></div>
+    <!-- ========== MODAL-MODAL ========== -->
+
+    <!-- Modal Simpanan -->
+    <div id="savingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Transaksi Simpanan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="savingsMemberSearch" class="form-label">Cari Anggota (Nama/ID)</label>
+                    <input type="text" id="savingsMemberSearch" class="form-control" placeholder="Ketik nama atau ID anggota" autocomplete="off">
+                    <div id="savingsMemberResults" class="member-search-container"></div>
+                </div>
+
+                <div id="savingsMemberDetails" style="display: none;">
+                    <p id="savingsMemberName" class="text-center"></p>
+                    <div class="member-financial-summary">
+                        <div class="summary-row"><span>Simpanan Pokok:</span> <span id="summaryPokok">Rp 0</span></div>
+                        <div class="summary-row"><span>Simpanan Wajib:</span> <span id="summaryWajib">Rp 0</span></div>
+                        <div class="summary-row"><span>Simpanan Sukarela:</span> <span id="summarySukarela">Rp 0</span></div>
+                        <div class="summary-row total-row"><span>Total Simpanan:</span> <span id="summaryTotalSimpanan">Rp 0</span></div>
+                    </div>
+
+                    <form id="savingsTransactionForm">
+                        <div class="form-group">
+                            <label class="form-label">Jenis Transaksi</label>
+                            <select id="savingsType" class="form-control">
+                                <option value="deposit">Setor (Tambah)</option>
+                                <option value="withdrawal">Tarik (Kurang)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Kategori Simpanan</label>
+                            <select id="savingsCategory" class="form-control">
+                                <option value="pokok">Pokok</option>
+                                <option value="wajib">Wajib</option>
+                                <option value="sukarela">Sukarela</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Jumlah (Rp)</label>
+                            <input type="number" id="savingsAmount" class="form-control" min="1000" step="1000" required>
+                        </div>
+                        <button type="submit" class="btn">Proses Transaksi</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pinjaman (Daftar Pinjaman) -->
+    <div id="loansModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Data Pinjaman</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-between mb-2">
+                    <button id="showAddLoanFormBtn" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Buat Pinjaman</button>
+                    <button id="exportLoansExcelBtn" class="btn btn-sm btn-info"><i class="fas fa-file-excel"></i> Export Excel</button>
+                </div>
+                <div id="loansListContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Pinjaman -->
+    <div id="addLoanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Buat Pinjaman Baru</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addLoanForm">
+                    <div class="form-group">
+                        <label class="form-label">Cari Anggota</label>
+                        <input type="text" id="loanMemberSearch" class="form-control" placeholder="Ketik nama atau ID" autocomplete="off">
+                        <div id="loanMemberResults" class="member-search-container"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Pinjaman (Rp)</label>
+                        <input type="number" id="loanAmount" class="form-control" min="100000" step="10000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tenor (Bulan)</label>
+                        <input type="number" id="loanTenor" class="form-control" min="1" max="60" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Bunga per Bulan (%)</label>
+                        <input type="number" id="loanInterest" class="form-control" min="0" step="0.1" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jaminan (opsional)</label>
+                        <textarea id="loanCollateral" class="form-control" rows="2"></textarea>
+                    </div>
+                </form>
+                <div id="loanCalculationPreview" class="member-financial-summary" style="display: none;"></div>
+                <button id="saveLoanBtn" class="btn btn-success mt-2">Simpan Pinjaman</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail Pinjaman -->
+    <div id="loanDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detail Pinjaman</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="loanDetailsBody"></div>
+            <div class="modal-footer">
+                <button id="payInstallmentBtn" class="btn btn-success">Bayar Angsuran</button>
+                <button class="btn modal-close-btn">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gadai -->
+    <div id="pawnModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Data Gadai / Agunan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-between mb-2">
+                    <button id="showAddPawnFormBtn" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Tambah Gadai</button>
+                    <button id="exportPawnsExcelBtn" class="btn btn-sm btn-info"><i class="fas fa-file-excel"></i> Export Excel</button>
+                </div>
+                <div id="pawnListContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Gadai -->
+    <div id="addPawnModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Agunan Baru</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addPawnForm">
+                    <div class="form-group">
+                        <label class="form-label">Cari Anggota</label>
+                        <input type="text" id="pawnMemberSearch" class="form-control" placeholder="Ketik nama atau ID" autocomplete="off">
+                        <div id="pawnMemberResults" class="member-search-container"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Barang</label>
+                        <input type="text" id="pawnItemName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nilai Taksiran (Rp)</label>
+                        <input type="number" id="pawnItemValue" class="form-control" min="10000" step="10000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Pinjaman (Rp)</label>
+                        <input type="number" id="pawnLoanAmount" class="form-control" min="10000" step="10000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jatuh Tempo</label>
+                        <input type="date" id="pawnDueDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Catatan</label>
+                        <textarea id="pawnNotes" class="form-control" rows="2"></textarea>
+                    </div>
+                </form>
+                <button id="savePawnBtn" class="btn btn-success">Simpan Agunan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Kelola Anggota -->
+    <div id="manageMembersModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Data Anggota</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-between mb-2">
+                    <input type="text" id="manageMemberSearchInput" class="form-control" placeholder="Cari anggota..." style="width: 70%;">
+                    <button id="showAddMemberFormBtn" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Tambah</button>
+                    <button id="exportMembersExcelBtn" class="btn btn-sm btn-info"><i class="fas fa-file-excel"></i> Excel</button>
+                </div>
+                <div id="membersList"></div>
+                <div id="memberFormContainer" style="display: none;">
+                    <h4 id="memberFormTitle">Tambah Anggota</h4>
+                    <form id="memberForm">
+                        <input type="hidden" id="memberIdInput">
+                        <div class="form-group">
+                            <label class="form-label">Nama Lengkap</label>
+                            <input type="text" id="memberName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nomor Telepon</label>
+                            <input type="text" id="memberPhone" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Alamat</label>
+                            <textarea id="memberAddress" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">Simpan</button>
+                            <button type="button" id="cancelMemberFormBtn" class="btn btn-danger">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Profil Anggota -->
+    <div id="memberProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Profil Anggota</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="memberProfileBody"></div>
+        </div>
+    </div>
+
+    <!-- Modal Histori Transaksi -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Histori Transaksi</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-between mb-2">
+                    <input type="text" id="historySearchInput" class="form-control" placeholder="Cari transaksi..." style="width: 75%;">
+                    <button id="exportHistoryExcelBtn" class="btn btn-sm btn-info"><i class="fas fa-file-excel"></i> Excel</button>
+                </div>
+                <div id="historyResultsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Laporan Rekap -->
+    <div id="recapReportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Laporan Keuangan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab active" data-tab="profitLossRecap">Laba Rugi</div>
+                    <div class="tab" data-tab="cashFlowRecap">Arus Kas</div>
+                    <div class="tab" data-tab="portfolioRecap">Portofolio</div>
+                </div>
+                <div id="profitLossRecap" class="tab-content active"></div>
+                <div id="cashFlowRecap" class="tab-content"></div>
+                <div id="portfolioRecap" class="tab-content"></div>
+
+                <div class="recap-filter-container">
+                    <select id="recapReportPeriod" class="form-control">
+                        <option value="this_month">Bulan Ini</option>
+                        <option value="last_month">Bulan Lalu</option>
+                        <option value="this_year">Tahun Ini</option>
+                        <option value="custom">Kustom</option>
+                    </select>
+                    <div id="recapCustomDateContainer" style="display: none;">
+                        <label>Dari</label>
+                        <input type="date" id="recapStartDate" class="form-control">
+                    </div>
+                    <div id="recapCustomDateContainer2" style="display: none;">
+                        <label>Sampai</label>
+                        <input type="date" id="recapEndDate" class="form-control">
+                    </div>
+                    <button id="generateRecapReportBtn" class="btn btn-sm btn-success">Generate</button>
+                </div>
+                <div id="recapReportResults"></div>
+            </div>
+            <div class="modal-footer" style="display: none;" id="downloadRecapPdfBtn">
+                <button id="printRecapBtn" class="btn btn-info"><i class="fas fa-print"></i> Print</button>
+                <button id="downloadRecapPdfBtn" class="btn btn-success"><i class="fas fa-file-pdf"></i> PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Info Koperasi -->
+    <div id="manageKoperasiInfoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Informasi Koperasi</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="koperasiInfoForm">
+                    <div class="form-group">
+                        <label class="form-label">Nama Koperasi</label>
+                        <input type="text" id="koperasiName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Alamat</label>
+                        <textarea id="koperasiAddress" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telepon</label>
+                        <input type="text" id="koperasiPhone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="koperasiEmail" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="saveKoperasiInfoBtn" class="btn btn-success">Simpan</button>
+                <button class="btn modal-close-btn">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Kontrol Panel -->
+    <div id="controlPanelModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Kontrol Panel</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <div class="tab active" data-tab="users">Pengguna</div>
+                    <div class="tab" data-tab="security">Keamanan</div>
+                    <div class="tab" data-tab="roles">Hak Akses</div>
+                </div>
+                <div id="users" class="tab-content active">
+                    <div class="d-flex justify-between mb-2">
+                        <button id="showAddUserFormBtn" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Tambah</button>
+                        <button id="manageRolesBtn" class="btn btn-sm btn-info">Kelola Role</button>
+                    </div>
+                    <div id="usersList"></div>
+                    <div id="userFormContainer" style="display: none;">
+                        <h4 id="userFormTitle">Tambah Pengguna</h4>
+                        <form id="userForm">
+                            <input type="hidden" id="userIdInput">
+                            <div class="form-group">
+                                <label class="form-label">Nama</label>
+                                <input type="text" id="userName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Username</label>
+                                <input type="text" id="userUsername" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Role</label>
+                                <select id="userRole" class="form-control"></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password (kosongkan jika tidak diubah)</label>
+                                <input type="password" id="userPassword" class="form-control" minlength="6">
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-success">Simpan</button>
+                                <button type="button" id="cancelUserFormBtn" class="btn btn-danger">Batal</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="security" class="tab-content">
+                    <form id="panelSecurityForm">
+                        <div class="form-group">
+                            <label class="form-label">Ubah Password Keamanan Panel</label>
+                            <input type="password" id="panelSecurityCode" class="form-control" minlength="6" placeholder="Password baru" required>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Simpan Password</button>
+                    </form>
+                    <hr>
+                    <form id="changeOwnPasswordForm">
+                        <h4>Ubah Password Akun Anda</h4>
+                        <div class="form-group">
+                            <label class="form-label">Password Saat Ini</label>
+                            <input type="password" id="currentPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password Baru</label>
+                            <input type="password" id="newPassword" class="form-control" minlength="6" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Ubah Password</button>
+                    </form>
+                </div>
+                <div id="roles" class="tab-content">
+                    <div class="tabs" id="roleTabsContainer"></div>
+                    <div id="rolePermissionsContainer"></div>
+                    <button id="saveRolePermissionsBtn" class="btn btn-success mt-2">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Manajemen Role (sebenarnya digabung di atas, tapi untuk kejelasan kita tetap sediakan jika ada referensi) -->
+    <div id="roleManagementModal" class="modal" style="display: none;">
+        <!-- Konten sudah ada di dalam controlPanelModal, jadi modal ini bisa dikosongi atau dihapus. Namun untuk jaga-jaga kita buat sederhana -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Kelola Hak Akses</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs" id="roleTabsContainer2"></div>
+                <div id="rolePermissionsContainer2"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveRolePermissionsBtn2" class="btn btn-success">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal KTA -->
+    <div id="ktaModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Kartu Tanda Anggota (KTA)</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="ktaCard">
+                    <div class="kta-header">
+                        <div class="kta-koperasi-info">
+                            <h3 id="ktaKoperasiName">KOPERASI DIGITAL</h3>
+                            <p id="ktaKoperasiContact">Alamat, Telepon</p>
+                        </div>
+                    </div>
+                    <div class="kta-body">
+                        <div id="ktaMemberName" class="kta-member-name">Nama Anggota</div>
+                        <div id="ktaMemberId" class="kta-member-id">ID: 123456</div>
+                        <div class="kta-qrcode" id="ktaQrcodeImg"></div>
+                    </div>
+                    <div class="kta-footer">
+                        <p>Berlaku selama menjadi anggota</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="downloadKtaPdfBtn" class="btn btn-success"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                <button class="btn modal-close-btn">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Password Prompt -->
+    <div id="passwordPromptModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="passwordPromptTitle">Verifikasi Keamanan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="passwordPromptMessage">Masukkan password keamanan untuk melanjutkan.</p>
+                <form id="passwordPromptForm">
+                    <input type="password" id="passwordPromptInput" class="form-control" autocomplete="off" required>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="passwordPromptSubmit" class="btn btn-success">Konfirmasi</button>
+                <button class="btn modal-close-btn">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="confirmTitle">Konfirmasi</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Anda yakin?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmAction" class="btn btn-success">Ya</button>
+                <button class="btn modal-close-btn">Tidak</button>
+            </div>
+        </div>
+    </div>
 
     <div id="print-container" style="display:none;"></div>
 
