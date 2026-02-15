@@ -1,7 +1,7 @@
 // --- GLOBAL VARIABLES ---
 let captchaText = '';
 let currentReportData = {};
-let roomStatusChart; // hanya chart status kamar
+let roomStatusChart; // Chart untuk status kamar
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', function() {
@@ -66,6 +66,7 @@ function checkLoginState() {
         const loginForm = document.getElementById('loginForm');
         const reloadBtn = document.getElementById('reloadCaptchaBtn');
         
+        // Hapus event listener lama (jika ada) lalu pasang baru
         loginForm.removeEventListener('submit', handleLogin);
         reloadBtn.removeEventListener('click', generateCaptcha);
         
@@ -408,7 +409,7 @@ function toggleMobileMenu() {
 
 function showNotification(title, message, type = 'info') {
     const toastElement = document.getElementById('notificationToast');
-    const toast = new bootstrap.Toast(toastElement);
+    const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
     document.getElementById('toastTitle').textContent = title;
     document.getElementById('toastMessage').textContent = message;
     
@@ -440,7 +441,7 @@ function loadGuests() {
             <td>${guest.firstName} ${guest.lastName}</td>
             <td>${guest.email}</td>
             <td>${guest.phone}</td>
-            <td>${guest.address}</td>
+            <td>${guest.address || '-'}</td>
             <td>
                 <button class="btn btn-sm btn-warning edit-guest" data-id="${guest.id}" aria-label="Edit Tamu"><i class="fas fa-edit"></i></button>
                 <button class="btn btn-sm btn-danger delete-guest" data-id="${guest.id}" aria-label="Hapus Tamu"><i class="fas fa-trash"></i></button>
@@ -505,7 +506,7 @@ function loadRooms() {
     }
 
     if (editReservationRoom) {
-        editReservationRoom.innerHTML = '';
+        editReservationRoom.innerHTML = '<option value="">Pilih Kamar</option>';
         rooms.forEach(room => {
             const option = document.createElement('option');
             option.value = room.id;
@@ -541,8 +542,8 @@ function loadReservations() {
         const guest = guests.find(g => g.id === res.guestId) || {};
         const room = rooms.find(r => r.id === res.roomId) || {};
         
-        const guestName = `${guest.firstName || ''} ${guest.lastName || ''}`.trim();
-        const roomName = `${room.number || ''} (${room.type || ''})`;
+        const guestName = `${guest.firstName || ''} ${guest.lastName || ''}`.trim() || '-';
+        const roomName = `${room.number || ''} (${room.type || ''})` || '-';
         const statusClass = getStatusClass(res.status);
         const statusText = getStatusText(res.status);
 
@@ -610,7 +611,7 @@ function loadReservations() {
                     <td>${guestName}</td>
                     <td>${roomName}</td>
                     <td>${formatDateTime(res.actualCheckout)}</td>
-                    <td>${formatCurrency(res.totalAmount)}</td>
+                    <td>${formatCurrency(res.totalAmount || 0)}</td>
                     <td><span class="badge ${paymentStatusClass}">${paymentStatusText}</span></td>
                     <td>${actionsHtml}</td>
                 `;
@@ -702,7 +703,7 @@ function saveReservation() {
         roomId: roomId,
         checkinDate: checkinDate,
         checkoutDate: checkoutDate,
-        guests: parseInt(document.getElementById('reservationGuests').value),
+        guests: parseInt(document.getElementById('reservationGuests').value) || 1,
         status: document.getElementById('reservationStatus').value,
         notes: document.getElementById('reservationNotes').value,
         premiumServices: premiumServices,
@@ -811,9 +812,9 @@ function editReservation(id) {
     document.getElementById('editReservationRoom').value = reservation.roomId;
     document.getElementById('editReservationCheckin').value = reservation.checkinDate;
     document.getElementById('editReservationCheckout').value = reservation.checkoutDate;
-    document.getElementById('editReservationGuests').value = reservation.guests;
+    document.getElementById('editReservationGuests').value = reservation.guests || 1;
     document.getElementById('editReservationStatus').value = reservation.status;
-    document.getElementById('editReservationNotes').value = reservation.notes;
+    document.getElementById('editReservationNotes').value = reservation.notes || '';
     
     document.querySelectorAll('#editReservationForm .form-check-input').forEach(cb => cb.checked = false);
     if (Array.isArray(reservation.premiumServices)) {
@@ -857,7 +858,7 @@ function updateReservation() {
         roomId: roomId,
         checkinDate: checkinDate,
         checkoutDate: checkoutDate,
-        guests: parseInt(document.getElementById('editReservationGuests').value),
+        guests: parseInt(document.getElementById('editReservationGuests').value) || 1,
         status: newStatus,
         notes: document.getElementById('editReservationNotes').value,
         premiumServices: premiumServices,
@@ -882,11 +883,15 @@ function editGuest(id) {
     const guest = guests.find(g => g.id === id);
     if (!guest) return;
 
-    Object.keys(guest).forEach(key => {
-        const el = document.getElementById(`editGuest${key.charAt(0).toUpperCase() + key.slice(1)}`);
-        if (el) el.value = guest[key];
-    });
-     document.getElementById('editGuestId').value = guest.id;
+    document.getElementById('editGuestId').value = guest.id;
+    document.getElementById('editGuestFirstName').value = guest.firstName || '';
+    document.getElementById('editGuestLastName').value = guest.lastName || '';
+    document.getElementById('editGuestEmail').value = guest.email || '';
+    document.getElementById('editGuestPhone').value = guest.phone || '';
+    document.getElementById('editGuestAddress').value = guest.address || '';
+    document.getElementById('editGuestNationality').value = guest.nationality || '';
+    document.getElementById('editGuestIdType').value = guest.idType || 'KTP';
+    document.getElementById('editGuestIdNumber').value = guest.idNumber || '';
 
     new bootstrap.Modal(document.getElementById('editGuestModal')).show();
 }
