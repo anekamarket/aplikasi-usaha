@@ -10,11 +10,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initApp() {
     checkLoginState();
+    setupPasswordToggle(); // Pasang toggle password
 }
 
 // --- FUNGSI HASH PASSWORD (SHA-256) ---
 function hashPassword(password) {
     return CryptoJS.SHA256(password).toString();
+}
+
+// --- SHOW/HIDE PASSWORD ---
+function setupPasswordToggle() {
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+    }
 }
 
 // --- LOGIN FUNCTIONS ---
@@ -52,26 +67,33 @@ function generateCaptcha() {
 }
 
 function checkLoginState() {
+    const loginOverlay = document.getElementById('loginOverlay');
+    const mainApp = document.getElementById('mainApp');
+
     if (sessionStorage.getItem('isLoggedIn') === 'true') {
-        document.getElementById('loginOverlay').style.display = 'none';
-        document.getElementById('mainApp').style.display = 'block';
-        // Tampilkan info user di header
+        loginOverlay.style.display = 'none';
+        mainApp.style.display = 'block';
         document.getElementById('loggedInUserDisplay').textContent = sessionStorage.getItem('userName') || sessionStorage.getItem('username');
         document.getElementById('userRoleDisplay').textContent = sessionStorage.getItem('userRole');
         initializeAppCore();
     } else {
-        document.getElementById('loginOverlay').style.display = 'flex';
-        document.getElementById('mainApp').style.display = 'none';
+        loginOverlay.style.display = 'flex';
+        mainApp.style.display = 'none';
         
+        // Pasang event listener login dengan cara mengganti elemen untuk menghindari duplikasi
         const loginForm = document.getElementById('loginForm');
         const reloadBtn = document.getElementById('reloadCaptchaBtn');
         
-        // Hapus event listener lama (jika ada) lalu pasang baru
-        loginForm.removeEventListener('submit', handleLogin);
-        reloadBtn.removeEventListener('click', generateCaptcha);
+        // Clone dan replace
+        const newLoginForm = loginForm.cloneNode(true);
+        loginForm.parentNode.replaceChild(newLoginForm, loginForm);
         
-        loginForm.addEventListener('submit', handleLogin);
-        reloadBtn.addEventListener('click', generateCaptcha);
+        const newReloadBtn = reloadBtn.cloneNode(true);
+        reloadBtn.parentNode.replaceChild(newReloadBtn, reloadBtn);
+        
+        // Pasang listener baru
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        document.getElementById('reloadCaptchaBtn').addEventListener('click', generateCaptcha);
         
         generateCaptcha();
     }
@@ -108,7 +130,7 @@ function handleLogin(e) {
         sessionStorage.setItem('userRole', user.role);
         sessionStorage.setItem('userName', user.name || user.username);
         errorEl.style.display = 'none';
-        checkLoginState();
+        checkLoginState(); // ini akan memicu tampilan mainApp
     } else {
         errorEl.textContent = 'Username atau Password salah.';
         errorEl.style.display = 'block';
