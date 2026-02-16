@@ -1,5 +1,4 @@
 // --- GLOBAL VARIABLES ---
-let captchaText = '';
 let currentReportData = {};
 let roomStatusChart; // Chart untuk status kamar
 
@@ -11,11 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
 function initApp() {
     setupPasswordToggle(); // Pasang toggle password
 
-    // Pasang event listener login dan reload captcha (hanya sekali)
+    // Pasang event listener login (captcha sudah dihapus)
     const loginForm = document.getElementById('loginForm');
-    const reloadBtn = document.getElementById('reloadCaptchaBtn');
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
-    if (reloadBtn) reloadBtn.addEventListener('click', generateCaptcha);
 
     checkLoginState();
 }
@@ -25,7 +22,7 @@ function hashPassword(password) {
     return CryptoJS.SHA256(password).toString();
 }
 
-// --- SHOW/HIDE PASSWORD ---
+// --- SHOW/HIDE PASSWORD (DIPERBAIKI) ---
 function setupPasswordToggle() {
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
@@ -39,40 +36,7 @@ function setupPasswordToggle() {
     }
 }
 
-// --- LOGIN FUNCTIONS ---
-function generateCaptcha() {
-    const canvas = document.getElementById('captchaCanvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    captchaText = '';
-    for (let i = 0; i < 6; i++) {
-        captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#f9f9f9';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Add some noise lines
-    for (let i = 0; i < 5; i++) {
-        ctx.strokeStyle = `rgba(${Math.random()*150}, ${Math.random()*150}, ${Math.random()*150}, 0.2)`;
-        ctx.beginPath();
-        ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-        ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
-        ctx.stroke();
-    }
-
-    // Draw text
-    ctx.font = '30px Arial';
-    ctx.fillStyle = '#2c3e50';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.setTransform(1, Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, 1, 0, 0);
-    ctx.fillText(captchaText, canvas.width / 2, canvas.height / 2);
-    ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
-}
-
+// --- LOGIN FUNCTIONS (CAPTCHA DIHAPUS) ---
 function checkLoginState() {
     const loginOverlay = document.getElementById('loginOverlay');
     const mainApp = document.getElementById('mainApp');
@@ -86,7 +50,7 @@ function checkLoginState() {
     } else {
         loginOverlay.style.display = 'flex';
         mainApp.style.display = 'none';
-        generateCaptcha(); // gambar captcha saat login ditampilkan
+        // Tidak ada captcha
     }
 }
 
@@ -94,20 +58,11 @@ function handleLogin(e) {
     e.preventDefault();
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
-    const captchaInput = document.getElementById('captchaInput').value;
     const errorEl = document.getElementById('loginError');
 
     if (!username || !password) {
         errorEl.textContent = 'Username dan Password wajib diisi.';
         errorEl.style.display = 'block';
-        return;
-    }
-
-    if (captchaInput.toLowerCase() !== captchaText.toLowerCase()) {
-        errorEl.textContent = 'Kode verifikasi tidak sesuai. Silakan coba lagi.';
-        errorEl.style.display = 'block';
-        document.getElementById('captchaInput').value = '';
-        generateCaptcha();
         return;
     }
 
@@ -121,12 +76,11 @@ function handleLogin(e) {
         sessionStorage.setItem('userRole', user.role);
         sessionStorage.setItem('userName', user.name || user.username);
         errorEl.style.display = 'none';
-        checkLoginState(); // ini akan memicu tampilan mainApp
+        checkLoginState();
     } else {
         errorEl.textContent = 'Username atau Password salah.';
         errorEl.style.display = 'block';
         document.getElementById('password').value = '';
-        generateCaptcha();
     }
 }
 
