@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.1/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* ===== CSS LENGKAP ===== */
+        /* ===== CSS LENGKAP (sama seperti sebelumnya) ===== */
         :root {
             --primary-color: #007BFF;
             --primary-gradient: linear-gradient(90deg, #007BFF 0%, #0056b3 100%);
@@ -418,27 +418,6 @@
             .location-button-group { flex-direction: column; }
             .btn { width: 100%; }
         }
-
-        /* Template surat perjanjian disembunyikan */
-        #agreement-template {
-            display: none;
-        }
-        .surat-perjanjian {
-            font-family: 'Times New Roman', serif;
-            max-width: 210mm;
-            margin: 0 auto;
-            padding: 20px;
-            background: white;
-            color: black;
-            line-height: 1.5;
-        }
-        .surat-perjanjian h2 { text-align: center; font-size: 18pt; margin-bottom: 20px; }
-        .surat-perjanjian h3 { font-size: 14pt; margin-top: 20px; }
-        .surat-perjanjian p { margin: 10px 0; text-align: justify; }
-        .surat-perjanjian table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .surat-perjanjian td { padding: 8px; vertical-align: top; }
-        .surat-perjanjian .ttd { margin-top: 40px; display: flex; justify-content: space-between; }
-        .surat-perjanjian .qr-code { width: 90px; height: 90px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -462,61 +441,6 @@
     <audio id="success-sound" preload="auto">
         <source src="https://raw.githubusercontent.com/anekamarket/my.id/main/notifikasi.mp3" type="audio/mp3">
     </audio>
-
-    <!-- Template Surat Perjanjian (disembunyikan) -->
-    <div id="agreement-template">
-        <div class="surat-perjanjian" id="surat-perjanjian">
-            <h2>SURAT PERJANJIAN KERJASAMA<br>MITRA ANEKAMARKET</h2>
-            <p style="text-align:center;">Nomor: <span id="nomor_surat_display">......../......../SP3LA-LKS/VII/2025</span></p>
-            <p>Pada hari ini, <span id="display_hari_tanggal">Senin Tanggal 07 Bulan Juli Tahun 2025</span>, yang bertanda tangan di bawah ini:</p>
-            
-            <table>
-                <tr><td width="200">Nama</td><td>: <span id="display_nama_pemohon">____________</span></td></tr>
-                <tr><td>NIK</td><td>: <span id="display_nik">____________</span></td></tr>
-                <tr><td>Alamat</td><td>: <span id="display_alamat">____________</span></td></tr>
-                <tr><td>No. Telepon</td><td>: <span id="display_nomor_telepon">____________</span></td></tr>
-                <tr><td>ID Permohonan</td><td>: <span id="display_id_permohonan">____________</span></td></tr>
-            </table>
-            
-            <p>Selanjutnya disebut <strong>PIHAK KEDUA</strong>.</p>
-            
-            <p>Nama Perusahaan : LENTERA KARYA SINERGI</p>
-            <p>Alamat : Jl. Raya Situbondo No. 123, Situbondo</p>
-            <p>Diwakili oleh : MUHAMMAD SALAM, selaku Founder, yang bertindak untuk dan atas nama perusahaan, selanjutnya disebut <strong>PIHAK PERTAMA</strong>.</p>
-            
-            <p>PIHAK PERTAMA dan PIHAK KEDUA secara bersama-sama disebut PARA PIHAK. Dengan ini menyatakan telah sepakat untuk mengadakan Perjanjian Kerjasama dengan ketentuan sebagai berikut:</p>
-            
-            <h3>Pasal 1<br>MAKSUD DAN TUJUAN</h3>
-            <p>PIHAK KEDUA terdaftar sebagai mitra ANEKAMARKELOMPOK USAHA BERSAMA ANEKAMARKET dengan data sebagai berikut:</p>
-            <table>
-                <tr><td width="200">Nama Usaha</td><td>: <span id="display_nama_umkm">____________</span></td></tr>
-                <tr><td>Kategori Layanan</td><td>: <span id="display_kategori_layanan">____________</span></td></tr>
-                <tr><td>Tanggal Pendaftaran</td><td>: <span id="display_tanggal_pendaftaran_full">____________</span></td></tr>
-                <tr><td>ID Pendaftaran</td><td>: <span id="display_id_pendaftaran">____________</span></td></tr>
-            </table>
-            
-            <p>Bahwa dengan ditandatanganinya perjanjian ini, PIHAK KEDUA terdaftar secara resmi sebagai mitra ANEKAMARKET dan akan mendapatkan hak serta menjalankan kewajiban sesuai dengan ketentuan yang berlaku.</p>
-            
-            <h3>Pasal 2<br>JANGKA WAKTU</h3>
-            <p>Perjanjian ini berlaku sejak tanggal ditandatangani dan akan dievaluasi setiap 1 (satu) tahun sekali.</p>
-            
-            <h3>Pasal 3<br>PENUTUP</h3>
-            <p>Demikian perjanjian ini dibuat dengan sebenarnya dan ditandatangani oleh PARA PIHAK dalam rangkap 2 (dua) bermeterai cukup serta mempunyai kekuatan hukum yang sama.</p>
-            
-            <div class="ttd">
-                <div style="text-align:center;">
-                    <p>PIHAK PERTAMA,<br>LENTERA KARYA SINERGI</p>
-                    <div id="qrcode_pihak_pertama" class="qr-code"></div>
-                    <p><strong>MUHAMMAD SALAM</strong><br>Founder</p>
-                </div>
-                <div style="text-align:center;">
-                    <p>PIHAK KEDUA,<br><span id="display_nama_pemohon_sign">____________</span></p>
-                    <div id="qrcode_pihak_kedua" class="qr-code"></div>
-                    <p>Pemohon</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         // ===================== MAIN JAVASCRIPT (FINAL - DIPERBAIKI) =====================
@@ -1098,7 +1022,7 @@
                 } else alert('Pesan tidak tersedia. Silakan ulangi pendaftaran.');
             }
 
-            // ========== FUNGSI DOKUMEN PERJANJIAN (DIPERBAIKI) ==========
+            // ========== FUNGSI DOKUMEN PERJANJIAN (DIPERBAIKI - PASTI TERISI) ==========
             function generateRandomID() {
                 const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 let result = 'LKS/JK-';
@@ -1174,19 +1098,19 @@
                 loadingOverlay.classList.add('visible');
 
                 try {
-                    // Clone template
-                    const template = document.getElementById('agreement-template');
-                    if (!template) throw new Error('Template surat tidak ditemukan');
-                    
-                    const clone = template.cloneNode(true);
-                    clone.id = 'agreement-clone-' + Date.now(); // ID unik
-                    clone.style.display = 'block';
-                    clone.style.position = 'fixed';
-                    clone.style.left = '-9999px';  // Taruh di luar layar
-                    clone.style.top = '0';
-                    clone.style.visibility = 'visible'; // Pastikan konten terlihat oleh html2pdf
-                    clone.style.zIndex = '-1000';
-                    document.body.appendChild(clone);
+                    // Buat elemen container untuk surat perjanjian
+                    const agreementContainer = document.createElement('div');
+                    agreementContainer.id = 'agreement-print-' + Date.now();
+                    agreementContainer.style.position = 'absolute';
+                    agreementContainer.style.left = '-9999px';
+                    agreementContainer.style.top = '0';
+                    agreementContainer.style.width = '210mm';
+                    agreementContainer.style.backgroundColor = 'white';
+                    agreementContainer.style.padding = '20px';
+                    agreementContainer.style.fontFamily = 'Times New Roman, serif';
+                    agreementContainer.style.lineHeight = '1.5';
+                    agreementContainer.style.zIndex = '-1000';
+                    document.body.appendChild(agreementContainer);
 
                     // Data dari submittedData
                     const data = submittedData;
@@ -1196,48 +1120,85 @@
                     const fullDate = formatFullDate(data.tanggal_pendaftaran);
                     const hariTanggal = getHariTanggal(data.tanggal_pendaftaran);
                     const nomorSurat = generateNomorSurat(idPendaftaran);
-                    
+
                     let kategoriDisplay = data.kategori_usaha;
                     if (data.kategori_usaha === 'Lainnya' && data.keterangan_lainnya) {
                         kategoriDisplay = `Lainnya (Keterangan: ${data.keterangan_lainnya})`;
                     }
 
-                    // Isi elemen clone
-                    const setText = (selector, text) => {
-                        const el = clone.querySelector(selector);
-                        if (el) el.textContent = text;
-                    };
-                    setText('#display_nama_pemohon', data.nama.toUpperCase());
-                    setText('#display_id_permohonan', fullIdPermohonan);
-                    setText('#display_nik', data.nik);
-                    setText('#display_alamat', data.alamat);
-                    setText('#display_nomor_telepon', data.whatsapp);
-                    setText('#display_id_pendaftaran', idPendaftaran);
-                    setText('#display_nama_umkm', data.nama_usaha.toUpperCase());
-                    setText('#display_kategori_layanan', kategoriDisplay);
-                    setText('#display_tanggal_pendaftaran_full', fullDate);
-                    setText('#display_nama_pemohon_sign', data.nama.toUpperCase());
-                    setText('#display_hari_tanggal', hariTanggal);
-                    setText('#nomor_surat_display', nomorSurat);
+                    // Buat HTML surat perjanjian
+                    const suratHtml = `
+                        <div class="surat-perjanjian">
+                            <h2 style="text-align:center; font-size:18pt;">SURAT PERJANJIAN KERJASAMA<br>MITRA ANEKAMARKET</h2>
+                            <p style="text-align:center;">Nomor: <span>${nomorSurat}</span></p>
+                            <p>Pada hari ini, <span>${hariTanggal}</span>, yang bertanda tangan di bawah ini:</p>
+                            
+                            <table style="width:100%; border-collapse:collapse; margin:20px 0;">
+                                <tr><td width="200">Nama</td><td>: <span>${data.nama.toUpperCase()}</span></td></tr>
+                                <tr><td>NIK</td><td>: <span>${data.nik}</span></td></tr>
+                                <tr><td>Alamat</td><td>: <span>${data.alamat}</span></td></tr>
+                                <tr><td>No. Telepon</td><td>: <span>${data.whatsapp}</span></td></tr>
+                                <tr><td>ID Permohonan</td><td>: <span>${fullIdPermohonan}</span></td></tr>
+                            </table>
+                            
+                            <p>Selanjutnya disebut <strong>PIHAK KEDUA</strong>.</p>
+                            
+                            <p>Nama Perusahaan : LENTERA KARYA SINERGI</p>
+                            <p>Alamat : Jl. Raya Situbondo No. 123, Situbondo</p>
+                            <p>Diwakili oleh : MUHAMMAD SALAM, selaku Founder, yang bertindak untuk dan atas nama perusahaan, selanjutnya disebut <strong>PIHAK PERTAMA</strong>.</p>
+                            
+                            <p>PIHAK PERTAMA dan PIHAK KEDUA secara bersama-sama disebut PARA PIHAK. Dengan ini menyatakan telah sepakat untuk mengadakan Perjanjian Kerjasama dengan ketentuan sebagai berikut:</p>
+                            
+                            <h3 style="font-size:14pt;">Pasal 1<br>MAKSUD DAN TUJUAN</h3>
+                            <p>PIHAK KEDUA terdaftar sebagai mitra ANEKAMARKELOMPOK USAHA BERSAMA ANEKAMARKET dengan data sebagai berikut:</p>
+                            <table style="width:100%; border-collapse:collapse; margin:20px 0;">
+                                <tr><td width="200">Nama Usaha</td><td>: <span>${data.nama_usaha.toUpperCase()}</span></td></tr>
+                                <tr><td>Kategori Layanan</td><td>: <span>${kategoriDisplay}</span></td></tr>
+                                <tr><td>Tanggal Pendaftaran</td><td>: <span>${fullDate}</span></td></tr>
+                                <tr><td>ID Pendaftaran</td><td>: <span>${idPendaftaran}</span></td></tr>
+                            </table>
+                            
+                            <p>Bahwa dengan ditandatanganinya perjanjian ini, PIHAK KEDUA terdaftar secara resmi sebagai mitra ANEKAMARKET dan akan mendapatkan hak serta menjalankan kewajiban sesuai dengan ketentuan yang berlaku.</p>
+                            
+                            <h3 style="font-size:14pt;">Pasal 2<br>JANGKA WAKTU</h3>
+                            <p>Perjanjian ini berlaku sejak tanggal ditandatangani dan akan dievaluasi setiap 1 (satu) tahun sekali.</p>
+                            
+                            <h3 style="font-size:14pt;">Pasal 3<br>PENUTUP</h3>
+                            <p>Demikian perjanjian ini dibuat dengan sebenarnya dan ditandatangani oleh PARA PIHAK dalam rangkap 2 (dua) bermeterai cukup serta mempunyai kekuatan hukum yang sama.</p>
+                            
+                            <div style="margin-top:40px; display:flex; justify-content:space-between;">
+                                <div style="text-align:center;">
+                                    <p>PIHAK PERTAMA,<br>LENTERA KARYA SINERGI</p>
+                                    <div id="qr_pihak_pertama_${Date.now()}" style="width:90px; height:90px; margin:10px auto;"></div>
+                                    <p><strong>MUHAMMAD SALAM</strong><br>Founder</p>
+                                </div>
+                                <div style="text-align:center;">
+                                    <p>PIHAK KEDUA,<br>${data.nama.toUpperCase()}</p>
+                                    <div id="qr_pihak_kedua_${Date.now()}" style="width:90px; height:90px; margin:10px auto;"></div>
+                                    <p>Pemohon</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
 
-                    // Data QR code
+                    agreementContainer.innerHTML = suratHtml;
+
+                    // Generate QR codes
+                    const qrPertama = document.getElementById(`qr_pihak_pertama_${Date.now()}`);
+                    const qrKedua = document.getElementById(`qr_pihak_kedua_${Date.now()}`);
+                    
                     const qrDataPihakKedua = `PEMOHON:${data.nama.toUpperCase()}|NIK:${data.nik}|ID:${fullIdPermohonan}|TGL:${formattedDate}`;
                     const qrDataPihakPertama = `PERUSAHAAN:LENTERA KARYA|PENANDATANGAN:MUHAMMAD SALAM|JABATAN:FOUNDER|TGL:07/07/2025`;
 
-                    // Generate QR code di dalam clone
-                    const qrPertama = clone.querySelector('#qrcode_pihak_pertama');
-                    const qrKedua = clone.querySelector('#qrcode_pihak_kedua');
-
-                    await Promise.all([
-                        generateQRCodeToElement(qrPertama, qrDataPihakPertama).catch(err => console.warn('QR pertama gagal:', err)),
-                        generateQRCodeToElement(qrKedua, qrDataPihakKedua).catch(err => console.warn('QR kedua gagal:', err))
+                    // Jalankan QR code (gunakan Promise.allSettled agar tidak gagal total)
+                    await Promise.allSettled([
+                        generateQRCodeToElement(qrPertama, qrDataPihakPertama),
+                        generateQRCodeToElement(qrKedua, qrDataPihakKedua)
                     ]);
 
-                    // Beri sedikit waktu agar canvas benar-benar ter-render
+                    // Tunggu sejenak dan paksa reflow
                     await new Promise(resolve => setTimeout(resolve, 500));
-
-                    // Debug: pastikan konten terisi
-                    console.log('Clone content sample:', clone.querySelector('#display_nama_pemohon')?.textContent);
+                    agreementContainer.offsetHeight; // force reflow
 
                     // Generate PDF
                     const opt = {
@@ -1248,10 +1209,10 @@
                         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                     };
 
-                    await html2pdf().set(opt).from(clone).save();
+                    await html2pdf().set(opt).from(agreementContainer).save();
 
-                    // Bersihkan clone
-                    document.body.removeChild(clone);
+                    // Bersihkan
+                    document.body.removeChild(agreementContainer);
                     loadingOverlay.classList.remove('visible');
 
                 } catch (error) {
