@@ -591,7 +591,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const whatsappURL = `https://wa.me/${nomorWhatsAppTujuan}?text=${encodeURIComponent(finalWhatsAppMessage)}`;
             window.open(whatsappURL, '_blank');
         } else alert('Pesan tidak tersedia. Silakan ulangi pendaftaran.');
-        setTimeout(() => window.location.href = 'https://www.anekamarket.my.id', 1000);
+        setTimeout(() => window.location.href = 'www.aplikasiusaha.com/daftar', 1000);
     }
 
     // ========== FUNGSI DOKUMEN PERJANJIAN (dari main.js) ==========
