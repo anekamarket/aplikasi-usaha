@@ -8,49 +8,21 @@
     --white-color: #ffffff;
     --success-color: #28a745;
     --error-color: #dc3545;
-    --warning-color: #ffc107; /* Warna kuning untuk tombol KTP */
+    --warning-color: #ffc107;
     --border-color: #dee2e6;
     --border-radius: 12px;
-    /* Shadow yang lebih halus dan berlapis untuk tampilan modern */
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.07), 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-/* --- Animasi --- */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* (BARU) Animasi untuk tombol KTP */
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* (BARU) Animasi denyut untuk tombol KTP */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pulse {
-    0% { 
-        transform: scale(1); 
-        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2); 
-    }
-    50% { 
-        transform: scale(1.03); 
-        box-shadow: 0 7px 25px rgba(255, 193, 7, 0.4); 
-    }
-    100% { 
-        transform: scale(1); 
-        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2); 
-    }
+    0% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2); }
+    50% { transform: scale(1.03); box-shadow: 0 7px 25px rgba(255, 193, 7, 0.4); }
+    100% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2); }
 }
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 * {
     margin: 0;
@@ -67,7 +39,6 @@ body {
     padding: 20px;
     color: var(--dark-color);
     line-height: 1.6;
-    /* Latar belakang yang lebih profesional dengan pola SVG subtil */
     background-color: #f0f4f8;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cg fill='%23e0eafc' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h20v1H0zM0 3h20v1H0zM0 6h20v1H0zM0 9h20v1H0zM0 12h20v1H0zM0 15h20v1H0zM0 18h20v1H0z'/%3E%3C/g%3E%3C/svg%3E");
     animation: fadeIn 0.5s ease-out;
@@ -81,7 +52,6 @@ body {
     box-shadow: var(--shadow);
     overflow: hidden;
     margin: 20px 0;
-    /* Border subtil untuk efek "lifted" */
     border: 1px solid rgba(255, 255, 255, 0.5);
     animation: fadeInUp 0.5s ease-out 0.1s;
     animation-fill-mode: backwards;
@@ -90,8 +60,7 @@ body {
 .header {
     padding: 30px 40px;
     text-align: center;
-    /* Border header yang lebih halus */
-    border-bottom: 1px solid #f0f0f0; 
+    border-bottom: 1px solid #f0f0f0;
     background-color: var(--white-color);
 }
 
@@ -127,8 +96,6 @@ body {
     animation-fill-mode: backwards;
 }
 .form-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-/* Delay animasi stagger yang lebih cepat */
 .form-section:nth-of-type(1) { animation-delay: 0.3s; }
 .form-section:nth-of-type(2) { animation-delay: 0.4s; }
 .form-section:nth-of-type(3) { animation-delay: 0.5s; }
@@ -149,17 +116,13 @@ body {
 label { 
     display: block; 
     margin-bottom: 8px; 
-    font-weight: 500; /* Sedikit lebih tipis dari 600 agar lebih elegan */
-    color: #344054; /* Warna abu-abu gelap yang lebih modern */
+    font-weight: 500;
+    color: #344054;
     font-size: 0.9rem; 
 }
 .required::after { content: " *"; color: var(--error-color); }
 
-/* --- (BARU) Grup Input dengan Ikon --- */
-.input-group {
-    position: relative;
-}
-
+.input-group { position: relative; }
 .input-icon {
     position: absolute;
     left: 15px;
@@ -168,13 +131,8 @@ label {
     color: var(--gray-color);
     transition: color 0.3s ease;
 }
+.input-icon svg { width: 18px; height: 18px; }
 
-.input-icon svg {
-    width: 18px;
-    height: 18px;
-}
-
-/* --- Desain Input yang Disempurnakan --- */
 input, select, textarea {
     width: 100%;
     padding: 12px 15px;
@@ -186,26 +144,15 @@ input, select, textarea {
     color: var(--dark-color);
     font-weight: 400;
 }
-
-/* (BARU) Tambahkan padding untuk input yang memiliki ikon */
-.input-group input {
-    padding-left: 45px;
-}
-
+.input-group input { padding-left: 45px; }
 input::placeholder, textarea::placeholder { color: #adb5bd; }
-
-/* (BARU) Efek :focus-within pada Grup Input */
-.input-group:focus-within .input-icon {
-    color: var(--primary-color);
-}
-
+.input-group:focus-within .input-icon { color: var(--primary-color); }
 input:focus, select:focus, textarea:focus { 
     outline: none; 
     border-color: var(--primary-color); 
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 textarea { resize: vertical; min-height: 80px; }
-
 input[readonly] {
     background-color: var(--light-color);
     border: 1px solid var(--border-color);
@@ -216,18 +163,17 @@ input[readonly] {
     box-shadow: none;
 }
 
-/* (BARU) Desain Ulang File Input */
 .file-input-wrapper {
     position: relative;
     overflow: hidden;
-    display: flex; /* Menggunakan flex */
-    flex-direction: column; /* Konten ditumpuk vertikal */
-    align-items: center; /* Tengahkan horizontal */
-    justify-content: center; /* Tengahkan vertikal */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     border: 2px dashed var(--border-color);
     border-radius: 8px;
-    padding: 25px 15px; /* Padding lebih besar */
+    padding: 25px 15px;
     text-align: center;
     cursor: pointer;
     transition: border-color 0.3s, background-color 0.3s;
@@ -244,25 +190,21 @@ input[readonly] {
     opacity: 0;
     cursor: pointer;
 }
-/* (BARU) Ikon untuk file input */
 .file-input-icon {
     color: var(--primary-color);
     margin-bottom: 15px;
 }
-.file-input-icon svg {
-    width: 40px;
-    height: 40px;
-}
+.file-input-icon svg { width: 40px; height: 40px; }
 .file-input-label {
-    color: var(--dark-color); /* Warna lebih gelap */
-    font-weight: 600; /* Lebih tebal */
+    color: var(--dark-color);
+    font-weight: 600;
     font-size: 1rem;
 }
 #file-name-label {
-     color: var(--gray-color);
-     font-weight: 400;
-     font-size: 0.9rem;
-     margin-top: 4px;
+    color: var(--gray-color);
+    font-weight: 400;
+    font-size: 0.9rem;
+    margin-top: 4px;
 }
 #file-name {
     display: block;
@@ -271,7 +213,6 @@ input[readonly] {
     color: var(--primary-color);
     font-size: 0.9rem;
 }
-/* --- Akhir Desain Ulang File Input --- */
 
 .checkbox-group {
     display: flex;
@@ -360,16 +301,14 @@ input[readonly] {
 }
 .btn-secondary:hover { background-color: #5a6268; }
 
-/* (PERBAIKAN) Tombol Upload KTP dibuat menonjol */
 .btn-warning {
     background-color: var(--warning-color);
-    color: var(--dark-color); /* Teks lebih gelap agar kontras */
-    font-size: 1rem; /* Sedikit lebih besar */
+    color: var(--dark-color);
+    font-size: 1rem;
     padding: 12px 15px;
     margin-top: 15px;
     width: 100%;
     box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
-    /* (PERBAIKAN) Terapkan animasi */
     animation: fadeInDown 0.5s ease-out, pulse 2s infinite 0.5s;
 }
 .btn-warning:hover:not(:disabled) { 
@@ -381,7 +320,7 @@ input[readonly] {
     background-color: #ffc107;
     opacity: 0.7;
     cursor: not-allowed;
-    animation: none; /* Hentikan animasi saat loading */
+    animation: none;
 }
 
 .btn-location {
@@ -416,13 +355,8 @@ input[readonly] {
 
 .error-message, .status-message { color: var(--error-color); font-size: 0.8rem; margin-top: 8px; font-weight: 500; display: none; }
 .status-message { color: var(--dark-color); }
+.input-group ~ .error-message { margin-top: 8px; }
 
-/* (BARU) Sesuaikan error message untuk input group */
-.input-group ~ .error-message {
-    margin-top: 8px;
-}
-
-/* --- CSS Loading Overlay --- */
 #loading-overlay {
     position: fixed;
     top: 0;
