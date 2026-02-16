@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Perjanjian Layanan LKS 2025</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Library QR Code -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <!-- Library html2pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- CSS Eksternal -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <div class="security-pattern"></div>
+        <div class="watermark">LENTERA KARYA SITUBONDO</div>
+
+        <!-- Form Input (tidak akan tercetak) -->
+        <div class="no-print">
+            <h1 style="color: #1a3d7c; text-align: center; margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 22px;">Formulir Perjanjian Layanan LKS 2025</h1>
+            <p style="text-align: center; margin-bottom: 20px; color: #000; font-size: 14px;">Silakan isi formulir berikut untuk mendaftar sebagai pengguna layanan:</p>
+            
+            <div class="form-group">
+                <label for="nama_pemohon">Nama Pemohon:</label>
+                <input type="text" id="nama_pemohon" name="nama_pemohon" class="uppercase" required>
+                <div id="nama_pemohon_error" class="error-message">Nama harus diisi</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_permohonan_input">ID Permohonan (6 Karakter setelah AM-):</label>
+                <div class="id-permohonan-group">
+                    <span class="prefix">AM-</span>
+                    <input type="text" id="id_permohonan_input" name="id_permohonan_input" class="uppercase" required maxlength="6" placeholder="Masukkan 6 Karakter">
+                </div>
+                <div id="id_permohonan_input_error" class="error-message">ID Permohonan harus 6 karakter (huruf/angka)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="nik">NIK (16 digit angka):</label>
+                <input type="text" id="nik" name="nik" required maxlength="16" pattern="\d{16}" placeholder="Masukkan 16 digit NIK">
+                <div id="nik_error" class="error-message">NIK harus 16 digit angka</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="alamat">Alamat Lengkap:</label>
+                <input type="text" id="alamat" name="alamat" required>
+                <div id="alamat_error" class="error-message">Alamat harus diisi</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="nomor_telepon">Nomor Telepon:</label>
+                <input type="tel" id="nomor_telepon" name="nomor_telepon" required pattern="08\d{10,11}" maxlength="13" placeholder="Contoh: 081234567890">
+                <div id="nomor_telepon_error" class="error-message">Nomor harus diawali 08 dan 12-13 digit</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="tanggal_pendaftaran">Tanggal Pendaftaran:</label>
+                <input type="date" id="tanggal_pendaftaran" name="tanggal_pendaftaran" required>
+                <div id="tanggal_pendaftaran_error" class="error-message">Tanggal harus diisi</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_pendaftaran">No. ID Pendaftaran (Otomatis):</label>
+                <input type="text" id="id_pendaftaran" name="id_pendaftaran" readonly style="background-color: #f0f0f0; font-weight: bold;">
+            </div>
+            
+            <div class="form-group">
+                <label for="nama_umkm">Nama Usaha / Brand:</label>
+                <input type="text" id="nama_umkm" name="nama_umkm" class="uppercase" required>
+                <div id="nama_umkm_error" class="error-message">Nama Usaha harus diisi</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="kategori_layanan">Kategori Usaha:</label>
+                <select id="kategori_layanan" name="kategori_layanan" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="UMKM">UMKM</option>
+                    <option value="Jasa Service">Jasa Service</option>
+                    <option value="Kuliner">Kuliner</option>
+                    <option value="Warung atau Resto">Warung atau Resto</option>
+                    <option value="Cafe">Cafe</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Pertanian">Pertanian</option>
+                    <option value="Perikanan">Perikanan</option>
+                    <option value="Kerajinan">Kerajinan</option>
+                    <option value="Jasa Transportasi">Jasa Transportasi</option>
+                    <option value="Wisata">Wisata</option>
+                    <option value="Hotel">Hotel</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+                <div id="kategori_layanan_error" class="error-message">Kategori harus dipilih</div>
+            </div>
+            
+            <div class="loading" id="loading-indicator">
+                Membuat dokumen, harap tunggu...
+            </div>
+            
+            <div class="button-group">
+                <button onclick="validateAndGenerate()">Generate Surat Perjanjian</button>
+                <button onclick="printDocument()" class="print">Cetak Dokumen</button>
+                <button onclick="downloadDocument()" class="download">Download PDF</button>
+                <button onclick="sendViaWhatsApp()" class="whatsapp">Kirim via WhatsApp</button>
+            </div>
+        </div>
+
+        <!-- Dokumen Surat Perjanjian -->
+        <div id="agreement-document">
+            <div class="header">
+                <div class="logo-container">
+                    <img src="https://raw.githubusercontent.com/LKS-88/anekamarket/refs/heads/main/Logo-Anekamarketku.png" alt="Logo Lentera Karya Situbondo" class="logo-img">
+                </div>
+                <div class="company-name">LENTERA KARYA SITUBONDO</div>
+                <div class="company-tagline">Inovasi dan Teknologi untuk UMKM</div>
+                <div class="company-address">Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</div>
+                <div class="contact-info">
+                    <span>Email: admin@anekamarket.my.id</span> | 
+                    <span>Telp: +62 878-6561-4222</span>
+                </div>
+                <div class="contact-info">
+                    <span>Website: www.anekamarket.my.id</span>
+                </div>
+                <div class="header-line"></div>
+            </div>
+            
+            <div class="document-title">
+                SURAT PERJANJIAN PENYEDIAAN DAN PENGGUNAAN LAYANAN APLIKASI
+            </div>
+            
+            <div class="document-number">
+                Nomor: <span id="nomor_surat_display">......../......../SP3LA-LKS/VII/2025</span>
+            </div>
+            
+            <div class="parties">
+                <p style="font-size: 14px;">Pada hari ini, <span id="display_hari_tanggal">Senin Tanggal 07 Bulan Juli Tahun 2025</span>. Bertempat di Situbondo, kami yang bertanda tangan di bawah ini:</p>
+                
+                <div class="party">
+                    <div class="party-title">PIHAK PERTAMA:</div>
+                    <p>Nama Lengkap: <strong>MUHAMMAD SALAM</strong></p>
+                    <p>Jabatan: <strong>Founder Lentera Karya Situbondo</strong></p>
+                    <p>Alamat: Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
+                </div>
+                
+                <div class="party">
+                    <div class="party-title">PIHAK KEDUA (Pemohon / Pengguna Layanan):</div>
+                    <p>Nama Pemohon : <span id="display_nama_pemohon" class="form-input"></span></p>
+                    <p>ID Permohonan : <span id="display_id_permohonan" class="form-input"></span></p>
+                    <p>NIK : <span id="display_nik" class="form-input"></span></p>
+                    <p>Alamat : <span id="display_alamat" class="form-input"></span></p>
+                    <p>Nomor Telepon : <span id="display_nomor_telepon" class="form-input"></span></p>
+                    <p>No. ID Pendaftaran : <span id="display_id_pendaftaran" class="form-input"></span></p>
+                    <p>Nama Usaha / Brand : <span id="display_nama_umkm" class="form-input"></span></p>
+                    <p>Kategori Usaha : <span id="display_kategori_layanan" class="form-input"></span></p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <div class="article-title">PASAL 1 - MAKSUD DAN TUJUAN</div>
+                <p>Perjanjian ini dibuat untuk mengatur hak dan kewajiban masing-masing pihak dalam rangka penyediaan dan pemanfaatan fasilitas, sarana, dan layanan berbasis aplikasi yang disediakan oleh PIHAK PERTAMA kepada PIHAK KEDUA.</p>
+            </div>
+            
+            <div class="article">
+                <div class="article-title">PASAL 2 - RUANG LINGKUP LAYANAN</div>
+                <p>1. PIHAK PERTAMA menyediakan akses aplikasi yang mencakup, namun tidak terbatas pada:</p>
+                <ul>
+                    <li>Aplikasi Kasir & Aplikasi Ojek Online</li>
+                    <li>Aplikasi UMKM</li>
+                    <li>Layanan Sewa Hotel & Layanan Wisata</li>
+                    <li>Fitur lain sesuai pengembangan platform</li>
+                </ul>
+                <p>2. PIHAK KEDUA berhak menggunakan fasilitas aplikasi sesuai ketentuan teknis dan kebijakan PIHAK PERTAMA.</p>
+            </div>
+            
+            <div class="article">
+                <div class="article-title">PASAL 3 - TANGGUNG JAWAB PIHAK PERTAMA</div>
+                <p>1. Menyediakan fasilitas aplikasi dalam kondisi dapat digunakan sesuai spesifikasi teknis.</p>
+                <p>2. Memberikan dukungan teknis terbatas dalam penggunaan aplikasi.</p>
+                <p>3. PIHAK PERTAMA TIDAK bertanggung jawab atas:</p>
+                <p>a. Segala kerugian, kerusakan barang, atau kerugian konsumen yang timbul akibat transaksi, pemesanan, atau penggunaan layanan oleh PIHAK KEDUA.</p>
+                <p>b. Tuntutan, klaim, atau perselisihan antara PIHAK KEDUA dengan pihak ketiga.</p>
+                <p>c. Kejadian yang berada di luar kendali, termasuk tetapi tidak terbatas pada kecelakaan, bencana alam, tindakan pidana, dan force majeure lainnya.</p>
+            </div>
+            
+            <div class="article">
+                <div class="article-title">PASAL 4 - TANGGUNG JAWAB PIHAK KEDUA</div>
+                <p>1. Menjamin kebenaran, keaslian, dan kelengkapan data yang diberikan kepada PIHAK PERTAMA.</p>
+                <p>2. Bertanggung jawab penuh atas legalitas, mutu, keamanan, dan keabsahan barang/jasa/layanan.</p>
+                <p>3. Berkewajiban memastikan seluruh aktivitas usaha tidak melanggar ketentuan hukum.</p>
+                <p>4. Dilarang memperdagangkan barang/jasa terlarang, termasuk:</p>
+                <ul>
+                    <li>Narkotika, psikotropika, obat terlarang</li>
+                    <li>Senjata api, senjata tajam, bahan peledak</li>
+                    <li>Minuman keras dan barang lain yang dilarang peraturan perundang-undangan</li>
+                </ul>
+                <p>5. Bertanggung jawab atas pengaduan, klaim, tuntutan, dan kerugian akibat transaksi, termasuk layanan transportasi, wisata, dan sewa hotel.</p>
+                <p>6. Wajib menjaga reputasi dan etika usaha dalam penggunaan aplikasi.</p>
+            </div>
+            
+            <div class="article">
+                <div class="article-title">PASAL 5 - PEMBEBASAN TANGGUNG JAWAB</div>
+                <p>PIHAK KEDUA secara tegas dan tanpa syarat melepaskan PIHAK PERTAMA dari segala tuntutan, klaim, gugatan, dan kewajiban ganti rugi yang timbul sebagai akibat langsung atau tidak langsung dari:</p>
+                <p>1. Kerusakan barang atau kerugian konsumen.</p>
+                <p>2. Kecelakaan, bencana, atau force majeure.</p>
+                <p>3. Perselisihan dengan pembeli, pengguna jasa, atau pihak ketiga.</p>
+                <p>4. Pelanggaran ketentuan hukum oleh PIHAK KEDUA.</p>
+            </div>
+            
+            <div class="article">
+                <div class="article-title">PASAL 6 - JANGKA WAKTU PERJANJIAN</div>
+                <p>1. Perjanjian berlaku sejak tanggal ditandatangani.</p>
+                <p>2. Tetap berlaku selama PIHAK KEDUA menggunakan layanan aplikasi kecuali diakhiri karena pelanggaran atau kesepakatan bersama.</p>
+            </div>
+            
+            <div class="article">
+                <div class="article-title">PASAL 7 - PENYELESAIAN PERSELISIHAN</div>
+                <p>Segala perselisihan akan diselesaikan secara musyawarah mufakat. Apabila tidak tercapai, maka akan diselesaikan sesuai ketentuan hukum yang berlaku di wilayah hukum Republik Indonesia.</p>
+            </div>
+            
+            <div class="article">
+                <div class="article-title">PASAL 8 - PENUTUP</div>
+                <p>Demikian perjanjian ini dibuat dalam satu rangkap asli yang bertandatangan elektonik dan memiliki kekuatan hukum yang sah, untuk digunakan sebagaimana mestinya.</p>
+            </div>
+            
+            <div class="signature-area">
+                <div class="signature-box">
+                    <div class="signature-info">
+                        <p>Situbondo, <span id="display_tanggal_pendaftaran_full"></span></p>
+                    </div>
+                    <p>PIHAK KEDUA<br>Pemohon/Pengguna Layanan</p>
+                    <div id="qrcode_pihak_kedua" class="qrcode-container"></div>
+                    <div class="signature-name">
+                        <span id="display_nama_pemohon_sign"></span>
+                    </div>
+                </div>
+                
+                <div class="signature-box">
+                    <div class="signature-info">
+                        <p>Situbondo, <span id="display_tanggal_pihak_pertama">07 Juli 2025</span></p>
+                    </div>
+                    <p>PIHAK PERTAMA<br>Founder Lentera Karya Situbondo</p>
+                    <div id="qrcode_pihak_pertama" class="qrcode-container"></div>
+                    <div class="signature-name">
+                        MUHAMMAD SALAM
+                    </div>
+                </div>
+            </div>
+            
+            <div class="page-number"></div>
+        </div>
+    </div>
+
+    <!-- Main JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>
