@@ -1,37 +1,381 @@
-// main.js - LENGKAP DAN FINAL
+// main.js - Refactored and Improved
 document.addEventListener('DOMContentLoaded', function() {
-    const apiKeyImgBB = '0e598ab24278f062969e6d0ec810d518';
-    const nomorWhatsAppTujuan = '6285647709114';
-    // URL tujuan untuk download surat perjanjian (sesuai permintaan)
+    // ==================== CONSTANTS ====================
+    const API_KEY_IMG_BB = '0e598ab24278f062969e6d0ec810d518';
+    const WHATSAPP_TUJUAN = '6285647709114';
     const PERJANJIAN_URL = 'https://aplikasiusaha.com/daftar/perjanjian';
-    
+
+    // ==================== DOM Elements ====================
     const formContainer = document.getElementById('form-container');
     const successSound = document.getElementById('success-sound');
     const loadingOverlay = document.getElementById('loading-overlay');
     const loadingText = document.getElementById('loading-text');
 
-    let form, submitBtn, kategoriSelect, lainnyaGroup, keteranganLainnya, ktpInput, fileNameLabel, mapsInput, registerLaterBtn, getLocationBtn, locationStatus, agreeCheckbox, uploadKtpBtn, ktpStatus;
+    // ==================== State Variables ====================
+    let form, submitBtn, kategoriSelect, lainnyaGroup, keteranganLainnya, ktpInput;
+    let fileNameLabel, mapsInput, registerLaterBtn, getLocationBtn, locationStatus;
+    let agreeCheckbox, uploadKtpBtn, ktpStatus;
     let uploadedKtpUrl = null;
     let submittedData = null;
     let finalWhatsAppMessage = '';
 
-    // Fungsi unlock audio
-    function unlockAudio() {
-        successSound.play().then(() => {
-            successSound.pause();
-            successSound.currentTime = 0;
-        }).catch(e => console.warn('Audio unlock error:', e));
-        document.removeEventListener('click', unlockAudio);
-        document.removeEventListener('touchstart', unlockAudio);
+    // ==================== Utility Functions ====================
+    function generateIdPermohonan() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = 'AM-';
+        for (let i = 0; i < 6; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+        return result;
     }
-    document.addEventListener('click', unlockAudio, { once: true });
-    document.addEventListener('touchstart', unlockAudio, { once: true });
 
-    // Render form
-    renderForm();
+    function setTanggalPendaftaran() {
+        const now = new Date();
+        const options = { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return now.toLocaleString('id-ID', options).replace(/\./g, ':');
+    }
 
+    function showError(field, message) {
+        const errorElement = document.getElementById(`${field.id}-error`);
+        const inputWrapper = field.closest('.input-group') || field;
+        if (errorElement && message) {
+            inputWrapper.style.borderColor = 'var(--error-color)';
+            if (field.type === 'file') field.parentElement.style.borderColor = 'var(--error-color)';
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    }
+
+    function hideError(field) {
+        const errorElement = document.getElementById(`${field.id}-error`);
+        const inputWrapper = field.closest('.input-group') || field;
+        if (errorElement) {
+            inputWrapper.style.borderColor = 'var(--border-color)';
+            if (field.type === 'file') field.parentElement.style.borderColor = 'var(--border-color)';
+            errorElement.style.display = 'none';
+        }
+    }
+
+    async function uploadFileToImgBB(file) {
+        const formData = new FormData();
+        formData.append('image', file);
+        try {
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY_IMG_BB}`, {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+            if (result.success) return result.data.url;
+            else throw new Error(result.error.message || 'Gagal mengunggah gambar ke ImgBB.');
+        } catch (error) {
+            console.error('Error uploading to ImgBB:', error);
+            throw error;
+        }
+    }
+
+    function getTemplateParams(ktpUrl) {
+        let kategoriUsaha = document.getElementById('kategori_usaha').value;
+        if (kategoriUsaha === 'Lainnya') {
+            const keterangan = document.getElementById('keterangan_lainnya').value;
+            kategoriUsaha = `Lainnya (Keterangan: ${keterangan})`;
+        }
+        return {
+            nama: document.getElementById('nama').value,
+            nik: document.getElementById('nik').value,
+            alamat: document.getElementById('alamat').value,
+            whatsapp: document.getElementById('whatsapp').value,
+            email: document.getElementById('email').value || 'Tidak diisi',
+            nama_usaha: document.getElementById('nama_usaha').value,
+            alamat_usaha: document.getElementById('alamat_usaha').value,
+            lokasi_maps: document.getElementById('lokasi_maps').value,
+            kategori_usaha: kategoriUsaha,
+            id_permohonan: document.getElementById('id_permohonan').value,
+            tanggal_pendaftaran: document.getElementById('tanggal_pendaftaran').value,
+            foto_ktp_url: ktpUrl
+        };
+    }
+
+    function sendWhatsApp() {
+        if (finalWhatsAppMessage) {
+            const whatsappURL = `https://wa.me/${WHATSAPP_TUJUAN}?text=${encodeURIComponent(finalWhatsAppMessage)}`;
+            window.open(whatsappURL, '_blank');
+        } else alert('Pesan tidak tersedia. Silakan ulangi pendaftaran.');
+    }
+
+    // ==================== Validation Functions ====================
+    function validateForm() {
+        let allValid = true;
+        const requiredFields = form.querySelectorAll('[required]');
+
+        requiredFields.forEach(field => {
+            let isValid = true;
+            let errorMessage = '';
+
+            switch (field.type) {
+                case 'file':
+                    if (ktpInput.files.length === 0) { isValid = false; errorMessage = 'Anda harus memilih file KTP.'; }
+                    break;
+                case 'url':
+                    if (field.value.trim() === '') { isValid = false; errorMessage = 'Field ini wajib diisi.'; }
+                    else if (field.value !== 'Akan diisi nanti' && !field.value.includes('google.com/maps') && !field.value.includes('maps.app.goo.gl') && !field.value.includes('goo.gl/maps')) {
+                        isValid = false; errorMessage = 'URL Google Maps tidak valid. Coba gunakan tombol lokasi.';
+                    }
+                    break;
+                case 'select-one':
+                    if (field.value === '') { isValid = false; errorMessage = 'Anda harus memilih salah satu kategori.'; }
+                    break;
+                default:
+                    if (field.value.trim() === '') { isValid = false; errorMessage = 'Field ini wajib diisi.'; }
+                    break;
+            }
+
+            if (field.id === 'nik' && field.value.trim() !== '' && !/^\d{16}$/.test(field.value)) {
+                isValid = false; errorMessage = 'NIK harus terdiri dari 16 digit angka.';
+            } else if (field.id === 'whatsapp' && field.value.trim() !== '' && !/^08[0-9]{8,13}$/.test(field.value)) {
+                isValid = false; errorMessage = 'Format No. WhatsApp salah. Contoh: 081234567890.';
+            }
+
+            if (isValid) hideError(field);
+            else {
+                if (field.type !== 'file' || ktpInput.files.length === 0) showError(field, errorMessage);
+                allValid = false;
+            }
+        });
+
+        const emailField = document.getElementById('email');
+        if (emailField.value !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value)) {
+            showError(emailField, 'Format email tidak valid.');
+            allValid = false;
+        } else hideError(emailField);
+
+        return allValid;
+    }
+
+    function updateSubmitButtonState() {
+        if (!submitBtn) return;
+        const fieldsValid = validateForm();
+        const agreeChecked = agreeCheckbox.checked;
+        const uploadDone = (uploadedKtpUrl !== null);
+        submitBtn.disabled = !(fieldsValid && agreeChecked && uploadDone);
+    }
+
+    // ==================== Event Handlers ====================
+    function handleKategoriChange() {
+        lainnyaGroup.style.display = kategoriSelect.value === 'Lainnya' ? 'block' : 'none';
+        if (kategoriSelect.value === 'Lainnya') {
+            keteranganLainnya.setAttribute('required', 'required');
+        } else {
+            keteranganLainnya.removeAttribute('required');
+            keteranganLainnya.value = '';
+            hideError(keteranganLainnya);
+        }
+        updateSubmitButtonState();
+    }
+
+    function handleKtpChange() {
+        if (ktpInput.files.length > 0) {
+            const file = ktpInput.files[0];
+            if (!file.type.startsWith('image/')) {
+                showError(ktpInput, 'File harus berupa gambar (jpg, png, dll).');
+                ktpInput.value = '';
+                fileNameLabel.textContent = 'Belum ada file dipilih';
+                uploadKtpBtn.style.display = 'none';
+                return;
+            }
+            fileNameLabel.textContent = file.name;
+            uploadKtpBtn.style.display = 'inline-flex';
+            ktpStatus.style.display = 'none';
+            ktpStatus.textContent = '';
+        } else {
+            fileNameLabel.textContent = 'Belum ada file dipilih';
+            uploadKtpBtn.style.display = 'none';
+            ktpStatus.style.display = 'none';
+        }
+        uploadedKtpUrl = null;
+        agreeCheckbox.checked = false;
+        hideError(ktpInput);
+        updateSubmitButtonState();
+    }
+
+    async function handleUploadKtp() {
+        const ktpFile = ktpInput.files[0];
+        if (!ktpFile) {
+            showError(ktpInput, 'Mohon pilih file KTP terlebih dahulu.');
+            return;
+        }
+
+        uploadKtpBtn.disabled = true;
+        uploadKtpBtn.style.animation = 'none';
+        loadingText.textContent = 'Mengunggah KTP... Mohon tunggu...';
+        loadingOverlay.classList.add('visible');
+        uploadedKtpUrl = null;
+        ktpStatus.style.display = 'none';
+        hideError(ktpInput);
+
+        try {
+            uploadedKtpUrl = await uploadFileToImgBB(ktpFile);
+            loadingOverlay.classList.remove('visible');
+            ktpStatus.textContent = 'KTP berhasil diunggah!';
+            ktpStatus.style.color = 'var(--success-color)';
+            ktpStatus.style.display = 'block';
+            uploadKtpBtn.style.display = 'none';
+            uploadKtpBtn.disabled = false;
+        } catch (error) {
+            console.error('Proses upload KTP gagal:', error);
+            loadingOverlay.classList.remove('visible');
+            showError(ktpInput, 'Gagal mengunggah KTP: ' + error.message);
+            uploadedKtpUrl = null;
+            uploadKtpBtn.disabled = false;
+            uploadKtpBtn.style.animation = 'fadeInDown 0.5s ease-out, pulse 2s infinite 0.5s';
+        }
+        updateSubmitButtonState();
+    }
+
+    function handleRegisterLater() {
+        mapsInput.removeAttribute('required');
+        mapsInput.value = 'Akan diisi nanti';
+        document.getElementById('location-warning').style.display = 'none';
+        hideError(mapsInput);
+        updateSubmitButtonState();
+    }
+
+    function handleGetLocation() {
+        if (!navigator.geolocation) {
+            locationStatus.textContent = 'Geolocation tidak didukung oleh browser Anda.';
+            locationStatus.style.display = 'block';
+            locationStatus.style.color = 'var(--error-color)';
+            return;
+        }
+
+        locationStatus.textContent = 'Mendeteksi lokasi Anda...';
+        locationStatus.style.display = 'block';
+        locationStatus.style.color = 'var(--dark-color)';
+        hideError(mapsInput);
+        mapsInput.value = '';
+
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const mapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                mapsInput.value = mapsUrl;
+                mapsInput.setAttribute('required', 'required');
+                locationStatus.textContent = 'Lokasi berhasil dideteksi!';
+                locationStatus.style.color = 'var(--success-color)';
+                updateSubmitButtonState();
+            },
+            function(error) {
+                let errorMessage;
+                switch (error.code) {
+                    case error.PERMISSION_DENIED: errorMessage = "Akses lokasi ditolak. Izinkan akses di pengaturan browser."; break;
+                    case error.POSITION_UNAVAILABLE: errorMessage = "Informasi lokasi tidak tersedia."; break;
+                    case error.TIMEOUT: errorMessage = "Waktu permintaan lokasi habis."; break;
+                    default: errorMessage = "Terjadi kesalahan saat mengambil lokasi."; break;
+                }
+                locationStatus.textContent = errorMessage;
+                locationStatus.style.display = 'block';
+                locationStatus.style.color = 'var(--error-color)';
+                updateSubmitButtonState();
+            }
+        );
+    }
+
+    function handleAgreeChange(e) {
+        if (e.target.checked) {
+            const fieldsValid = validateForm();
+            if (!fieldsValid) {
+                alert('Mohon lengkapi semua data yang wajib diisi (termasuk KTP) sebelum menyetujui.');
+                e.target.checked = false;
+                updateSubmitButtonState();
+                return;
+            }
+            if (uploadedKtpUrl === null) {
+                alert('Mohon unggah file KTP Anda terlebih dahulu menggunakan tombol "Unggah KTP Sekarang (Wajib)".');
+                showError(ktpInput, 'Anda belum mengunggah KTP.');
+                e.target.checked = false;
+                updateSubmitButtonState();
+                return;
+            }
+        }
+        updateSubmitButtonState();
+    }
+
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        if (submitBtn.disabled) return;
+
+        submitBtn.disabled = true;
+        loadingText.textContent = 'Menyiapkan Data...';
+        loadingOverlay.classList.add('visible');
+
+        try {
+            submittedData = {
+                nama: document.getElementById('nama').value,
+                nik: document.getElementById('nik').value,
+                alamat: document.getElementById('alamat').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                email: document.getElementById('email').value || 'Tidak diisi',
+                nama_usaha: document.getElementById('nama_usaha').value,
+                alamat_usaha: document.getElementById('alamat_usaha').value,
+                lokasi_maps: document.getElementById('lokasi_maps').value,
+                kategori_usaha: document.getElementById('kategori_usaha').value,
+                keterangan_lainnya: document.getElementById('keterangan_lainnya')?.value || '',
+                id_permohonan: document.getElementById('id_permohonan').value,
+                tanggal_pendaftaran: document.getElementById('tanggal_pendaftaran').value,
+                foto_ktp_url: uploadedKtpUrl
+            };
+
+            const params = getTemplateParams(uploadedKtpUrl);
+            finalWhatsAppMessage = `*PENDAFTARAN MITRA ANEKAMARKET*\n\n*Data Pribadi:*\n• Nama: ${params.nama}\n• NIK: ${params.nik}\n• Alamat: ${params.alamat}\n• WhatsApp: ${params.whatsapp}\n• Email: ${params.email}\n• Link Foto KTP: ${uploadedKtpUrl}\n\n*Data Usaha:*\n• Nama Usaha: ${params.nama_usaha}\n• Alamat Usaha: ${params.alamat_usaha}\n• Kategori Usaha: ${params.kategori_usaha}\n• Lokasi Maps: ${params.lokasi_maps}\n\n*Data Sistem:*\n• ID Permohonan: ${params.id_permohonan}\n• Tanggal Pendaftaran: ${params.tanggal_pendaftaran}\n\n_Saya menyatakan bahwa semua data di atas adalah benar dan dapat dipertanggungjawabkan._`;
+
+            loadingOverlay.classList.remove('visible');
+            showSuccessScreen();
+
+        } catch (error) {
+            console.error('Proses submit gagal:', error);
+            loadingOverlay.classList.remove('visible');
+            alert('Gagal menyiapkan data. Mohon coba lagi. Pesan Error: ' + error.message);
+            submitBtn.disabled = false;
+        }
+    }
+
+    // ==================== Screen Rendering Functions ====================
     function renderForm() {
-        formContainer.innerHTML = `
+        formContainer.innerHTML = getFormHTML();
+
+        // Initialize DOM elements
+        form = document.getElementById('registrationForm');
+        submitBtn = document.getElementById('submitBtn');
+        kategoriSelect = document.getElementById('kategori_usaha');
+        lainnyaGroup = document.getElementById('lainnya_keterangan_group');
+        keteranganLainnya = document.getElementById('keterangan_lainnya');
+        ktpInput = document.getElementById('foto_ktp');
+        fileNameLabel = document.getElementById('file-name-label');
+        mapsInput = document.getElementById('lokasi_maps');
+        registerLaterBtn = document.getElementById('registerLaterBtn');
+        getLocationBtn = document.getElementById('getLocationBtn');
+        locationStatus = document.getElementById('location-status');
+        agreeCheckbox = document.getElementById('agree');
+        uploadKtpBtn = document.getElementById('uploadKtpBtn');
+        ktpStatus = document.getElementById('foto_ktp-status');
+
+        // Set initial values
+        document.getElementById('id_permohonan').value = generateIdPermohonan();
+        document.getElementById('tanggal_pendaftaran').value = setTanggalPendaftaran();
+
+        // Attach event listeners
+        kategoriSelect.addEventListener('change', handleKategoriChange);
+        ktpInput.addEventListener('change', handleKtpChange);
+        uploadKtpBtn.addEventListener('click', handleUploadKtp);
+        registerLaterBtn.addEventListener('click', handleRegisterLater);
+        getLocationBtn.addEventListener('click', handleGetLocation);
+        form.addEventListener('input', updateSubmitButtonState);
+        agreeCheckbox.addEventListener('change', handleAgreeChange);
+        form.addEventListener('submit', handleFormSubmit);
+
+        updateSubmitButtonState();
+    }
+
+    function getFormHTML() {
+        return `
             <form id="registrationForm">
                 <div class="form-section">
                     <h3>1. Data Pribadi</h3>
@@ -170,337 +514,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </button>
             </form>
         `;
-
-        form = document.getElementById('registrationForm');
-        submitBtn = document.getElementById('submitBtn');
-        kategoriSelect = document.getElementById('kategori_usaha');
-        lainnyaGroup = document.getElementById('lainnya_keterangan_group');
-        keteranganLainnya = document.getElementById('keterangan_lainnya');
-        ktpInput = document.getElementById('foto_ktp');
-        fileNameLabel = document.getElementById('file-name-label');
-        mapsInput = document.getElementById('lokasi_maps');
-        registerLaterBtn = document.getElementById('registerLaterBtn');
-        getLocationBtn = document.getElementById('getLocationBtn');
-        locationStatus = document.getElementById('location-status');
-        agreeCheckbox = document.getElementById('agree');
-        uploadKtpBtn = document.getElementById('uploadKtpBtn');
-        ktpStatus = document.getElementById('foto_ktp-status');
-
-        document.getElementById('id_permohonan').value = generateIdPermohonan();
-        document.getElementById('tanggal_pendaftaran').value = setTanggalPendaftaran();
-
-        kategoriSelect.addEventListener('change', function() {
-            lainnyaGroup.style.display = this.value === 'Lainnya' ? 'block' : 'none';
-            if (this.value === 'Lainnya') {
-                keteranganLainnya.setAttribute('required', 'required');
-            } else {
-                keteranganLainnya.removeAttribute('required');
-                keteranganLainnya.value = '';
-                hideError(keteranganLainnya);
-            }
-            updateSubmitButtonState();
-        });
-
-        ktpInput.addEventListener('change', function() {
-            if (this.files.length > 0) {
-                const file = this.files[0];
-                if (!file.type.startsWith('image/')) {
-                    showError(ktpInput, 'File harus berupa gambar (jpg, png, dll).');
-                    this.value = '';
-                    fileNameLabel.textContent = 'Belum ada file dipilih';
-                    uploadKtpBtn.style.display = 'none';
-                    return;
-                }
-                fileNameLabel.textContent = file.name;
-                uploadKtpBtn.style.display = 'inline-flex';
-                ktpStatus.style.display = 'none';
-                ktpStatus.textContent = '';
-            } else {
-                fileNameLabel.textContent = 'Belum ada file dipilih';
-                uploadKtpBtn.style.display = 'none';
-                ktpStatus.style.display = 'none';
-            }
-            uploadedKtpUrl = null;
-            agreeCheckbox.checked = false;
-            hideError(ktpInput);
-            updateSubmitButtonState();
-        });
-
-        uploadKtpBtn.addEventListener('click', async function() {
-            const ktpFile = ktpInput.files[0];
-            if (!ktpFile) {
-                showError(ktpInput, 'Mohon pilih file KTP terlebih dahulu.');
-                return;
-            }
-            
-            uploadKtpBtn.disabled = true;
-            uploadKtpBtn.style.animation = 'none';
-            loadingText.textContent = 'Mengunggah KTP... Mohon tunggu...';
-            loadingOverlay.classList.add('visible');
-            uploadedKtpUrl = null;
-            ktpStatus.style.display = 'none';
-            hideError(ktpInput);
-
-            try {
-                uploadedKtpUrl = await uploadFileToImgBB(ktpFile);
-                loadingOverlay.classList.remove('visible');
-                ktpStatus.textContent = 'KTP berhasil diunggah!';
-                ktpStatus.style.color = 'var(--success-color)';
-                ktpStatus.style.display = 'block';
-                uploadKtpBtn.style.display = 'none';
-                uploadKtpBtn.disabled = false;
-            } catch (error) {
-                console.error('Proses upload KTP gagal:', error);
-                loadingOverlay.classList.remove('visible');
-                showError(ktpInput, 'Gagal mengunggah KTP: ' + error.message);
-                uploadedKtpUrl = null;
-                uploadKtpBtn.disabled = false;
-                uploadKtpBtn.style.animation = 'fadeInDown 0.5s ease-out, pulse 2s infinite 0.5s';
-            }
-            updateSubmitButtonState();
-        });
-
-        registerLaterBtn.addEventListener('click', function() {
-            mapsInput.removeAttribute('required');
-            mapsInput.value = 'Akan diisi nanti';
-            document.getElementById('location-warning').style.display = 'none';
-            hideError(mapsInput);
-            updateSubmitButtonState();
-        });
-
-        getLocationBtn.addEventListener('click', function() {
-            if (!navigator.geolocation) {
-                locationStatus.textContent = 'Geolocation tidak didukung oleh browser Anda.';
-                locationStatus.style.display = 'block';
-                locationStatus.style.color = 'var(--error-color)';
-                return;
-            }
-
-            locationStatus.textContent = 'Mendeteksi lokasi Anda...';
-            locationStatus.style.display = 'block';
-            locationStatus.style.color = 'var(--dark-color)';
-            hideError(mapsInput);
-            mapsInput.value = '';
-
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    const mapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
-                    mapsInput.value = mapsUrl;
-                    mapsInput.setAttribute('required', 'required');
-                    locationStatus.textContent = 'Lokasi berhasil dideteksi!';
-                    locationStatus.style.color = 'var(--success-color)';
-                    updateSubmitButtonState();
-                },
-                function(error) {
-                    let errorMessage;
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED: errorMessage = "Akses lokasi ditolak. Izinkan akses di pengaturan browser."; break;
-                        case error.POSITION_UNAVAILABLE: errorMessage = "Informasi lokasi tidak tersedia."; break;
-                        case error.TIMEOUT: errorMessage = "Waktu permintaan lokasi habis."; break;
-                        default: errorMessage = "Terjadi kesalahan saat mengambil lokasi."; break;
-                    }
-                    locationStatus.textContent = errorMessage;
-                    locationStatus.style.display = 'block';
-                    locationStatus.style.color = 'var(--error-color)';
-                    updateSubmitButtonState();
-                }
-            );
-        });
-
-        form.addEventListener('input', updateSubmitButtonState);
-
-        agreeCheckbox.addEventListener('change', function(e) {
-            if (e.target.checked) {
-                const fieldsValid = validateForm();
-                if (!fieldsValid) {
-                    alert('Mohon lengkapi semua data yang wajib diisi (termasuk KTP) sebelum menyetujui.');
-                    e.target.checked = false;
-                    updateSubmitButtonState();
-                    return;
-                }
-                if (uploadedKtpUrl === null) {
-                    alert('Mohon unggah file KTP Anda terlebih dahulu menggunakan tombol "Unggah KTP Sekarang (Wajib)".');
-                    showError(ktpInput, 'Anda belum mengunggah KTP.');
-                    e.target.checked = false;
-                    updateSubmitButtonState();
-                    return;
-                }
-            }
-            updateSubmitButtonState();
-        });
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (submitBtn.disabled) return;
-            
-            submitBtn.disabled = true;
-            loadingText.textContent = 'Menyiapkan Data...';
-            loadingOverlay.classList.add('visible');
-
-            try {
-                submittedData = {
-                    nama: document.getElementById('nama').value,
-                    nik: document.getElementById('nik').value,
-                    alamat: document.getElementById('alamat').value,
-                    whatsapp: document.getElementById('whatsapp').value,
-                    email: document.getElementById('email').value || 'Tidak diisi',
-                    nama_usaha: document.getElementById('nama_usaha').value,
-                    alamat_usaha: document.getElementById('alamat_usaha').value,
-                    lokasi_maps: document.getElementById('lokasi_maps').value,
-                    kategori_usaha: document.getElementById('kategori_usaha').value,
-                    keterangan_lainnya: document.getElementById('keterangan_lainnya')?.value || '',
-                    id_permohonan: document.getElementById('id_permohonan').value,
-                    tanggal_pendaftaran: document.getElementById('tanggal_pendaftaran').value,
-                    foto_ktp_url: uploadedKtpUrl
-                };
-
-                const params = getTemplateParams(uploadedKtpUrl);
-                finalWhatsAppMessage = `*PENDAFTARAN MITRA ANEKAMARKET*\n\n*Data Pribadi:*\n• Nama: ${params.nama}\n• NIK: ${params.nik}\n• Alamat: ${params.alamat}\n• WhatsApp: ${params.whatsapp}\n• Email: ${params.email}\n• Link Foto KTP: ${uploadedKtpUrl}\n\n*Data Usaha:*\n• Nama Usaha: ${params.nama_usaha}\n• Alamat Usaha: ${params.alamat_usaha}\n• Kategori Usaha: ${params.kategori_usaha}\n• Lokasi Maps: ${params.lokasi_maps}\n\n*Data Sistem:*\n• ID Permohonan: ${params.id_permohonan}\n• Tanggal Pendaftaran: ${params.tanggal_pendaftaran}\n\n_Saya menyatakan bahwa semua data di atas adalah benar dan dapat dipertanggungjawabkan._`;
-                
-                loadingOverlay.classList.remove('visible');
-                showSuccessScreen();
-
-            } catch (error) {
-                console.error('Proses submit gagal:', error);
-                loadingOverlay.classList.remove('visible');
-                alert('Gagal menyiapkan data. Mohon coba lagi. Pesan Error: ' + error.message);
-                submitBtn.disabled = false;
-            }
-        });
-
-        updateSubmitButtonState();
-    }
-
-    // Fungsi-fungsi pendukung
-    function generateIdPermohonan() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let result = 'AM-';
-        for (let i = 0; i < 6; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
-        return result;
-    }
-    
-    function setTanggalPendaftaran() {
-        const now = new Date();
-        const options = { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return now.toLocaleString('id-ID', options).replace(/\./g, ':');
-    }
-
-    function validateForm() {
-        let allValid = true;
-        const requiredFields = form.querySelectorAll('[required]');
-        
-        requiredFields.forEach(field => {
-            let isValid = true;
-            let errorMessage = '';
-
-            switch(field.type) {
-                case 'file':
-                    if (ktpInput.files.length === 0) { isValid = false; errorMessage = 'Anda harus memilih file KTP.'; }
-                    break;
-                case 'url':
-                    if (field.value.trim() === '') { isValid = false; errorMessage = 'Field ini wajib diisi.'; }
-                    else if (field.value !== 'Akan diisi nanti' && !field.value.includes('google.com/maps') && !field.value.includes('maps.app.goo.gl') && !field.value.includes('goo.gl/maps')) {
-                        isValid = false; errorMessage = 'URL Google Maps tidak valid. Coba gunakan tombol lokasi.';
-                    }
-                    break;
-                case 'select-one':
-                    if (field.value === '') { isValid = false; errorMessage = 'Anda harus memilih salah satu kategori.'; }
-                    break;
-                default:
-                    if (field.value.trim() === '') { isValid = false; errorMessage = 'Field ini wajib diisi.'; }
-                    break;
-            }
-            
-            if (field.id === 'nik' && field.value.trim() !== '' && !/^\d{16}$/.test(field.value)) {
-                isValid = false; errorMessage = 'NIK harus terdiri dari 16 digit angka.';
-            } else if (field.id === 'whatsapp' && field.value.trim() !== '' && !/^08[0-9]{8,13}$/.test(field.value)) {
-               isValid = false; errorMessage = 'Format No. WhatsApp salah. Contoh: 081234567890.';
-            }
-
-            if(isValid) hideError(field);
-            else {
-                if(field.type !== 'file' || ktpInput.files.length === 0) showError(field, errorMessage);
-                allValid = false;
-            }
-        });
-        
-        const emailField = document.getElementById('email');
-        if (emailField.value !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value)) {
-            showError(emailField, 'Format email tidak valid.');
-            allValid = false;
-        } else hideError(emailField);
-        
-        return allValid;
-    }
-
-    function updateSubmitButtonState() {
-        if (!submitBtn) return;
-        const fieldsValid = validateForm();
-        const agreeChecked = agreeCheckbox.checked;
-        const uploadDone = (uploadedKtpUrl !== null);
-        submitBtn.disabled = !(fieldsValid && agreeChecked && uploadDone);
-    }
-    
-    function showError(field, message) {
-        const errorElement = document.getElementById(`${field.id}-error`);
-        const inputWrapper = field.closest('.input-group') || field;
-        if(errorElement && message) {
-            inputWrapper.style.borderColor = 'var(--error-color)';
-            if (field.type === 'file') field.parentElement.style.borderColor = 'var(--error-color)';
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-        }
-    }
-    
-    function hideError(field) {
-        const errorElement = document.getElementById(`${field.id}-error`);
-        const inputWrapper = field.closest('.input-group') || field;
-        if (errorElement) {
-            inputWrapper.style.borderColor = 'var(--border-color)';
-            if (field.type === 'file') field.parentElement.style.borderColor = 'var(--border-color)';
-            errorElement.style.display = 'none';
-        }
-    }
-
-    async function uploadFileToImgBB(file) {
-        const formData = new FormData();
-        formData.append('image', file);
-        try {
-            const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKeyImgBB}`, {
-                method: 'POST',
-                body: formData,
-            });
-            const result = await response.json();
-            if (result.success) return result.data.url;
-            else throw new Error(result.error.message || 'Gagal mengunggah gambar ke ImgBB.');
-        } catch (error) {
-            console.error('Error uploading to ImgBB:', error);
-            throw error;
-        }
-    }
-
-    function getTemplateParams(ktpUrl) {
-        let kategoriUsaha = document.getElementById('kategori_usaha').value;
-        if (kategoriUsaha === 'Lainnya') {
-            const keterangan = document.getElementById('keterangan_lainnya').value;
-            kategoriUsaha = `Lainnya (Keterangan: ${keterangan})`;
-        }
-        return {
-            nama: document.getElementById('nama').value,
-            nik: document.getElementById('nik').value,
-            alamat: document.getElementById('alamat').value,
-            whatsapp: document.getElementById('whatsapp').value,
-            email: document.getElementById('email').value || 'Tidak diisi',
-            nama_usaha: document.getElementById('nama_usaha').value,
-            alamat_usaha: document.getElementById('alamat_usaha').value,
-            lokasi_maps: document.getElementById('lokasi_maps').value,
-            kategori_usaha: kategoriUsaha,
-            id_permohonan: document.getElementById('id_permohonan').value,
-            tanggal_pendaftaran: document.getElementById('tanggal_pendaftaran').value,
-            foto_ktp_url: ktpUrl
-        };
     }
 
     function showSuccessScreen() {
@@ -523,9 +536,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </button>
             </div>
         `;
-        
+
         document.getElementById('finalizeButton').addEventListener('click', function() {
-            successSound.currentTime = 0; 
+            successSound.currentTime = 0;
             successSound.play().catch(e => console.error("Pemutaran audio GAGAL:", e));
             showFinalSuccess();
         });
@@ -553,31 +566,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     </svg>
                     Kirim Konfirmasi (WAJIB)
                 </button>
-                <button type="button" class="btn btn-success" id="downloadAgreementBtn" style="margin-top: 15px; background: #1a3d7c;">
+                <button type="button" class="btn btn-warning" id="downloadAgreementBtn" style="margin-top: 15px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
                       <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
                       <path d="M4.603 14.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.7 19.7 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077.185.04.343.143.46.303.14.19.226.437.258.712.03.264.014.54-.05.813a3.86 3.86 0 0 1-.216.57c-.099.215-.232.43-.396.645a6.42 6.42 0 0 1-.708.77 13.7 13.7 0 0 1 1.284 1.797c.334.567.59 1.128.71 1.636.124.526.124 1.008-.062 1.36-.176.336-.528.565-1.012.565-.448 0-.93-.215-1.363-.565a3.86 3.86 0 0 1-.977-1.265 7.7 7.7 0 0 1-1.162.424c-.265.072-.533.12-.795.145-.262.024-.518.014-.757-.046a1.16 1.16 0 0 1-.548-.287z"/>
                     </svg>
-                    Download Surat Perjanjian
+                    Dokumen Perjanjian
                 </button>
             </div>
         `;
 
         document.getElementById('sendWaButton').addEventListener('click', sendWhatsApp);
-        
-        // PERUBAHAN: tombol download sekarang redirect ke URL
         document.getElementById('downloadAgreementBtn').addEventListener('click', function() {
             window.location.href = PERJANJIAN_URL;
         });
     }
 
-    function sendWhatsApp() {
-        if (finalWhatsAppMessage) {
-            const whatsappURL = `https://wa.me/${nomorWhatsAppTujuan}?text=${encodeURIComponent(finalWhatsAppMessage)}`;
-            window.open(whatsappURL, '_blank');
-        } else alert('Pesan tidak tersedia. Silakan ulangi pendaftaran.');
+    // ==================== Initialization ====================
+    function unlockAudio() {
+        successSound.play().then(() => {
+            successSound.pause();
+            successSound.currentTime = 0;
+        }).catch(e => console.warn('Audio unlock error:', e));
+        document.removeEventListener('click', unlockAudio);
+        document.removeEventListener('touchstart', unlockAudio);
     }
 
-    // (Fungsi-fungsi untuk generate PDF tidak dihapus, tetapi tidak dipakai)
-    // ... (jika ada fungsi generateAgreementPDF dll, bisa dibiarkan atau dihapus)
+    document.addEventListener('click', unlockAudio, { once: true });
+    document.addEventListener('touchstart', unlockAudio, { once: true });
+
+    renderForm();
 });
