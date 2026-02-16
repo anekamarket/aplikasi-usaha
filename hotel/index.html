@@ -31,21 +31,6 @@
                         <i class="fas fa-eye"></i>
                     </span>
                 </div>
-                
-                <div class="mb-3 text-center">
-                    <label for="captchaInput" class="form-label">Verifikasi Keamanan</label>
-                    <div class="d-flex justify-content-center align-items-center gap-2">
-                        <canvas id="captchaCanvas" width="150" height="50" style="border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9;"></canvas>
-                        <button type="button" id="reloadCaptchaBtn" class="btn btn-secondary" style="height: 50px; width: 50px;" title="Muat Ulang Captcha" aria-label="Muat Ulang Captcha">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-floating mb-4">
-                    <input type="text" class="form-control" id="captchaInput" placeholder="Masukkan Captcha" required autocomplete="off">
-                    <label for="captchaInput">Masukkan Kode di Atas</label>
-                </div>
 
                 <button type="submit" class="btn btn-primary w-100 btn-lg">Login</button>
                 <div id="loginError" class="error-message mt-3" style="display: none;"></div>
