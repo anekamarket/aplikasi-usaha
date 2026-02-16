@@ -1,45 +1,29 @@
-// ===================== GABUNGAN main(1).js dan main.js =====================
+// main.js
 document.addEventListener('DOMContentLoaded', function() {
-    // ========== INISIALISASI FORM PENDAFTARAN ==========
-    const apiKeyImgBB = '0e598ab24278f062969e6d0ec810d518'; // API Key ImgBB Anda
-    const nomorWhatsAppTujuan = '6285647709114'; // Nomor WA Tujuan
+    const apiKeyImgBB = '0e598ab24278f062969e6d0ec810d518';
+    const nomorWhatsAppTujuan = '6285647709114';
     
-    // Elemen Form
     const formContainer = document.getElementById('form-container');
-    let form, submitBtn, kategoriSelect, lainnyaGroup, keteranganLainnya, ktpInput, fileNameDisplay, fileNameLabel, mapsInput, registerLaterBtn, getLocationBtn, locationStatus, agreeCheckbox, uploadKtpBtn, ktpStatus;
-    
-    // Variabel global untuk menyimpan data yang disubmit
-    let submittedData = null;
-    let finalWhatsAppMessage = '';
-    let uploadedKtpUrl = null;
-
-    // Audio
     const successSound = document.getElementById('success-sound');
-
-    // Loading
     const loadingOverlay = document.getElementById('loading-overlay');
     const loadingText = document.getElementById('loading-text');
 
-    // Fungsi unlock audio
+    let form, submitBtn, kategoriSelect, lainnyaGroup, keteranganLainnya, ktpInput, fileNameLabel, mapsInput, registerLaterBtn, getLocationBtn, locationStatus, agreeCheckbox, uploadKtpBtn, ktpStatus;
+    let uploadedKtpUrl = null;
+    let submittedData = null;
+    let finalWhatsAppMessage = '';
+
     function unlockAudio() {
-        const playPromise = successSound.play();
-        if (playPromise !== undefined) {
-            playPromise.then(_ => {
-                successSound.pause();
-                successSound.currentTime = 0;
-                document.removeEventListener('click', unlockAudio);
-                document.removeEventListener('touchstart', unlockAudio);
-                document.removeEventListener('keydown', unlockAudio);
-            }).catch(error => {
-                console.warn('Gagal membuka konteks audio:', error);
-            });
-        }
+        successSound.play().then(() => {
+            successSound.pause();
+            successSound.currentTime = 0;
+        }).catch(e => console.warn('Audio unlock error:', e));
+        document.removeEventListener('click', unlockAudio);
+        document.removeEventListener('touchstart', unlockAudio);
     }
     document.addEventListener('click', unlockAudio, { once: true });
     document.addEventListener('touchstart', unlockAudio, { once: true });
-    document.addEventListener('keydown', unlockAudio, { once: true });
 
-    // Render form awal
     renderForm();
 
     function renderForm() {
@@ -183,14 +167,12 @@ document.addEventListener('DOMContentLoaded', function() {
             </form>
         `;
 
-        // Inisialisasi elemen form
         form = document.getElementById('registrationForm');
         submitBtn = document.getElementById('submitBtn');
         kategoriSelect = document.getElementById('kategori_usaha');
         lainnyaGroup = document.getElementById('lainnya_keterangan_group');
         keteranganLainnya = document.getElementById('keterangan_lainnya');
         ktpInput = document.getElementById('foto_ktp');
-        fileNameDisplay = document.getElementById('file-name');
         fileNameLabel = document.getElementById('file-name-label');
         mapsInput = document.getElementById('lokasi_maps');
         registerLaterBtn = document.getElementById('registerLaterBtn');
@@ -200,11 +182,9 @@ document.addEventListener('DOMContentLoaded', function() {
         uploadKtpBtn = document.getElementById('uploadKtpBtn');
         ktpStatus = document.getElementById('foto_ktp-status');
 
-        // Set nilai awal
         document.getElementById('id_permohonan').value = generateIdPermohonan();
         document.getElementById('tanggal_pendaftaran').value = setTanggalPendaftaran();
 
-        // Pasang event listener
         kategoriSelect.addEventListener('change', function() {
             lainnyaGroup.style.display = this.value === 'Lainnya' ? 'block' : 'none';
             if (this.value === 'Lainnya') {
@@ -228,13 +208,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 fileNameLabel.textContent = file.name;
-                fileNameDisplay.textContent = '';
                 uploadKtpBtn.style.display = 'inline-flex';
                 ktpStatus.style.display = 'none';
                 ktpStatus.textContent = '';
             } else {
                 fileNameLabel.textContent = 'Belum ada file dipilih';
-                fileNameDisplay.textContent = '';
                 uploadKtpBtn.style.display = 'none';
                 ktpStatus.style.display = 'none';
             }
@@ -358,7 +336,6 @@ document.addEventListener('DOMContentLoaded', function() {
             loadingOverlay.classList.add('visible');
 
             try {
-                // Simpan data yang disubmit
                 submittedData = {
                     nama: document.getElementById('nama').value,
                     nik: document.getElementById('nik').value,
@@ -392,7 +369,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSubmitButtonState();
     }
 
-    // ========== FUNGSI-FUNGSI FORM ==========
     function generateIdPermohonan() {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let result = 'AM-';
@@ -583,7 +559,22 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         document.getElementById('sendWaButton').addEventListener('click', sendWhatsApp);
-        document.getElementById('downloadAgreementBtn').addEventListener('click', downloadAgreement);
+        document.getElementById('downloadAgreementBtn').addEventListener('click', async function() {
+            if (!submittedData) {
+                alert('Data pendaftaran tidak ditemukan. Silakan isi form terlebih dahulu.');
+                return;
+            }
+            loadingText.textContent = 'Menyiapkan dokumen perjanjian...';
+            loadingOverlay.classList.add('visible');
+            try {
+                await window.Dokumen.buatPerjanjian(submittedData);
+            } catch (error) {
+                console.error('Gagal membuat dokumen:', error);
+                alert('Terjadi kesalahan saat membuat dokumen perjanjian. Silakan coba lagi.');
+            } finally {
+                loadingOverlay.classList.remove('visible');
+            }
+        });
     }
 
     function sendWhatsApp() {
@@ -591,146 +582,5 @@ document.addEventListener('DOMContentLoaded', function() {
             const whatsappURL = `https://wa.me/${nomorWhatsAppTujuan}?text=${encodeURIComponent(finalWhatsAppMessage)}`;
             window.open(whatsappURL, '_blank');
         } else alert('Pesan tidak tersedia. Silakan ulangi pendaftaran.');
-        setTimeout(() => window.location.href = 'www.aplikasiusaha.com/daftar', 1000);
-    }
-
-    // ========== FUNGSI DOKUMEN PERJANJIAN (dari main.js) ==========
-    function generateRandomID() {
-        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        let result = 'LKS/JK-';
-        for (let i = 0; i < 8; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
-        return result;
-    }
-
-    function generateQRCodePromise(elementId, data) {
-        return new Promise((resolve, reject) => {
-            const element = document.getElementById(elementId);
-            if (!element) { reject(`Elemen ${elementId} tidak ditemukan`); return; }
-            element.innerHTML = '';
-            if (!data) { resolve(); return; }
-            const canvas = document.createElement('canvas');
-            QRCode.toCanvas(canvas, data, { width: 90, margin: 1, color: { dark: '#000000', light: '#ffffff' } }, function(error) {
-                if (error) { console.error('QR Code error:', error); element.innerHTML = '<div style="text-align:center;padding:10px;color:#666;font-size:11px;">QR Code Error</div>'; reject(error); }
-                else { element.appendChild(canvas); resolve(); }
-            });
-        });
-    }
-
-    function formatDate(dateString) {
-        if (!dateString) return '';
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    }
-
-    function formatFullDate(dateString) {
-        if (!dateString) return '';
-        const date = new Date(dateString);
-        const options = { day: 'numeric', month: 'long', year: 'numeric' };
-        return date.toLocaleDateString('id-ID', options);
-    }
-
-    function getHariTanggal(dateString) {
-        if (!dateString) return 'Senin Tanggal 07 Bulan Juli Tahun 2025';
-        const date = new Date(dateString);
-        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        const dayName = days[date.getDay()];
-        const day = date.getDate();
-        const monthName = months[date.getMonth()];
-        const year = date.getFullYear();
-        return `${dayName} Tanggal ${day} Bulan ${monthName} Tahun ${year}`;
-    }
-
-    function generateNomorSurat(idPendaftaran) {
-        if (!idPendaftaran) return '......../......../SP3LA-LKS/VII/2025';
-        const date = new Date();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-        const idParts = idPendaftaran.split('-');
-        const uniqueId = idParts.length > 1 ? idParts[1] : idPendaftaran.substr(-6);
-        return `${uniqueId}/SP3LA-LKS/${month}/${year}`;
-    }
-
-    async function downloadAgreement() {
-        if (!submittedData) {
-            alert('Data pendaftaran tidak ditemukan. Silakan isi form terlebih dahulu.');
-            return;
-        }
-
-        loadingText.textContent = 'Menyiapkan dokumen perjanjian...';
-        loadingOverlay.classList.add('visible');
-
-        try {
-            // Clone template
-            const template = document.getElementById('agreement-template');
-            const clone = template.cloneNode(true);
-            clone.id = 'agreement-clone'; // Ubah id agar tidak konflik
-            clone.style.display = 'block';
-            clone.style.position = 'absolute';
-            clone.style.left = '-9999px';
-            clone.style.top = '0';
-            document.body.appendChild(clone);
-
-            // Data dari submittedData
-            const data = submittedData;
-            const idPendaftaran = generateRandomID();
-            const fullIdPermohonan = data.id_permohonan; // sudah format AM-xxxxxx
-            const formattedDate = formatDate(data.tanggal_pendaftaran);
-            const fullDate = formatFullDate(data.tanggal_pendaftaran);
-            const hariTanggal = getHariTanggal(data.tanggal_pendaftaran);
-            const nomorSurat = generateNomorSurat(idPendaftaran);
-            
-            // Kategori dengan penanganan Lainnya
-            let kategoriDisplay = data.kategori_usaha;
-            if (data.kategori_usaha === 'Lainnya' && data.keterangan_lainnya) {
-                kategoriDisplay = `Lainnya (Keterangan: ${data.keterangan_lainnya})`;
-            }
-
-            // Isi elemen clone
-            clone.querySelector('#display_nama_pemohon').textContent = data.nama.toUpperCase();
-            clone.querySelector('#display_id_permohonan').textContent = fullIdPermohonan;
-            clone.querySelector('#display_nik').textContent = data.nik;
-            clone.querySelector('#display_alamat').textContent = data.alamat;
-            clone.querySelector('#display_nomor_telepon').textContent = data.whatsapp;
-            clone.querySelector('#display_id_pendaftaran').textContent = idPendaftaran;
-            clone.querySelector('#display_nama_umkm').textContent = data.nama_usaha.toUpperCase();
-            clone.querySelector('#display_kategori_layanan').textContent = kategoriDisplay;
-            clone.querySelector('#display_tanggal_pendaftaran_full').textContent = fullDate;
-            clone.querySelector('#display_nama_pemohon_sign').textContent = data.nama.toUpperCase();
-            clone.querySelector('#display_hari_tanggal').textContent = hariTanggal;
-            clone.querySelector('#nomor_surat_display').textContent = nomorSurat;
-
-            // Data QR code
-            const qrDataPihakKedua = `PEMOHON:${data.nama.toUpperCase()}|NIK:${data.nik}|ID:${fullIdPermohonan}|TGL:${formattedDate}`;
-            const qrDataPihakPertama = `PERUSAHAAN:LENTERA KARYA|PENANDATANGAN:MUHAMMAD SALAM|JABATAN:FOUNDER|TGL:07/07/2025`;
-
-            await Promise.all([
-                generateQRCodePromise('qrcode_pihak_kedua', qrDataPihakKedua),
-                generateQRCodePromise('qrcode_pihak_pertama', qrDataPihakPertama)
-            ]);
-
-            // Generate PDF
-            const opt = {
-                margin: [10, 10, 10, 10],
-                filename: `Surat_Perjanjian_${data.nama.replace(/\s+/g, '_')}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, logging: false },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            await html2pdf().set(opt).from(clone).save();
-
-            // Bersihkan clone
-            document.body.removeChild(clone);
-            loadingOverlay.classList.remove('visible');
-
-        } catch (error) {
-            console.error('Gagal membuat PDF:', error);
-            loadingOverlay.classList.remove('visible');
-            alert('Terjadi kesalahan saat membuat dokumen perjanjian. Silakan coba lagi.');
-        }
     }
 });
