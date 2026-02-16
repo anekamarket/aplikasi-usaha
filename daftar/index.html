@@ -1022,7 +1022,7 @@
                 } else alert('Pesan tidak tersedia. Silakan ulangi pendaftaran.');
             }
 
-            // ========== FUNGSI DOKUMEN PERJANJIAN (DIPERBAIKI - MENGGUNAKAN OPACITY 0) ==========
+            // ========== FUNGSI DOKUMEN PERJANJIAN (METODE BARU - DINAMIS) ==========
             function generateRandomID() {
                 const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 let result = 'LKS/JK-';
@@ -1100,7 +1100,7 @@
                 loadingOverlay.classList.add('visible');
 
                 try {
-                    // Buat elemen container untuk surat perjanjian dengan opacity 0 agar tidak terlihat tapi tetap memiliki dimensi
+                    // Buat elemen container untuk surat perjanjian dengan opacity 0 agar tidak terlihat
                     const agreementContainer = document.createElement('div');
                     agreementContainer.id = 'agreement-print-' + Date.now();
                     agreementContainer.style.position = 'absolute';
@@ -1112,8 +1112,8 @@
                     agreementContainer.style.fontFamily = 'Times New Roman, serif';
                     agreementContainer.style.lineHeight = '1.5';
                     agreementContainer.style.zIndex = '-1000';
-                    agreementContainer.style.opacity = '0'; // Tidak terlihat
-                    agreementContainer.style.pointerEvents = 'none'; // Tidak bisa diklik
+                    agreementContainer.style.opacity = '0';
+                    agreementContainer.style.pointerEvents = 'none';
                     agreementContainer.style.overflow = 'visible';
                     document.body.appendChild(agreementContainer);
 
@@ -1131,7 +1131,7 @@
                         kategoriDisplay = `Lainnya (Keterangan: ${data.keterangan_lainnya})`;
                     }
 
-                    // Buat HTML surat perjanjian dengan inline style agar tidak terpengaruh CSS global
+                    // Buat HTML surat perjanjian dengan inline style
                     const suratHtml = `
                         <div style="color: #000000; font-size: 12pt;">
                             <h2 style="text-align:center; font-size:18pt; margin-bottom:10px;">SURAT PERJANJIAN KERJASAMA<br>MITRA ANEKAMARKET</h2>
@@ -1196,7 +1196,7 @@
                     const qrDataPihakKedua = `PEMOHON:${data.nama.toUpperCase()}|NIK:${data.nik}|ID:${fullIdPermohonan}|TGL:${formattedDate}`;
                     const qrDataPihakPertama = `PERUSAHAAN:LENTERA KARYA|PENANDATANGAN:MUHAMMAD SALAM|JABATAN:FOUNDER|TGL:07/07/2025`;
 
-                    // Tunggu QR code selesai (gunakan Promise.allSettled agar tidak gagal total)
+                    // Tunggu QR code selesai
                     await Promise.allSettled([
                         generateQRCodeToElement(qrPertama, qrDataPihakPertama),
                         generateQRCodeToElement(qrKedua, qrDataPihakKedua)
@@ -1204,9 +1204,6 @@
 
                     // Beri waktu ekstra untuk rendering QR code dan konten
                     await new Promise(resolve => setTimeout(resolve, 500));
-
-                    // Pastikan elemen memiliki konten sebelum di-generate
-                    console.log('Container innerHTML length:', agreementContainer.innerHTML.length);
 
                     // Generate PDF dengan opsi yang lebih aman
                     const opt = {
