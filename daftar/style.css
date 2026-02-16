@@ -1,0 +1,472 @@
+:root {
+    --primary-color: #007BFF;
+    --primary-gradient: linear-gradient(90deg, #007BFF 0%, #0056b3 100%);
+    --primary-hover-color: #0056b3;
+    --dark-color: #212529;
+    --gray-color: #6c757d;
+    --light-color: #f8f9fa;
+    --white-color: #ffffff;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --warning-color: #ffc107; /* Warna kuning untuk tombol KTP */
+    --border-color: #dee2e6;
+    --border-radius: 12px;
+    /* Shadow yang lebih halus dan berlapis untuk tampilan modern */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.07), 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Animasi --- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* (BARU) Animasi untuk tombol KTP */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* (BARU) Animasi denyut untuk tombol KTP */
+@keyframes pulse {
+    0% { 
+        transform: scale(1); 
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2); 
+    }
+    50% { 
+        transform: scale(1.03); 
+        box-shadow: 0 7px 25px rgba(255, 193, 7, 0.4); 
+    }
+    100% { 
+        transform: scale(1); 
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2); 
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: var(--dark-color);
+    line-height: 1.6;
+    /* Latar belakang yang lebih profesional dengan pola SVG subtil */
+    background-color: #f0f4f8;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cg fill='%23e0eafc' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h20v1H0zM0 3h20v1H0zM0 6h20v1H0zM0 9h20v1H0zM0 12h20v1H0zM0 15h20v1H0zM0 18h20v1H0z'/%3E%3C/g%3E%3C/svg%3E");
+    animation: fadeIn 0.5s ease-out;
+}
+
+.container {
+    max-width: 750px;
+    width: 100%;
+    background: var(--white-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin: 20px 0;
+    /* Border subtil untuk efek "lifted" */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: fadeInUp 0.5s ease-out 0.1s;
+    animation-fill-mode: backwards;
+}
+
+.header {
+    padding: 30px 40px;
+    text-align: center;
+    /* Border header yang lebih halus */
+    border-bottom: 1px solid #f0f0f0; 
+    background-color: var(--white-color);
+}
+
+.header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.header p {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--gray-color);
+    margin-top: 5px;
+}
+
+.logo-img {
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.form-container {
+    padding: 30px 40px;
+}
+
+.form-section {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f0f0f0;
+    animation: fadeInUp 0.5s ease-out;
+    animation-fill-mode: backwards;
+}
+.form-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+/* Delay animasi stagger yang lebih cepat */
+.form-section:nth-of-type(1) { animation-delay: 0.3s; }
+.form-section:nth-of-type(2) { animation-delay: 0.4s; }
+.form-section:nth-of-type(3) { animation-delay: 0.5s; }
+
+.form-section h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary-color);
+    padding-left: 10px;
+}
+
+.form-group { margin-bottom: 20px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-weight: 500; /* Sedikit lebih tipis dari 600 agar lebih elegan */
+    color: #344054; /* Warna abu-abu gelap yang lebih modern */
+    font-size: 0.9rem; 
+}
+.required::after { content: " *"; color: var(--error-color); }
+
+/* --- (BARU) Grup Input dengan Ikon --- */
+.input-group {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-color);
+    transition: color 0.3s ease;
+}
+
+.input-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* --- Desain Input yang Disempurnakan --- */
+input, select, textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: var(--white-color);
+    color: var(--dark-color);
+    font-weight: 400;
+}
+
+/* (BARU) Tambahkan padding untuk input yang memiliki ikon */
+.input-group input {
+    padding-left: 45px;
+}
+
+input::placeholder, textarea::placeholder { color: #adb5bd; }
+
+/* (BARU) Efek :focus-within pada Grup Input */
+.input-group:focus-within .input-icon {
+    color: var(--primary-color);
+}
+
+input:focus, select:focus, textarea:focus { 
+    outline: none; 
+    border-color: var(--primary-color); 
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+textarea { resize: vertical; min-height: 80px; }
+
+input[readonly] {
+    background-color: var(--light-color);
+    border: 1px solid var(--border-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: not-allowed;
+    color: var(--gray-color);
+    box-shadow: none;
+}
+
+/* (BARU) Desain Ulang File Input */
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: flex; /* Menggunakan flex */
+    flex-direction: column; /* Konten ditumpuk vertikal */
+    align-items: center; /* Tengahkan horizontal */
+    justify-content: center; /* Tengahkan vertikal */
+    width: 100%;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 25px 15px; /* Padding lebih besar */
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+.file-input-wrapper:hover { 
+    border-color: var(--primary-color); 
+    background-color: #f8faff;
+}
+.file-input-wrapper input[type="file"] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+/* (BARU) Ikon untuk file input */
+.file-input-icon {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+.file-input-icon svg {
+    width: 40px;
+    height: 40px;
+}
+.file-input-label {
+    color: var(--dark-color); /* Warna lebih gelap */
+    font-weight: 600; /* Lebih tebal */
+    font-size: 1rem;
+}
+#file-name-label {
+     color: var(--gray-color);
+     font-weight: 400;
+     font-size: 0.9rem;
+     margin-top: 4px;
+}
+#file-name {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+/* --- Akhir Desain Ulang File Input --- */
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 10px 0;
+}
+.checkbox-group input { display: none; }
+.checkbox-group label { margin-bottom: 0; font-size: 0.95rem; cursor: pointer; font-weight: 500; color: var(--dark-color); }
+.checkbox-custom {
+    height: 22px; width: 22px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    display: inline-block;
+    margin-right: 12px;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    flex-shrink: 0;
+}
+.checkbox-group input:checked + .checkbox-custom {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+.checkbox-custom::after {
+    content: '';
+    position: absolute;
+    left: 6px; top: 2px;
+    width: 6px; height: 12px;
+    border: solid var(--white-color);
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg) scale(0);
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+.checkbox-group input:checked + .checkbox-custom::after {
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    font-size: 1.05rem;
+    text-align: center;
+    margin-top: 20px;
+}
+#registrationForm button[type="submit"] {
+    animation: fadeInUp 0.5s ease-out 0.6s;
+    animation-fill-mode: backwards;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: var(--white-color);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+}
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(0, 123, 255, 0.3);
+}
+.btn-primary:disabled {
+    background: #adb5bd;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: var(--white-color);
+    font-size: 0.9rem;
+    padding: 10px 15px;
+    margin-top: 10px;
+    width: auto;
+}
+.btn-secondary:hover { background-color: #5a6268; }
+
+/* (PERBAIKAN) Tombol Upload KTP dibuat menonjol */
+.btn-warning {
+    background-color: var(--warning-color);
+    color: var(--dark-color); /* Teks lebih gelap agar kontras */
+    font-size: 1rem; /* Sedikit lebih besar */
+    padding: 12px 15px;
+    margin-top: 15px;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+    /* (PERBAIKAN) Terapkan animasi */
+    animation: fadeInDown 0.5s ease-out, pulse 2s infinite 0.5s;
+}
+.btn-warning:hover:not(:disabled) { 
+    background-color: #e0a800; 
+    box-shadow: 0 7px 25px rgba(255, 193, 7, 0.4);
+    transform: translateY(-2px);
+}
+.btn-warning:disabled {
+    background-color: #ffc107;
+    opacity: 0.7;
+    cursor: not-allowed;
+    animation: none; /* Hentikan animasi saat loading */
+}
+
+.btn-location {
+    background-color: var(--success-color);
+    color: var(--white-color);
+    font-size: 0.9rem;
+    padding: 10px 15px;
+    margin-top: 10px;
+    width: auto;
+}
+.btn-location:hover { background-color: #218838; }
+
+.location-button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.location-warning {
+    padding: 15px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    color: #856404;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.notification { display: none; }
+.overlay { display: none; }
+
+.error-message, .status-message { color: var(--error-color); font-size: 0.8rem; margin-top: 8px; font-weight: 500; display: none; }
+.status-message { color: var(--dark-color); }
+
+/* (BARU) Sesuaikan error message untuk input group */
+.input-group ~ .error-message {
+    margin-top: 8px;
+}
+
+/* --- CSS Loading Overlay --- */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+#loading-overlay.visible {
+    display: flex;
+    opacity: 1;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+#loading-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--dark-color);
+    text-align: center;
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .form-row { grid-template-columns: 1fr; gap: 0; }
+    .header h1 { font-size: 1.5rem; }
+    .form-container, .header { padding: 25px 20px; }
+    .location-button-group { flex-direction: column; }
+    .btn { width: 100%; }
+}
