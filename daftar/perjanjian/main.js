@@ -169,10 +169,12 @@ async function generateAgreement() {
     document.getElementById('display_nama_pemohon_sign').textContent = namaPemohon;
     document.getElementById('display_hari_tanggal').textContent = hariTanggal;
     document.getElementById('nomor_surat_display').textContent = nomorSurat;
+    // Isi tanggal pihak pertama juga (sama dengan tanggal pendaftaran)
+    document.getElementById('display_tanggal_pihak_pertama').textContent = fullDate;
 
     // Data untuk QR code
     const qrDataPihakKedua = `PEMOHON:${namaPemohon}|NIK:${nik}|ID:${fullIdPermohonan}|TGL:${formattedDate}`;
-    const qrDataPihakPertama = `PERUSAHAAN:LENTERA KARYA|PENANDATANGAN:MUHAMMAD SALAM|JABATAN:FOUNDER|TGL:07/07/2025`;
+    const qrDataPihakPertama = `PERUSAHAAN:LENTERA KARYA|PENANDATANGAN:MUHAMMAD SALAM|JABATAN:FOUNDER|TGL:${formattedDate}`;
 
     // Tunggu kedua QR code selesai
     try {
@@ -218,6 +220,9 @@ async function validateAndGenerate() {
 
     // Generate dokumen dan tunggu QR code selesai
     await generateAgreement();
+
+    // Tampilkan dokumen yang sudah digenerate
+    document.getElementById('agreement-document').style.display = 'block';
 
     // Sembunyikan loading
     document.getElementById('loading-indicator').style.display = 'none';
