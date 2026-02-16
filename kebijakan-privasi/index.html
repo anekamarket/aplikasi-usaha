@@ -1,1 +1,539 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kebijakan Privasi - AnekaMarket</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset dan gaya dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4a6cf7;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            font-size: 28px;
+        }
+        
+        .logo span {
+            color: #ff6b6b;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        nav ul li a i {
+            margin-right: 5px;
+        }
+        
+        nav ul li a:hover {
+            color: #4a6cf7;
+        }
+        
+        /* Main Content */
+        .privacy-policy {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            margin: 40px 0;
+        }
+        
+        .privacy-policy h1 {
+            color: #4a6cf7;
+            margin-bottom: 20px;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .privacy-policy h1 i {
+            margin-right: 10px;
+        }
+        
+        .last-updated {
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+            background-color: #f0f4ff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border-left: 4px solid #4a6cf7;
+        }
+        
+        .privacy-policy h2 {
+            color: #333;
+            margin: 25px 0 15px 0;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .privacy-policy h2 i {
+            margin-right: 10px;
+            color: #4a6cf7;
+        }
+        
+        .privacy-policy p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .privacy-policy ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .privacy-policy li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 10px;
+        }
+        
+        .privacy-policy li:before {
+            content: "•";
+            color: #4a6cf7;
+            font-weight: bold;
+            position: absolute;
+            left: -10px;
+        }
+        
+        .highlight-box {
+            background-color: #f0f4ff;
+            border-left: 4px solid #4a6cf7;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            color: #4a6cf7;
+            margin-bottom: 20px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-section h3 i {
+            margin-right: 8px;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #fff;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 18px;
+            background-color: #444;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: #4a6cf7;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        /* Contact Page Styles */
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+        
+        .contact-form {
+            flex: 2;
+            min-width: 300px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .contact-icon {
+            background-color: #f0f4ff;
+            color: #4a6cf7;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+        
+        .contact-details h3 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .contact-details p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .contact-details a {
+            color: #4a6cf7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .contact-details a:hover {
+            color: #ff6b6b;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #4a6cf7;
+            outline: none;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: #4a6cf7;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .submit-btn i {
+            margin-right: 8px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #3a5bd9;
+        }
+        
+        .map-container {
+            margin-top: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-placeholder {
+            background-color: #f0f4ff;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a6cf7;
+            font-size: 18px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .privacy-policy {
+                padding: 20px;
+            }
+            
+            .privacy-policy h1 {
+                font-size: 26px;
+            }
+            
+            .contact-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-store"></i>
+                    Aneka<span>Market</span>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> Beranda</a></li>
+                        <li><a href="produk.html"><i class="fas fa-shopping-bag"></i> Produk</a></li>
+                        <li><a href="tentang.html"><i class="fas fa-info-circle"></i> Tentang Kami</a></li>
+                        <li><a href="kontak.html"><i class="fas fa-envelope"></i> Kontak</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
+    <!-- Main Content -->
+    <main class="container">
+        <section class="privacy-policy">
+            <h1><i class="fas fa-shield-alt"></i> Kebijakan Privasi</h1>
+            <p class="last-updated">Terakhir diperbarui: 1 Januari 2024</p>
+            
+            <p>Di AnekaMarket, kami menghargai privasi Anda dan berkomitmen untuk melindungi informasi pribadi yang Anda bagikan dengan kami. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan melindungi informasi Anda ketika Anda menggunakan layanan kami.</p>
+            
+            <div class="highlight-box">
+                <p><strong>Penting:</strong> Dengan mengakses atau menggunakan layanan AnekaMarket, Anda menyetujui pengumpulan, penggunaan, dan pengungkapan informasi pribadi Anda sebagaimana dijelaskan dalam Kebijakan Privasi ini.</p>
+            </div>
+            
+            <h2><i class="fas fa-database"></i> Informasi yang Kami Kumpulkan</h2>
+            <p>Kami mengumpulkan berbagai jenis informasi untuk memberikan dan meningkatkan layanan kami kepada Anda:</p>
+            <ul>
+                <li><strong>Informasi Pribadi:</strong> Nama, alamat email, nomor telepon, alamat pengiriman, dan informasi lain yang Anda berikan saat mendaftar atau melakukan pembelian.</li>
+                <li><strong>Informasi Transaksi:</strong> Detail tentang pembelian yang Anda lakukan, metode pembayaran, dan riwayat transaksi.</li>
+                <li><strong>Informasi Teknis:</strong> Alamat IP, jenis perangkat, browser, sistem operasi, dan data penggunaan situs web.</li>
+                <li><strong>Cookies dan Teknologi Pelacakan:</strong> Kami menggunakan cookies dan teknologi serupa untuk melacak aktivitas di layanan kami dan menyimpan informasi tertentu.</li>
+            </ul>
+            
+            <h2><i class="fas fa-cogs"></i> Bagaimana Kami Menggunakan Informasi Anda</h2>
+            <p>Kami menggunakan informasi yang kami kumpulkan untuk berbagai tujuan:</p>
+            <ul>
+                <li>Menyediakan, memelihara, dan meningkatkan layanan kami</li>
+                <li>Memproses transaksi dan mengirimkan produk yang Anda pesan</li>
+                <li>Mengirim pemberitahuan penting, seperti perubahan kebijakan atau pembaruan keamanan</li>
+                <li>Memberikan dukungan pelanggan dan menanggapi pertanyaan Anda</li>
+                <li>Mengembangkan produk, layanan, fitur, dan fungsionalitas baru</li>
+                <li>Mengirim informasi promosi dan pemasaran, dengan opsi untuk berhenti berlangganan</li>
+                <li>Mendeteksi, mencegah, dan mengatasi masalah teknis atau keamanan</li>
+                <li>Menganalisis tren penggunaan untuk meningkatkan pengalaman pengguna</li>
+            </ul>
+            
+            <h2><i class="fas fa-share-alt"></i> Berbagi Informasi</h2>
+            <p>Kami tidak menjual, memperdagangkan, atau mentransfer informasi pribadi Anda kepada pihak ketiga tanpa persetujuan Anda, kecuali dalam situasi berikut:</p>
+            <ul>
+                <li>Dengan penyedia layanan yang membantu kami mengoperasikan bisnis kami (seperti pemroses pembayaran, layanan pengiriman)</li>
+                <li>Untuk mematuhi kewajiban hukum atau menanggapi permintaan pemerintah yang sah</li>
+                <li>Untuk melindungi hak, properti, atau keselamatan kami, pengguna kami, atau publik</li>
+                <li>Dalam kaitannya dengan merger, penjualan, atau akuisisi perusahaan</li>
+            </ul>
+            
+            <h2><i class="fas fa-lock"></i> Keamanan Data</h2>
+            <p>Kami menerapkan langkah-langkah keamanan yang wajar untuk melindungi informasi pribadi Anda dari akses, penggunaan, atau pengungkapan yang tidak sah. Namun, tidak ada metode transmisi melalui internet atau penyimpanan elektronik yang 100% aman, sehingga kami tidak dapat menjamin keamanan mutlak.</p>
+            
+            <h2><i class="fas fa-user-check"></i> Hak Anda</h2>
+            <p>Anda memiliki hak untuk:</p>
+            <ul>
+                <li>Mengakses informasi pribadi yang kami simpan tentang Anda</li>
+                <li>Memperbarui atau mengoreksi informasi yang tidak akurat</li>
+                <li>Meminta penghapusan informasi pribadi Anda</li>
+                <li>Menolak pemrosesan informasi pribadi Anda untuk tujuan pemasaran langsung</li>
+                <li>Membatasi atau menolak pemrosesan informasi pribadi Anda dalam keadaan tertentu</li>
+                <li>Meminta portabilitas data Anda</li>
+            </ul>
+            
+            <h2><i class="fas fa-cookie-bite"></i> Cookies</h2>
+            <p>Kami menggunakan cookies dan teknologi pelacakan serupa untuk melacak aktivitas di layanan kami dan menyimpan informasi tertentu. Cookies adalah file kecil dengan sejumlah kecil data yang mungkin termasuk pengidentifikasi unik anonim. Anda dapat menginstruksikan browser Anda untuk menolak semua cookies atau untuk menunjukkan kapan cookie sedang dikirim. Namun, jika Anda tidak menerima cookies, Anda mungkin tidak dapat menggunakan beberapa bagian dari layanan kami.</p>
+            
+            <h2><i class="fas fa-link"></i> Tautan ke Situs Lain</h2>
+            <p>Layanan kami mungkin berisi tautan ke situs web lain yang tidak dioperasikan oleh kami. Jika Anda mengklik tautan pihak ketiga, Anda akan diarahkan ke situs pihak ketiga tersebut. Kami sangat menyarankan Anda untuk meninjau Kebijakan Privasi setiap situs yang Anda kunjungi. Kami tidak memiliki kendali atas dan tidak bertanggung jawab atas konten, kebijakan privasi, atau praktik situs atau layanan pihak ketiga mana pun.</p>
+            
+            <h2><i class="fas fa-calendar-alt"></i> Penyimpanan Data</h2>
+            <p>Kami akan menyimpan informasi pribadi Anda hanya selama diperlukan untuk memenuhi tujuan yang diuraikan dalam Kebijakan Privasi ini. Kami akan menyimpan dan menggunakan informasi pribadi Anda sejauh yang diperlukan untuk mematuhi kewajiban hukum kami, menyelesaikan sengketa, dan menegakkan perjanjian dan kebijakan kami.</p>
+            
+            <h2><i class="fas fa-sync-alt"></i> Perubahan pada Kebijakan Privasi</h2>
+            <p>Kami dapat memperbarui Kebijakan Privasi kami dari waktu ke waktu. Kami akan memberi tahu Anda tentang perubahan apa pun dengan memposting Kebijakan Privasi baru di halaman ini dan memperbarui tanggal "Terakhir Diperbarui" di bagian atas. Anda disarankan untuk meninjau Kebijakan Privasi ini secara berkala untuk perubahan apa pun.</p>
+            
+            <h2><i class="fas fa-envelope"></i> Kontak Kami</h2>
+            <p>Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi kami:</p>
+            <ul>
+                <li>Email: admin@anekamarket.my.id</li>
+                <li>WhatsApp: 085647709114</li>
+                <li>Alamat: Jl. Pb Sudirman Situbondo (68351) Jawa Timur</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-store"></i> Tentang AnekaMarket</h3>
+                    <p>AnekaMarket adalah platform belanja online terpercaya yang menyediakan berbagai produk berkualitas dengan harga terjangkau.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-link"></i> Link Cepat</h3>
+                    <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
+                    <a href="produk.html"><i class="fas fa-shopping-bag"></i> Produk</a>
+                    <a href="tentang.html"><i class="fas fa-info-circle"></i> Tentang Kami</a>
+                    <a href="kontak.html"><i class="fas fa-envelope"></i> Kontak</a>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-headset"></i> Layanan Pelanggan</h3>
+                    <a href="bantuan.html"><i class="fas fa-question-circle"></i> Pusat Bantuan</a>
+                    <a href="pengembalian.html"><i class="fas fa-undo"></i> Kebijakan Pengembalian</a>
+                    <a href="syarat.html"><i class="fas fa-file-contract"></i> Syarat dan Ketentuan</a>
+                    <a href="privasi.html"><i class="fas fa-shield-alt"></i> Kebijakan Privasi</a>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Hubungi Kami</h3>
+                    <p><i class="fas fa-envelope"></i> Email: admin@anekamarket.my.id</p>
+                    <p><i class="fab fa-whatsapp"></i> WhatsApp: 085647709114</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Alamat: Jl. Pb Sudirman Situbondo (68351) Jawa Timur</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 AnekaMarket. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
