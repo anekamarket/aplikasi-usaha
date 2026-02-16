@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.1/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* ===== CSS SAMA (tidak diubah) ===== */
+        /* ===== CSS LENGKAP ===== */
         :root {
             --primary-color: #007BFF;
             --primary-gradient: linear-gradient(90deg, #007BFF 0%, #0056b3 100%);
@@ -1098,7 +1098,7 @@
                 } else alert('Pesan tidak tersedia. Silakan ulangi pendaftaran.');
             }
 
-            // ========== FUNGSI DOKUMEN PERJANJIAN (FINAL - DIPERBAIKI) ==========
+            // ========== FUNGSI DOKUMEN PERJANJIAN (DIPERBAIKI) ==========
             function generateRandomID() {
                 const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 let result = 'LKS/JK-';
@@ -1181,11 +1181,10 @@
                     const clone = template.cloneNode(true);
                     clone.id = 'agreement-clone-' + Date.now(); // ID unik
                     clone.style.display = 'block';
-                    clone.style.position = 'absolute';
+                    clone.style.position = 'fixed';
+                    clone.style.left = '-9999px';  // Taruh di luar layar
                     clone.style.top = '0';
-                    clone.style.left = '0';
-                    clone.style.opacity = '0';        // Tidak terlihat
-                    clone.style.pointerEvents = 'none'; // Tidak bisa diinteraksi
+                    clone.style.visibility = 'visible'; // Pastikan konten terlihat oleh html2pdf
                     clone.style.zIndex = '-1000';
                     document.body.appendChild(clone);
 
@@ -1229,17 +1228,13 @@
                     const qrPertama = clone.querySelector('#qrcode_pihak_pertama');
                     const qrKedua = clone.querySelector('#qrcode_pihak_kedua');
 
-                    try {
-                        await Promise.all([
-                            generateQRCodeToElement(qrPertama, qrDataPihakPertama),
-                            generateQRCodeToElement(qrKedua, qrDataPihakKedua)
-                        ]);
-                    } catch (qrError) {
-                        console.warn('QR Code gagal, melanjutkan tanpa QR:', qrError);
-                    }
+                    await Promise.all([
+                        generateQRCodeToElement(qrPertama, qrDataPihakPertama).catch(err => console.warn('QR pertama gagal:', err)),
+                        generateQRCodeToElement(qrKedua, qrDataPihakKedua).catch(err => console.warn('QR kedua gagal:', err))
+                    ]);
 
                     // Beri sedikit waktu agar canvas benar-benar ter-render
-                    await new Promise(resolve => setTimeout(resolve, 300));
+                    await new Promise(resolve => setTimeout(resolve, 500));
 
                     // Debug: pastikan konten terisi
                     console.log('Clone content sample:', clone.querySelector('#display_nama_pemohon')?.textContent);
@@ -1249,7 +1244,7 @@
                         margin: [10, 10, 10, 10],
                         filename: `Surat_Perjanjian_${data.nama.replace(/\s+/g, '_')}.pdf`,
                         image: { type: 'jpeg', quality: 0.98 },
-                        html2canvas: { scale: 2, useCORS: true, logging: true, allowTaint: false, backgroundColor: '#ffffff' },
+                        html2canvas: { scale: 2, useCORS: true, logging: false, allowTaint: false, backgroundColor: '#ffffff' },
                         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                     };
 
