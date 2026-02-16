@@ -6,8 +6,8 @@
     <title>Formulir Pendaftaran Mitra ANEKAMARKET</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Library QRCode & html2pdf (tetap dipertahankan jika diperlukan) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Library QRCode & html2pdf (masih disertakan untuk kebutuhan lain jika ada) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.1/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- CSS utama -->
@@ -26,9 +26,71 @@
         </div>
     </div>
 
-    <!-- Template Surat Perjanjian (tetap ada untuk kebutuhan lain) -->
+    <!-- Template Surat Perjanjian (disembunyikan) – jika suatu saat diperlukan kembali -->
     <div id="agreement-template" style="display: none;">
-        <!-- ... isi template (sama seperti sebelumnya) ... -->
+        <div class="agreement-content" style="background: white; padding: 20px; font-family: 'Times New Roman', serif; max-width: 210mm; margin: 0 auto;">
+            <div class="header-surat">
+                <div style="text-align: center; margin-bottom: 10px;">
+                    <img src="https://raw.githubusercontent.com/LKS-88/anekamarket/refs/heads/main/Logo-Anekamarketku.png" alt="Logo" style="height: 80px;">
+                </div>
+                <div style="text-align: center; font-size: 20px; font-weight: bold; color: #1a3d7c;">LENTERA KARYA SITUBONDO</div>
+                <div style="text-align: center; font-style: italic; margin: 5px 0;">Inovasi dan Teknologi untuk UMKM</div>
+                <div style="text-align: center; font-size: 12px;">Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</div>
+                <div style="text-align: center; font-size: 12px;">Email: admin@anekamarket.my.id | Telp: +62 878-6561-4222</div>
+                <div style="text-align: center; font-size: 12px;">Website: www.anekamarket.my.id</div>
+                <hr style="border: 1px double #1a3d7c; margin: 15px 0;">
+            </div>
+
+            <h2 style="text-align: center; font-size: 18px; margin: 20px 0; border: 1px solid #ddd; padding: 8px; background: #f9f9f9;">SURAT PERJANJIAN PENYEDIAAN DAN PENGGUNAAN LAYANAN APLIKASI</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Nomor: <span id="nomor_surat_display" style="font-weight: bold;">......../......../SP3LA-LKS/VII/2025</span></p>
+
+            <p>Pada hari ini, <span id="display_hari_tanggal" style="font-weight: bold;">Senin Tanggal 07 Bulan Juli Tahun 2025</span>, bertempat di Situbondo, kami yang bertanda tangan di bawah ini:</p>
+
+            <div style="margin: 20px 0; padding: 10px; border-left: 4px solid #1a3d7c; background: #f9f9f9;">
+                <p><strong>PIHAK PERTAMA:</strong></p>
+                <p>Nama Lengkap: <strong>MUHAMMAD SALAM</strong></p>
+                <p>Jabatan: <strong>Founder Lentera Karya Situbondo</strong></p>
+                <p>Alamat: Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
+            </div>
+
+            <div style="margin: 20px 0; padding: 10px; border-left: 4px solid #1a3d7c; background: #f9f9f9;">
+                <p><strong>PIHAK KEDUA (Pemohon / Pengguna Layanan):</strong></p>
+                <p>Nama Pemohon : <span id="display_nama_pemohon" class="form-input"></span></p>
+                <p>ID Permohonan : <span id="display_id_permohonan" class="form-input"></span></p>
+                <p>NIK : <span id="display_nik" class="form-input"></span></p>
+                <p>Alamat : <span id="display_alamat" class="form-input"></span></p>
+                <p>Nomor Telepon : <span id="display_nomor_telepon" class="form-input"></span></p>
+                <p>No. ID Pendaftaran : <span id="display_id_pendaftaran" class="form-input"></span></p>
+                <p>Nama Usaha / Brand : <span id="display_nama_umkm" class="form-input"></span></p>
+                <p>Kategori Usaha : <span id="display_kategori_layanan" class="form-input"></span></p>
+            </div>
+
+            <!-- Isi pasal-pasal (ringkas) -->
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 16px; border-bottom: 1px solid #1a3d7c; padding-bottom: 5px;">PASAL 1 - MAKSUD DAN TUJUAN</h3>
+                <p>...</p>
+                <!-- dan seterusnya, bisa diisi lengkap seperti di template sebelumnya -->
+            </div>
+
+            <div style="margin-top: 50px; display: flex; justify-content: space-between;">
+                <div style="text-align: center; width: 45%;">
+                    <p>Situbondo, <span id="display_tanggal_pendaftaran_full"></span></p>
+                    <p>PIHAK KEDUA<br>Pemohon/Pengguna Layanan</p>
+                    <div id="qrcode_pihak_kedua" style="width: 100px; height: 100px; margin: 15px auto;"></div>
+                    <div style="border-top: 1px solid #000; padding-top: 8px; display: inline-block; min-width: 180px;">
+                        <span id="display_nama_pemohon_sign"></span>
+                    </div>
+                </div>
+                <div style="text-align: center; width: 45%;">
+                    <p>Situbondo, 07 Juli 2025</p>
+                    <p>PIHAK PERTAMA<br>Founder Lentera Karya Situbondo</p>
+                    <div id="qrcode_pihak_pertama" style="width: 100px; height: 100px; margin: 15px auto;"></div>
+                    <div style="border-top: 1px solid #000; padding-top: 8px; display: inline-block; min-width: 180px;">
+                        MUHAMMAD SALAM
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="loading-overlay">
