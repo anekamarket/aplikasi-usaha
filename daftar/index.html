@@ -519,20 +519,22 @@
     </div>
 
     <script>
-        // ===================== MAIN JAVASCRIPT =====================
+        // ===================== MAIN JAVASCRIPT (FINAL, DIPERBAIKI) =====================
         document.addEventListener('DOMContentLoaded', function() {
             const apiKeyImgBB = '0e598ab24278f062969e6d0ec810d518';
             const nomorWhatsAppTujuan = '6285647709114';
             
+            // Elemen utama
+            const formContainer = document.getElementById('form-container');
+            const successSound = document.getElementById('success-sound');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const loadingText = document.getElementById('loading-text');
+
+            // Variabel global
             let form, submitBtn, kategoriSelect, lainnyaGroup, keteranganLainnya, ktpInput, fileNameLabel, mapsInput, registerLaterBtn, getLocationBtn, locationStatus, agreeCheckbox, uploadKtpBtn, ktpStatus;
             let uploadedKtpUrl = null;
             let submittedData = null;
             let finalWhatsAppMessage = '';
-
-            const successSound = document.getElementById('success-sound');
-            const loadingOverlay = document.getElementById('loading-overlay');
-            const loadingText = document.getElementById('loading-text');
-            const formContainer = document.getElementById('form-container');
 
             // Buka kunci audio
             function unlockAudio() {
@@ -550,11 +552,6 @@
             renderForm();
 
             function renderForm() {
-                formContainer.innerHTML = `...`; // isi sama dengan HTML sebelumnya, tapi kita tulis ulang di sini
-                // Untuk efisiensi, kita gunakan template string yang sama persis dengan index.html bagian form.
-                // Tapi karena panjang, kita tulis manual di sini (bisa copy dari file index).
-                // Di sini saya akan tulis secara ringkas, tapi di kode asli harus lengkap.
-                // Demi kejelasan, saya akan tulis ulang dengan konten yang sama persis.
                 formContainer.innerHTML = `
                     <form id="registrationForm">
                         <div class="form-section">
@@ -1099,11 +1096,9 @@
                     const whatsappURL = `https://wa.me/${nomorWhatsAppTujuan}?text=${encodeURIComponent(finalWhatsAppMessage)}`;
                     window.open(whatsappURL, '_blank');
                 } else alert('Pesan tidak tersedia. Silakan ulangi pendaftaran.');
-                // Redirect opsional
-                // setTimeout(() => window.location.href = 'https://www.aplikasiusaha.com/daftar', 1000);
             }
 
-            // ========== FUNGSI DOKUMEN PERJANJIAN ==========
+            // ========== FUNGSI DOKUMEN PERJANJIAN (DIPERBAIKI) ==========
             function generateRandomID() {
                 const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 let result = 'LKS/JK-';
@@ -1111,15 +1106,20 @@
                 return result;
             }
 
-            function generateQRCodePromise(elementId, data) {
+            // Fungsi untuk membuat QR code di dalam elemen target (bukan berdasarkan ID global)
+            function generateQRCodeToElement(element, data) {
                 return new Promise((resolve, reject) => {
-                    const element = document.getElementById(elementId);
-                    if (!element) { reject(`Elemen ${elementId} tidak ditemukan`); return; }
+                    if (!element) { reject('Elemen tidak ditemukan'); return; }
                     element.innerHTML = '';
                     if (!data) { resolve(); return; }
                     QRCode.toCanvas(element, data, { width: 90, margin: 1, color: { dark: '#000000', light: '#ffffff' } }, function(error) {
-                        if (error) { console.error('QR Code error:', error); element.innerHTML = '<div style="text-align:center;padding:10px;color:#666;font-size:11px;">QR Code Error</div>'; reject(error); }
-                        else { resolve(); }
+                        if (error) { 
+                            console.error('QR Code error:', error); 
+                            element.innerHTML = '<div style="text-align:center;padding:10px;color:#666;font-size:11px;">QR Code Error</div>'; 
+                            reject(error); 
+                        } else { 
+                            resolve(); 
+                        }
                     });
                 });
             }
@@ -1172,6 +1172,7 @@
                 loadingOverlay.classList.add('visible');
 
                 try {
+                    // Clone template
                     const template = document.getElementById('agreement-template');
                     const clone = template.cloneNode(true);
                     clone.id = 'agreement-clone';
@@ -1181,6 +1182,7 @@
                     clone.style.top = '0';
                     document.body.appendChild(clone);
 
+                    // Data dari submittedData
                     const data = submittedData;
                     const idPendaftaran = generateRandomID();
                     const fullIdPermohonan = data.id_permohonan;
@@ -1194,6 +1196,7 @@
                         kategoriDisplay = `Lainnya (Keterangan: ${data.keterangan_lainnya})`;
                     }
 
+                    // Isi elemen clone (gunakan querySelector di dalam clone)
                     clone.querySelector('#display_nama_pemohon').textContent = data.nama.toUpperCase();
                     clone.querySelector('#display_id_permohonan').textContent = fullIdPermohonan;
                     clone.querySelector('#display_nik').textContent = data.nik;
@@ -1207,14 +1210,20 @@
                     clone.querySelector('#display_hari_tanggal').textContent = hariTanggal;
                     clone.querySelector('#nomor_surat_display').textContent = nomorSurat;
 
+                    // Data QR code
                     const qrDataPihakKedua = `PEMOHON:${data.nama.toUpperCase()}|NIK:${data.nik}|ID:${fullIdPermohonan}|TGL:${formattedDate}`;
                     const qrDataPihakPertama = `PERUSAHAAN:LENTERA KARYA|PENANDATANGAN:MUHAMMAD SALAM|JABATAN:FOUNDER|TGL:07/07/2025`;
 
+                    // Generate QR code di dalam clone
+                    const qrPertama = clone.querySelector('#qrcode_pihak_pertama');
+                    const qrKedua = clone.querySelector('#qrcode_pihak_kedua');
+
                     await Promise.all([
-                        generateQRCodePromise('qrcode_pihak_kedua', qrDataPihakKedua),
-                        generateQRCodePromise('qrcode_pihak_pertama', qrDataPihakPertama)
+                        generateQRCodeToElement(qrPertama, qrDataPihakPertama),
+                        generateQRCodeToElement(qrKedua, qrDataPihakKedua)
                     ]);
 
+                    // Generate PDF
                     const opt = {
                         margin: [10, 10, 10, 10],
                         filename: `Surat_Perjanjian_${data.nama.replace(/\s+/g, '_')}.pdf`,
@@ -1225,6 +1234,7 @@
 
                     await html2pdf().set(opt).from(clone).save();
 
+                    // Bersihkan clone
                     document.body.removeChild(clone);
                     loadingOverlay.classList.remove('visible');
 
