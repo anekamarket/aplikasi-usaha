@@ -20,7 +20,23 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('nama_umkm').addEventListener('input', function() {
         this.value = this.value.toUpperCase();
     });
+
+    // Nonaktifkan tombol aksi di awal (sudah disabled di HTML, tapi pastikan)
+    disableButtons();
 });
+
+// ===================== FUNGSI DISABLE/ENABLE TOMBOL =====================
+function disableButtons() {
+    document.getElementById('btnPrint').disabled = true;
+    document.getElementById('btnDownload').disabled = true;
+    document.getElementById('btnWhatsapp').disabled = true;
+}
+
+function enableButtons() {
+    document.getElementById('btnPrint').disabled = false;
+    document.getElementById('btnDownload').disabled = false;
+    document.getElementById('btnWhatsapp').disabled = false;
+}
 
 // ===================== VALIDASI FORM =====================
 function setupValidation() {
@@ -226,6 +242,10 @@ async function validateAndGenerate() {
 
     // Sembunyikan loading
     document.getElementById('loading-indicator').style.display = 'none';
+
+    // Aktifkan tombol cetak, download, whatsapp
+    enableButtons();
+
     alert('Surat perjanjian telah dibuat. Silakan cetak, download PDF, atau kirim via WhatsApp.');
 }
 
@@ -308,21 +328,33 @@ function isDocumentGenerated() {
 
 function generatePDF() {
     const element = document.getElementById('agreement-document');
+    // Simpan style asli untuk dikembalikan nanti
+    const originalStyle = element.style.cssText;
+    
+    // Sesuaikan margin dan padding untuk PDF
+    element.style.padding = '10mm';
+    element.style.backgroundColor = 'white';
+    
     const opt = {
-        margin: [10, 10, 10, 10],
+        margin: [5, 5, 5, 5], // margin lebih kecil (mm)
         filename: 'surat_perjanjian_lks.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
+        html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
+    
     document.getElementById('loading-indicator').style.display = 'block';
+    
     html2pdf().set(opt).from(element).save()
         .then(() => {
             document.getElementById('loading-indicator').style.display = 'none';
+            // Kembalikan style asli
+            element.style.cssText = originalStyle;
         })
         .catch(err => {
             console.error('PDF error:', err);
             document.getElementById('loading-indicator').style.display = 'none';
+            element.style.cssText = originalStyle;
             alert('Terjadi kesalahan saat membuat PDF. Silakan coba lagi.');
         });
 }
