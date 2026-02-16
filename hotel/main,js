@@ -8,9 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initApp() {
+    initUsers(); // <--- PENTING: buat user default SEBELUM login
+
     setupPasswordToggle(); // Pasang toggle password
 
-    // Pasang event listener login (captcha sudah dihapus)
+    // Pasang event listener login
     const loginForm = document.getElementById('loginForm');
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
 
@@ -22,7 +24,7 @@ function hashPassword(password) {
     return CryptoJS.SHA256(password).toString();
 }
 
-// --- SHOW/HIDE PASSWORD (DIPERBAIKI) ---
+// --- SHOW/HIDE PASSWORD ---
 function setupPasswordToggle() {
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
@@ -36,7 +38,7 @@ function setupPasswordToggle() {
     }
 }
 
-// --- LOGIN FUNCTIONS (CAPTCHA DIHAPUS) ---
+// --- LOGIN FUNCTIONS ---
 function checkLoginState() {
     const loginOverlay = document.getElementById('loginOverlay');
     const mainApp = document.getElementById('mainApp');
@@ -50,7 +52,6 @@ function checkLoginState() {
     } else {
         loginOverlay.style.display = 'flex';
         mainApp.style.display = 'none';
-        // Tidak ada captcha
     }
 }
 
@@ -94,7 +95,6 @@ function handleLogout() {
 
 // --- CORE APP INITIALIZATION ---
 function initializeAppCore() {
-    initUsers(); // pastikan data user default ada
     initStorage();
     loadInitialData();
     setupEventListeners();
