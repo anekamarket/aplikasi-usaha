@@ -5,78 +5,301 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Perjanjian Layanan LKS 2025</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Library QR Code -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-    <!-- Library html2pdf -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- CSS Eksternal -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #f4f7fc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .form-section {
+            padding: 30px 40px;
+        }
+        .form-section h1 {
+            font-size: 24px;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .form-section p {
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        input[readonly] {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #475569;
+        }
+        .id-permohonan-group {
+            display: flex;
+            align-items: center;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .id-permohonan-group .prefix {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            font-weight: 600;
+            color: #334155;
+            border-right: 1px solid #cbd5e1;
+        }
+        .id-permohonan-group input {
+            border: none;
+            border-radius: 0;
+            flex: 1;
+        }
+        .error-message {
+            color: #dc2626;
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 16px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            margin: 20px 0;
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        button {
+            flex: 1 1 auto;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+        }
+        button.primary {
+            background: #2563eb;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+        button.primary:hover {
+            background: #1d4ed8;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        button.print {
+            background: #0f172a;
+            color: white;
+            border: none;
+        }
+        button.whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+        }
+        #agreement-document {
+            display: none;
+            background: white;
+            padding: 40px 35px;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.5;
+            border-top: 4px solid #2563eb;
+        }
+        /* Style untuk cetak */
+        @media print {
+            body { background: white; padding: 0; }
+            .card { box-shadow: none; max-width: 100%; }
+            .form-section, .button-group, .loading, .no-print { display: none; }
+            #agreement-document { display: block; padding: 0.5in; border: none; }
+        }
+        /* Style konten surat */
+        .document-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .document-header img {
+            max-width: 100px;
+            margin-bottom: 8px;
+        }
+        .document-header .company {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .document-header .details {
+            font-size: 13px;
+            color: #334155;
+        }
+        .document-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin: 24px 0 8px;
+            text-decoration: underline;
+        }
+        .document-number {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .party {
+            margin-bottom: 20px;
+        }
+        .party-title {
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+        .article {
+            margin-bottom: 16px;
+        }
+        .article-title {
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+        .signature-area {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        .signature-box {
+            width: 45%;
+            text-align: center;
+        }
+        .qrcode-container {
+            width: 90px;
+            height: 90px;
+            margin: 12px auto;
+        }
+        .signature-name {
+            font-weight: bold;
+            margin-top: 8px;
+            border-top: 1px solid black;
+            padding-top: 8px;
+        }
+        .form-input {
+            font-weight: 600;
+            color: #2563eb;
+        }
+        @media (max-width: 600px) {
+            .form-section { padding: 20px; }
+            .button-group { flex-direction: column; }
+            .signature-area { flex-direction: column; align-items: center; }
+            .signature-box { width: 80%; margin-bottom: 24px; }
+        }
+    </style>
 </head>
 <body>
-    <div class="form-container">
-        <div class="security-pattern"></div>
-        <div class="watermark">LENTERA KARYA SITUBONDO</div>
+    <div class="card">
+        <!-- Form Input -->
+        <div class="form-section no-print">
+            <h1>Formulir Pendaftaran Layanan LKS 2025</h1>
+            <p>Isi data dengan lengkap untuk membuat surat perjanjian</p>
 
-        <!-- Form Input (tidak akan tercetak) -->
-        <div class="no-print">
-            <h1 style="color: #1a3d7c; text-align: center; margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 22px;">Formulir Perjanjian Layanan LKS 2025</h1>
-            <p style="text-align: center; margin-bottom: 20px; color: #000; font-size: 14px;">Silakan isi formulir berikut untuk mendaftar sebagai pengguna layanan:</p>
-            
             <div class="form-group">
-                <label for="nama_pemohon">Nama Pemohon:</label>
-                <input type="text" id="nama_pemohon" name="nama_pemohon" class="uppercase" required>
+                <label>Nama Pemohon</label>
+                <input type="text" id="nama_pemohon" class="uppercase" required>
                 <div id="nama_pemohon_error" class="error-message">Nama harus diisi</div>
             </div>
 
             <div class="form-group">
-                <label for="id_permohonan_input">ID Permohonan (6 Karakter setelah AM-):</label>
+                <label>ID Permohonan (6 karakter setelah AM-)</label>
                 <div class="id-permohonan-group">
                     <span class="prefix">AM-</span>
-                    <input type="text" id="id_permohonan_input" name="id_permohonan_input" class="uppercase" required maxlength="6" placeholder="Masukkan 6 Karakter">
+                    <input type="text" id="id_permohonan_input" maxlength="6" required>
                 </div>
                 <div id="id_permohonan_input_error" class="error-message">ID Permohonan harus 6 karakter (huruf/angka)</div>
             </div>
-            
+
             <div class="form-group">
-                <label for="nik">NIK (16 digit angka):</label>
-                <input type="text" id="nik" name="nik" required maxlength="16" pattern="\d{16}" placeholder="Masukkan 16 digit NIK">
+                <label>NIK (16 digit)</label>
+                <input type="text" id="nik" maxlength="16" required>
                 <div id="nik_error" class="error-message">NIK harus 16 digit angka</div>
             </div>
-            
+
             <div class="form-group">
-                <label for="alamat">Alamat Lengkap:</label>
-                <input type="text" id="alamat" name="alamat" required>
+                <label>Alamat Lengkap</label>
+                <input type="text" id="alamat" required>
                 <div id="alamat_error" class="error-message">Alamat harus diisi</div>
             </div>
-            
+
             <div class="form-group">
-                <label for="nomor_telepon">Nomor Telepon:</label>
-                <input type="tel" id="nomor_telepon" name="nomor_telepon" required pattern="08\d{10,11}" maxlength="13" placeholder="Contoh: 081234567890">
-                <div id="nomor_telepon_error" class="error-message">Nomor harus diawali 08 dan 12-13 digit</div>
+                <label>Nomor Telepon</label>
+                <input type="tel" id="nomor_telepon" maxlength="13" required>
+                <div id="nomor_telepon_error" class="error-message">Nomor harus diawali 08, 10-13 digit</div>
             </div>
-            
+
             <div class="form-group">
-                <label for="tanggal_pendaftaran">Tanggal Pendaftaran:</label>
-                <input type="date" id="tanggal_pendaftaran" name="tanggal_pendaftaran" required>
+                <label>Tanggal Pendaftaran</label>
+                <input type="date" id="tanggal_pendaftaran" required>
                 <div id="tanggal_pendaftaran_error" class="error-message">Tanggal harus diisi</div>
             </div>
-            
+
             <div class="form-group">
-                <label for="id_pendaftaran">No. ID Pendaftaran (Otomatis):</label>
-                <input type="text" id="id_pendaftaran" name="id_pendaftaran" readonly style="background-color: #f0f0f0; font-weight: bold;">
+                <label>No. ID Pendaftaran (otomatis)</label>
+                <input type="text" id="id_pendaftaran" readonly>
             </div>
-            
+
             <div class="form-group">
-                <label for="nama_umkm">Nama Usaha / Brand:</label>
-                <input type="text" id="nama_umkm" name="nama_umkm" class="uppercase" required>
-                <div id="nama_umkm_error" class="error-message">Nama Usaha harus diisi</div>
+                <label>Nama Usaha / Brand</label>
+                <input type="text" id="nama_umkm" class="uppercase" required>
+                <div id="nama_umkm_error" class="error-message">Nama usaha harus diisi</div>
             </div>
-            
+
             <div class="form-group">
-                <label for="kategori_layanan">Kategori Usaha:</label>
-                <select id="kategori_layanan" name="kategori_layanan" required>
-                    <option value="">-- Pilih Kategori --</option>
+                <label>Kategori Usaha</label>
+                <select id="kategori_layanan" required>
+                    <option value="">-- Pilih --</option>
                     <option value="UMKM">UMKM</option>
                     <option value="Jasa Service">Jasa Service</option>
                     <option value="Kuliner">Kuliner</option>
@@ -93,165 +316,259 @@
                 </select>
                 <div id="kategori_layanan_error" class="error-message">Kategori harus dipilih</div>
             </div>
-            
+
             <div class="loading" id="loading-indicator">
-                Membuat dokumen, harap tunggu...
+                Sedang memproses, harap tunggu...
             </div>
-            
+
             <div class="button-group">
-                <button onclick="validateAndGenerate()" class="generate" id="btnGenerate">Generate Surat Perjanjian</button>
-                <button onclick="printDocument()" class="print" id="btnPrint" disabled>Cetak Dokumen</button>
-                <button onclick="downloadDocument()" class="download" id="btnDownload" disabled>Download PDF</button>
-                <button onclick="sendViaWhatsApp()" class="whatsapp" id="btnWhatsapp" disabled>Kirim via WhatsApp</button>
+                <button class="primary" onclick="validateAndGenerate()" id="btnGenerate">Buat Surat Perjanjian</button>
+                <button class="print" onclick="printDocument()" id="btnPrint" disabled>Cetak Dokumen</button>
+                <button class="whatsapp" onclick="sendViaWhatsApp()" id="btnWhatsapp" disabled>Kirim via WhatsApp</button>
             </div>
         </div>
 
-        <!-- Dokumen Surat Perjanjian (disembunyikan awal) -->
+        <!-- Dokumen Surat Perjanjian (disembunyikan) -->
         <div id="agreement-document">
-            <div class="header">
-                <div class="logo-container">
-                    <img src="https://raw.githubusercontent.com/LKS-88/anekamarket/refs/heads/main/Logo-Anekamarketku.png" alt="Logo Lentera Karya Situbondo" class="logo-img">
-                </div>
-                <div class="company-name">LENTERA KARYA SITUBONDO</div>
-                <div class="company-tagline">Inovasi dan Teknologi untuk UMKM</div>
-                <div class="company-address">Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</div>
-                <div class="contact-info">
-                    <span>Email: admin@anekamarket.my.id</span> | 
-                    <span>Telp: +62 878-6561-4222</span>
-                </div>
-                <div class="contact-info">
-                    <span>Website: www.anekamarket.my.id</span>
-                </div>
-                <div class="header-line"></div>
+            <div class="document-header">
+                <img src="https://raw.githubusercontent.com/LKS-88/anekamarket/refs/heads/main/Logo-Anekamarketku.png" alt="Logo" style="max-width:100px;">
+                <div class="company">LENTERA KARYA SITUBONDO</div>
+                <div class="details">Desa Wringin Anom, Kec. Panarukan, Kab. Situbondo, Jawa Timur</div>
+                <div class="details">Email: admin@anekamarket.my.id | Telp: +62 878-6561-4222</div>
             </div>
-            
-            <div class="document-title">
-                SURAT PERJANJIAN PENYEDIAAN DAN PENGGUNAAN LAYANAN APLIKASI
+
+            <div class="document-title">SURAT PERJANJIAN PENYEDIAAN DAN PENGGUNAAN LAYANAN APLIKASI</div>
+            <div class="document-number">Nomor: <span id="nomor_surat_display">......../......../SP3LA-LKS/2025</span></div>
+
+            <p>Pada hari ini, <span id="display_hari_tanggal"></span>, bertempat di Situbondo, kami yang bertanda tangan di bawah ini:</p>
+
+            <div class="party">
+                <div class="party-title">PIHAK PERTAMA:</div>
+                <p>Nama Lengkap: <strong>MUHAMMAD SALAM</strong><br>
+                Jabatan: <strong>Founder Lentera Karya Situbondo</strong><br>
+                Alamat: Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
             </div>
-            
-            <div class="document-number">
-                Nomor: <span id="nomor_surat_display">......../......../SP3LA-LKS/VII/2025</span>
+
+            <div class="party">
+                <div class="party-title">PIHAK KEDUA (Pemohon):</div>
+                <p>Nama Pemohon : <span id="display_nama_pemohon" class="form-input"></span><br>
+                ID Permohonan : <span id="display_id_permohonan" class="form-input"></span><br>
+                NIK : <span id="display_nik" class="form-input"></span><br>
+                Alamat : <span id="display_alamat" class="form-input"></span><br>
+                Nomor Telepon : <span id="display_nomor_telepon" class="form-input"></span><br>
+                No. ID Pendaftaran : <span id="display_id_pendaftaran" class="form-input"></span><br>
+                Nama Usaha : <span id="display_nama_umkm" class="form-input"></span><br>
+                Kategori Usaha : <span id="display_kategori_layanan" class="form-input"></span></p>
             </div>
-            
-            <div class="parties">
-                <p style="font-size: 14px;">Pada hari ini, <span id="display_hari_tanggal">Senin Tanggal 07 Bulan Juli Tahun 2025</span>. Bertempat di Situbondo, kami yang bertanda tangan di bawah ini:</p>
-                
-                <div class="party">
-                    <div class="party-title">PIHAK PERTAMA:</div>
-                    <p>Nama Lengkap: <strong>MUHAMMAD SALAM</strong></p>
-                    <p>Jabatan: <strong>Founder Lentera Karya Situbondo</strong></p>
-                    <p>Alamat: Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
-                </div>
-                
-                <div class="party">
-                    <div class="party-title">PIHAK KEDUA (Pemohon / Pengguna Layanan):</div>
-                    <p>Nama Pemohon : <span id="display_nama_pemohon" class="form-input"></span></p>
-                    <p>ID Permohonan : <span id="display_id_permohonan" class="form-input"></span></p>
-                    <p>NIK : <span id="display_nik" class="form-input"></span></p>
-                    <p>Alamat : <span id="display_alamat" class="form-input"></span></p>
-                    <p>Nomor Telepon : <span id="display_nomor_telepon" class="form-input"></span></p>
-                    <p>No. ID Pendaftaran : <span id="display_id_pendaftaran" class="form-input"></span></p>
-                    <p>Nama Usaha / Brand : <span id="display_nama_umkm" class="form-input"></span></p>
-                    <p>Kategori Usaha : <span id="display_kategori_layanan" class="form-input"></span></p>
-                </div>
-            </div>
-            
+
             <div class="article">
                 <div class="article-title">PASAL 1 - MAKSUD DAN TUJUAN</div>
-                <p>Perjanjian ini dibuat untuk mengatur hak dan kewajiban masing-masing pihak dalam rangka penyediaan dan pemanfaatan fasilitas, sarana, dan layanan berbasis aplikasi yang disediakan oleh PIHAK PERTAMA kepada PIHAK KEDUA.</p>
+                <p>Perjanjian ini mengatur hak dan kewajiban dalam rangka penyediaan dan pemanfaatan fasilitas aplikasi oleh PIHAK PERTAMA kepada PIHAK KEDUA.</p>
             </div>
-            
+
             <div class="article">
                 <div class="article-title">PASAL 2 - RUANG LINGKUP LAYANAN</div>
-                <p>1. PIHAK PERTAMA menyediakan akses aplikasi yang mencakup, namun tidak terbatas pada:</p>
-                <ul>
-                    <li>Aplikasi Kasir & Aplikasi Ojek Online</li>
-                    <li>Aplikasi UMKM</li>
-                    <li>Layanan Sewa Hotel & Layanan Wisata</li>
-                    <li>Fitur lain sesuai pengembangan platform</li>
-                </ul>
-                <p>2. PIHAK KEDUA berhak menggunakan fasilitas aplikasi sesuai ketentuan teknis dan kebijakan PIHAK PERTAMA.</p>
+                <p>1. PIHAK PERTAMA menyediakan akses aplikasi Kasir, Ojek Online, UMKM, Sewa Hotel, Wisata, dan fitur lainnya.<br>
+                2. PIHAK KEDUA berhak menggunakan sesuai ketentuan.</p>
             </div>
-            
+
             <div class="article">
                 <div class="article-title">PASAL 3 - TANGGUNG JAWAB PIHAK PERTAMA</div>
-                <p>1. Menyediakan fasilitas aplikasi dalam kondisi dapat digunakan sesuai spesifikasi teknis.</p>
-                <p>2. Memberikan dukungan teknis terbatas dalam penggunaan aplikasi.</p>
-                <p>3. PIHAK PERTAMA TIDAK bertanggung jawab atas:</p>
-                <p>a. Segala kerugian, kerusakan barang, atau kerugian konsumen yang timbul akibat transaksi, pemesanan, atau penggunaan layanan oleh PIHAK KEDUA.</p>
-                <p>b. Tuntutan, klaim, atau perselisihan antara PIHAK KEDUA dengan pihak ketiga.</p>
-                <p>c. Kejadian yang berada di luar kendali, termasuk tetapi tidak terbatas pada kecelakaan, bencana alam, tindakan pidana, dan force majeure lainnya.</p>
+                <p>1. Menyediakan aplikasi dalam kondisi dapat digunakan.<br>
+                2. Memberikan dukungan teknis terbatas.<br>
+                3. PIHAK PERTAMA tidak bertanggung jawab atas kerugian akibat transaksi atau sengketa dengan pihak ketiga.</p>
             </div>
-            
+
             <div class="article">
                 <div class="article-title">PASAL 4 - TANGGUNG JAWAB PIHAK KEDUA</div>
-                <p>1. Menjamin kebenaran, keaslian, dan kelengkapan data yang diberikan kepada PIHAK PERTAMA.</p>
-                <p>2. Bertanggung jawab penuh atas legalitas, mutu, keamanan, dan keabsahan barang/jasa/layanan.</p>
-                <p>3. Berkewajiban memastikan seluruh aktivitas usaha tidak melanggar ketentuan hukum.</p>
-                <p>4. Dilarang memperdagangkan barang/jasa terlarang, termasuk:</p>
-                <ul>
-                    <li>Narkotika, psikotropika, obat terlarang</li>
-                    <li>Senjata api, senjata tajam, bahan peledak</li>
-                    <li>Minuman keras dan barang lain yang dilarang peraturan perundang-undangan</li>
-                </ul>
-                <p>5. Bertanggung jawab atas pengaduan, klaim, tuntutan, dan kerugian akibat transaksi, termasuk layanan transportasi, wisata, dan sewa hotel.</p>
-                <p>6. Wajib menjaga reputasi dan etika usaha dalam penggunaan aplikasi.</p>
+                <p>1. Menjamin kebenaran data.<br>
+                2. Bertanggung jawab penuh atas legalitas barang/jasa.<br>
+                3. Dilarang memperdagangkan barang terlarang (narkotika, senjata, miras, dll).<br>
+                4. Bertanggung jawab atas klaim dan kerugian akibat transaksi.</p>
             </div>
-            
+
             <div class="article">
                 <div class="article-title">PASAL 5 - PEMBEBASAN TANGGUNG JAWAB</div>
-                <p>PIHAK KEDUA secara tegas dan tanpa syarat melepaskan PIHAK PERTAMA dari segala tuntutan, klaim, gugatan, dan kewajiban ganti rugi yang timbul sebagai akibat langsung atau tidak langsung dari:</p>
-                <p>1. Kerusakan barang atau kerugian konsumen.</p>
-                <p>2. Kecelakaan, bencana, atau force majeure.</p>
-                <p>3. Perselisihan dengan pembeli, pengguna jasa, atau pihak ketiga.</p>
-                <p>4. Pelanggaran ketentuan hukum oleh PIHAK KEDUA.</p>
+                <p>PIHAK KEDUA melepaskan PIHAK PERTAMA dari tuntutan akibat kerusakan barang, kecelakaan, force majeure, atau sengketa dengan pihak ketiga.</p>
             </div>
-            
+
             <div class="article">
-                <div class="article-title">PASAL 6 - JANGKA WAKTU PERJANJIAN</div>
-                <p>1. Perjanjian berlaku sejak tanggal ditandatangani.</p>
-                <p>2. Tetap berlaku selama PIHAK KEDUA menggunakan layanan aplikasi kecuali diakhiri karena pelanggaran atau kesepakatan bersama.</p>
+                <div class="article-title">PASAL 6 - JANGKA WAKTU</div>
+                <p>Berlaku sejak ditandatangani selama menggunakan layanan.</p>
             </div>
-            
+
             <div class="article">
                 <div class="article-title">PASAL 7 - PENYELESAIAN PERSELISIHAN</div>
-                <p>Segala perselisihan akan diselesaikan secara musyawarah mufakat. Apabila tidak tercapai, maka akan diselesaikan sesuai ketentuan hukum yang berlaku di wilayah hukum Republik Indonesia.</p>
+                <p>Diselesaikan secara musyawarah, jika tidak tercapai sesuai hukum RI.</p>
             </div>
-            
+
             <div class="article">
                 <div class="article-title">PASAL 8 - PENUTUP</div>
-                <p>Demikian perjanjian ini dibuat dalam satu rangkap asli yang bertandatangan elektonik dan memiliki kekuatan hukum yang sah, untuk digunakan sebagaimana mestinya.</p>
+                <p>Demikian perjanjian ini dibuat untuk digunakan sebagaimana mestinya.</p>
             </div>
-            
+
             <div class="signature-area">
                 <div class="signature-box">
-                    <div class="signature-info">
-                        <p>Situbondo, <span id="display_tanggal_pendaftaran_full"></span></p>
-                    </div>
-                    <p>PIHAK KEDUA<br>Pemohon/Pengguna Layanan</p>
-                    <div id="qrcode_pihak_kedua" class="qrcode-container"></div>
-                    <div class="signature-name">
-                        <span id="display_nama_pemohon_sign"></span>
-                    </div>
-                </div>
-                
-                <div class="signature-box">
-                    <div class="signature-info">
-                        <p>Situbondo, <span id="display_tanggal_pihak_pertama"></span></p>
-                    </div>
-                    <p>PIHAK PERTAMA<br>Founder Lentera Karya Situbondo</p>
+                    <p>Situbondo, <span id="display_tanggal_pihak_pertama"></span></p>
+                    <p>PIHAK PERTAMA</p>
                     <div id="qrcode_pihak_pertama" class="qrcode-container"></div>
-                    <div class="signature-name">
-                        MUHAMMAD SALAM
-                    </div>
+                    <div class="signature-name">MUHAMMAD SALAM</div>
+                </div>
+                <div class="signature-box">
+                    <p>Situbondo, <span id="display_tanggal_pendaftaran_full"></span></p>
+                    <p>PIHAK KEDUA</p>
+                    <div id="qrcode_pihak_kedua" class="qrcode-container"></div>
+                    <div class="signature-name" id="display_nama_pemohon_sign"></div>
                 </div>
             </div>
-            
-            <div class="page-number"></div>
         </div>
     </div>
 
-    <!-- Main JavaScript -->
-    <script src="main.js"></script>
+    <script>
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('tanggal_pendaftaran').value = new Date().toISOString().substr(0,10);
+            setupValidation();
+            // Uppercase
+            document.getElementById('nama_pemohon').addEventListener('input', function(){ this.value = this.value.toUpperCase(); });
+            document.getElementById('nama_umkm').addEventListener('input', function(){ this.value = this.value.toUpperCase(); });
+            document.getElementById('id_permohonan_input').addEventListener('input', function(){ this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); });
+            disableButtons();
+        });
+
+        function disableButtons() {
+            document.getElementById('btnPrint').disabled = true;
+            document.getElementById('btnWhatsapp').disabled = true;
+        }
+        function enableButtons() {
+            document.getElementById('btnPrint').disabled = false;
+            document.getElementById('btnWhatsapp').disabled = false;
+        }
+
+        function setupValidation() {
+            const fields = ['nama_pemohon','id_permohonan_input','nik','alamat','nomor_telepon','tanggal_pendaftaran','nama_umkm','kategori_layanan'];
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                el.addEventListener('blur', () => validateField(el));
+            });
+        }
+
+        function validateField(field) {
+            const errorDiv = document.getElementById(field.id+'_error');
+            if (!errorDiv) return true;
+            errorDiv.style.display = 'none';
+            field.style.borderColor = '#cbd5e1';
+
+            if (!field.value.trim()) {
+                showError(field, errorDiv, 'Field harus diisi');
+                return false;
+            }
+            const val = field.value.trim();
+            switch (field.id) {
+                case 'nik':
+                    if (!/^\d{16}$/.test(val)) { showError(field, errorDiv, 'NIK harus 16 digit angka'); return false; }
+                    break;
+                case 'id_permohonan_input':
+                    if (val.length !== 6 || !/^[A-Z0-9]+$/.test(val)) { showError(field, errorDiv, 'ID Permohonan harus 6 karakter (huruf/angka)'); return false; }
+                    break;
+                case 'nomor_telepon':
+                    if (!/^08\d{8,11}$/.test(val) || val.length<10 || val.length>13) { showError(field, errorDiv, 'Nomor harus diawali 08, 10-13 digit'); return false; }
+                    break;
+            }
+            return true;
+        }
+        function showError(field, errorDiv, msg) {
+            field.style.borderColor = '#dc2626';
+            errorDiv.textContent = msg;
+            errorDiv.style.display = 'block';
+        }
+
+        function generateRandomID() {
+            return 'LKS/JK-' + Array.from({length:8},()=>'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(Math.random()*36)]).join('');
+        }
+
+        function generateQRCodePromise(elementId, data) {
+            return new Promise((resolve, reject) => {
+                const el = document.getElementById(elementId);
+                if (!el) return reject();
+                el.innerHTML = '';
+                if (!data) return resolve();
+                QRCode.toCanvas(document.createElement('canvas'), data, { width:90 }, (err, canvas) => {
+                    if (err) { el.innerHTML = '<div style="font-size:10px;">QR error</div>'; reject(err); }
+                    else { el.appendChild(canvas); resolve(); }
+                });
+            });
+        }
+
+        async function generateAgreement() {
+            const nama = document.getElementById('nama_pemohon').value.toUpperCase();
+            const idInput = document.getElementById('id_permohonan_input').value.toUpperCase();
+            const nik = document.getElementById('nik').value;
+            const alamat = document.getElementById('alamat').value;
+            const telepon = document.getElementById('nomor_telepon').value;
+            const tgl = document.getElementById('tanggal_pendaftaran').value;
+            const idPendaftaran = document.getElementById('id_pendaftaran').value;
+            const umkm = document.getElementById('nama_umkm').value.toUpperCase();
+            const kategori = document.getElementById('kategori_layanan').value;
+
+            const fullId = 'AM-' + idInput;
+            const tanggalFormat = new Date(tgl).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+            const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][new Date(tgl).getDay()] + ' Tanggal ' + new Date(tgl).getDate() + ' Bulan ' + new Date(tgl).toLocaleDateString('id-ID',{month:'long'}) + ' Tahun ' + new Date(tgl).getFullYear();
+
+            document.getElementById('display_nama_pemohon').textContent = nama;
+            document.getElementById('display_id_permohonan').textContent = fullId;
+            document.getElementById('display_nik').textContent = nik;
+            document.getElementById('display_alamat').textContent = alamat;
+            document.getElementById('display_nomor_telepon').textContent = telepon;
+            document.getElementById('display_id_pendaftaran').textContent = idPendaftaran;
+            document.getElementById('display_nama_umkm').textContent = umkm;
+            document.getElementById('display_kategori_layanan').textContent = kategori;
+            document.getElementById('display_tanggal_pendaftaran_full').textContent = tanggalFormat;
+            document.getElementById('display_tanggal_pihak_pertama').textContent = tanggalFormat;
+            document.getElementById('display_nama_pemohon_sign').textContent = nama;
+            document.getElementById('display_hari_tanggal').textContent = hari;
+            document.getElementById('nomor_surat_display').textContent = idPendaftaran.split('-')[1] + '/SP3LA-LKS/' + (new Date().getMonth()+1) + '/' + new Date().getFullYear();
+
+            const qrData1 = `PERUSAHAAN:LENTERA KARYA|PENANDATANGAN:MUHAMMAD SALAM|TGL:${tgl}`;
+            const qrData2 = `PEMOHON:${nama}|NIK:${nik}|ID:${fullId}|TGL:${tgl}`;
+            await Promise.allSettled([
+                generateQRCodePromise('qrcode_pihak_pertama', qrData1),
+                generateQRCodePromise('qrcode_pihak_kedua', qrData2)
+            ]);
+        }
+
+        async function validateAndGenerate() {
+            const fields = ['nama_pemohon','id_permohonan_input','nik','alamat','nomor_telepon','tanggal_pendaftaran','nama_umkm','kategori_layanan'];
+            let valid = true;
+            fields.forEach(id => { if (!validateField(document.getElementById(id))) valid = false; });
+            if (!valid) { alert('Periksa kembali data yang merah'); return; }
+
+            if (!document.getElementById('id_pendaftaran').value) {
+                document.getElementById('id_pendaftaran').value = generateRandomID();
+            }
+
+            document.getElementById('loading-indicator').style.display = 'block';
+            await generateAgreement();
+            document.getElementById('agreement-document').style.display = 'block';
+            document.getElementById('loading-indicator').style.display = 'none';
+            enableButtons();
+            alert('Surat perjanjian berhasil dibuat. Silakan cetak atau kirim via WA.');
+        }
+
+        function printDocument() {
+            if (!document.getElementById('agreement-document').style.display === 'block') {
+                validateAndGenerate().then(() => setTimeout(() => window.print(), 300));
+            } else {
+                window.print();
+            }
+        }
+
+        function sendViaWhatsApp() {
+            const nama = document.getElementById('nama_pemohon').value || 'Nama Pemohon';
+            const id = 'AM-' + (document.getElementById('id_permohonan_input').value || 'ID');
+            const pesan = `Berikut tanda bukti pendaftaran saya:\nNama: ${nama}\nID Permohonan: ${id}\n\nSilakan lihat dokumen terlampir.`;
+            window.open(`https://wa.me/6287865614222?text=${encodeURIComponent(pesan)}`, '_blank');
+        }
+    </script>
 </body>
 </html>
