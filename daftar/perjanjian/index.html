@@ -99,10 +99,10 @@
             </div>
             
             <div class="button-group">
-                <button onclick="validateAndGenerate()">Generate Surat Perjanjian</button>
-                <button onclick="printDocument()" class="print">Cetak Dokumen</button>
-                <button onclick="downloadDocument()" class="download">Download PDF</button>
-                <button onclick="sendViaWhatsApp()" class="whatsapp">Kirim via WhatsApp</button>
+                <button onclick="validateAndGenerate()" class="generate" id="btnGenerate">Generate Surat Perjanjian</button>
+                <button onclick="printDocument()" class="print" id="btnPrint" disabled>Cetak Dokumen</button>
+                <button onclick="downloadDocument()" class="download" id="btnDownload" disabled>Download PDF</button>
+                <button onclick="sendViaWhatsApp()" class="whatsapp" id="btnWhatsapp" disabled>Kirim via WhatsApp</button>
             </div>
         </div>
 
