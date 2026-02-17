@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - APLIKASI USAHA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Gaya sama persis dengan index.html, hanya konten berbeda */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4a6cf7;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            font-size: 28px;
+        }
+        
+        .logo span {
+            color: #ff6b6b;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        nav ul li a i {
+            margin-right: 5px;
+        }
+        
+        nav ul li a:hover {
+            color: #4a6cf7;
+        }
+        
+        /* Konten Halaman Tentang */
+        .about-section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            margin: 40px 0;
+        }
+        
+        .about-section h1 {
+            color: #4a6cf7;
+            margin-bottom: 20px;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .about-section h1 i {
+            margin-right: 10px;
+        }
+        
+        .about-section h2 {
+            color: #333;
+            margin: 25px 0 15px 0;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .about-section h2 i {
+            margin-right: 10px;
+            color: #4a6cf7;
+        }
+        
+        .about-section p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .about-section ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .about-section li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 10px;
+        }
+        
+        .about-section li:before {
+            content: "•";
+            color: #4a6cf7;
+            font-weight: bold;
+            position: absolute;
+            left: -10px;
+        }
+        
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .team-member {
+            flex: 1 1 250px;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .team-member i {
+            font-size: 60px;
+            color: #4a6cf7;
+            margin-bottom: 15px;
+        }
+        
+        .team-member h3 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .team-member p {
+            color: #666;
+            text-align: center;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            color: #4a6cf7;
+            margin-bottom: 20px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-section h3 i {
+            margin-right: 8px;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #fff;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 18px;
+            background-color: #444;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: #4a6cf7;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            nav ul li {
+                margin: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-store"></i>
+                    APLIKASI <span>USAHA</span>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="https://www.dinasperikanansitubondo.com" target="_blank"><i class="fas fa-home"></i> Beranda</a></li>
+                        <li><a href="https://www.aplikasiusaha.com/gratis" target="_blank"><i class="fas fa-shopping-bag"></i> Produk</a></li>
+                        <li><a href="tentang.html"><i class="fas fa-info-circle"></i> Tentang Kami</a></li>
+                        <li><a href="kontak.html"><i class="fas fa-envelope"></i> Kontak</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="about-section">
+            <h1><i class="fas fa-info-circle"></i> Tentang Kami</h1>
+            <p>Selamat datang di <strong>APLIKASI USAHA</strong> – mitra digital terpercaya untuk mengembangkan usaha Anda. Kami berdiri sejak tahun 2020 dengan misi menyediakan solusi aplikasi bisnis yang mudah, murah, dan berkualitas.</p>
+            
+            <h2><i class="fas fa-bullseye"></i> Misi Kami</h2>
+            <p>Memberdayakan pelaku usaha mikro, kecil, dan menengah di Indonesia melalui teknologi tepat guna. Kami percaya bahwa setiap pengusaha berhak mendapatkan akses ke perangkat lunak modern tanpa harus merogoh kocek dalam.</p>
+            
+            <h2><i class="fas fa-history"></i> Sejarah Singkat</h2>
+            <p>Berawal dari keprihatinan melihat banyak pedagang tradisional kesulitan mencatat keuangan dan stok barang, kami mulai mengembangkan aplikasi kasir sederhana. Respons positif mendorong kami untuk terus berinovasi dan meluncurkan berbagai aplikasi lain seperti manajemen inventaris, toko online, dan akuntansi dasar.</p>
+            
+            <h2><i class="fas fa-users"></i> Tim Kami</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Andi Pratama</h3>
+                    <p>Founder & CEO</p>
+                </div>
+                <div class="team-member">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Siti Nurhaliza</h3>
+                    <p>Lead Developer</p>
+                </div>
+                <div class="team-member">
+                    <i class="fas fa-headset"></i>
+                    <h3>Budi Santoso</h3>
+                    <p>Customer Support</p>
+                </div>
+                <div class="team-member">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Dewi Lestari</h3>
+                    <p>Marketing</p>
+                </div>
+            </div>
+            
+            <h2><i class="fas fa-handshake"></i> Nilai-Nilai Kami</h2>
+            <ul>
+                <li><strong>Integritas:</strong> Kami menjunjung tinggi kejujuran dan transparansi.</li>
+                <li><strong>Inovasi:</strong> Selalu belajar dan beradaptasi dengan perkembangan teknologi.</li>
+                <li><strong>Kolaborasi:</strong> Bekerja sama dengan pengguna untuk menciptakan solusi terbaik.</li>
+                <li><strong>Kepuasan Pelanggan:</strong> Prioritas utama kami adalah membantu kesuksesan Anda.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-store"></i> Tentang APLIKASI USAHA</h3>
+                    <p>APLIKASI USAHA adalah platform penyedia aplikasi terpercaya yang menyediakan berbagai jenis aplikasi usaha secara gratis.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-link"></i> Link Cepat</h3>
+                    <a href="https://www.dinasperikanansitubondo.com" target="_blank"><i class="fas fa-home"></i> Beranda</a>
+                    <a href="https://www.aplikasiusaha.com/gratis" target="_blank"><i class="fas fa-shopping-bag"></i> Produk</a>
+                    <a href="tentang.html"><i class="fas fa-info-circle"></i> Tentang Kami</a>
+                    <a href="kontak.html"><i class="fas fa-envelope"></i> Kontak</a>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-headset"></i> Layanan Pelanggan</h3>
+                    <a href="bantuan.html"><i class="fas fa-question-circle"></i> Pusat Bantuan</a>
+                    <a href="pengembalian.html"><i class="fas fa-undo"></i> Kebijakan Pengembalian</a>
+                    <a href="syarat.html"><i class="fas fa-file-contract"></i> Syarat dan Ketentuan</a>
+                    <a href="https://www.aplikasiusaha.com/kebijakan-privasi" target="_blank"><i class="fas fa-shield-alt"></i> Kebijakan Privasi</a>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Hubungi Kami</h3>
+                    <p><i class="fas fa-envelope"></i> Email: info@aplikasiusaha.com</p>
+                    <p><i class="fab fa-whatsapp"></i> WhatsApp: 085647709114</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Alamat: Jl. PB Sudirman Situbondo (68351) Jawa Timur</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 APLIKASI USAHA. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
