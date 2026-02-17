@@ -144,14 +144,25 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .map-placeholder {
+        .map-iframe {
+            width: 100%;
+            height: 250px;
+            border: 0;
+        }
+        
+        .map-link {
+            display: block;
+            text-align: center;
             background-color: #f0f4ff;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 8px;
             color: #4a6cf7;
-            font-size: 18px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .map-link:hover {
+            background-color: #e0e8ff;
         }
         
         /* Footer */
@@ -268,7 +279,6 @@
                     <div class="contact-details">
                         <h3>Telepon / WhatsApp</h3>
                         <p><a href="tel:+6285647709114">0856-4770-9114</a> (WhatsApp)</p>
-                        
                     </div>
                 </div>
                 <div class="contact-item">
@@ -276,7 +286,7 @@
                     <div class="contact-details">
                         <h3>Email</h3>
                         <p><a href="mailto:info@aplikasiusaha.com">info@aplikasiusaha.com</a></p>
-                        <p><a href="mailto:admin@aplikasiusaha.com">support@aplikasiusaha.com</a></p>
+                        <p><a href="mailto:support@aplikasiusaha.com">support@aplikasiusaha.com</a></p>
                     </div>
                 </div>
                 <div class="contact-item">
@@ -289,14 +299,21 @@
                     </div>
                 </div>
                 <div class="map-container">
-                    <div class="map-placeholder">
-                        <i class="fas fa-map-marked-alt" style="margin-right: 10px;"></i> Peta Lokasi (Google Maps)
-                    </div>
+                    <!-- iframe Google Maps dengan lokasi kantor -->
+                    <iframe class="map-iframe" 
+                        src="https://maps.google.com/maps?q=Jl.%20PB%20Sudirman%20No.%20123%20Situbondo&output=embed" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                    <a class="map-link" href="https://maps.app.goo.gl/J8zTmiZm3rvnfvJv8" target="_blank">
+                        <i class="fas fa-directions"></i> Buka Rute di Google Maps
+                    </a>
                 </div>
             </div>
             <div class="contact-form">
                 <h2 style="margin-bottom: 20px; color: #4a6cf7;"><i class="fas fa-paper-plane"></i> Kirim Pesan</h2>
-                <form action="#" method="post">
+                <!-- Formulir dikirim ke WhatsApp menggunakan JavaScript -->
+                <form id="contactForm">
                     <div class="form-group">
                         <label for="name">Nama Lengkap</label>
                         <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
@@ -317,7 +334,7 @@
                         <label for="message">Pesan</label>
                         <textarea id="message" name="message" placeholder="Tulis pesan Anda di sini..." required></textarea>
                     </div>
-                    <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Kirim Pesan</button>
+                    <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Kirim Pesan ke WhatsApp</button>
                 </form>
             </div>
         </div>
@@ -362,5 +379,41 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah pengiriman form biasa
+
+            // Ambil nilai dari form
+            var name = document.getElementById('name').value.trim();
+            var email = document.getElementById('email').value.trim();
+            var phone = document.getElementById('phone').value.trim();
+            var subject = document.getElementById('subject').value.trim();
+            var message = document.getElementById('message').value.trim();
+
+            // Validasi sederhana
+            if (!name || !email || !subject || !message) {
+                alert('Harap isi semua kolom yang wajib (Nama, Email, Subjek, Pesan).');
+                return;
+            }
+
+            // Format pesan untuk WhatsApp
+            var text = '*Pesan dari APLIKASI USAHA*\n\n';
+            text += '*Nama*: ' + name + '\n';
+            text += '*Email*: ' + email + '\n';
+            if (phone) text += '*Telepon*: ' + phone + '\n';
+            text += '*Subjek*: ' + subject + '\n';
+            text += '*Pesan*: ' + message + '\n';
+
+            // Nomor WhatsApp tujuan (gunakan kode negara 62)
+            var phoneNumber = '6285647709114'; // 0856-4770-9114
+
+            // Buat URL WhatsApp
+            var url = 'https://api.whatsapp.com/send?phone=' + phoneNumber + '&text=' + encodeURIComponent(text);
+
+            // Buka di tab baru
+            window.open(url, '_blank');
+        });
+    </script>
 </body>
 </html>
