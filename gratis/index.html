@@ -11,69 +11,321 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <!-- CSS Eksternal (tetap dipertahankan) -->
+    <!-- CSS Eksternal (tetap dipertahankan, pastikan style.css tidak menimpa berlebihan) -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- Tambahan CSS internal untuk komponen baru dan penyesuaian -->
+    <!-- Tambahan CSS internal untuk desain superior dan penyesuaian hero -->
     <style>
-        /* Agar tombol daftar terlihat selaras dengan tema */
-        .region-badge {
+        /* VARIABEL WARNA (selaras dengan tema) */
+        :root {
+            --bg-dark: #0a0f1e;
+            --card-bg: rgba(20, 30, 45, 0.8);
+            --accent-gold: #ffd700;
+            --accent-orange: #ff8c42;
+            --text-light: #e0e0e0;
+            --glow-color: rgba(255, 215, 0, 0.4);
+        }
+
+        /* Reset / dasar */
+        body {
+            background-color: var(--bg-dark);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Partikel bercahaya (ditingkatkan) */
+        #particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            box-shadow: 0 0 15px 3px rgba(255, 140, 66, 0.5);
+            animation: float linear infinite;
+            will-change: transform;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+
+        /* Container utama */
+        .app-gallery-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 2rem 3rem;
+        }
+
+        /* ===== HERO SECTION (SITUBONDO NAIK KELAS) ===== */
+        .hero-section {
+            text-align: center;
+            margin: 1rem 0 2rem 0;
+            padding: 2rem 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 40px;
+            backdrop-filter: blur(3px);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #ffe68f, #ffb347, #ff8c42);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px #ffb347, 0 0 40px rgba(255, 140, 66, 0.3);
+            margin-bottom: 0.5rem;
+            letter-spacing: 3px;
+            line-height: 1.2;
+            animation: glowPulse 3s infinite alternate;
+        }
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c42; }
+            100% { text-shadow: 0 0 30px #ffb347, 0 0 70px #ff5500; }
+        }
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: #dddddd;
+            font-weight: 300;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #fff, #ffe6b3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 0.5rem;
+            opacity: 0.9;
+        }
+
+        /* Galeri title */
+        .gallery-title {
+            text-align: center;
+            margin: 3rem 0 2.5rem;
+            position: relative;
+        }
+        .gallery-title h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ffffff, #ffe1a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #ff8c42;
+            border-image: linear-gradient(to right, #ffd700, #ff8c42) 1;
+        }
+        .gallery-title p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 1rem auto 0;
+            color: #b0b0b0;
+        }
+
+        /* Grid aplikasi */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .app-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 30px;
+            padding: 2rem 1.5rem 1.5rem;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.6);
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            height: 100%;
+        }
+        .app-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #ffd700;
+            box-shadow: 0 30px 40px -5px #ff8c42;
+        }
+        .app-card-header-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .app-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .app-card:hover .app-icon {
+            transform: rotate(5deg) scale(1.05);
+        }
+        .app-card h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin: 0.5rem 0 0.8rem;
+            color: #ffd700;
+            line-height: 1.3;
+        }
+        .app-card p {
+            color: #c0c0c0;
+            margin-bottom: 1.8rem;
+            flex-grow: 1;
+            font-size: 1rem;
+        }
+        .app-card-buttons {
+            margin-top: auto;
+        }
+        .btn-trial {
+            display: block;
+            background: linear-gradient(145deg, #1e2a3a, #0f1a2a);
+            color: #ffd700;
+            border: 1px solid #ff8c42;
+            border-radius: 60px;
+            padding: 0.8rem 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            box-shadow: 0 5px 0 #0a0f1e;
+        }
+        .btn-trial:hover {
+            background: #ff8c42;
+            color: #0a0f1e;
+            border-color: #ffd700;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 #0a0f1e;
+        }
+
+        /* Tombol Daftar (di atas footer) */
+        .daftar-wrapper {
+            text-align: center;
+            margin: 4rem 0 2rem;
         }
         .btn-daftar {
             display: inline-block;
             background: linear-gradient(135deg, #ff8c42, #ffd700);
             color: #1a1a2e;
-            font-weight: 600;
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
+            font-weight: 700;
+            padding: 1rem 3.5rem;
+            border-radius: 60px;
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 1.4rem;
+            letter-spacing: 1.5px;
             transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
+            box-shadow: 0 10px 25px rgba(255, 140, 66, 0.5);
             border: none;
             cursor: pointer;
+            text-transform: uppercase;
         }
         .btn-daftar:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 140, 66, 0.5);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 35px rgba(255, 215, 0, 0.7);
         }
-        /* Memastikan footer link terlihat rapi */
+
+        /* Footer didukung oleh */
+        .footer-support {
+            margin-top: 5rem;
+            padding: 2rem 0 0;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            text-align: center;
+            color: #aaa;
+            font-size: 1rem;
+        }
+        .support-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffd966;
+            margin-bottom: 1rem;
+        }
         .footer-link {
             color: #ffd700;
             text-decoration: none;
             transition: color 0.2s;
+            font-weight: 500;
         }
         .footer-link:hover {
             color: #ff8c42;
             text-decoration: underline;
         }
-        .footer-support p {
-            line-height: 1.8;
+        .contact-info {
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .contact-info a {
+            color: #ddd;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+        .contact-info a:hover {
+            color: #ffd700;
+        }
+        .developer {
+            margin-top: 1rem;
+            font-style: italic;
+            color: #bbb;
+            background: rgba(255,140,66,0.1);
+            padding: 0.8rem;
+            border-radius: 50px;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .hero-title { font-size: 2.8rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .gallery-title h1 { font-size: 2.2rem; }
+            .app-gallery-container { padding: 1.5rem; }
+            .contact-info { flex-direction: column; gap: 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .hero-title { font-size: 2.2rem; }
+            .btn-daftar { font-size: 1.1rem; padding: 0.8rem 2rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Tempat partikel -->
-    <div id="particle-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></div>
+    <!-- Partikel latar -->
+    <div id="particle-container"></div>
 
     <main class="app-gallery-container">
-        <!-- Tagline SITUBONDO NAIK KELAS (tombol daftar sudah dipindah) -->
-        <div class="region-badge">
-            <h2>SITUBONDO NAIK KELAS</h2>
-            <!-- TOMBOL DAFTAR TELAH DIPINDAHKAN KE ATAS FOOTER -->
+        <!-- ===== HERO SECTION - SITUBONDO NAIK KELAS ===== -->
+        <div class="hero-section">
+            <h1 class="hero-title">SITUBONDO NAIK KELAS</h1>
+            <div class="hero-subtitle">Membangun Ekosistem Digital Nelayan & UMKM</div>
         </div>
 
+        <!-- Judul Galeri Aplikasi -->
         <div class="gallery-title">
             <h1>Galeri Aplikasi</h1>
             <p>Jelajahi koleksi aplikasi kami yang dirancang untuk memberdayakan dan menyederhanakan berbagai kebutuhan bisnis Anda.</p>
         </div>
         
+        <!-- Grid Aplikasi (tetap seperti asli, hanya icon warna random via JS) -->
         <div class="app-grid" id="appGrid">
             <!-- Kartu 1 -->
             <div class="app-card">
@@ -83,7 +335,7 @@
                 </a>
                 <p>Manajemen penyaluran bantuan sosial agar tepat sasaran.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/bantuansosial/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/bantuansosial/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -95,7 +347,7 @@
                 </a>
                 <p>Sistem pengarsipan surat masuk dan keluar secara digital.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/arsipsurat/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/arsipsurat/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -107,7 +359,7 @@
                 </a>
                 <p>Catat kehadiran dan kelola data jam kerja karyawan.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/absensi/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/absensi/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -119,7 +371,7 @@
                 </a>
                 <p>Buat dan kirim nota atau invoice profesional dengan mudah.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/nota/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/nota/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -131,7 +383,7 @@
                 </a>
                 <p>Solusi kasir (POS) dan manajemen stok untuk bisnis ritel.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/supermarket/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/supermarket/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -143,19 +395,19 @@
                 </a>
                 <p>Kelola pesanan, meja, dan pembayaran untuk F&B.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/caferesto/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/caferesto/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
-            <!-- Kartu 7 (NOS) - MENU BARU -->
+            <!-- Kartu 7 (NOS) -->
             <div class="app-card">
                 <a href="https://www.aplikasiusaha.com/nos" target="_blank" class="app-card-header-link">
                     <div class="app-icon"><i class="fas fa-motorcycle"></i></div>
-                    <h3>Aplikasi NOS <span style="font-size: 0.8rem; display: block; color: var(--accent-yellow);">(Nompak Ojek Situbondo)</span></h3>
+                    <h3>Aplikasi NOS <span style="font-size: 0.8rem; display: block; color: #ffd700;">(Nompak Ojek Situbondo)</span></h3>
                 </a>
-                <p>Layanan ojek online dan transportasi khas Situbondo. Pesan antar, perjalanan, dan pengiriman barang dengan mudah.</p>
+                <p>Layanan ojek online dan transportasi khas Situbondo.</p>
                 <div class="app-card-buttons">
-                    <a href="https://www.aplikasiusaha.com/nos" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://www.aplikasiusaha.com/nos" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -167,7 +419,7 @@
                 </a>
                 <p>Sistem manajemen booking dan reservasi kamar penginapan.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/hotel/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/hotel/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -179,7 +431,7 @@
                 </a>
                 <p>Manajemen penjualan tiket untuk destinasi wisata.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/wisata/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/wisata/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -191,7 +443,7 @@
                 </a>
                 <p>Platform untuk menyelenggarakan ujian berbasis web.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/ujianonline/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/ujianonline/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -203,7 +455,7 @@
                 </a>
                 <p>Catat transaksi dan status pengerjaan laundry kiloan.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/laundry/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/laundry/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -215,7 +467,7 @@
                 </a>
                 <p>Kelola pemesanan tiket dan paket perjalanan wisata.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/travel/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/travel/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -227,7 +479,7 @@
                 </a>
                 <p>Pencatatan pemasukan dan pengeluaran usaha simpel.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/keuangan/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/keuangan/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -239,7 +491,7 @@
                 </a>
                 <p>Sistem pengundian hadiah secara adil dan transparan.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/undian/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/undian/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -251,7 +503,7 @@
                 </a>
                 <p>Buat dan kustomisasi kode QR untuk berbagai keperluan.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/makercode/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/makercode/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -261,9 +513,9 @@
                     <div class="app-icon"><i class="fas fa-ticket-alt"></i></div>
                     <h3>Sistem Tiket</h3>
                 </a>
-                <p>Buat tiket untuk berbagai kebutuhan, lengkap dengan manajemen stok dan pembayaran.</p>
+                <p>Buat tiket untuk berbagai kebutuhan, lengkap dengan manajemen stok.</p>
                 <div class="app-card-buttons">
-                    <a href="https://www.aplikasiusaha.com/sistemtiket" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://www.aplikasiusaha.com/sistemtiket" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
             
@@ -275,13 +527,13 @@
                 </a>
                 <p>Jelajahi lebih banyak solusi yang akan segera kami rilis.</p>
                 <div class="app-card-buttons">
-                    <a href="https://aplikasiusaha.com/segerahadir/" target="_blank" class="btn btn-trial">Login Aplikasi Gratis Premium</a>
+                    <a href="https://aplikasiusaha.com/segerahadir/" target="_blank" class="btn-trial">Login Aplikasi Gratis Premium</a>
                 </div>
             </div>
         </div>
 
-        <!-- TOMBOL DAFTAR DIPINDAH KE SINI - DI ATAS FOOTER, TENGAH -->
-        <div style="text-align: center; margin: 3rem 0 1.5rem 0;">
+        <!-- TOMBOL DAFTAR (TENGAH, SEBELUM FOOTER) -->
+        <div class="daftar-wrapper">
             <a href="https://www.aplikasiusaha.com/daftar" target="_blank" class="btn-daftar">Daftar</a>
         </div>
 
@@ -291,7 +543,6 @@
             <p>
                 <a href="https://www.aplikasiusaha.com" target="_blank" class="footer-link">www.aplikasiusaha.com</a> | Bidang Pemberdayaan Nelayan<br>
                 Developer: Lentera Karya Situbondo<br>
-                <!-- Tambahan link Kebijakan Privasi -->
                 <a href="https://www.aplikasiusaha.com/kebijakan-privasi" target="_blank" class="footer-link">Kebijakan Privasi</a>
             </p>
             <div class="contact-info">
@@ -304,47 +555,54 @@
         </footer>
     </main>
     
-    <!-- JavaScript -->
+    <!-- JavaScript (partikel dan warna ikon acak) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Partikel bercahaya
+            // Partikel bercahaya (lebih banyak dan variatif)
             const particleContainer = document.getElementById('particle-container');
             if (particleContainer) {
-                const particleCount = 60;
+                const particleCount = 90; // lebih banyak
                 for (let i = 0; i < particleCount; i++) {
                     let particle = document.createElement('div');
                     particle.classList.add('particle');
                     
-                    const size = Math.random() * 4 + 1;
+                    const size = Math.random() * 6 + 1.5;
                     particle.style.width = `${size}px`;
                     particle.style.height = `${size}px`;
                     particle.style.left = `${Math.random() * 100}%`;
                     particle.style.top = `${Math.random() * 100}%`;
                     
-                    const duration = Math.random() * 20 + 10;
+                    const duration = Math.random() * 25 + 15;
                     particle.style.animationDuration = `${duration}s`;
                     
-                    const delay = Math.random() * 15;
+                    const delay = Math.random() * 20;
                     particle.style.animationDelay = `${delay}s`;
                     
-                    // Perbaikan typo: dari 'article' menjadi 'particle'
+                    // Warna partikel acak (emas/jingga)
+                    const hue = Math.random() * 30 + 35; // 35-65 (oranye ke emas)
+                    particle.style.background = `rgba(255, ${Math.floor(180 + Math.random()*75)}, 80, 0.4)`;
+                    particle.style.boxShadow = `0 0 20px 5px rgba(255, ${Math.floor(140 + Math.random()*60)}, 0, 0.6)`;
+                    
                     particleContainer.appendChild(particle);
                 }
             }
 
-            // Warna acak pada ikon
+            // Warna acak pada ikon (gradien lebih dinamis)
             const icons = document.querySelectorAll('.app-icon');
-            const colors = [
-                'linear-gradient(45deg, #00c6ff, #da22ff)',
-                'linear-gradient(45deg, #ffd700, #ff66b2)',
-                'linear-gradient(45deg, #00ff9d, #00c6ff)',
-                'linear-gradient(45deg, #ff8c42, #ffd700)',
-                'linear-gradient(45deg, #da22ff, #ff66b2)',
-                'linear-gradient(45deg, #00c6ff, #00ff9d)'
+            const gradients = [
+                'linear-gradient(145deg, #00c6ff, #8a2be2)',
+                'linear-gradient(145deg, #ffd700, #ff1493)',
+                'linear-gradient(145deg, #00ffaa, #0066ff)',
+                'linear-gradient(145deg, #ff8c42, #ffd700)',
+                'linear-gradient(145deg, #da22ff, #ff3b3b)',
+                'linear-gradient(145deg, #40e0d0, #ff8c42)',
+                'linear-gradient(145deg, #f7971e, #ffd200)',
+                'linear-gradient(145deg, #7f00ff, #e100ff)'
             ];
             icons.forEach(icon => {
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                icon.style.background = randomColor;
+                const randomGrad = gradients[Math.floor(Math.random() * gradients.length)];
+                icon.style.background = randomGrad;
+                icon.style.boxShadow = '0 10px 20px rgba(0,0,0,0.5)';
             });
         });
     </script>
