@@ -2,1680 +2,1965 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APLIKASI KASIR SUPERMARKET</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <title>Aneka Digital - Jasa Pembuatan Website, Percetakan Online & Marketplace Terlengkap</title>
-    
-    <meta name="description" content="Pusat layanan digital One-Stop Solution. Melayani Jasa Pembuatan Website Profesional (Toko Online, Company Profile), Percetakan Digital Murah (Undangan, ID Card, Foto), dan Marketplace Produk Digital. Pesan Online, Kirim ke Seluruh Indonesia.">
-    
-    <meta name="keywords" content="jasa pembuatan website murah, jasa website situbondo, web developer profesional, edit gambar online, edit foto, umkm online, umkm indonesia, umkm naik kelas, aplikasiusaha, aplikasi bisnis, aplikasi usaha, anekamarket situbondo, aneka market, aplikasi umkm, buat website toko online, jasa landing page, website company profile, bikin website sekolah, website desa pemerintah, jasa seo website, digital printing online, cetak undangan pernikahan unik, undangan murah situbondo, percetakan panarukan, percetakan besuki, percetakan bondowoso, percetakan jember, percetakan banyuwangi, percetakan probolinggo, cetak id card pvc, cetak member card, kartu pelajar, cetak foto online, cetak foto polaroid, cetak stiker label, cetak banner spanduk, cetak kalender, brosur flyer, kartu nama bisnis, aneka digital, aneka market, aplikasi kasir, source code aplikasi, jasa coding website, programmer web, domain hosting murah, beli domain com, subdomain gratis, integrasi qris, pembayaran digital, cetak cd dvd, burning cd, duplikasi cd, jasa edit foto, desain grafis online, branding bisnis umkm, solusi bisnis digital, marketplace percetakan, print on demand indonesia, cetak undangan sehari jadi, harga jasa website termurah, bikin web cepat, jasa it konsultan, software house jawa timur, undangan digital video, souvenir pernikahan unik, jasa website responsif, cetak foto dari hp, cetak undangan custom, web developer terpercaya, jasa pembuatan aplikasi android, cetak stiker kemasan, percetakan online murah ongkir, website murah situbondo, jasa web developer panarukan, pembuatan toko online, company profile sekolah, website pemerintah desa, optimasi seo website, toko online murah, jasa pembuatan web aplikasi, cetak undangan digital, undangan pernikahan murah, id card karyawan, cetak foto ukuran 3x4, cetak foto polaroid, cetak cd data, burning dvd, jasa duplikasi cd, desain grafis murah, aneka digital printing, aneka market store, aplikasi kasir toko, aplikasi inventori, software kasir gratis, developer web situbondo, programmer jawa timur, jasa it consultant, pembuatan website sekolah, web desa terintegrasi, jasa maintenance website, domain murah indonesia, hosting terbaik, qris payment gateway, integrasi pembayaran digital">
-
-    <meta name="author" content="Aneka Digital Team">
-    <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="revisit-after" content="2 days">
-    <meta name="language" content="Indonesia">
-    <meta name="geo.region" content="ID-JI">
-    <meta name="geo.placename" content="Situbondo">
-    <meta name="theme-color" content="#0A4D98">
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Aneka Digital - Solusi Website & Percetakan">
-    <meta property="og:description" content="Butuh Website Bisnis atau Cetak Undangan? Di Aneka Digital aja! Harga Transparan, Pengerjaan Cepat.">
-    <meta property="og:url" content="www.anekamarket.my.id">
-    <meta property="og:image" content="https://i.imgur.com/731UDrZ.jpeg">
-    <meta property="og:site_name" content="Aneka Digital">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "Aneka Digital",
-      "image": "https://i.imgur.com/731UDrZ.jpeg",
-      "description": "Jasa Pembuatan Website dan Percetakan Digital Online Terpercaya.",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Jl. Pb. Sudirman",
-        "addressLocality": "Panarukan",
-        "addressRegion": "Jawa Timur",
-        "addressCountry": "ID"
-      },
-      "priceRange": "$",
-      "telephone": "+6285647709114",
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday"
-        ],
-        "opens": "08:00",
-        "closes": "21:00"
-      }
-    }
-    </script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <style>
-        /* ========== GLOBAL STYLE (dari style.css) ========== */
         :root {
-            --primary: #0A4D98;
-            --primary-dark: #06356b;
-            --accent: #FF7F00;
-            --accent-hover: #e67300;
-            --text-dark: #1e293b;
-            --text-gray: #64748b;
-            --bg-light: #f8fafc;
-            --white: #FFFFFF;
-            --success: #10b981;
-            --danger: #ef4444;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-            --shadow-card: 0 10px 40px -10px rgba(0,0,0,0.1);
-            --radius-md: 12px;
-            --radius-lg: 16px;
+            --primary: #007bff; /* Warna biru untuk supermarket */
+            --primary-light: #cce5ff;
+            --secondary: #0056b3;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --shadow-sm: 0 0.15rem 0.35rem rgba(0,0,0,0.1);
+            --shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            --rounded-sm: 0.35rem;
+            --rounded: 0.75rem;
+            --rounded-lg: 1rem;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
-        h1, h2, h3, h4, .logo, .font-head { font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; width: 100%; }
-        html { scroll-behavior: smooth; }
-        img { max-width: 100%; height: auto; display: block; }
-        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        .hidden { display: none !important; }
-
-        /* --- HEADER & NAVIGATION --- */
-        header {
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px); position: fixed; top: 0; width: 100%; z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.3); padding: 0.8rem 0;
-            transition: all 0.3s ease; box-shadow: 0 1px 0 rgba(0,0,0,0.02);
-        }
-        header.scrolled { padding: 0.6rem 0; box-shadow: var(--shadow-sm); background: rgba(255, 255, 255, 0.98); }
-        header .container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { 
-            font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; 
-            display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; white-space: nowrap; 
-        }
-        .logo span { color: var(--accent); }
-        .logo:hover svg { transform: rotate(10deg) scale(1.05); }
-        .logo svg { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); filter: drop-shadow(0 4px 6px rgba(10,77,152,0.2)); }
-
-        nav ul { display: flex; gap: 2rem; list-style: none; align-items: center; }
-        nav a { text-decoration: none; color: var(--text-dark); font-weight: 600; transition: 0.3s; font-size: 0.95rem; }
-        nav a:hover { color: var(--primary); }
-        .btn-nav { 
-            background: var(--primary); color: white !important; padding: 10px 24px; 
-            border-radius: 50px; box-shadow: 0 4px 12px rgba(10, 77, 152, 0.25); white-space: nowrap;
-        }
-        .btn-nav:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(10, 77, 152, 0.35); }
-        .btn-free-app {
-            color: var(--success) !important; font-weight: 700;
-            display: flex; align-items: center; gap: 6px;
-            padding: 8px 16px; border: 1px dashed var(--success);
-            border-radius: 8px; background: rgba(16, 185, 129, 0.08); transition: 0.3s; white-space: nowrap;
-        }
-        .btn-free-app:hover { background: rgba(16, 185, 129, 0.15); }
-        .hamburger { display: none; cursor: pointer; color: var(--text-dark); }
-
-        /* --- HERO SECTION & BUTTON ANIMATION --- */
-        .hero {
-            padding-top: 140px; padding-bottom: 80px;
-            background: linear-gradient(180deg, #EBF5FF 0%, #FFFFFF 100%);
-            border-bottom-left-radius: 60px; border-bottom-right-radius: 60px;
-            position: relative; overflow: hidden;
-        }
-        .modern-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: white; color: var(--primary); padding: 8px 20px; border-radius: 50px;
-            font-size: 0.85rem; font-weight: 700; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 1.5rem;
-            max-width: 100%; border: 1px solid rgba(255,255,255,0.5);
-        }
-        .hero-wrapper { display: flex; align-items: center; gap: 4rem; }
-        .hero-text { flex: 1; }
-        .hero-title {
-            font-size: 3.5rem; line-height: 1.15; margin-bottom: 1.5rem; 
-            color: var(--text-dark); font-weight: 800; letter-spacing: -1.5px;
-        }
-        .text-gradient {
-            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
-        .hero-desc { font-size: 1.15rem; color: var(--text-gray); margin-bottom: 2.5rem; max-width: 95%; line-height: 1.7; }
-        .hero-btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
-
-        @keyframes radiate-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 127, 0, 0.6); transform: scale(1); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 127, 0, 0); transform: scale(1.02); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 127, 0, 0); transform: scale(1); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .btn-market {
-            background: linear-gradient(135deg, var(--accent), #ff5722);
-            color: white; padding: 14px 32px; border-radius: 12px;
-            text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 10px;
-            transition: all 0.3s ease; border: none; cursor: pointer;
-            animation: radiate-pulse 2s infinite; position: relative; z-index: 5;
-            text-align: center; justify-content: center; box-shadow: 0 10px 25px rgba(255, 87, 34, 0.3);
+        body {
+            background-color: #f0f2f5;
+            color: #212529;
+            line-height: 1.5;
+            touch-action: manipulation;
+            font-family: 'Poppins', sans-serif;
         }
-        .btn-market:hover { 
-            animation: none; transform: translateY(-3px); 
-            box-shadow: 0 15px 35px rgba(255, 127, 0, 0.4); 
-            background: linear-gradient(135deg, #e67300, #f4511e);
-        }
-        .btn-secondary-outline {
-            background: white; color: var(--primary); border: 2px solid #e2e8f0;
-            padding: 12px 30px; border-radius: 12px; text-decoration: none; font-weight: 700;
-            transition: 0.3s; display: flex; align-items: center; justify-content: center;
-        }
-        .btn-secondary-outline:hover { border-color: var(--primary); background: #f0f9ff; color: var(--primary-dark); }
-        .hero-img { flex: 1; position: relative; display: flex; justify-content: center; }
-        .hero-img img { width: 100%; border-radius: 24px; box-shadow: var(--shadow-card); animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
 
-        /* --- WEBSITE SERVICE --- */
-        .web-section { padding: 4rem 0; background: #fff; position: relative; }
-        .web-wrapper {
-            display: flex; align-items: center; gap: 3rem;
-            background: linear-gradient(145deg, #f8fafc 0%, #eff6ff 100%);
-            border: 1px solid #e2e8f0; border-radius: 24px; padding: 3rem; box-shadow: var(--shadow-sm);
+        .container {
+            max-width: 1600px; 
+            margin: 0 auto;
+            padding: 12px;
+            width: 100%;
         }
-        .web-content { flex: 1.2; }
-        .web-image { flex: 0.8; }
-        .web-image img { width: 100%; border-radius: 16px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15); border: 4px solid white; }
-        .feature-list { list-style: none; margin: 1.5rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-        .feature-list li { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--text-dark); font-size: 0.95rem; }
-        .feature-list li svg { color: var(--success); flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.2)); }
-        .price-tag-web { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin: 1.5rem 0; display: block; }
-        .price-tag-web small { font-size: 0.9rem; font-weight: 600; color: var(--text-gray); }
 
-        /* --- KATALOG PRODUK --- */
-        .section-title { text-align: center; margin-bottom: 3.5rem; padding: 0 10px; }
-        .section-title h2 { font-size: 2.2rem; margin-bottom: 0.8rem; color: var(--text-dark); font-weight: 800; letter-spacing: -0.5px; }
-        .section-title p { color: var(--text-gray); font-size: 1.1rem; max-width: 700px; margin: 0 auto; }
+        /* Header Styles */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 12px 16px;
+            border-radius: var(--rounded);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--white);
+            padding: 5px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .app-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .header-info {
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .header-info p {
+            margin: 2px 0;
+        }
+
+        /* Shift Status Styles */
+        #shiftStatusContainer {
+            background-color: rgba(255,255,255,0.2);
+            padding: 5px 8px;
+            border-radius: 20px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
+        #shiftStatusBadge {
+            font-weight: 500;
+        }
+        #shiftStatusBadge.active {
+            color: #aeffae;
+        }
+        #shiftActionBtn {
+            padding: 3px 8px;
+            font-size: 0.75rem;
+            width: auto !important;
+            border-radius: 15px;
+        }
+
+        /* Main Content Layout */
+        .app-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Panel Styles */
+        .panel {
+            background: var(--white);
+            border-radius: var(--rounded);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
 
         .product-card {
-            background: var(--white); border-radius: var(--radius-md); overflow: hidden;
-            box-shadow: var(--shadow-sm); transition: all 0.3s ease; border: 1px solid #f1f5f9;
-            display: flex; flex-direction: column; position: relative;
-        }
-        .product-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-card); border-color: #bfdbfe; }
-        .card-img { height: 200px; background: #f1f5f9; overflow: hidden; position: relative; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
-        .product-card:hover .card-img img { transform: scale(1.08); }
-        .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
-        .card-cat { font-size: 0.75rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
-        .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-dark); }
-        .card-price { color: var(--primary); font-weight: 800; font-size: 1.2rem; margin-bottom: 1rem; }
-        .card-btn { 
-            margin-top: auto; width: 100%; padding: 12px; border-radius: 10px; 
-            border: 2px solid var(--primary); color: var(--primary); background: transparent; 
-            cursor: pointer; font-weight: 700; transition: 0.3s; 
-        }
-        .card-btn:hover { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(10, 77, 152, 0.2); }
-
-        /* --- FORM PEMESANAN --- */
-        #pesan { scroll-margin-top: 90px; }
-        .order-layout { display: grid; grid-template-columns: 2fr 1.1fr; gap: 2.5rem; align-items: start; }
-
-        .form-panel { 
-            background: var(--white); padding: 2.5rem; border-radius: var(--radius-lg); 
-            box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; 
+            background: var(--white);
+            border-radius: var(--rounded-sm);
+            padding: 12px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+            border: 1px solid #eee;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
-        .grid-responsive {
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 1.5rem;
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
         }
 
-        .form-group { margin-bottom: 1.5rem; position: relative; width: 100%; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 0.6rem; font-size: 0.9rem; color: #334155; }
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-image i {
+            font-size: 1.5rem;
+            color: var(--gray);
+        }
+
+        .product-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .product-price {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .product-stock {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .product-stock.low { color: var(--warning); }
+        .product-stock.out-of-stock { color: var(--danger); }
+
+        .product-category {
+            font-size: 0.7rem;
+            color: var(--gray);
+            background-color: var(--light);
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-top: 4px;
+        }
+
+        /* Search and Filter */
+        .search-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .filter-chip {
+            padding: 8px 12px;
+            background: var(--light);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Order Styles */
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-item-info {
+            flex: 1;
+        }
+
+        .order-item-name {
+            font-weight: 500;
+        }
+
+        .order-item-price {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .whatsapp-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .whatsapp-link:hover {
+            text-decoration: underline;
+        }
+
+        .order-item-qty {
+            display: flex;
+            align-items: center;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #ddd;
+            background: var(--light);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .qty-input {
+            width: 40px;
+            text-align: center;
+            margin: 0 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 6px;
+        }
+
+        .remove-btn {
+            color: var(--danger);
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        /* Summary Styles */
+        .summary-container {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .total-row {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #ddd;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--rounded-sm);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .btn:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn:hover:not(:disabled) {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn .fa-spinner {
+            margin-right: 8px;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            color: #000;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-info {
+            background-color: var(--info);
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        .btn-outline-primary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        /* Tab Styles */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            text-align: center;
+            flex: 1;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--rounded-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            padding: 16px;
+        }
+
+        .modal-footer {
+            padding: 16px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-check-input {
+            width: 1.1em;
+            height: 1.1em;
+        }
+        .form-check-label {
+            font-weight: 500;
+        }
 
         .form-control {
-            width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 10px;
-            font-size: 1rem; transition: 0.3s; background: #f8fafc; color: var(--text-dark);
-            appearance: none;
-        }
-        .form-control:focus { 
-            border-color: var(--primary); background: #fff; outline: none; 
-            box-shadow: 0 0 0 4px rgba(10, 77, 152, 0.1); 
-        }
-        .form-control[readonly] { cursor: not-allowed; user-select: none; }
-
-        /* INPUT GROUP CHECK DOMAIN */
-        .input-group { display: flex; align-items: stretch; position: relative; flex-wrap: wrap; }
-        .input-group-text {
-            background: #e2e8f0; border: 1px solid #cbd5e1; 
-            padding: 0 15px; display: flex; align-items: center;
-            font-size: 0.9rem; color: #64748b; font-weight: 600;
-            flex-shrink: 0;
-        }
-        .input-group .input-group-text:first-child { border-right: none; border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
-        .input-group .form-control { border-radius: 0; z-index: 2; flex: 1; min-width: 100px; }
-        .input-group .input-group-text:nth-child(3) { border-left: none; border-right: none; }
-
-        .btn-check-domain {
-            background: var(--text-dark); color: white; border: none;
-            padding: 0 20px; font-weight: 600; font-size: 0.9rem; cursor: pointer;
-            border-top-right-radius: 10px; border-bottom-right-radius: 10px;
-            transition: all 0.3s ease; display: flex; align-items: center; gap: 8px;
-            white-space: nowrap;
-        }
-        .btn-check-domain:hover { background: black; }
-        .btn-check-domain:disabled { background: #94a3b8; cursor: not-allowed; }
-
-        .form-control.is-valid { border-color: var(--success); background-color: #f0fdf4; }
-        .form-control.is-invalid { border-color: var(--danger); background-color: #fef2f2; }
-
-        .domain-msg {
-            margin-top: 10px; font-size: 0.85rem; padding: 12px; border-radius: 8px;
-            display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
-            animation: fadeIn 0.4s ease;
-        }
-        .domain-msg.success { background: #ecfdf5; color: #065f46; border: 1px solid #10b981; }
-        .domain-msg.error { background: #fef2f2; color: #991b1b; border: 1px solid #f87171; }
-        .domain-msg.info { background: #eff6ff; color: #1e40af; border: 1px solid #60a5fa; }
-
-        .sub-option-container {
-            background: #eff6ff; border: 1px dashed #93c5fd;
-            padding: 24px; border-radius: 12px; margin-bottom: 2rem;
-            animation: fadeIn 0.4s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- SUMMARY PANEL --- */
-        .summary-panel {
-            background: var(--white); padding: 2rem; border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-card); position: sticky; top: 100px;
-            border: 1px solid #e2e8f0; z-index: 100;
-        }
-        .summary-title { 
-            font-weight: 700; border-bottom: 2px solid #f1f5f9; padding-bottom: 1rem; 
-            margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem;
-        }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.95rem; color: var(--text-gray); }
-        .summary-row span:last-child { font-weight: 600; color: var(--text-dark); text-align: right; padding-left: 10px; }
-
-        .summary-total { 
-            display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; 
-            border-top: 2px dashed #cbd5e1; font-weight: 800; font-size: 1.4rem; color: var(--primary); 
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            font-size: 1rem;
         }
 
-        .payment-section { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px dashed #e2e8f0; }
-        .payment-img { width: 100%; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 1rem; display: block; }
-        .payment-warning {
-            background-color: #fffbeb; border: 1px solid #fcd34d; color: #92400e;
-            padding: 12px; border-radius: 8px; font-size: 0.85rem; line-height: 1.5; margin-top: 1rem;
-        }
-        .dp-highlight { color: var(--accent); font-weight: 800; }
-        .invoice-code-display {
-            background: #f1f5f9; color: var(--text-dark); padding: 10px; text-align: center;
-            border-radius: 8px; font-family: monospace; font-weight: 700; font-size: 1.2rem;
-            letter-spacing: 1px; margin: 10px 0; border: 1px solid #e2e8f0;
-            word-break: break-all;
+        .form-control:disabled {
+            background-color: #e9ecef;
+            opacity: 1;
         }
 
-        .btn-checkout { 
-            width: 100%; margin-top: 1.5rem; background: var(--accent); border: none; 
-            color: white; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 1.1rem; 
-            cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 127, 0, 0.3); 
-        }
-        .btn-checkout:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 127, 0, 0.4); }
-
-        .gps-btn { 
-            position: absolute; right: 8px; top: 38px; background: var(--primary); 
-            color: white; border: none; padding: 6px 12px; border-radius: 6px; 
-            cursor: pointer; font-size: 0.8rem; font-weight: 600; z-index: 5;
-            max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
         }
 
-        /* --- INVOICE MODAL --- */
-        .modal-overlay {
-            position: fixed; top:0; left:0; width:100%; height:100%; 
-            background: rgba(15, 23, 42, 0.85); z-index: 2000; 
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(8px);
-            padding: 1rem;
-        }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-
-        .invoice-card-wrapper {
-            background: white; width: 100%; max-width: 450px; border-radius: 20px; overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex; flex-direction: column; max-height: 90vh;
-        }
-        .modal-overlay.active .invoice-card-wrapper { transform: scale(1) translateY(0); }
-
-        .inv-header {
-            background: var(--primary); color: white; padding: 1.5rem;
-            text-align: center; position: relative; flex-shrink: 0;
-            background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-        }
-        .inv-header h3 { margin: 0; font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; }
-        .inv-header p { opacity: 0.8; font-size: 0.9rem; margin-top: 5px; }
-        .inv-logo-icon {
-            background: rgba(255,255,255,0.15); width: 50px; height: 50px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto;
-            border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px);
+        /* DESAIN LOGIN */
+        #loginModal {
+            background: linear-gradient(45deg, #f0f2f5, #e6e9ed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .inv-body {
-            background: white; border-radius: 20px 20px 0 0; margin-top: -15px;
-            padding: 1.5rem; position: relative; overflow-y: auto; flex-grow: 1;
-        }
-        .inv-badge {
-            background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;
-            padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 700;
-            text-align: center; width: fit-content; margin: 0 auto 20px auto;
-            display: block; letter-spacing: 1px; text-transform: uppercase;
-        }
-        .inv-row {
-            display: flex; justify-content: space-between; align-items: flex-start;
-            margin-bottom: 14px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px;
-        }
-        .inv-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .inv-label { font-size: 0.85rem; color: #64748b; font-weight: 500; }
-        .inv-value { font-size: 0.95rem; color: #0f172a; font-weight: 600; text-align: right; max-width: 60%; }
-
-        .inv-product-box {
-            background: #f8fafc; border-radius: 12px; padding: 15px;
-            margin: 10px 0 20px 0; border: 1px solid #e2e8f0;
-        }
-        .inv-product-title { color: var(--primary); font-weight: 700; margin-bottom: 5px; font-size: 1rem; }
-        .inv-product-spec { font-size: 0.85rem; color: #64748b; line-height: 1.4; }
-
-        .inv-total-area {
-            background: #ecfeff; border: 1px dashed #22d3ee;
-            border-radius: 12px; padding: 15px; margin-top: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .inv-total-label { color: #0891b2; font-weight: 600; font-size: 0.9rem; }
-        .inv-total-value { color: var(--primary); font-weight: 800; font-size: 1.3rem; }
-
-        .inv-footer {
-            padding: 1.5rem; border-top: 1px solid #f1f5f9;
-            display: flex; flex-direction: column; gap: 12px; background: white;
-            flex-shrink: 0;
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0;
+            background: var(--white);
+            border-radius: var(--rounded-lg);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary);
+            animation: fadeIn 0.4s;
         }
 
-        .btn-action-primary {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white; border: none; padding: 14px; border-radius: 12px;
-            font-weight: 700; font-size: 1rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: 0.3s; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        .login-header {
+            text-align: center;
+            margin-bottom: 24px;
         }
-        .btn-action-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4); }
-        .btn-group-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .btn-action-secondary {
-            background: #f1f5f9; color: #475569; border: none; padding: 12px;
-            border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem;
-        }
-        .btn-action-secondary:hover { background: #e2e8f0; color: #1e293b; }
 
-        /* --- FOOTER --- */
-        .footer-wave { width: 100%; line-height: 0; background-color: var(--bg-light); margin-top: 3rem; }
-        .footer-wave svg { display: block; width: 100%; height: 80px; fill: #022a5c; } 
+        .login-logo {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            line-height: 1;
+        }
 
-        footer { background: #022a5c; color: #e2e8f0; padding-bottom: 2rem; font-size: 0.95rem; }
-        .footer-content { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-            gap: 3rem; 
-            padding: 3rem 0; 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
+        .login-title {
+            font-size: 2rem;
+            color: var(--dark);
+            font-weight: 700;
+            letter-spacing: 1px;
         }
-        .footer-brand h3 { color: white; font-size: 1.8rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
-        .footer-nav h4, .footer-contact h4 { color: white; margin-bottom: 1.2rem; font-size: 1.1rem; font-weight: 700; }
-        .footer-links { display: flex; flex-direction: column; gap: 12px; }
-        .footer-links a { color: #cbd5e1; text-decoration: none; transition: 0.3s; display: block; }
-        .footer-links a:hover { color: var(--accent); transform: translateX(5px); }
 
-        .contact-item { display: flex; gap: 12px; margin-bottom: 18px; align-items: flex-start; }
-        .contact-icon { background: rgba(255,255,255,0.1); padding: 10px; border-radius: 50%; flex-shrink: 0; color: var(--accent); }
-        .contact-text { flex: 1; }
-        .contact-title { font-weight: 700; color: white; }
-        .contact-desc { opacity: 0.8; font-size: 0.9rem; margin-top: 3px; }
+        .login-header p {
+            color: var(--gray);
+        }
 
-        .whatsapp-float {
-            position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; 
-            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; font-size: 30px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); 
-            z-index: 999; transition: 0.3s; animation: pulse 2s infinite;
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 16px;
+            background-color: var(--dark);
+            color: var(--white);
+            border-radius: var(--rounded-sm);
+            box-shadow: var(--shadow);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            transform: translateX(200%);
+            transition: transform 0.3s;
         }
-        .whatsapp-float:hover { transform: scale(1.1); }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
-        /* --- MODAL CEK ORDER (BARU) --- */
-        .cek-order-card {
-            background: white; width: 100%; max-width: 500px; border-radius: 20px; 
-            padding: 2rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4); 
-            text-align: center; position: relative;
+        .toast.show {
+            transform: translateX(0);
         }
-        .cek-order-card h3 { margin-bottom: 1.5rem; color: var(--primary); }
-        .cek-order-card .form-group { text-align: left; }
-        .btn-cek-kode {
-            background: var(--primary); color: white; border: none; padding: 12px 30px;
-            border-radius: 50px; font-weight: 700; cursor: pointer; margin-top: 1rem;
-            transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
-        }
-        .btn-cek-kode:hover { background: var(--primary-dark); }
-        .btn-download-struk {
-            background: var(--success); color: white; border: none; padding: 12px 24px;
-            border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block; margin-top: 1rem;
-        }
-        .btn-close-modal { 
-            position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; 
-            color: var(--text-gray);
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- MEDIA QUERIES --- */
-        @media (max-width: 1024px) {
-            .hero-wrapper { gap: 2rem; }
-            .hero-title { font-size: 2.8rem; }
+        .toast.success {
+            background-color: var(--success);
         }
-        @media (max-width: 900px) {
-            .hero-wrapper { flex-direction: column-reverse; text-align: center; padding-top: 0; }
-            .hero-title { font-size: 2.5rem; margin-bottom: 1rem; }
-            .hero-img { width: 100%; max-width: 500px; margin: 0 auto; }
-            .hero-btn-group { justify-content: center; }
-            .hero-desc { margin-left: auto; margin-right: auto; }
-            .web-wrapper { flex-direction: column-reverse; padding: 1.5rem; gap: 2rem; }
-            .web-content { text-align: center; }
-            .feature-list { text-align: left; justify-content: center; }
-            .order-layout { grid-template-columns: 1fr; gap: 1.5rem; }
-            .summary-panel { position: relative; top: 0; order: 2; background: #f8fafc; border: 2px dashed #cbd5e1; box-shadow: none; }
-            .form-panel { order: 1; padding: 1.5rem; }
+
+        .toast.error {
+            background-color: var(--danger);
         }
-        @media (max-width: 768px) {
-            .container { width: 92%; padding: 0 15px; }
-            .section-title h2 { font-size: 2rem; }
-            .hamburger { display: block; }
-            nav ul { 
-                position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px);
-                background: white; flex-direction: column; padding: 2rem; 
-                box-shadow: var(--shadow-card); transition: 0.4s; justify-content: flex-start; overflow-y: auto;
-                z-index: 999;
+
+        .toast.warning {
+            background-color: var(--warning);
+            color: #000;
+        }
+
+        .toast i {
+            margin-right: 8px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 24px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 12px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            margin-top: 16px;
+            padding: 16px;
+            background-color: var(--light);
+            border-radius: var(--rounded);
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background-color: var(--light);
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .data-table-container {
+            max-height: 40vh;
+            overflow-y: auto;
+        }
+
+        .data-table .text-danger { color: var(--danger) !important; font-weight: 500; }
+        .data-table .text-success { color: var(--success) !important; font-weight: 500; }
+        .data-table .text-warning { color: var(--warning) !important; font-weight: 500; }
+
+        /* product Actions */
+        .product-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: none;
+            gap: 4px;
+        }
+
+        .product-card:hover .product-actions {
+            display: flex;
+        }
+
+        .action-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.7rem;
+            color: white;
+        }
+
+        .edit-btn {
+            background-color: var(--info);
+        }
+
+        .delete-btn {
+            background-color: var(--danger);
+        }
+
+        /* Note Input */
+        .note-input {
+            margin-top: 12px;
+        }
+
+        .note-input textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: var(--rounded-sm);
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        /* Member Search */
+        .member-search-container {
+            position: relative;
+        }
+
+        .member-search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 var(--rounded-sm) var(--rounded-sm);
+            z-index: 100;
+            display: none;
+        }
+
+        .member-search-item {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .member-search-item:hover {
+            background-color: var(--light);
+        }
+
+        /* Payment Modal Enhancements */
+        .payment-total-display {
+            background: var(--primary-light);
+            border-radius: var(--rounded);
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .payment-total-display p {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        .payment-total-display h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .quick-cash-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        /* Member Badge */
+        .member-badge {
+            background-color: var(--info);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 6px;
+        }
+
+        /* Responsive Adjustments */
+        @media (min-width: 1024px) {
+            .app-content {
+                flex-direction: row;
             }
-            nav ul.active { left: 0; }
-            nav ul li { width: 100%; text-align: center; margin-bottom: 10px; }
-            nav a { display: block; padding: 12px; font-size: 1.1rem; }
-            .invoice-card-wrapper { width: 95%; max-height: 95vh; }
-            .inv-header { padding: 1.2rem; }
-            .inv-body { padding: 1.2rem; }
-            .cek-order-card { width: 95%; padding: 1.5rem; }
-        }
-        @media (max-width: 640px) {
-            .hero-title { font-size: 2rem; }
-            .btn-market { width: 100%; padding: 12px 20px; font-size: 0.95rem; }
-            .btn-secondary-outline { width: 100%; }
-            .grid-responsive { grid-template-columns: 1fr; gap: 1rem; }
-            .input-group { flex-direction: column; gap: 0; }
-            .input-group .input-group-text:first-child { 
-                width: 100%; border-right: 1px solid #cbd5e1; 
-                border-radius: 10px 10px 0 0; justify-content: center;
-                padding: 12px;
+            
+            .product-panel {
+                flex: 2;
             }
-            .input-group .form-control { 
-                width: 100%; border-radius: 0 !important; border-top: none; 
-                text-align: center; padding: 14px;
+            
+            .order-panel {
+                flex: 1;
             }
-            .input-group .input-group-text:nth-child(3) {
-                 width: 100%; justify-content: center; border-left: 1px solid #cbd5e1;
-                 border-radius: 0;
-            }
-            .btn-check-domain { 
-                width: 100%; border-radius: 0 0 10px 10px; margin-top: -1px; 
-                justify-content: center; padding: 14px; font-size: 1rem;
-            }
-            .domain-msg { margin-top: 15px; font-size: 0.8rem; padding: 10px; flex-direction: column; align-items: flex-start; }
-            .domain-msg svg { align-self: center; }
-            .form-panel, .summary-panel { padding: 1.5rem; margin: 0 auto; width: 100%; }
-            .order-layout { gap: 1.5rem; display: flex; flex-direction: column; align-items: center; }
-            .footer-content { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
-            .footer-brand, .footer-nav, .footer-contact { align-items: center; text-align: center; }
-            .footer-links { align-items: center; }
-            .footer-links a { text-align: center; }
-            .contact-item { justify-content: center; text-align: center; }
-            .footer-contact > div { display: flex; flex-direction: column; align-items: center; width: 100%; }
-            .btn-checkout { padding: 14px; font-size: 1rem; }
-            #pesan { padding: 3rem 0 4rem; }
-            .summary-panel { margin-bottom: 2rem; width: 100%; }
-            .form-control { font-size: 16px; }
-            .product-grid { grid-template-columns: 1fr; }
-            .web-wrapper { padding: 1rem; }
         }
 
-        #print-container { display: none; }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content {
+            animation: fadeIn 0.3s;
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 8px;
+        }
+
+        .mt-3 {
+            margin-top: 16px;
+        }
+
+        .mb-0 {
+            margin-bottom: 0px;
+        }
+
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+
+        .mb-3 {
+            margin-bottom: 16px;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .align-center {
+            align-items: center;
+        }
+
+        .gap-2 {
+            gap: 8px;
+        }
+
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        /* KODE CETAK STRUK & HISTORI */
+        #receiptContent {
+            font-family: 'Courier New', Courier, monospace;
+            width: 300px;
+            margin: 0 auto;
+            padding: 15px;
+            font-size: 12px;
+            line-height: 1.3;
+            color: #000;
+            background: white;
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .receipt-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .receipt-partner-name {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .receipt-info {
+            margin-bottom: 8px;
+            font-size: 11px;
+            border-top: 1px dashed #000;
+            border-bottom: 1px dashed #000;
+            padding: 5px 0;
+        }
+
+        .receipt-info div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .receipt-item-details {
+            display: block;
+        }
+
+        .receipt-item-details .item-name {
+            font-weight: bold;
+        }
+        .receipt-item-details .item-price-calc {
+            font-size: 10px;
+            padding-left: 5px;
+        }
+
+        #receiptItemsContainer {
+            padding: 8px 0;
+        }
+
+        .receipt-total {
+            font-weight: bold;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #000;
+        }
+
+        .receipt-footer {
+            margin-top: 12px;
+            font-size: 10px;
+            text-align: center;
+        }
+
         @media print {
-            body > * { display: none !important; }
-            #print-container { 
-                display: block !important; position: absolute; top: 0; left: 0; 
-                width: 100%; padding: 0; margin: 0; background: white; color: black; 
+            html, body {
+                width: 100%; height: auto; margin: 0 !important; padding: 0 !important;
+                overflow: visible !important; box-shadow: none;
             }
-            #print-container * { visibility: visible; }
-            @page { margin: 0; size: auto; }
+            body * { visibility: hidden; }
+            #print-container, #print-container * {
+                visibility: visible; box-sizing: border-box !important;
+            }
+            #print-container {
+                position: absolute; left: 0; top: 0; width: 100%; height: auto;
+                margin: 0; padding: 0; display: block !important;
+            }
+            #print-container .printable-area, #print-container #receiptContent, #print-container .recap-printable-area {
+                margin: 0 !important; padding: 5px !important; box-shadow: none !important;
+                border: none !important; display: block !important; color: #000 !important;
+                background: #fff !important; width: 100% !important; 
+                font-size: 11pt !important; page-break-inside: avoid;
+            }
+            #print-container #receiptContent { font-size: 10pt !important; }
+            #print-container #historyResultsContainer, #print-container #historyResults {
+                max-height: none !important; overflow: visible !important; height: auto !important;
+            }
+            .no-print, .modal-footer, .modal-header, .app-header, .app-footer, .order-panel, .product-panel, #loginModal {
+                display: none !important;
+            }
+            @page { size: auto; margin: 10mm; }
+        }
+
+        /* Backup Restore Styles */
+        .backup-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .backup-btn {
+            flex: 1;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: block;
+            padding: 12px;
+            background-color: var(--info);
+            color: white;
+            border-radius: var(--rounded-sm);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-label:hover {
+            background-color: #138496;
+        }
+
+        /* KTA Card Design */
+        #ktaCard {
+            width: 320px;
+            height: 500px;
+            margin: 0 auto;
+            border-radius: 20px;
+            background: radial-gradient(circle at top left, #4f5bd5, #007bff, #17a2b8);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        #ktaCard::before, #ktaCard::after {
+            content: ''; position: absolute; background: rgba(255,255,255,0.1);
+            border-radius: 50%; filter: blur(10px);
+        }
+        #ktaCard::before { top: -80px; left: -80px; width: 200px; height: 200px; }
+        #ktaCard::after { bottom: -100px; right: -60px; width: 250px; height: 250px; }
+
+        .kta-header {
+            text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 15px; margin-bottom: 25px; z-index: 1;
+        }
+        .kta-store-info h3 { font-size: 18px; margin: 0; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .kta-store-info p { font-size: 11px; margin: 0; opacity: 0.9; }
+        .kta-body {
+            flex-grow: 1; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; z-index: 1;
+        }
+        #ktaMemberName { font-size: 26px; font-weight: 600; margin-bottom: 8px; text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        #ktaMemberId {
+            font-family: 'Courier New', monospace; font-size: 14px; background-color: rgba(0,0,0,0.3);
+            padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 20px; letter-spacing: 1px;
+        }
+        .kta-qrcode {
+            background: white; padding: 10px; border-radius: 8px; min-height: 160px;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .kta-qrcode img { width: 160px; height: auto; display: block; }
+        .kta-footer {
+            text-align: center; font-size: 11px; opacity: 0.8; padding-top: 15px;
+            margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.3); z-index: 1;
+        }
+
+        /* Role Management Styles */
+        .permission-group {
+            margin-bottom: 16px;
+        }
+        .permission-group-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 4px;
+        }
+        .permission-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .permission-item input {
+            margin-right: 10px;
+        }
+
+        /* Recap Report Styles */
+        .recap-filter-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            align-items: flex-end;
+            padding: 16px;
+            background-color: var(--light);
+            border-radius: var(--rounded-sm);
+            margin-bottom: 16px;
+        }
+        .recap-summary-card {
+            background: var(--primary-light);
+            border-left: 5px solid var(--primary);
+            padding: 12px;
+            border-radius: var(--rounded-sm);
+            margin-bottom: 12px;
+        }
+        .recap-summary-card .title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+        .recap-summary-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Report Header Styles */
+        .report-header {
+            text-align:center; 
+            margin-bottom: 20px;
+        }
+        .report-header h3, .report-header h4, .report-header h5, .report-header p {
+            margin: 0;
+            padding: 0;
+        }
+        .report-header h3 {
+            font-size: 1.3rem;
+        }
+        .report-header h4 {
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+        .report-header h5 {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        .report-header p {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
+    <div id="toast" class="toast">
+        <i class="fas fa-info-circle"></i>
+        <span id="toast-message">Notification message</span>
+    </div>
 
-    <a href="https://wa.me/6285647709114" class="whatsapp-float" target="_blank">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326z"/></svg>
-    </a>
-
-    <header id="main-header">
-        <div class="container">
-            <a href="#" class="logo">
-                <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#0A4D98;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#06356b;stop-opacity:1" />
-                        </linearGradient>
-                        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#FF7F00;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#ff5722;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M20 2L36 11V29L20 38L4 29V11L20 2Z" fill="url(#grad1)"/>
-                    <path d="M20 8L31 14.5V25.5L20 32L9 25.5V14.5L20 8Z" fill="white" fill-opacity="0.15"/>
-                    <path d="M20 20L32 13V27L20 34V20Z" fill="url(#grad2)"/>
-                    <circle cx="20" cy="20" r="3" fill="white"/>
-                    <path d="M20 20L10 14" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                Aneka<span>Digital</span>
-            </a>
-            <div class="hamburger" id="hamburger">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    <div id="loginModal" class="modal" style="display: flex;">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h1 class="login-title">SUPERMARKET</h1>
+                <p>Aplikasi Kasir Digital</p>
             </div>
-            <nav>
-                <ul id="nav-menu">
-                    <li><a href="#hero">Beranda</a></li>
-                    <li><a href="www.anekamarket.my.id" target="_blank" style="color: #FF4500; font-weight: 800;">Store <span style="background: red; color: white; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; vertical-align: top;">NEW</span></a></li>
-                    <li><a href="www.anekamarket.my.id/gratis" target="_blank" class="btn-free-app">🎁 Aplikasi Gratis</a></li>
-                    <li><a href="#pesan" class="btn-nav">Buat Pesanan</a></li>
-                    <li><a href="#" id="btn-cek-order" style="background:#10b981; color:white !important; padding:8px 18px; border-radius:50px; font-weight:700;">🔍 Cek Nota</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <section class="hero" id="hero">
-        <div class="container">
-            <div class="hero-wrapper">
-                <div class="hero-text" data-aos="fade-right">
-                    <div class="modern-badge">🚀 Marketplace, Printing & Web Developer Solution</div>
-                    <h1 class="hero-title">Solusi Cetak & Digital <br><span class="text-gradient">Terintegrasi Untuk Bisnis</span></h1>
-                    <p class="hero-desc">Platform layanan lengkap. Kami melayani <strong>Jasa Pembuatan Website Profesional</strong>, Digital Printing Modern (Undangan, ID Card, Foto), dan Marketplace Produk Digital Terpercaya. Pesan online, mudah dan aman.</p>
-                    
-                    <div class="hero-btn-group">
-                        <a href="www.anekamarket.my.id" target="_blank" class="btn-market">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            Kunjungi Official Store
-                        </a>
-                        <a href="#website-service" class="btn-secondary-outline">
-                            Buat Website Bisnis →
-                        </a>
-                    </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Username: admin" required>
                 </div>
-                <div class="hero-img" data-aos="fade-left">
-                    <img src="https://i.imgur.com/731UDrZ.jpeg" alt="Layanan Cetak Digital dan Pembuatan Website Aneka Digital">
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Password: Gratis12345" required>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="website-service" class="web-section">
-        <div class="container">
-            <div class="section-title" data-aos="fade-up">
-                <h2>Jasa Pembuatan Website Profesional</h2>
-                <p>Digitalisasi bisnis Anda sekarang. Dari Toko Online hingga Company Profile, kami siap membangun citra digital Anda.</p>
-            </div>
-            
-            <div class="web-wrapper" data-aos="fade-up">
-                <div class="web-image">
-                    <img src="https://i.imgur.com/QRLX2II.jpeg" alt="Jasa Pembuatan Website Custom Profesional">
+                
+                <div class="form-group mt-3">
+                    <label for="captcha" class="form-label">Verifikasi Keamanan</label>
+                    <div class="d-flex align-center gap-2">
+                        <canvas id="captchaCanvas" width="150" height="40" style="border: 1px solid #ddd; border-radius: var(--rounded-sm);"></canvas>
+                        <button type="button" id="reloadCaptchaBtn" class="btn btn-sm" style="width: auto; background-color: var(--gray);"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                    <input type="text" id="captchaInput" class="form-control mt-2" placeholder="Masukkan kode di atas" required autocomplete="off">
                 </div>
-                <div class="web-content">
-                    <div class="card-cat" style="font-size: 0.9rem;">WEB DEVELOPER SERVICE</div>
-                    <h3 style="font-size: 2rem; color: var(--text-dark); margin: 0.5rem 0 1rem 0; line-height: 1.2;">Bikin Website Bisnis Jadi Mudah</h3>
-                    <p style="color: var(--text-gray);">
-                        Tingkatkan kredibilitas usaha Anda dengan website berkualitas. Kami menyediakan jasa pembuatan website dengan fitur lengkap, SEO friendly, dan desain modern yang responsif di semua perangkat.
-                        Solusi tepat untuk UMKM, Instansi, atau Personal Branding.
-                    </p>
-                    
-                    <ul class="feature-list">
-                        <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Desain Custom Premium</li>
-                        <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Mobile Friendly & Cepat</li>
-                        <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Gratis Domain / Subdomain*</li>
-                        <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Support & Maintenance</li>
-                    </ul>
-
-                    <div class="price-tag-web">
-                        Rp 100.000 <small>/ Biaya Jasa Mulai</small>
-                    </div>
-
-                    <button id="btn-pesan-web" class="btn-market" style="width: fit-content; animation: none;">
-                        Konsultasi & Pesan Web ➔
-                    </button>
-                    <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">*Untuk opsi subdomain aplikasiusaha.com. Tersedia juga Top Level Domain (.com/.id).</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="katalog" style="padding: 4rem 0;">
-        <div class="container">
-            <div class="section-title" data-aos="fade-up">
-                <h2>Katalog Percetakan & Digital</h2>
-                <p>Kualitas cetak terbaik dan produk digital dengan harga transparan. Klik "Pesan" untuk memulai.</p>
-            </div>
-            <div class="product-grid">
-                <div class="product-card" data-aos="fade-up" data-delay="100">
-                    <div class="card-img"><img src="https://i.imgur.com/731UDrZ.jpeg" alt="Cetak Undangan Pernikahan"></div>
-                    <div class="card-body">
-                        <div class="card-cat">Percetakan</div>
-                        <h3 class="card-title">Cetak Undangan</h3>
-                        <div class="card-price">Mulai Rp 800 /pcs</div>
-                        <p style="font-size:0.9rem; color:#666; margin-bottom:1rem;">Undangan pernikahan & khitan. Opsi Standart & Full Color. Tersedia berbagai tekstur.</p>
-                        <button class="card-btn product-card-btn" data-product="undangan">Pesan Sekarang</button>
-                    </div>
-                </div>
-                <div class="product-card" data-aos="fade-up" data-delay="200">
-                    <div class="card-img"><img src="https://i.imgur.com/AR44IdI.jpeg" alt="Cetak ID Card Murah"></div>
-                    <div class="card-body">
-                        <div class="card-cat">Office & Sekolah</div>
-                        <h3 class="card-title">ID Card PVC</h3>
-                        <div class="card-price">Rp 10.000 /pcs</div>
-                        <p style="font-size:0.9rem; color:#666; margin-bottom:1rem;">Kartu pelajar/pegawai bahan PVC tebal anti luntur (seperti ATM). Opsional casing.</p>
-                        <button class="card-btn product-card-btn" data-product="id-card">Pesan Sekarang</button>
-                    </div>
-                </div>
-                <div class="product-card" data-aos="fade-up" data-delay="300">
-                    <div class="card-img"><img src="https://i.imgur.com/TbQQw3e.jpeg" alt="Cetak Foto Digital"></div>
-                    <div class="card-body">
-                        <div class="card-cat">Studio Photo</div>
-                        <h3 class="card-title">Cetak Foto & Edit</h3>
-                        <div class="card-price">Mulai Rp 250 /lbr</div>
-                        <p style="font-size:0.9rem; color:#666; margin-bottom:1rem;">Cetak foto berbagai ukuran (3x4 s/d A3). Kertas Lab Quality (Glossy/Doff).</p>
-                        <button class="card-btn product-card-btn" data-product="cetak-foto">Pesan Sekarang</button>
-                    </div>
-                </div>
-                <div class="product-card" data-aos="fade-up" data-delay="400">
-                    <div class="card-img"><img src="https://i.imgur.com/iyAx3pL.jpeg" alt="Cetak Label CD"></div>
-                    <div class="card-body">
-                        <div class="card-cat">Digital Data</div>
-                        <h3 class="card-title">Burn & Label CD/DVD</h3>
-                        <div class="card-price">Rp 15.000 /pcs</div>
-                        <p style="font-size:0.9rem; color:#666; margin-bottom:1rem;">Jasa burning data + cetak label stiker/printing langsung di keping CD.</p>
-                        <button class="card-btn product-card-btn" data-product="cetak-cd">Pesan Sekarang</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pesan" style="padding: 4rem 0; background: #fff;">
-        <div class="container">
-            <div class="section-title">
-                <h2>Formulir Pemesanan Terpadu</h2>
-                <p>Silakan lengkapi spesifikasi pesanan Anda (Website atau Percetakan) di bawah ini.</p>
-                <div style="background:#ecfdf5; color:#047857; display:inline-block; padding:8px 20px; border-radius:50px; font-size:0.9rem; font-weight:700; margin-top:15px; border:1px dashed #10b981;">
-                    🎉 PROMO: Belanja kelipatan Rp 100.000, Diskon Rp 5.000!
-                </div>
-            </div>
-
-            <form id="orderForm" class="order-layout">
-                <div class="form-panel">
-                    <h3 style="margin-bottom:1.5rem; color:var(--primary); display:flex; align-items:center; gap:10px;">
-                        <span style="background:var(--primary); color:white; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:1rem;">1</span>
-                        Spesifikasi Produk / Layanan
-                    </h3>
-                    
-                    <div class="form-group">
-                        <label>Pilih Kategori Produk / Layanan</label>
-                        <select id="jenis-produk" class="form-control" required>
-                            <option value="" disabled selected>-- Pilih Layanan --</option>
-                            <option value="website" style="font-weight: 700; color: var(--accent);">★ Jasa Website Custom (Developer)</option>
-                            <option value="undangan">Cetak Undangan</option>
-                            <option value="cetak-foto">Cetak Foto</option>
-                            <option value="id-card">ID Card PVC</option>
-                            <option value="cetak-cd">Cetak CD/DVD</option>
-                            <option value="lainnya">Lainnya</option>
-                        </select>
-                    </div>
-
-                    <div id="dynamic-forms-container">
-                        <div id="form-website" class="hidden sub-option-container">
-                            <h4 style="margin-bottom:15px; color:var(--text-dark); font-weight:700; display:flex; align-items:center; gap:8px;">
-                                <svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-                                Detail Kebutuhan Website
-                            </h4>
-                            <div class="form-group">
-                                <label>Nama Tema / Konsep Website</label>
-                                <input type="text" id="web-tema" class="form-control" placeholder="Contoh: Modern Clean, Toko Online Dark Mode, dll">
-                            </div>
-                            <div class="form-group">
-                                <label>Warna Dominan Website</label>
-                                <input type="text" id="web-warna" class="form-control" placeholder="Contoh: Biru Langit & Putih">
-                            </div>
-                            <div class="form-group">
-                                <label>Pilih Paket Domain</label>
-                                <select id="web-domain-type" class="form-control">
-                                    <option value="0" data-ext="subdomain">Subdomain Gratis (Selamanya) - Rp 0</option>
-                                    <option value="350000" data-ext=".com">Domain .COM (Profesional) - Rp 350.000/thn</option>
-                                    <option value="350000" data-ext=".net">Domain .NET - Rp 350.000/thn</option>
-                                    <option value="250000" data-ext=".id">Domain .ID (Indonesia) - Rp 250.000/thn</option>
-                                    <option value="150000" data-ext=".my.id">Domain .MY.ID (Personal/UMKM) - Rp 150.000/thn</option>
-                                    <option value="250000" data-ext=".co.id">Domain .CO.ID (PT/CV) - Rp 250.000/thn</option>
-                                    <option value="200000" data-ext=".org">Domain .ORG (Organisasi) - Rp 200.000/thn</option>
-                                    <option value="50000" data-ext=".top">Domain .TOP (Promo) - Rp 50.000/thn</option>
-                                    <option value="200000" data-ext=".info">Domain .INFO - Rp 200.000/thn</option>
-                                    <option value="150000" data-ext=".it.com">Domain .IT.COM - Rp 150.000/thn</option>
-                                    <option value="350000" data-ext=".web.id">Domain .WEB.ID - Rp 350.000/thn</option>
-                                    <option value="350000" data-ext=".online">Domain .ONLINE - Rp 350.000/thn</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Cek Ketersediaan Nama Website</label>
-                                <div class="input-group">
-                                    <span class="input-group-text" id="url-prefix">www.aplikasiusaha.com/</span>
-                                    <input type="text" id="web-input-name" class="form-control" placeholder="namawebsite">
-                                    <span class="input-group-text hidden" id="url-suffix"></span>
-                                    <button type="button" class="btn-check-domain" id="btn-check-domain">🔍 Cek Ketersediaan</button>
-                                </div>
-                                <small style="color: #64748b; font-size: 0.8rem; margin-top: 5px; display: block;">*Gunakan huruf kecil tanpa spasi.</small>
-                                <div id="domain-status-msg" class="hidden"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Link Website Final</label>
-                                <input type="text" id="web-final-link" class="form-control" readonly style="background-color: #f1f5f9; color: #64748b; font-weight: 600;">
-                            </div>
-                            <div class="form-group">
-                                <label>Deskripsi Singkat / Konten Website</label>
-                                <textarea id="web-deskripsi" class="form-control" rows="3" placeholder="Jelaskan isi website Anda, profil singkat perusahaan, layanan, atau produk yang ingin ditampilkan..."></textarea>
-                            </div>
-                        </div>
-
-                        <div id="form-undangan" class="hidden sub-option-container">
-                            <h4 style="margin-bottom:15px; color:var(--text-dark); font-weight:700;">Opsi Undangan</h4>
-                            <div class="grid-responsive">
-                                <div class="form-group">
-                                    <label>Tipe Warna</label>
-                                    <select id="undangan-tipe" class="form-control">
-                                        <option value="800">Standart (Rp 800/lbr)</option>
-                                        <option value="1500">Full Warna (Rp 1.500/lbr)</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Tipe Halaman</label>
-                                    <select id="undangan-halaman" class="form-control">
-                                        <option value="1 Lembar">1 Lembar (Tanpa Lipat)</option>
-                                        <option value="Lipat 2">Model Lipat 2</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Jenis Kertas/Tekstur</label>
-                                <select id="undangan-tekstur" class="form-control">
-                                    <option value="0">Standart (Halus) - Rp 0</option>
-                                    <option value="300">Bertekstur (Fancy) - Tambah Rp 300</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="form-foto" class="hidden sub-option-container">
-                            <h4 style="margin-bottom:15px; color:var(--text-dark); font-weight:700;">Opsi Cetak Foto</h4>
-                            <div class="form-group">
-                                <label>Pilih Ukuran Foto</label>
-                                <select id="foto-ukuran" class="form-control">
-                                    <option value="250" data-name="3x4">3x4 (Rp 250)</option>
-                                    <option value="500" data-name="4x6">4x6 (Rp 500)</option>
-                                    <option value="5000" data-name="3R">3R (Rp 5.000)</option>
-                                    <option value="8000" data-name="8R">8R (Rp 8.000)</option>
-                                    <option value="20000" data-name="A3">A3 (Rp 20.000)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Jenis Kertas</label>
-                                <select id="foto-kertas" class="form-control">
-                                    <option value="Glossy">Glossy (Mengkilap)</option>
-                                    <option value="Matte/Textured">Matte/Doff (Bertekstur)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Jasa Edit</label>
-                                <select id="foto-edit" class="form-control">
-                                    <option value="0">Tanpa Edit (File Siap Cetak)</option>
-                                    <option value="1000">Edit Standart (+Rp 1.000)</option>
-                                    <option value="3000">Edit Total Custom (+Rp 3.000)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="form-idcard" class="hidden sub-option-container">
-                             <h4 style="margin-bottom:15px; color:var(--text-dark); font-weight:700;">Opsi ID Card</h4>
-                             <div class="form-group">
-                                 <label>Tipe ID Card</label>
-                                 <select id="idcard-tipe" class="form-control">
-                                     <option value="10000">Standard PVC (Rp 10.000)</option>
-                                     <option value="20000">PVC + Casing/Holder (Rp 20.000)</option>
-                                 </select>
-                             </div>
-                        </div>
-
-                        <div id="form-cd" class="hidden sub-option-container">
-                            <h4 style="margin-bottom:15px; color:var(--text-dark); font-weight:700;">Opsi CD/DVD</h4>
-                            <div class="form-group">
-                                <label>Paket Burning</label>
-                                <select id="cd-tipe" class="form-control">
-                                    <option value="15000">Burn + Label Sticker (Rp 15.000)</option>
-                                    <option value="20000">Burn + Label + Box Kaca (Rp 20.000)</option>
-                                </select>
-                            </div>
-                       </div>
-
-                       <div id="form-lainnya" class="hidden sub-option-container">
-                            <p style="font-size:0.95rem; color:#666;">Silakan tulis kebutuhan detail Anda di kolom catatan. Harga akan dikonfirmasi via WhatsApp.</p>
-                       </div>
-                    </div>
-
-                    <div class="grid-responsive">
-                        <div class="form-group">
-                            <label>Jumlah (Qty)</label>
-                            <input type="number" id="qty" class="form-control" placeholder="0" min="1" value="1">
-                        </div>
-                        <div class="form-group">
-                            <label>Tgl. Deadline</label>
-                            <input type="date" id="deadline" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Nama Pemesan (Wajib)</label>
-                        <input type="text" id="nama" class="form-control" placeholder="Nama Lengkap Anda" required>
-                    </div>
-                    
-                    <div class="grid-responsive">
-                        <div class="form-group">
-                            <label>Nomor HP/WA (Wajib)</label>
-                            <input type="tel" id="wa" class="form-control" placeholder="08xxxxxxx" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Email (Opsional)</label>
-                            <input type="email" id="email" class="form-control" placeholder="email@contoh.com">
-                        </div>
-                    </div>
-
-                    <div id="event-details-section" class="hidden" style="margin-top: 2.5rem; border-top: 2px dashed #e2e8f0; padding-top: 2rem;">
-                        <h3 style="margin-bottom:1.5rem; color:var(--primary); font-size:1.2rem; display:flex; align-items:center; gap:10px;">
-                            <span style="background:var(--primary); color:white; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:1rem;">2</span>
-                            Detail Acara (Khusus Undangan)
-                        </h3>
-                        
-                        <div class="form-group">
-                            <label>Jenis Acara</label>
-                            <select id="jenis-acara" class="form-control">
-                                <option value="Pernikahan">Pernikahan</option>
-                                <option value="Khitanan">Khitanan</option>
-                                <option value="Syukuran">Syukuran / Selamatan</option>
-                                <option value="Ulang Tahun">Ulang Tahun</option>
-                                <option value="Lainnya">Lainnya</option>
-                            </select>
-                        </div>
-
-                        <div id="fields-pernikahan" class="event-fields">
-                            <div class="grid-responsive">
-                                <div class="form-group">
-                                    <label>Mempelai Pria</label>
-                                    <input type="text" id="nama-pria" class="form-control" placeholder="Nama Pria">
-                                </div>
-                                <div class="form-group">
-                                    <label>Mempelai Wanita</label>
-                                    <input type="text" id="nama-wanita" class="form-control" placeholder="Nama Wanita">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Nama Orang Tua (Kedua Belah Pihak)</label>
-                                <input type="text" id="nama-ortu" class="form-control" placeholder="Bpk... & Ibu...">
-                            </div>
-                        </div>
-
-                        <div id="fields-khitan" class="event-fields hidden">
-                            <div class="form-group">
-                                <label>Nama Anak (Yang Dikhitan)</label>
-                                <input type="text" id="nama-anak" class="form-control" placeholder="Nama Lengkap Anak">
-                            </div>
-                            <div class="form-group">
-                                <label>Nama Orang Tua</label>
-                                <input type="text" id="nama-ortu-khitan" class="form-control" placeholder="Nama Orang Tua">
-                            </div>
-                        </div>
-                        
-                        <div id="fields-umum" class="event-fields hidden">
-                            <div class="form-group">
-                                <label>Nama Yang Punya Hajat / Ultah</label>
-                                <input type="text" id="nama-hajat" class="form-control" placeholder="Nama Lengkap">
-                            </div>
-                        </div>
-
-                        <div class="grid-responsive">
-                            <div class="form-group">
-                                <label>Hari & Tanggal Acara</label>
-                                <input type="text" id="tgl-acara" class="form-control" placeholder="Contoh: Minggu, 20 Agustus 2025">
-                            </div>
-                            <div class="form-group">
-                                <label>Jam Acara</label>
-                                <input type="text" id="jam-acara" class="form-control" placeholder="Contoh: 08.00 WIB - Selesai">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Lokasi Acara (Link Google Maps)</label>
-                            <input type="text" id="lokasi" class="form-control" placeholder="Tempel link maps di sini...">
-                            <button type="button" id="btn-gps" class="gps-btn">📍 Ambil Lokasi</button>
-                        </div>
-                    </div>
-
-                    <div class="form-group" style="margin-top: 1.5rem;">
-                        <label>Catatan Tambahan (Request Desain/Fitur Web)</label>
-                        <textarea id="catatan" class="form-control" rows="3" placeholder="Tuliskan catatan tambahan di sini..."></textarea>
-                    </div>
-                </div>
-
-                <div class="summary-panel">
-                    <div class="summary-title">
-                        <span>Ringkasan Pesanan</span>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                    </div>
-                    
-                    <div class="summary-row">
-                        <span>Produk/Layanan</span>
-                        <span id="summary-product" style="text-transform:uppercase;">-</span>
-                    </div>
-                    <div class="summary-row" id="row-detail-specs" style="display:none;">
-                        <span>Specs</span>
-                        <span id="summary-specs" style="text-align:right; font-size:0.85rem; max-width: 60%;"> - </span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Harga Satuan</span>
-                        <span id="summary-price">Rp 0</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Jumlah (Qty)</span>
-                        <span id="summary-qty">0</span>
-                    </div>
-                    
-                    <div class="summary-row" style="margin-top:10px; border-top:1px dashed #eee; padding-top:10px;">
-                        <span>Subtotal</span>
-                        <span id="summary-subtotal">Rp 0</span>
-                    </div>
-
-                    <div class="discount-row" id="row-discount" style="display:none;">
-                        <span>Potongan Harga</span>
-                        <span id="summary-discount">-Rp 0</span>
-                    </div>
-
-                    <div class="summary-total">
-                        <span>Total Bayar</span>
-                        <span id="total-display">Rp 0</span>
-                    </div>
-
-                    <div class="payment-section">
-                        <h4 style="font-size:0.95rem; margin-bottom:10px; color:var(--text-dark);">Scan QRIS untuk DP:</h4>
-                        <img src="https://i.imgur.com/YeK2AF2.jpeg" alt="QRIS Pembayaran Aneka Digital" class="payment-img">
-                        
-                        <div class="summary-row dp-highlight">
-                            <span>Uang Muka (DP 50%)</span>
-                            <span id="dp-amount">Rp 0</span>
-                        </div>
-
-                        <div style="margin-top:10px; text-align:center; font-size:0.85rem; color:var(--text-gray);">
-                            Kode Invoice (Wajib Dicantumkan):
-                        </div>
-                        <div class="invoice-code-display" id="preview-invoice-code">INV-LOADING...</div>
-
-                        <div class="payment-warning">
-                            <strong>⚠️ PENTING:</strong><br>
-                            1. Silakan transfer DP sebesar <b id="warning-dp-val">Rp 0</b> ke QRIS di atas.<br>
-                            2. Cantumkan <b>Kode Invoice</b> pada berita transfer.<br>
-                            3. Setelah transfer, klik tombol <b>PROSES PESANAN</b> di bawah ini dan kirim bukti bayar ke Admin.
-                        </div>
-                    </div>
-
-                    <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 15px; font-style: italic; text-align: center;">
-                        *Pelunasan dilakukan saat barang/website jadi.
-                    </div>
-
-                    <button type="button" class="btn-checkout" id="btn-process">PROSES PESANAN ➔</button>
-                </div>
+                <button type="submit" class="btn mt-3">Login</button>
             </form>
         </div>
-    </section>
-
-    <div id="print-container"></div>
-
-    <!-- MODAL CEK ORDER (FITUR BARU) -->
-    <div class="modal-overlay" id="cekOrderModal">
-        <div class="cek-order-card">
-            <button class="btn-close-modal" id="btn-close-cek-modal">&times;</button>
-            <h3><span style="color:var(--accent);">🔍</span> Cek Keaslian Nota</h3>
-            <p style="margin-bottom:1.2rem; color:var(--text-gray); font-size:0.9rem;">Masukkan kode order Anda untuk verifikasi</p>
-            <div class="form-group">
-                <input type="text" id="input-kode-order" class="form-control" placeholder="Contoh: ORD20260501161911" style="text-align:center; font-weight:700;">
-            </div>
-            <button class="btn-cek-kode" id="btn-cek-kode">🔎 Cek Kode</button>
-            <div id="hasil-cek-order" style="margin-top:1rem;"></div>
-            <a href="#" id="btn-download-struk" class="btn-download-struk hidden" style="display:none;" download>📥 Unduh Struk PDF</a>
-        </div>
     </div>
 
-    <!-- MODAL INVOICE -->
-    <div class="modal-overlay" id="invoiceModal">
-        <div class="invoice-card-wrapper">
-            <div class="inv-header">
-                <div class="inv-logo-icon">
-                    <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    <div class="container" id="mainApp" style="display: none;">
+        <header class="app-header">
+            <div class="header-title-container">
+                <div class="header-logo">
+                    <i class="fas fa-shopping-cart"></i>
                 </div>
-                <h3>ANEKA DIGITAL</h3>
-                <p>Invoice Confirmation</p>
-            </div>
-
-            <div class="inv-body">
-                <div class="inv-badge">Menunggu Konfirmasi</div>
-                
-                <div class="inv-row">
-                    <div class="inv-label">No. Invoice</div>
-                    <div class="inv-value" id="inv-code" style="color: var(--primary);">#INV-000000</div>
-                </div>
-                <div class="inv-row">
-                    <div class="inv-label">Tanggal</div>
-                    <div class="inv-value" id="inv-date">-</div>
-                </div>
-                <div class="inv-row">
-                    <div class="inv-label">Pemesan</div>
-                    <div class="inv-value" id="inv-name">-</div>
-                </div>
-
-                <div class="inv-product-box">
-                    <div class="inv-product-title" id="inv-product">-</div>
-                    <div class="inv-product-spec" id="inv-specs">-</div>
-                </div>
-
-                <div class="inv-row">
-                    <div class="inv-label">Harga x Qty</div>
-                    <div class="inv-value"><span id="inv-price-unit">0</span> x <span id="inv-qty">0</span></div>
-                </div>
-                <div class="inv-row" id="modal-discount-row" style="display:none;">
-                    <div class="inv-label" style="color: var(--accent);">Diskon</div>
-                    <div class="inv-value" style="color: var(--accent);" id="inv-discount">-</div>
-                </div>
-
-                <div class="inv-total-area">
-                    <div class="inv-total-label">TOTAL TAGIHAN</div>
-                    <div class="inv-total-value" id="inv-total-final">Rp 0</div>
-                </div>
-                
-                <div class="inv-row" style="margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px;">
-                    <div class="inv-label">DP (Sudah Transfer)</div>
-                    <div class="inv-value" id="inv-dp-val" style="color: var(--success);">Rp 0</div>
-                </div>
-                <div class="inv-row">
-                    <div class="inv-label">Sisa Pelunasan</div>
-                    <div class="inv-value" id="inv-sisa-val" style="color: var(--accent); font-weight: 800;">Rp 0</div>
-                </div>
-
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin-top: 15px;">
-                    <span id="inv-notes-preview" style="font-style: italic;">-</span>
+                <div>
+                    <h1 class="app-title" id="storeNameHeader">SUPERMARKET</h1>
+                    <p id="currentDate">Rabu, 24 September 2025</p>
                 </div>
             </div>
+            <div class="header-info">
+                <p>Kasir: <span id="loggedInUser">Admin</span></p>
+                <div id="shiftStatusContainer">
+                    <span id="shiftStatusBadge">Tidak Ada Shift Aktif</span>
+                    <button id="shiftActionBtn" class="btn btn-sm btn-warning">Mulai Shift</button>
+                </div>
+                <p><a href="#" id="logoutBtn" style="color: white; margin-top: 5px; display: inline-block;">Logout</a></p>
+            </div>
+        </header>
 
-            <div class="inv-footer">
-                <button class="btn-action-primary" id="btn-send-wa">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326z"/></svg>
-                    Kirim Bukti ke WhatsApp
+        <main class="app-content">
+            <section class="panel product-panel">
+                <h2 class="panel-title">
+                    <span>Daftar Produk</span>
+                    <span id="productCount">(0 produk)</span>
+                </h2>
+                
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="productSearch" class="search-input" placeholder="Cari produk...">
+                </div>
+                
+                <div class="filter-row">
+                    <div class="filter-chip active" data-category="all">Semua</div>
+                </div>
+                
+                <div class="product-grid" id="productGrid"></div>
+
+                <div id="adminPanel" class="admin-panel">
+                    <h3 class="panel-title">Admin Panel</h3>
+                    <div class="admin-grid">
+                        <button id="addProductBtn" class="btn btn-sm">Tambah Produk</button>
+                        <button id="manageCategoriesBtn" class="btn btn-sm">Kelola Kategori</button>
+                        <button id="manageStockBtn" class="btn btn-sm">Manajemen Stok</button>
+                        <button id="manageSuppliersBtn" class="btn btn-sm">Kelola Suplier</button>
+                        <button id="processReturnBtn" class="btn btn-sm">Proses Retur</button>
+                        <button id="viewReportsBtn" class="btn btn-sm">Laporan</button>
+                        <button id="historyBtn" class="btn btn-sm">Histori Transaksi</button>
+                        <button id="manageMembersBtn" class="btn btn-sm">Kelola Member</button>
+                        <button id="manageStoreInfoBtn" class="btn btn-sm">Info Toko</button>
+                        <button id="controlPanelBtn" class="btn btn-sm btn-warning">Kontrol Panel</button>
+                        <button id="recapReportBtn" class="btn btn-sm btn-success" style="grid-column: 1 / -1;">
+                            <i class="fas fa-file-invoice-dollar"></i> Laporan Shift & Rekapitulasi
+                        </button>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <h4 class="panel-title">Backup & Restore</h4>
+                        <div class="backup-actions">
+                            <button id="backupDataBtn" class="btn btn-sm backup-btn">Backup Data</button>
+                            <label for="restoreFile" class="file-label">
+                                <i class="fas fa-upload"></i> Restore Data
+                            </label>
+                            <input type="file" id="restoreFile" class="file-input" accept=".json,.lksbackup">
+                        </div>
+                        <button id="resetDataBtn" class="btn btn-sm btn-danger mt-2" style="width: 100%;">Reset Data</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel order-panel">
+                <h2 class="panel-title">
+                    <span>Keranjang</span>
+                    <span id="orderCount">(0 item)</span>
+                </h2>
+
+                <div class="form-group mt-2">
+                    <label class="form-label">Member (opsional)</label>
+                    <div class="member-search-container">
+                        <input type="text" id="memberSearchInput" class="form-control" placeholder="Cari nama, ID, atau No. HP...">
+                        <div id="memberSearchResults" class="member-search-results"></div>
+                    </div>
+                </div>
+                
+                <div id="orderItems"></div>
+                
+                <div class="note-input">
+                    <label class="form-label">Catatan Transaksi (opsional)</label>
+                    <textarea id="orderNote" class="form-control" placeholder="Contoh: Titipan, dll."></textarea>
+                </div>
+                
+                <div class="summary-container">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="orderSubtotal">Rp 0</span>
+                    </div>
+                    <div id="itemDiscountRow" class="summary-row" style="display: none; color: var(--success);">
+                        <span>Diskon Item (2%):</span>
+                        <span id="orderItemDiscount">-Rp 0</span>
+                    </div>
+                    <div id="discountRow" class="summary-row" style="display: none;">
+                        <span>Diskon (0%):</span>
+                        <span id="orderDiscount">-Rp 0</span>
+                    </div>
+                     <div id="taxRow" class="summary-row" style="display: none;">
+                        <span>Pajak (0%):</span>
+                        <span id="orderTax">Rp 0</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span>Total:</span>
+                        <span id="orderTotal">Rp 0</span>
+                    </div>
+                </div>
+                
+                <button id="processOrderBtn" class="btn btn-success mt-3">Proses Transaksi</button>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; <span id="currentYear"></span> SUPERMARKET - Hak Cipta oleh Lentera Karya Situbondo</p>
+        </footer>
+    </div>
+
+    <div id="processOrderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Proses Pembayaran</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 0 16px 16px 16px;">
+                <div class="tabs">
+                    <div class="tab active" data-tab="payment"><i class="fas fa-receipt"></i> Pembayaran</div>
+                    <div class="tab" data-tab="details"><i class="fas fa-list-alt"></i> Detail Belanja</div>
+                </div>
+
+                <div class="tab-content active" id="paymentTab">
+                    <div class="payment-total-display">
+                        <p>Total Tagihan</p>
+                        <h3 id="paymentTotal">Rp 0</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Metode Pembayaran</label>
+                        <select id="paymentMethod" class="form-control">
+                            <option value="cash">Tunai</option>
+                            <option value="transfer">Transfer Bank</option>
+                            <option value="ewallet">E-Wallet</option>
+                        </select>
+                    </div>
+                    <div class="quick-cash-buttons" id="quickCashButtons"></div>
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Pembayaran</label>
+                        <input type="number" id="paymentAmount" class="form-control" placeholder="Masukkan jumlah" min="0">
+                    </div>
+                    <div id="changeContainer" style="display: none;">
+                        <div class="summary-row total-row" style="border-top: 1px solid #ddd;">
+                            <span>Kembalian:</span>
+                            <span id="paymentChange">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="detailsTab">
+                    <div class="form-group">
+                        <label class="form-label">Nama Pelanggan</label>
+                        <input type="text" id="customerName" class="form-control" placeholder="Masukkan nama pelanggan">
+                    </div>
+                    <div id="orderSummary"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Batal</button>
+                <button id="completePaymentBtn" class="btn btn-success">
+                    <i class="fas fa-check-circle"></i> Selesaikan Pembayaran
                 </button>
-                <div class="btn-group-secondary">
-                    <button class="btn-action-secondary" id="btn-download-pdf">🖨️ Simpan PDF</button>
-                    <button class="btn-action-secondary" id="btn-close-modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Produk Baru</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="form-group">
+                        <label class="form-label">Nama Produk</label>
+                        <input type="text" id="productName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kategori</label>
+                        <select id="productCategory" class="form-control" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Satuan Produk</label>
+                        <select id="productUnit" class="form-control" required>
+                            <option value="Pcs">Pcs</option>
+                            <option value="Pack">Pack</option>
+                            <option value="Unit">Unit</option>
+                            <option value="Biji">Biji</option>
+                            <option value="Lembar">Lembar</option>
+                            <option value="Dus">Dus</option>
+                            <option value="Karung">Karung</option>
+                            <option value="Kotak">Kotak</option>
+                            <option value="Slop">Slop</option>
+                            <option value="Botol">Botol</option>
+                            <option value="Liter">Liter</option>
+                            <option value="Meter">Meter</option>
+                            <option value="Centi">Centi</option>
+                            <option value="Kg">Kg</option>
+                            <option value="Gram">Gram</option>
+                            <option value="Ons">Ons</option>
+                            <option value="Paket">Paket</option>
+                            <option value="Set">Set</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Harga Pokok (Kulak)</label>
+                        <input type="number" id="productCostPrice" class="form-control" required min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Harga Jual</label>
+                        <input type="number" id="productPrice" class="form-control" required min="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stok Awal</label>
+                        <input type="number" id="productStock" class="form-control" required min="0">
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="productHasItemDiscount">
+                        <label class="form-check-label" for="productHasItemDiscount"><b>Aktifkan Diskon 2% untuk item ini</b> (otomatis)</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Gambar (URL)</label>
+                        <input type="text" id="productImage" class="form-control" placeholder="Masukkan URL gambar">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Deskripsi (opsional)</label>
+                        <textarea id="productDescription" class="form-control"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Batal</button>
+                <button class="btn btn-success" id="saveProductBtn">Simpan</button>
+            </div>
+        </div>
+    </div>
+    <div id="manageCategoriesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Kelola Kategori</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="categoriesList"></div>
+                <div class="form-group mt-3 d-flex gap-2">
+                    <input type="text" id="newCategoryName" class="form-control" placeholder="Nama kategori baru" required>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-success" id="addCategoryBtn">Tambah Kategori</button>
+            </div>
+        </div>
+    </div>
+    <div id="reportsModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Laporan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 0 16px 16px 16px;">
+                 <div class="tabs">
+                    <div class="tab active" data-tab="salesReport"><i class="fas fa-chart-line"></i> Laporan Penjualan</div>
+                </div>
+                
+                <div class="tab-content active" id="salesReportTab">
+                    <div class="form-group mt-3">
+                        <label class="form-label">Periode</label>
+                        <select id="reportPeriod" class="form-control">
+                            <option value="today">Hari Ini</option>
+                            <option value="week">Minggu Ini</option>
+                            <option value="month">Bulan Ini</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <div id="customDateRange" style="display: none;">
+                        <div class="form-group"><label class="form-label">Dari Tanggal</label><input type="date" id="reportStartDate" class="form-control"></div>
+                        <div class="form-group"><label class="form-label">Sampai Tanggal</label><input type="date" id="reportEndDate" class="form-control"></div>
+                    </div>
+                    <div id="reportResults" class="mt-3 printable-area"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-success" id="generateReportBtn">Generate Laporan</button>
+            </div>
+        </div>
+    </div>
+    <div id="historyModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header"><h3 class="modal-title">Histori Transaksi</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <div class="search-container"><i class="fas fa-search"></i><input type="text" id="historySearchInput" class="search-input" placeholder="Cari berdasarkan Kode Transaksi..."></div>
+                <div id="historyResultsContainer" style="max-height: 50vh; overflow-y: auto;">
+                    <div id="historyResults" class="printable-area"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+            </div>
+        </div>
+    </div>
+    <div id="manageMembersModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Kelola Member</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <button id="showAddMemberFormBtn" class="btn btn-sm mb-3">Tambah Member Baru</button>
+                <div class="search-container mb-3"><i class="fas fa-search"></i><input type="text" id="manageMemberSearchInput" class="search-input" placeholder="Cari member (nama, ID, No. HP)..."></div>
+                <div class="member-form" id="memberFormContainer" style="display:none;">
+                    <h4 id="memberFormTitle">Tambah Member Baru</h4>
+                    <form id="memberForm">
+                        <input type="hidden" id="memberIdInput">
+                        <div class="form-group"><label class="form-label">Nama Member</label><input type="text" id="memberName" class="form-control" placeholder="Masukkan nama member" required></div>
+                        <div class="form-group"><label class="form-label">Nomor Telepon (WhatsApp)</label><input type="tel" id="memberPhone" class="form-control" placeholder="e.g. 08123456789" required></div>
+                        <div class="form-group"><label class="form-label">Alamat</label><textarea id="memberAddress" class="form-control" placeholder="Masukkan alamat"></textarea></div>
+                         <div id="memberAdminFields" style="display: none;">
+                            <div class="form-group"><label class="form-label">Total Transaksi</label><input type="number" id="memberTransactions" class="form-control" disabled></div>
+                            <div class="form-group"><label class="form-label">Total Belanja</label><input type="text" id="memberTotalSpent" class="form-control" disabled></div>
+                        </div>
+                        <div class="d-flex gap-2">
+                             <button type="button" class="btn btn-warning" id="cancelMemberFormBtn">Batal</button>
+                             <button type="submit" class="btn btn-success" id="saveMemberBtn">Simpan Member</button>
+                        </div>
+                    </form>
+                    <hr class="mt-3 mb-3">
+                </div>
+                <div id="membersList"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-danger" id="deleteMemberBtn" style="display: none;">Hapus Member</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="manageStoreInfoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Kelola Info Toko</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <form id="storeInfoForm">
+                    <div class="form-group">
+                        <label class="form-label">Nama Toko (Brand Pusat)</label>
+                        <input type="text" id="storeName" class="form-control" required disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Mitra (Gerai Cabang)</label>
+                        <input type="text" id="partnerName" class="form-control" placeholder="Masukkan nama gerai cabang">
+                    </div>
+                    <div class="form-group"><label class="form-label">Alamat Toko</label><textarea id="storeAddress" class="form-control" required></textarea></div>
+                    <div class="form-group"><label class="form-label">Nomor Telepon/WA</label><input type="text" id="storePhone" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">Email</label><input type="email" id="storeEmail" class="form-control" placeholder="Contoh: toko@email.com"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Batal</button>
+                <button class="btn btn-success" id="saveStoreInfoBtn">Simpan</button>
+            </div>
+        </div>
+    </div>
+    <div id="controlPanelModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Kontrol Panel</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" style="padding: 0 16px 16px 16px;">
+                <div class="tabs">
+                    <div class="tab active" data-tab="users"><i class="fas fa-users-cog"></i> Pengguna</div>
+                    <div class="tab" data-tab="security"><i class="fas fa-shield-alt"></i> Keamanan & Pajak</div>
+                </div>
+                <div class="tab-content active" id="usersTab">
+                    <h4 class="mt-3">Manajemen Pengguna</h4>
+                    <button id="manageRolesBtn" class="btn btn-sm btn-info mt-2 mb-3">Kelola Hak Akses</button>
+                    <button id="showAddUserFormBtn" class="btn btn-sm mt-2 mb-3">Tambah Pengguna Baru</button>
+                    <div id="userFormContainer" style="display:none; background: #f9f9f9; padding: 12px; border-radius: var(--rounded-sm); margin-bottom: 16px;">
+                        <h5 id="userFormTitle">Tambah Pengguna</h5>
+                        <form id="userForm">
+                            <input type="hidden" id="userIdInput">
+                            <div class="form-group"><label class="form-label">Nama Lengkap</label><input type="text" id="userName" class="form-control" required></div>
+                            <div class="form-group"><label class="form-label">Username</label><input type="text" id="userUsername" class="form-control" required></div>
+                            <div class="form-group"><label class="form-label">Password</label><input type="password" id="userPassword" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah"></div>
+                            <div class="form-group"><label class="form-label">Hak Akses (Role)</label>
+                                <select id="userRole" class="form-control">
+                                    <option value="cashier">Kasir</option>
+                                    <option value="supervisor">Supervisor</option>
+                                    <option value="store_manager">Kepala Toko</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="d-flex gap-2"><button type="button" class="btn btn-warning" id="cancelUserFormBtn">Batal</button><button type="submit" class="btn btn-success" id="saveUserBtn">Simpan</button></div>
+                        </form>
+                    </div>
+                    <div id="usersList"></div>
+                </div>
+                <div class="tab-content" id="securityTab">
+                    <h4 class="mt-3">Pengaturan Keamanan</h4>
+                    <form id="itemSecurityForm" class="mt-2"><div class="form-group"><label class="form-label">Password Keamanan Edit/Hapus Item</label><input type="password" id="itemSecurityCode" class="form-control" required></div><button type="submit" class="btn btn-sm btn-info">Ubah Password</button></form>
+                    <hr class="mt-3 mb-3">
+                    <form id="panelSecurityForm" class="mt-2"><div class="form-group"><label class="form-label">Password Keamanan Kontrol Panel</label><input type="password" id="panelSecurityCode" class="form-control" required></div><button type="submit" class="btn btn-sm btn-info">Ubah Password</button></form>
+                    <hr class="mt-3 mb-3">
+                    <h4 class="mt-3">Pengaturan Diskon & Pajak</h4>
+                    <form id="taxDiscountSettingsForm" class="mt-2">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="isMemberDiscountEnabled">
+                            <label class="form-check-label" for="isMemberDiscountEnabled"><b>Aktifkan Diskon Member</b></label>
+                        </div>
+                        <div id="memberDiscountSettingsContainer" style="display: none; padding-left: 15px; border-left: 3px solid var(--light);">
+                            <div class="form-group">
+                                <label class="form-label">Diskon Member (%)</label>
+                                <input type="number" id="memberDiscount" class="form-control" min="0" max="100" value="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Berlaku Belanja Di Atas</label>
+                                <select id="memberDiscountMinPurchase" class="form-control">
+                                    <option value="0">Tanpa Minimum</option>
+                                    <option value="50000">Rp 50.000</option>
+                                    <option value="100000">Rp 100.000</option>
+                                    <option value="250000">Rp 250.000</option>
+                                    <option value="500000">Rp 500.000</option>
+                                    <option value="1000000">Rp 1.000.000</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="form-label">Diskon Pelanggan Biasa (%)</label><input type="number" id="nonMemberDiscount" class="form-control" min="0" max="100" value="0" required></div>
+                        <div class="form-group"><label class="form-label">Pajak / PPN (%)</label><input type="number" id="taxPercent" class="form-control" min="0" max="100" value="0" required></div>
+                        <button type="submit" class="btn btn-sm btn-success">Simpan Pengaturan</button>
+                    </form>
+                    <hr class="mt-3 mb-3">
+                    <h4 class="mt-3">Ubah Password Login Anda</h4>
+                    <form id="changeOwnPasswordForm" class="mt-2">
+                        <div class="form-group"><label class="form-label">Password Saat Ini</label><input type="password" id="currentPassword" class="form-control" required></div>
+                        <div class="form-group"><label class="form-label">Password Baru</label><input type="password" id="newPassword" class="form-control" required></div>
+                        <button type="submit" class="btn btn-sm btn-success">Simpan Password Baru</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button></div>
+        </div>
+    </div>
+    <div id="roleManagementModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header"><h3 class="modal-title">Manajemen Hak Akses</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" style="padding: 0 16px 16px 16px;">
+                <div class="tabs" id="roleTabsContainer"></div>
+                <div id="rolePermissionsContainer" class="mt-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-success" id="saveRolePermissionsBtn">Simpan Hak Akses</button>
+            </div>
+        </div>
+    </div>
+    <div id="passwordPromptModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header"><h3 class="modal-title" id="passwordPromptTitle">Masukkan Password Keamanan</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body"><form id="passwordPromptForm"><div class="form-group"><label class="form-label" id="passwordPromptMessage">Untuk melanjutkan, masukkan password.</label><input type="password" id="passwordPromptInput" class="form-control" required></div></form></div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Batal</button><button class="btn btn-success" id="passwordPromptSubmit">Lanjutkan</button></div>
+        </div>
+    </div>
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header"><h3 class="modal-title" id="confirmTitle">Konfirmasi</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body"><p id="confirmMessage">Apakah Anda yakin?</p></div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn" id="confirmCancel">Batal</button><button class="btn" id="confirmAction">Lanjutkan</button></div>
+        </div>
+    </div>
+    <div id="receiptModal" class="modal">
+        <div class="modal-content" style="max-width: 350px;">
+            <div class="modal-header no-print"><h3 class="modal-title">Struk Pembayaran</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" id="receiptModalBody" style="background: #eee;"></div>
+            <div class="modal-footer no-print">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-info" id="downloadReceiptPdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                <button class="btn btn-success" id="printReceiptBtn"><i class="fas fa-print"></i> Cetak</button>
+            </div>
+        </div>
+    </div>
+    <div id="ktaModal" class="modal">
+        <div class="modal-content" style="max-width: 380px;">
+             <div class="modal-header"><h3 class="modal-title">Kartu Tanda Anggota</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" id="ktaModalBody">
+                <div id="ktaCard">
+                    <div class="kta-header"><div class="kta-store-info"><h3 id="ktaStoreName">NAMA TOKO</h3><p id="ktaStoreContact">Alamat, No. WA, Email</p></div></div>
+                    <div class="kta-body">
+                        <h2 id="ktaMemberName">Nama Member</h2>
+                        <p id="ktaMemberId">ID: M250924103000</p>
+                        <div class="kta-qrcode" id="ktaQrcodeImg"></div>
+                    </div>
+                    <div class="kta-footer">Kartu ini adalah bukti keanggotaan resmi.</div>
+                </div>
+            </div>
+            <div class="modal-footer no-print"><button class="btn btn-warning modal-close-btn">Tutup</button><button class="btn btn-info" id="downloadKtaPdfBtn"><i class="fas fa-file-pdf"></i> Unduh PDF</button></div>
+        </div>
+    </div>
+
+    <div id="stockManagementModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header"><h3 class="modal-title">Manajemen Stok</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body" style="padding: 0 16px 16px 16px;">
+                <div class="tabs">
+                    <div class="tab active" data-tab="stockIn"><i class="fas fa-plus-circle"></i> Stok Masuk</div>
+                    <div class="tab" data-tab="stockOpname"><i class="fas fa-clipboard-check"></i> Stok Opname</div>
+                    <div class="tab" data-tab="stockHistory"><i class="fas fa-history"></i> Riwayat Stok</div>
+                </div>
+
+                <div class="tab-content active" id="stockInTab">
+                    <h4 class="mt-3">Formulir Stok Masuk</h4>
+                    <form id="stockInForm">
+                        <div class="form-group">
+                            <label class="form-label">Cari Produk</label>
+                            <input type="text" id="stockInProductSearch" class="form-control" placeholder="Ketik untuk mencari produk...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Pilih Produk</label>
+                            <select id="stockInProduct" class="form-control" required size="5" onchange="loadProductStockDetails()"></select>
+                        </div>
+            
+                        <div id="stockDetailsContainer" style="display: none; background: #f9f9f9; padding: 12px; border-radius: var(--rounded-sm); margin-bottom: 16px;">
+                            <h5 style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Detail Produk Saat Ini</h5>
+                            <div class="d-flex gap-2" style="justify-content: space-between;">
+                                <div class="form-group mb-0" style="flex: 1;">
+                                    <label class="form-label" style="font-size: 0.8rem;">Stok Sistem</label>
+                                    <input type="text" id="stockInCurrentStock" class="form-control" disabled>
+                                </div>
+                                <div class="form-group mb-0" style="flex: 2;">
+                                    <label class="form-label" style="font-size: 0.8rem;">Harga Pokok (Lama)</label>
+                                    <input type="text" id="stockInOldCost" class="form-control" disabled>
+                                </div>
+                                <div class="form-group mb-0" style="flex: 2;">
+                                    <label class="form-label" style="font-size: 0.8rem;">Harga Jual (Lama)</label>
+                                    <input type="text" id="stockInOldPrice" class="form-control" disabled>
+                                </div>
+                                </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="form-group" style="flex: 1;">
+                                <label class="form-label">Jumlah Masuk</label>
+                                <input type="number" id="stockInQuantity" class="form-control" min="1" required>
+                            </div>
+                            <div class="form-group" style="flex: 2;">
+                                <label class="form-label">Harga Pokok Baru (per item)</label>
+                                <input type="number" id="stockInNewCost" class="form-control" min="0" required placeholder="Harga kulak baru">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Harga Jual Baru (Otomatis)</label>
+                            <input type="number" id="stockInNewPrice" class="form-control" min="0" placeholder="Kosongkan jika harga jual tidak berubah">
+                        </div>
+            
+                        <div class="form-group"><label class="form-label">Sumber</label><select id="stockInSupplier" class="form-control" required><option value="pembelian_mandiri">Pembelian Mandiri (Kulak)</option></select></div>
+                        <div class="form-group"><label class="form-label">Catatan (opsional)</label><textarea id="stockInNotes" class="form-control" placeholder="Contoh: No. faktur, dll."></textarea></div>
+                        <button type="submit" class="btn btn-success">Simpan Stok Masuk</button>
+                    </form>
+                    </div>
+
+                <div class="tab-content" id="stockOpnameTab">
+                    <h4 class="mt-3">Penyesuaian Stok (Stok Opname)</h4>
+                     <div class="search-container mb-3"><i class="fas fa-search"></i><input type="text" id="stockOpnameSearch" class="search-input" placeholder="Cari produk untuk opname..."></div>
+                    <div id="stockOpnamePrintArea" class="printable-area">
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead><tr><th>Produk</th><th>Harga Pokok</th><th>Stok Sistem</th><th>Stok Fisik</th><th>Selisih</th><th>Nilai Kerugian</th><th>Aksi</th></tr></thead>
+                                <tbody id="stockOpnameList"></tbody>
+                            </table>
+                        </div>
+                        <div id="stockOpnameSummary" class="mt-3" style="display: none; padding: 10px; border-top: 1px solid #ddd;"></div>
+                    </div>
+                    <button id="generateLossReportBtn" class="btn btn-sm btn-warning mt-2">Generate Laporan Kerugian</button>
+                </div>
+                
+                <div class="tab-content" id="stockHistoryTab">
+                     <h4 class="mt-3">Riwayat Pergerakan Stok</h4>
+                     <div id="stockHistoryPrintArea" class="printable-area">
+                        <div class="search-container mb-3"><i class="fas fa-search"></i><input type="text" id="stockHistorySearch" class="search-input" placeholder="Cari nama produk, kode transaksi, atau 'retur'..."></div>
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead><tr><th>Tanggal</th><th>Produk</th><th>Perubahan</th><th>Tipe</th><th>Sisa Stok</th><th>Catatan</th></tr></thead>
+                                <tbody id="stockHistoryList"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-info" id="downloadStockReportBtn" style="display: none;"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                <button class="btn btn-primary" id="printStockReportBtn" style="display: none;"><i class="fas fa-print"></i> Cetak</button>
+            </div>
+        </div>
+    </div>
+    <div id="manageSuppliersModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Kelola Suplier</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <button id="showAddSupplierFormBtn" class="btn btn-sm mb-3">Tambah Suplier Baru</button>
+                <div id="supplierFormContainer" style="display:none; margin-bottom: 16px;">
+                    <h4 id="supplierFormTitle">Tambah Suplier Baru</h4>
+                    <form id="supplierForm">
+                        <input type="hidden" id="supplierIdInput">
+                        <div class="form-group"><label class="form-label">Nama Suplier</label><input type="text" id="supplierName" class="form-control" required></div>
+                        <div class="form-group"><label class="form-label">Kontak Person</label><input type="text" id="supplierContactPerson" class="form-control"></div>
+                        <div class="form-group"><label class="form-label">Nomor Telepon (WA)</label><input type="tel" id="supplierPhone" class="form-control" required></div>
+                        <div class="d-flex gap-2"><button type="button" id="cancelSupplierFormBtn" class="btn btn-warning">Batal</button><button type="submit" class="btn btn-success">Simpan</button></div>
+                    </form>
+                </div>
+                <div id="suppliersList"></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-warning modal-close-btn">Tutup</button></div>
+        </div>
+    </div>
+    <div id="processReturnModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Proses Retur Barang</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <form id="findOrderForReturnForm">
+                    <div class="form-group">
+                        <label class="form-label">Masukkan Kode Transaksi</label>
+                        <div class="d-flex gap-2">
+                            <input type="text" id="returnOrderIdInput" class="form-control" placeholder="Contoh: ORD2025..." required>
+                            <button type="submit" class="btn btn-info" style="width: auto;">Cari</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="returnOrderDetails" class="mt-3" style="display:none;">
+                    <h4>Detail Transaksi</h4>
+                    <p><strong>Kode:</strong> <span id="returnOrderId"></span></p>
+                    <p><strong>Pelanggan:</strong> <span id="returnCustomerName"></span></p>
+                    <hr>
+                    <div id="returnItemsList"></div>
+                    <div class="form-group mt-3">
+                        <label class="form-label">Alasan Retur</label>
+                        <textarea id="returnReason" class="form-control" placeholder="Contoh: Barang rusak, salah barang" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button id="completeReturnBtn" class="btn btn-success" style="display:none;">Proses Retur</button>
             </div>
         </div>
     </div>
 
-    <div class="footer-wave">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"></path>
-        </svg>
-    </div>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>
-                        <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="grad1_f" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#0A4D98;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#06356b;stop-opacity:1" />
-                                </linearGradient>
-                                <linearGradient id="grad2_f" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#FF7F00;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#ff5722;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <path d="M20 2L36 11V29L20 38L4 29V11L20 2Z" fill="white"/>
-                            <path d="M20 8L31 14.5V25.5L20 32L9 25.5V14.5L20 8Z" fill="#022a5c" fill-opacity="1"/>
-                            <path d="M20 20L32 13V27L20 34V20Z" fill="url(#grad2_f)"/>
-                            <circle cx="20" cy="20" r="3" fill="#022a5c"/>
-                            <path d="M20 20L10 14" stroke="#022a5c" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        Aneka<span style="color: var(--accent);">Digital</span>
-                    </h3>
-                    <p style="opacity:0.8; line-height:1.6; margin-top: 1rem;">Solusi terintegrasi: Jasa Pembuatan Website, Digital Printing Modern, & Marketplace Produk Digital. Cepat, berkualitas, dan transparan.</p>
-                </div>
-                <div class="footer-nav">
-                    <h4>Navigasi</h4>
-                    <ul class="footer-links">
-                        <li><a href="#hero">→ Beranda</a></li>
-                        <li><a href="#website-service" style="color:var(--accent);">→ Jasa Website</a></li>
-                        <li><a href="#katalog">→ Katalog Produk</a></li>
-                        <li><a href="www.anekamarket.my.id/beliaplikasi" target="_blank">→ Aplikasi Gratis</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h4>Kontak Kami</h4>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        </div>
-                        <div class="contact-text">
-                            <div class="contact-title">Alamat Studio</div>
-                            <div class="contact-desc">Jl. Pb. Sudirman, Panarukan, Situbondo, Jawa Timur</div>
-                        </div>
+    <div id="startShiftModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header"><h3 class="modal-title">Mulai Shift Kerja</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <form id="startShiftForm">
+                    <div class="form-group">
+                        <label class="form-label">Uang Kas Awal (Modal)</label>
+                        <input type="number" id="startCash" class="form-control" placeholder="Masukkan jumlah uang kas" required min="0" value="0">
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.12 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-                        </div>
-                        <div class="contact-text">
-                            <a href="https://wa.me/6285647709114" target="_blank" style="color:inherit; text-decoration:none;">
-                                <div class="contact-title">WhatsApp Admin</div>
-                                <div class="contact-desc">+62 856-4770-9114</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
-            <div style="padding-top: 2rem; text-align: center; font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 1rem; color: #94a3b8;">
-                <div style="font-weight: 500; margin-bottom: 5px;">© 2025 <strong>Aneka Digital</strong>. All Rights Reserved.</div>
-                <div>Hak Cipta & Pemilik Sistem adalah <a href="https://www.aplikasiusaha.com" target="_blank" style="color: var(--accent); text-decoration:none;">www.aplikasiusaha.com</a></div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Batal</button>
+                <button class="btn btn-success" id="confirmStartShiftBtn">Mulai Shift</button>
             </div>
         </div>
-    </footer>
+    </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        (function() {
-            // ==================== PROTEKSI ANTI KLIK KANAN & INSPECT ====================
-            document.addEventListener('contextmenu', e => e.preventDefault());
-            document.onkeydown = function(e) {
-                if(e.keyCode == 123) return false;
-                if(e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
-                if(e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
-                if(e.ctrlKey && e.keyCode == 85) return false;
-                if(e.ctrlKey && e.keyCode == 83) return false;
-                if(e.ctrlKey && e.shiftKey && e.keyCode == 67) return false;
-                return true;
-            };
+    <div id="endShiftModal" class="modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header"><h3 class="modal-title">Tutup Shift Kerja</h3><button class="modal-close">&times;</button></div>
+            <div class="modal-body">
+                <form id="endShiftForm">
+                    <div class="form-group">
+                        <label class="form-label">Uang Kas Akhir (di Laci)</label>
+                        <input type="number" id="endCash" class="form-control" placeholder="Hitung dan masukkan total uang" required min="0">
+                    </div>
+                </form>
+                <div id="shiftSummary" class="summary-container" style="display: none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning modal-close-btn">Batal</button>
+                <button class="btn btn-success" id="confirmEndShiftBtn">Konfirmasi Tutup Shift</button>
+            </div>
+        </div>
+    </div>
 
-            console.log('🔒 Halaman dilindungi. Source code tidak dapat diakses melalui klik kanan / inspect.');
+    <div id="recapReportModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header no-print">
+                <h3 class="modal-title">Laporan Shift & Rekapitulasi</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="recap-filter-container no-print">
+                    <div class="form-group mb-0">
+                        <label class="form-label">Periode Laporan</label>
+                        <select id="recapReportPeriod" class="form-control">
+                            <option value="today">Hari Ini</option>
+                            <option value="this_week">Minggu Ini</option>
+                            <option value="this_month">Bulan Ini</option>
+                            <option value="this_year">Tahun Ini</option>
+                            <option value="custom">Pilih Tanggal</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-0" id="recapCustomDateContainer" style="display: none;">
+                         <label class="form-label">Dari Tanggal</label>
+                         <input type="date" id="recapStartDate" class="form-control">
+                    </div>
+                    <div class="form-group mb-0" id="recapCustomDateContainer2" style="display: none;">
+                         <label class="form-label">Sampai Tanggal</label>
+                         <input type="date" id="recapEndDate" class="form-control">
+                    </div>
+                    <button id="generateRecapReportBtn" class="btn btn-primary">Generate</button>
+                </div>
+                
+                <div class="tabs no-print" style="margin-top: 16px;">
+                    <div class="tab active" data-tab="shiftRecap"><i class="fas fa-user-clock"></i> Laporan Harian (Shift)</div>
+                    <div class="tab" data-tab="profitLossRecap"><i class="fas fa-chart-pie"></i> Laporan Laba Rugi</div>
+                    <div class="tab" data-tab="inventoryRecap"><i class="fas fa-boxes"></i> Laporan Inventaris</div>
+                </div>
 
-            // ==================== MAIN APPLICATION (main.js) ====================
-            AOS.init({ duration: 800, once: true, offset: 100 });
+                <div id="recapReportResults" class="mt-3 recap-printable-area">
+                    <div class="empty-state">
+                        <i class="fas fa-file-alt"></i>
+                        <p>Pilih periode dan generate laporan untuk melihat data.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-print">
+                <button class="btn btn-warning modal-close-btn">Tutup</button>
+                <button class="btn btn-info" id="downloadRecapPdfBtn" style="display: none;"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                <button class="btn btn-success" id="exportRecapExcelBtn" style="display: none;"><i class="fas fa-file-excel"></i> Unduh Excel</button>
+                <button class="btn btn-primary" id="printRecapBtn" style="display: none;"><i class="fas fa-print"></i> Cetak</button>
+           </div>
+            </div>
+        </div>
 
-            const header = document.getElementById('main-header');
-            const hamburger = document.getElementById('hamburger');
-            const navMenu = document.getElementById('nav-menu');
-            const productSelect = document.getElementById('jenis-produk');
-            const eventSection = document.getElementById('event-details-section');
-            const btnPesanWeb = document.getElementById('btn-pesan-web');
-            const productButtons = document.querySelectorAll('.product-card-btn');
-            const webDomainSelect = document.getElementById('web-domain-type');
-            const webInputName = document.getElementById('web-input-name');
-            const btnCheckDomain = document.getElementById('btn-check-domain');
-            const undanganTipe = document.getElementById('undangan-tipe');
-            const undanganHalaman = document.getElementById('undangan-halaman');
-            const undanganTekstur = document.getElementById('undangan-tekstur');
-            const fotoUkuran = document.getElementById('foto-ukuran');
-            const fotoKertas = document.getElementById('foto-kertas');
-            const fotoEdit = document.getElementById('foto-edit');
-            const idcardTipe = document.getElementById('idcard-tipe');
-            const cdTipe = document.getElementById('cd-tipe');
-            const jenisAcara = document.getElementById('jenis-acara');
-            const btnGps = document.getElementById('btn-gps');
-            const btnProcess = document.getElementById('btn-process');
-            const modal = document.getElementById('invoiceModal');
-            const btnCloseModal = document.getElementById('btn-close-modal');
-            const btnSendWa = document.getElementById('btn-send-wa');
-            const btnDownloadPdf = document.getElementById('btn-download-pdf');
-            const qtyInput = document.getElementById('qty');
-            const previewInvoiceCode = document.getElementById('preview-invoice-code');
-            const domainStatusMsg = document.getElementById('domain-status-msg');
-            const webFinalLink = document.getElementById('web-final-link');
-            const urlPrefix = document.getElementById('url-prefix');
-            const urlSuffix = document.getElementById('url-suffix');
-
-            let currentInvoiceCode = 'INV-' + Math.floor(100000 + Math.random() * 900000);
-            previewInvoiceCode.innerText = currentInvoiceCode;
-
-            const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-
-            function hideAllSubForms() {
-                document.querySelectorAll('.sub-option-container').forEach(el => el.classList.add('hidden'));
-            }
-
-            function handleProductChange() {
-                hideAllSubForms();
-                const val = productSelect.value;
-                if (val === 'undangan') {
-                    document.getElementById('form-undangan').classList.remove('hidden');
-                    eventSection.classList.remove('hidden');
-                } else if (val === 'cetak-foto') {
-                    document.getElementById('form-foto').classList.remove('hidden');
-                    eventSection.classList.add('hidden');
-                } else if (val === 'id-card') {
-                    document.getElementById('form-idcard').classList.remove('hidden');
-                    eventSection.classList.add('hidden');
-                } else if (val === 'cetak-cd') {
-                    document.getElementById('form-cd').classList.remove('hidden');
-                    eventSection.classList.add('hidden');
-                } else if (val === 'website') {
-                    document.getElementById('form-website').classList.remove('hidden');
-                    eventSection.classList.add('hidden');
-                    qtyInput.value = 1;
-                    handleWebDomainUI();
-                } else {
-                    document.getElementById('form-lainnya').classList.remove('hidden');
-                    eventSection.classList.add('hidden');
-                }
-                updateCalculator();
-            }
-
-            function handleEventChange() {
-                const eventType = jenisAcara.value;
-                document.querySelectorAll('.event-fields').forEach(el => el.classList.add('hidden'));
-                if (eventType === 'Pernikahan') document.getElementById('fields-pernikahan').classList.remove('hidden');
-                else if (eventType === 'Khitanan') document.getElementById('fields-khitan').classList.remove('hidden');
-                else document.getElementById('fields-umum').classList.remove('hidden');
-            }
-
-            function handleWebDomainUI() {
-                const selectedOption = webDomainSelect.options[webDomainSelect.selectedIndex];
-                const ext = selectedOption.getAttribute('data-ext');
-                if (ext === 'subdomain') {
-                    urlPrefix.textContent = 'www.aplikasiusaha.com/';
-                    urlSuffix.classList.add('hidden');
-                    urlSuffix.textContent = '';
-                } else {
-                    urlPrefix.textContent = 'www.';
-                    urlSuffix.classList.remove('hidden');
-                    urlSuffix.textContent = ext;
-                }
-                updateUrlPreview();
-                updateCalculator();
-                resetDomainStatus();
-            }
-
-            function updateUrlPreview() {
-                const nameVal = webInputName.value.trim().toLowerCase();
-                const prefix = urlPrefix.textContent;
-                const suffix = urlSuffix.textContent;
-                webFinalLink.value = nameVal ? prefix + nameVal + suffix : '';
-            }
-
-            function resetDomainStatus() {
-                webInputName.classList.remove('is-valid', 'is-invalid');
-                domainStatusMsg.className = 'domain-msg hidden';
-                domainStatusMsg.innerHTML = '';
-                btnCheckDomain.innerHTML = '🔍 Cek Ketersediaan';
-                btnCheckDomain.disabled = false;
-                updateUrlPreview();
-            }
-
-            function showDomainError(input, msgContainer, btn, finalUrl, customMessage = null) {
-                input.classList.add('is-invalid');
-                input.classList.remove('is-valid');
-                msgContainer.classList.remove('hidden', 'success', 'info');
-                msgContainer.classList.add('domain-msg', 'error');
-                const message = customMessage || `Mohon maaf, domain <b>${finalUrl}</b> tidak tersedia atau sudah digunakan. Silakan pilih variasi nama lain.`;
-                msgContainer.innerHTML = `
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <div><strong>Tidak Tersedia</strong><br>${message}</div>`;
-                btn.innerHTML = '❌ Ganti Nama';
-                btn.disabled = false;
-            }
-
-            function showDomainSuccess(input, msgContainer, btn, finalUrl) {
-                input.classList.add('is-valid');
-                input.classList.remove('is-invalid');
-                webFinalLink.style.backgroundColor = '#ecfdf5';
-                webFinalLink.style.color = '#047857';
-                webFinalLink.style.borderColor = '#10b981';
-                msgContainer.classList.remove('hidden', 'error', 'info');
-                msgContainer.classList.add('domain-msg', 'success');
-                msgContainer.innerHTML = `
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <div><strong>Domain Tersedia!</strong><br>Kabar baik! Domain <b>${finalUrl}</b> tersedia. Segera klaim dan selesaikan pemesanan sekarang sebelum diambil orang lain!</div>`;
-                btn.innerHTML = '✅ Terverifikasi';
-            }
-
-            const usedSubdomains = ['admin','www','mail','ftp','cpanel','webmail','blog','shop','store','support','help','api','dev','test','staging','demo','app','mobile','login','signin','register','account','user','dashboard','panel','aneka','anekadigital','anekamarket','aplikasiusaha','jasa','service','info','contact','about','team','career','jobs','news','blog','forum','community','chat','support','helpdesk','docs','wiki','files','download','upload','media','image','video','audio','cdn','static','assets','img','js','css','font','lib','backup','archive','old','legacy','temp','tmp','cache'];
-
-            async function checkDomainAvailability() {
-                const rawName = webInputName.value.trim().toLowerCase();
-                const btn = btnCheckDomain;
-                const msgContainer = domainStatusMsg;
-                const finalUrl = webFinalLink.value;
-                const selectedOption = webDomainSelect.options[webDomainSelect.selectedIndex];
-                const isSubdomain = selectedOption.getAttribute('data-ext') === 'subdomain';
-                const tldExt = selectedOption.getAttribute('data-ext');
-                if (rawName === '' || rawName.length < 3) { alert('Mohon masukkan nama website minimal 3 karakter.'); webInputName.focus(); return; }
-                if (!/^[a-z0-9-]+$/.test(rawName)) {
-                    showDomainError(webInputName, msgContainer, btn, finalUrl, 'Nama domain hanya boleh mengandung huruf kecil, angka, dan tanda hubung (-). Tanpa spasi.');
-                    return;
-                }
-                btn.innerHTML = '⏳ Mengecek Server...';
-                btn.disabled = true;
-                const takenDomains = ['google','facebook','youtube','twitter','instagram','tiktok','linkedin','whatsapp','amazon','apple','microsoft','netflix','spotify','zoom','gojek','grab','shopee','tokopedia','bukalapak','lazada','blibli','traveloka','tiket','dana','ovo','gopay','kompas','detik','tribun','cnn','bca','bri','mandiri','bni','telkomsel','indosat','admin','administrator','root','support','info','contact','help','api','dev','test','demo','beta','staging','mail','webmail','server','system','cpanel','plesk','indonesia','jakarta','surabaya','bandung','bali','jawa','news','berita','anekadigital','anekamarket','aplikasiusaha','jember','situbondo','login','signin','shop','store','market','online','digital','tech','net','com','org','gov','edu','bank','money','crypto','bitcoin','game','play','movie','music','video'];
-                if (takenDomains.includes(rawName)) {
-                    setTimeout(() => showDomainError(webInputName, msgContainer, btn, finalUrl, 'Nama ini termasuk "Premium" atau "Reserved Brand" yang tidak dapat digunakan.'), 600);
-                    return;
-                }
-                if (isSubdomain) {
-                    setTimeout(() => {
-                        if (usedSubdomains.includes(rawName)) showDomainError(webInputName, msgContainer, btn, finalUrl, 'Subdomain ini sudah digunakan di sistem kami. Silakan pilih nama lain.');
-                        else showDomainSuccess(webInputName, msgContainer, btn, finalUrl);
-                    }, 800);
-                } else {
-                    try {
-                        const checkUrlA = `https://dns.google/resolve?name=${rawName}${tldExt}&type=A`;
-                        const responseA = await fetch(checkUrlA); const dataA = await responseA.json();
-                        const checkUrlNS = `https://dns.google/resolve?name=${rawName}${tldExt}&type=NS`;
-                        const responseNS = await fetch(checkUrlNS); const dataNS = await responseNS.json();
-                        if ((dataA.Status === 0 && dataA.Answer) || (dataNS.Status === 0 && dataNS.Answer)) {
-                            showDomainError(webInputName, msgContainer, btn, finalUrl, `Domain <b>${rawName}${tldExt}</b> sudah terdaftar dan aktif di internet. Milik orang lain.`);
-                        } else showDomainSuccess(webInputName, msgContainer, btn, finalUrl);
-                    } catch(e) { showDomainSuccess(webInputName, msgContainer, btn, finalUrl); }
-                }
-            }
-
-            function updateCalculator() {
-                const produk = productSelect.value;
-                const qty = parseInt(qtyInput.value) || 0;
-                let unitPrice = 0; let specText = '';
-                if (produk === 'undangan') {
-                    const tipeHarga = parseInt(undanganTipe.value);
-                    const teksturHarga = parseInt(undanganTekstur.value);
-                    const halamanTxt = undanganHalaman.value;
-                    const tipeTxt = undanganTipe.options[undanganTipe.selectedIndex].text.split('(')[0];
-                    unitPrice = tipeHarga + teksturHarga;
-                    specText = `${tipeTxt}, ${halamanTxt}` + (teksturHarga > 0 ? ' + Tekstur' : '');
-                } else if (produk === 'cetak-foto') {
-                    const sizeEl = fotoUkuran; const sizeHarga = parseInt(sizeEl.value);
-                    const sizeName = sizeEl.options[sizeEl.selectedIndex].getAttribute('data-name');
-                    const editHarga = parseInt(fotoEdit.value);
-                    const editName = fotoEdit.options[fotoEdit.selectedIndex].text.split('(')[0];
-                    const kertas = fotoKertas.value;
-                    unitPrice = sizeHarga + editHarga;
-                    specText = `Ukuran ${sizeName}, Kertas ${kertas}, ${editName}`;
-                } else if (produk === 'id-card') {
-                    unitPrice = parseInt(idcardTipe.value);
-                    specText = idcardTipe.options[idcardTipe.selectedIndex].text.split('(')[0];
-                } else if (produk === 'cetak-cd') {
-                    unitPrice = parseInt(cdTipe.value);
-                    specText = cdTipe.options[cdTipe.selectedIndex].text.split('(')[0];
-                } else if (produk === 'website') {
-                    const jasaPembuatan = 100000;
-                    const domainPrice = parseInt(webDomainSelect.value);
-                    const domainTypeTxt = webDomainSelect.options[webDomainSelect.selectedIndex].text.split(' - ')[0];
-                    unitPrice = jasaPembuatan + domainPrice;
-                    specText = `Jasa Web Custom + ${domainTypeTxt}`;
-                } else { unitPrice = 0; specText = 'Custom / Other'; }
-
-                const subtotal = unitPrice * qty;
-                let discountAmount = 0;
-                if (subtotal >= 100000) discountAmount = Math.floor(subtotal / 100000) * 5000;
-                const grandTotal = subtotal - discountAmount;
-                const dpValue = Math.floor(grandTotal * 0.5);
-
-                document.getElementById('summary-product').textContent = produk ? produk.toUpperCase().replace('-', ' ') : '-';
-                document.getElementById('summary-price').textContent = unitPrice > 0 ? formatRupiah(unitPrice) : 'Chat Admin';
-                document.getElementById('summary-qty').textContent = qty;
-                document.getElementById('summary-subtotal').textContent = formatRupiah(subtotal);
-                const discountRow = document.getElementById('row-discount');
-                if (discountAmount > 0) {
-                    discountRow.style.display = 'flex';
-                    document.getElementById('summary-discount').textContent = '-' + formatRupiah(discountAmount);
-                } else discountRow.style.display = 'none';
-                document.getElementById('total-display').textContent = grandTotal > 0 ? formatRupiah(grandTotal) : 'Rp 0';
-                document.getElementById('dp-amount').textContent = formatRupiah(dpValue);
-                document.getElementById('warning-dp-val').textContent = formatRupiah(dpValue);
-                const specRow = document.getElementById('row-detail-specs');
-                const specVal = document.getElementById('summary-specs');
-                if (specText && produk) { specRow.style.display = 'flex'; specVal.textContent = specText; }
-                else specRow.style.display = 'none';
-            }
-
-            function selectProduct(value) {
-                productSelect.value = value;
-                handleProductChange();
-                document.getElementById('pesan').scrollIntoView({ behavior: 'smooth' });
-            }
-
-            btnGps.addEventListener('click', function() {
-                const btn = this; btn.textContent = '⏳ Mencari...';
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        document.getElementById('lokasi').value = `http://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`;
-                        btn.textContent = '✅ Lokasi Terisi'; setTimeout(()=> btn.textContent = '📍 Ambil Lokasi', 3000);
-                    }, function() { alert('Gagal mengambil lokasi.'); btn.textContent = '📍 Ambil Lokasi'; });
-                } else { alert('Browser tidak support GPS.'); }
-            });
-
-            let orderData = {};
-            btnProcess.addEventListener('click', function() {
-                if (!document.getElementById('nama').value || !document.getElementById('wa').value) {
-                    alert('Mohon lengkapi Nama dan Nomor HP/WA.'); return;
-                }
-                if (productSelect.value === '') { alert('Silakan pilih produk.'); return; }
-                const produk = productSelect.options[productSelect.selectedIndex].text;
-                let specs = document.getElementById('summary-specs').textContent;
-                const priceUnit = document.getElementById('summary-price').textContent;
-                const qty = qtyInput.value;
-                const subtotal = document.getElementById('summary-subtotal').textContent;
-                const discount = document.getElementById('summary-discount').textContent;
-                const total = document.getElementById('total-display').textContent;
-                const dp = document.getElementById('dp-amount').textContent;
-                const totalNum = parseInt(total.replace(/[^0-9]/g,''));
-                const dpNum = parseInt(dp.replace(/[^0-9]/g,''));
-                const sisa = totalNum - dpNum;
-                const sisaFormatted = formatRupiah(sisa);
-                const kode = currentInvoiceCode;
-                const nama = document.getElementById('nama').value;
-                const wa = document.getElementById('wa').value;
-                const email = document.getElementById('email').value || '-';
-                const noteRaw = document.getElementById('catatan').value;
-                const deadlineVal = document.getElementById('deadline').value || 'Secepatnya';
-                let extraDetail = '';
-                if (productSelect.value === 'undangan') {
-                    const jenisAcaraVal = jenisAcara.value;
-                    if (jenisAcaraVal === 'Pernikahan') extraDetail = `[Acara Nikah: ${document.getElementById('nama-pria').value} & ${document.getElementById('nama-wanita').value}]`;
-                    else if (jenisAcaraVal === 'Khitanan') extraDetail = `[Acara Khitan: ${document.getElementById('nama-anak').value}]`;
-                    else extraDetail = `[Acara ${jenisAcaraVal}: ${document.getElementById('nama-hajat').value}]`;
-                } else if (productSelect.value === 'website') {
-                    const tema = document.getElementById('web-tema').value || 'Default';
-                    const warna = document.getElementById('web-warna').value || 'Default';
-                    const deskripsi = document.getElementById('web-deskripsi').value || '-';
-                    const finalLink = webFinalLink.value || '(Belum Diisi)';
-                    const domainTypeLabel = webDomainSelect.options[webDomainSelect.selectedIndex].text.split(' - ')[0];
-                    extraDetail = `\n• Tema: ${tema}\n• Warna: ${warna}\n• Tipe Domain: ${domainTypeLabel}\n• Link/Nama: ${finalLink}\n• Konten: ${deskripsi}`;
-                }
-                const fullNote = (extraDetail ? extraDetail + '\n' : '') + (noteRaw ? 'Catatan Lain: ' + noteRaw : '');
-                orderData = {
-                    kode, nama, wa, email, produk, specs, priceUnit, qty,
-                    subtotal, discount, total, dp, sisa: sisaFormatted,
-                    fullNote, deadlineVal,
-                    today: new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-                };
-                document.getElementById('inv-code').textContent = '#' + kode;
-                document.getElementById('inv-date').textContent = orderData.today;
-                document.getElementById('inv-name').textContent = nama;
-                document.getElementById('inv-product').textContent = produk;
-                document.getElementById('inv-specs').textContent = specs;
-                document.getElementById('inv-price-unit').textContent = priceUnit;
-                document.getElementById('inv-qty').textContent = qty;
-                if (orderData.discount !== '-Rp 0') {
-                    document.getElementById('modal-discount-row').style.display = 'flex';
-                    document.getElementById('inv-discount').textContent = discount;
-                } else document.getElementById('modal-discount-row').style.display = 'none';
-                document.getElementById('inv-total-final').textContent = total;
-                document.getElementById('inv-dp-val').textContent = dp;
-                document.getElementById('inv-sisa-val').textContent = sisaFormatted;
-                document.getElementById('inv-notes-preview').textContent = fullNote.length > 80 ? fullNote.substring(0,80)+'...' : fullNote;
-                modal.classList.add('active');
-            });
-
-            btnCloseModal.addEventListener('click', ()=> modal.classList.remove('active'));
-            btnSendWa.addEventListener('click', function() {
-                const text = `Halo Admin Aneka Digital,\n\nSaya sudah melakukan pesanan di Website & Transfer DP.\nMohon konfirmasinya.\n\n🧾 *INVOICE: ${orderData.kode}*\n👤 Nama: ${orderData.nama}\n📱 WA: ${orderData.wa}\n📧 Email: ${orderData.email}\n\n📦 *DETAIL ORDER*\nProduk: ${orderData.produk}\nSpecs: ${orderData.specs}\nQty: ${orderData.qty}\n\n📝 *DETAIL KHUSUS / NOTE*\n${orderData.fullNote}\n\n💰 *PEMBAYARAN*\nTotal Tagihan: ${orderData.total}\nDP Transfer: ${orderData.dp}\nSisa: ${orderData.sisa}\n\nTerima kasih.`;
-                window.open(`https://wa.me/6285647709114?text=${encodeURIComponent(text)}`, '_blank');
-            });
-
-            btnDownloadPdf.addEventListener('click', function() {
-                const printTime = new Date().toLocaleString('id-ID', { hour: '2-digit', minute: '2-digit' });
-                const htmlNote = orderData.fullNote.replace(/\n/g, '<br>');
-                const printContent = `<!DOCTYPE html><html><head><title>Invoice - ${orderData.kode}</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"><style>@page { margin: 0; size: A4; } :root { --i-blue: #0A4D98; } body { font-family: 'Inter', sans-serif; color: #0f172a; background: #fff; margin:0; padding:0; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size:14px; } h1, h2, h3, h4, th { font-family: 'Plus Jakarta Sans', sans-serif; } .invoice-box { max-width:210mm; margin:0 auto; padding:40px; min-height:297mm; box-sizing:border-box; } .header-container { display:flex; justify-content:space-between; border-bottom:3px solid var(--i-blue); padding-bottom:20px; margin-bottom:30px; } .brand-section h1 { font-size:28px; font-weight:800; color:var(--i-blue); margin:0; } .brand-section span { color: #F97316; } .brand-tagline { font-size:11px; color:#64748b; margin-top:4px; text-transform:uppercase; font-weight:600; } .invoice-meta { text-align:right; } .inv-title { font-size:36px; font-weight:800; color:#e2e8f0; margin:0; line-height:1; letter-spacing:2px; } .inv-number { font-size:16px; font-weight:700; color:#F97316; background:#fff7ed; padding:4px 10px; border-radius:4px; display:inline-block; margin-top:5px; border:1px solid #ffedd5; } .info-grid { display:flex; justify-content:space-between; margin-bottom:40px; } .info-box h3 { font-size:11px; text-transform:uppercase; color:#94a3b8; margin:0 0 8px 0; letter-spacing:1px; } .info-value { font-size:15px; font-weight:600; } .info-sub { font-size:12px; color:#64748b; margin-top:3px; } table { width:100%; border-collapse:collapse; margin-bottom:30px; } th { background:var(--i-blue); color:white; text-align:left; padding:12px 15px; font-size:12px; text-transform:uppercase; } td { padding:15px; border-bottom:1px solid #f1f5f9; vertical-align:top; } tr:nth-child(even) { background-color:#f8fafc; } .item-title { font-weight:700; font-size:14px; } .item-spec { font-size:11px; color:#64748b; } .totals-box { margin-top:20px; } .total-row { display:flex; justify-content:space-between; padding:8px 0; font-size:13px; } .grand-total { border-top:2px dashed #cbd5e1; padding-top:10px; font-size:18px; font-weight:800; color:var(--i-blue); display:flex; justify-content:space-between; } .payment-status { margin-top:15px; background:#ecfdf5; border:1px solid #10b981; padding:10px; border-radius:6px; } .status-row { display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px; } .status-row.paid { color:#10b981; font-weight:700; } .status-row.due { color:#ef4444; font-weight:700; border-top:1px dashed #10b981; padding-top:5px; } .print-footer { position:absolute; bottom:40px; left:40px; right:40px; text-align:center; border-top:1px solid #e2e8f0; padding-top:20px; } .thank-you { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; color:var(--i-blue); font-size:14px; }</style></head><body><div class="invoice-box"><div class="header-container"><div class="brand-section"><h1>Aneka<span>Digital</span></h1><div class="brand-tagline">Web Developer & Printing Solution</div></div><div class="invoice-meta"><div class="inv-title">INVOICE</div><div class="inv-number">${orderData.kode}</div></div></div><div class="info-grid"><div class="info-box"><h3>Ditagihkan Kepada</h3><div class="info-value">${orderData.nama}</div><div class="info-sub">${orderData.wa} <br> ${orderData.email}</div></div><div class="info-box" style="text-align:right;"><h3>Tanggal Terbit</h3><div class="info-value">${orderData.today}</div><div class="info-sub">Waktu Cetak: ${printTime} WIB</div></div></div><table><thead><tr><th>Produk & Deskripsi</th><th>Harga Satuan</th><th>Qty</th><th>Total</th></tr></thead><tbody><tr><td><span class="item-title">${orderData.produk}</span><span class="item-spec">${orderData.specs}</span></td><td>${orderData.priceUnit}</td><td>${orderData.qty}</td><td>${orderData.subtotal}</td></tr></tbody></table><div class="totals-box"><div class="total-row"><span>Subtotal</span><span>${orderData.subtotal}</span></div>${orderData.discount !== '-Rp 0' ? `<div class="total-row"><span>Diskon</span><span style="color:#ef4444;">${orderData.discount}</span></div>` : ''}<div class="grand-total"><span>TOTAL TAGIHAN</span><span>${orderData.total}</span></div><div class="payment-status"><div class="status-row paid"><span>DP (Transfer QRIS)</span><span>${orderData.dp}</span></div><div class="status-row due"><span>Sisa Pelunasan</span><span>${orderData.sisa}</span></div></div></div><div class="print-footer"><div class="thank-you">Terima Kasih Telah Berbelanja</div><div><a href="#" style="color:#F97316;">www.anekamarket.my.id/anekadigital</a></div><div style="font-size:11px;color:#94a3b8;">Jl. Pb. Sudirman, Panarukan, Situbondo • 0856-4770-9114</div></div></div></body></html>`;
-                document.getElementById('print-container').innerHTML = printContent;
-                setTimeout(() => window.print(), 800);
-            });
-
-            window.addEventListener('scroll', ()=> header.classList.toggle('scrolled', window.scrollY > 50));
-            hamburger.addEventListener('click', ()=> navMenu.classList.toggle('active'));
-            document.querySelectorAll('#nav-menu a').forEach(link => link.addEventListener('click', ()=> navMenu.classList.remove('active')));
-
-            productSelect.addEventListener('change', handleProductChange);
-            btnPesanWeb.addEventListener('click', ()=> selectProduct('website'));
-            productButtons.forEach(btn => btn.addEventListener('click', function() { selectProduct(this.dataset.product); }));
-            webDomainSelect.addEventListener('change', function() { handleWebDomainUI(); updateCalculator(); });
-            webInputName.addEventListener('keyup', resetDomainStatus);
-            btnCheckDomain.addEventListener('click', checkDomainAvailability);
-            [undanganTipe, undanganHalaman, undanganTekstur, fotoUkuran, fotoKertas, fotoEdit, idcardTipe, cdTipe].forEach(el => el.addEventListener('change', updateCalculator));
-            qtyInput.addEventListener('input', updateCalculator);
-            jenisAcara.addEventListener('change', handleEventChange);
-
-            handleProductChange();
-            handleWebDomainUI();
-            updateCalculator();
-
-            // ==================== FITUR CEK ORDER (nota.js) ====================
-            const btnCekOrder = document.getElementById('btn-cek-order');
-            const modalCek = document.getElementById('cekOrderModal');
-            const inputKode = document.getElementById('input-kode-order');
-            const btnCek = document.getElementById('btn-cek-kode');
-            const hasilContainer = document.getElementById('hasil-cek-order');
-            const downloadBtn = document.getElementById('btn-download-struk');
-            const btnCloseCek = document.getElementById('btn-close-cek-modal');
-
-            const validCodes = ['ORD20260501161911'];
-
-            function resetCekOrder() {
-                inputKode.value = '';
-                hasilContainer.innerHTML = '';
-                downloadBtn.classList.add('hidden');
-                downloadBtn.style.display = 'none';
-                inputKode.classList.remove('is-valid', 'is-invalid');
-            }
-
-            btnCekOrder.addEventListener('click', function(e) {
-                e.preventDefault();
-                modalCek.classList.add('active');
-                resetCekOrder();
-                setTimeout(() => inputKode.focus(), 100);
-            });
-
-            btnCloseCek.addEventListener('click', ()=> modalCek.classList.remove('active'));
-            window.addEventListener('click', function(e) {
-                if (e.target === modalCek) modalCek.classList.remove('active');
-            });
-
-            btnCek.addEventListener('click', function() {
-                const kode = inputKode.value.trim().toUpperCase();
-                if (!kode) {
-                    alert('Silakan masukkan kode order terlebih dahulu.');
-                    inputKode.focus();
-                    return;
-                }
-                const formatRegex = /^ORD\d{14}$/;
-                if (!formatRegex.test(kode)) {
-                    hasilContainer.innerHTML = `<div class="domain-msg error"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><div><strong>Format Kode Salah</strong><br>Kode harus diawali <b>ORD</b> diikuti 14 digit angka.<br>Contoh: <b>ORD20260501153430</b></div></div>`;
-                    inputKode.classList.add('is-invalid');
-                    inputKode.classList.remove('is-valid');
-                    downloadBtn.classList.add('hidden'); downloadBtn.style.display = 'none';
-                    return;
-                }
-                hasilContainer.innerHTML = `<div class="domain-msg info"><div style="display:flex; align-items:center; gap:10px;"><div class="spinner" style="width:20px; height:20px; border:3px solid #60a5fa; border-top-color:transparent; border-radius:50%; animation: spin 0.8s linear infinite;"></div><span>Memeriksa kode order...</span></div></div>`;
-                inputKode.classList.remove('is-valid', 'is-invalid');
-
-                const urlNota = `https://aplikasiusaha.com/supermarketpremium/cek-kode/nota/Struk-${kode}.pdf`;
-                fetch(urlNota, { method: 'HEAD', mode: 'cors' })
-                .then(response => {
-                    if (response.ok) {
-                        tampilkanValid(kode, urlNota, 'Server terverifikasi.');
-                    } else throw new Error('Not found');
-                })
-                .catch(() => {
-                    if (validCodes.includes(kode)) {
-                        tampilkanValid(kode, urlNota, 'Validasi lokal berhasil (server tidak terjangkau).');
-                    } else {
-                        tampilkanTidakValid(kode);
-                    }
-                });
-            });
-
-            function tampilkanValid(kode, url, catatan = '') {
-                hasilContainer.innerHTML = `<div class="domain-msg success"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><div><strong>Nota Valid & Asli!</strong><br>Kode <b>${kode}</b> terverifikasi. ${catatan}<br>Klik tombol di bawah untuk mengunduh struk PDF.</div></div>`;
-                inputKode.classList.add('is-valid');
-                inputKode.classList.remove('is-invalid');
-                downloadBtn.href = url;
-                downloadBtn.classList.remove('hidden');
-                downloadBtn.style.display = 'block';
-            }
-
-            function tampilkanTidakValid(kode) {
-                hasilContainer.innerHTML = `<div class="domain-msg error"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><div><strong>Kode Tidak Ditemukan</strong><br>Kode <b>${kode}</b> tidak terdaftar atau nota belum tersedia.</div></div>`;
-                inputKode.classList.add('is-invalid');
-                inputKode.classList.remove('is-valid');
-                downloadBtn.classList.add('hidden'); downloadBtn.style.display = 'none';
-            }
-
-        })();
-    </script>
+        <div id="print-container" style="display:none;"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/id.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <script src="script.js"></script>
 </body>
 </html>
