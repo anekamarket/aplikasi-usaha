@@ -100,10 +100,12 @@
                 <ul id="nav-menu">
                     <li><a href="#hero">Beranda</a></li>
                     <li><a href="www.anekamarket.my.id" target="_blank" style="color: #FF4500; font-weight: 800;">Store <span style="background: red; color: white; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; vertical-align: top;">NEW</span></a></li>
-                    <li><a href="#website-service" style="color:var(--primary);">Jasa Website</a></li>
-                    <li><a href="#katalog">Katalog Produk</a></li>
-                    <li><a href="www.anekamarket.my.id/beliaplikasi" target="_blank" class="btn-free-app">🎁 Aplikasi Gratis</a></li>
+                    <li><a href="www.anekamarket.my.id/gratis" target="_blank" class="btn-free-app">🎁 Aplikasi Gratis</a></li>
                     <li><a href="#pesan" class="btn-nav">Buat Pesanan</a></li>
+                    <li><a href="#" id="btn-cek-order" style="color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        Cek Kode
+                    </a></li>
                 </ul>
             </nav>
         </div>
@@ -570,6 +572,41 @@
         </div>
     </section>
 
+    <!-- Modal Cek Kode Order -->
+    <div class="modal-overlay" id="cekOrderModal">
+        <div class="cek-order-card">
+            <div class="inv-header">
+                <div class="inv-logo-icon">
+                    <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <h3>CEK KODE ORDER</h3>
+                <p>Verifikasi keaslian nota pembelian</p>
+            </div>
+
+            <div class="inv-body">
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label>Masukkan Kode Order (Contoh: ORD20260501153430)</label>
+                    <input type="text" id="input-kode-order" class="form-control" placeholder="ORD..." autocomplete="off">
+                </div>
+                
+                <div id="hasil-cek-order"></div>
+                
+                <a href="#" id="btn-download-struk" class="btn-action-primary hidden" style="display: none; text-decoration: none; margin-top: 15px;" download>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    Download Nota PDF
+                </a>
+            </div>
+
+            <div class="inv-footer">
+                <button class="btn-action-primary" id="btn-cek-kode">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    Verifikasi Sekarang
+                </button>
+                <button class="btn-action-secondary" id="btn-close-cek-modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+
     <div id="print-container"></div>
 
     <div class="modal-overlay" id="invoiceModal">
@@ -718,5 +755,31 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="main.js"></script>
+    <script src="nota.js"></script>
+
+    <!-- Proteksi Hak Cipta -->
+    <script>
+        // Mencegah klik kanan
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('Maaf, fitur klik kanan dinonaktifkan untuk melindungi konten.');
+        });
+
+        // Mencegah shortcut keyboard inspeksi/salin
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+            }
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.key === 'i' || e.key === 'j' || e.key === 'c'))) {
+                e.preventDefault();
+            }
+        });
+
+        // Mencegah aksi salin (copy)
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alert('Konten tidak dapat disalin.');
+        });
+    </script>
 </body>
 </html>
