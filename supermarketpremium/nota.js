@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnClose = document.getElementById('btn-close-cek-modal');
 
     // Daftar kode order yang dianggap valid (fallback)
-    const validCodes = ['ORD20260501153430'];
+    const validCodes = ['ORD20260501161911'];
 
     // Reset tampilan modal
     function resetCekOrder() {
